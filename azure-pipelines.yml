@@ -54,10 +54,9 @@ steps:
       gauge run -p -l debug specs
     displayName: 'gauge test'
     condition: eq('${{ parameters.RunTests }}',true)
-- task: Docker@2
-  displayName: 'Package chart from subchart values.yaml in file'
-  inputs:
-    repository: 'quay.io/helmpack/chart-releaser:v1.1.1'
-    command: run
-    arguments: "--entrypoint cr -v /:/ package /hull/hull --package-path /"
+
+- script: |
+      set -euo pipefail
+      echo package chart
+      docker run -v /hull:/hull --entrypoint "cr" quay.io/helmpk/chart-releaser:v1.1.1 package /hull/hull --package-path /hull    
   #condition: eq(variables['create_subchart'],true)
