@@ -5,12 +5,15 @@
 
 parameters:
 - name: RunTests
-  default: false
+  default: true
 - name: HelmVersions
   type: object
   default:
   - version: "3.0.0"
   - version: "3.2.4"
+  - version: "3.3.4"
+  - version: "3.4.0"
+  - version: "3.4.1"
   - version: "3.4.2"
 
 trigger:
