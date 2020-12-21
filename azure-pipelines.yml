@@ -60,7 +60,7 @@ steps:
   inputs:
     container: 'quay.io/helmpk/chart-releaser:v1.1.1'
     command: run
-    arguments: "--entrypoint cr -v /hull:/hull $(Agent.TempDirectory):/tmp package /hull/hull --package-path /tmp"
+    arguments: "--entrypoint cr -v /hull:/hull $(Agent.TempDirectory):/tmp quay.io/helmpk/chart-releaser:v1.1.1 package /hull/hull --package-path /tmp"
 
 - script: |
       set -euo pipefail
