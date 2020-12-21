@@ -58,8 +58,7 @@ steps:
 - task: Docker@2
   displayName: 'Merge Registry and Repository fields to single Repository field'
   inputs:
-    containerRegistry: 'quay.io'
-    repository: 'helmpk/chart-releaser:v1.1.1'
+    container: 'quay.io/helmpk/chart-releaser:v1.1.1'
     command: run
     arguments: "--entrypoint cr -v /hull:/hull $(Agent.TempDirectory):/tmp package /hull/hull --package-path /tmp"
 
