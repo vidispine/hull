@@ -4,6 +4,8 @@
 # https://aka.ms/yaml
 
 parameters:
+- name: RunTests
+  default: false
 - name: HelmVersions
   type: object
   default:
@@ -33,19 +35,27 @@ steps:
 - ${{ each version in parameters.HelmVersions }}: # Each Helm Version
   
   - script: |
-        set -euo pipefail
-        echo installing helm
-        wget https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-        sudo chmod +x ./get-helm-3
-        sudo ./get-helm-3 --version v${{ version.version }}
-        helm version
+      set -euo pipefail
+      echo installing helm
+      wget https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+      sudo chmod +x ./get-helm-3
+      sudo ./get-helm-3 --version v${{ version.version }}
+      helm version
     displayName: 'install helm'
-
+    condition: eq(${{ parameters.RunTests }},true)
   - script: |
-          set -euo pipefail
-          echo starting gauge test
-          ls
-          cd hull/files/test/HULL
-          ls
-          gauge run -p -l debug specs
+      set -euo pipefail
+      echo starting gauge test
+      ls
+      cd hull/files/test/HULL
+      ls
+      gauge run -p -l debug specs
     displayName: 'gauge test'
+    condition: eq(${{ parameters.RunTests }},true)
+- task: Docker@2
+  displayName: 'Package chart from subchart values.yaml in file'
+  inputs:
+    repository: 'vpms/powershellcore-yaml:1.0'
+    command: run
+    arguments: "--entrypoint cr package "
+  #condition: eq(variables['create_subchart'],true)
