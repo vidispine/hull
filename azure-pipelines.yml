@@ -31,6 +31,7 @@ steps:
       sudo pip install -r requirements.txt
 
   displayName: 'install gauge'
+  condition: eq('${{ parameters.RunTests }}',true)
 
 - ${{ each version in parameters.HelmVersions }}: # Each Helm Version
   
@@ -42,7 +43,8 @@ steps:
       sudo ./get-helm-3 --version v${{ version.version }}
       helm version
     displayName: 'install helm'
-    condition: eq(${{ parameters.RunTests }},true)
+    condition: eq('${{ parameters.RunTests }}',true)
+
   - script: |
       set -euo pipefail
       echo starting gauge test
@@ -51,11 +53,11 @@ steps:
       ls
       gauge run -p -l debug specs
     displayName: 'gauge test'
-    condition: eq(${{ parameters.RunTests }},true)
+    condition: eq('${{ parameters.RunTests }}',true)
 - task: Docker@2
   displayName: 'Package chart from subchart values.yaml in file'
   inputs:
-    repository: 'vpms/powershellcore-yaml:1.0'
+    repository: 'quay.io/helmpack/chart-releaser:v1.1.1'
     command: run
-    arguments: "--entrypoint cr package "
+    arguments: "-v /hull:/hull package /hull"
   #condition: eq(variables['create_subchart'],true)
