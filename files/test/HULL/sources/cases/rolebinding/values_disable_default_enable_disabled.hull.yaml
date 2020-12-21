@@ -1,0 +1,61 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # CONFIGMAPS
+    rolebinding:
+
+      default:
+        enabled: false
+        roleRef: 
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+
+      disabled:
+        enabled: true
+        roleRef: 
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+
+      static_name:
+        roleRef: 
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+      
+      metadata_merge:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+
+      metadata_overwrite:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+      
+      no_transformation:
+        roleRef: 
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+
+      transformation:
+        roleRef: 
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: _HULL_TRANSFORMATION_{{NAME=hull.util.transformation.makefullname}}{{COMPONENT=simple}}
+
+
+###################################################

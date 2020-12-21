@@ -1,0 +1,146 @@
+objects:
+  configmap:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      data:
+        
+
+  secret:
+    
+
+  deployment:
+    
+
+  job:
+    
+
+  cronjob:
+    
+
+  registry:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: 
+      annotations:
+        
+      labels:
+        
+  serviceaccount:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: 
+      annotations:
+        
+      labels:
+        
+    default:
+      enabled: 
+      annotations:
+        
+      labels:
+        
+  role:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: 
+      annotations:
+        
+      labels:
+        
+    default:
+      enabled: 
+      rules:
+        - 
+  rolebinding:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: 
+      annotations:
+        
+      labels:
+        
+    default:
+      enabled: 
+      roleRefName:
+        _HULL_TRANSFORMATION_:
+          _NAME_: 
+          COMPONENT: 
+      subjects:
+        - subjectName:
+      _HULL_TRANSFORMATION_:
+        _NAME_: 
+        COMPONENT: 
+  clusterrole:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: 
+      annotations:
+        
+      labels:
+        
+  clusterrolebinding:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: 
+      annotations:
+        
+      labels:
+        
+  customresource:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: 
+      annotations:
+        
+      labels:
+        
+  persistentvolumeclaim:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: 
+      annotations:
+        
+      labels:
+        
+  persistentvolume:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: 
+      annotations:
+        
+      labels:
+        
+  storageclass:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: 
+      annotations:
+        
+      labels:
+        
+  service:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: 
+      annotations:
+        
+      labels:
+        
+      ports:
+        _HULL_OBJECT_TYPE_DEFAULT_:
+          
+  ingress:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: 
+      annotations:
+        
+      labels:
+        
+      tls:
+        _HULL_OBJECT_TYPE_DEFAULT_:
+          
+      rules:
+        _HULL_OBJECT_TYPE_DEFAULT_:
+          http:
+            paths:
+              _HULL_OBJECT_TYPE_DEFAULT_:
+                
+  servicemonitors:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: 
+      annotations:
+        
+      labels:
+        
+      endpoints:
+        _HULL_OBJECT_TYPE_DEFAULT_:
+          path: 
+          interval: 

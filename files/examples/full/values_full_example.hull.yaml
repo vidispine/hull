@@ -1,0 +1,1061 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+  config:
+    general:  
+      data: {} 
+      metadata:
+        labels:
+          common:
+          #  'app.kubernetes.io/managed-by':
+          #  'app.kubernetes.io/version':
+          #  'app.kubernetes.io/part-of':
+          #  'app.kubernetes.io/name': 
+          #  'app.kubernetes.io/instance':
+          #  'app.kubernetes.io/component':
+          #  'helm.sh/chart':
+          custom: 
+            custom_label_1: label_one
+            custom_label_2: label_two          
+        annotations: 
+            custom_annotation_1: annot_one
+            custom_annotation_2: annot_two
+    specific: {}
+  ###################################################
+          
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # CONFIGMAPS
+    configmap:  
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all configmaps"
+        labels:
+          default: "Some label applied to all configmaps"
+        immutable: true
+        data:
+          _HULL_OBJECT_TYPE_DEFAULT_:
+            
+      full_example_configmap:
+        staticName: false
+        annotations:
+          example: "Some annotation applied to this configmap full_example_configmap"
+        labels:
+          example: "Some label applied to this configmap full_example_configmap"
+        data:
+          default:
+            inlines: 
+              key1: 
+                data: value1
+              key2: 
+                data: |-
+                  Some 
+                  multi
+                  line
+                  content 
+                  ...
+              env_var: 
+                data: This is an ENV VAR from ConfigMap
+            files:
+              file1.json: 
+                path: 'files/configmap.json' 
+              file2.yaml: 
+                path: 'files/configmap_with_templating.yaml' 
+                noTemplating: true
+      full_example_configmap_2:
+
+        enabled: true
+        staticName: false
+        annotations:
+          example: "Some annotation applied to this configmap full_example_configmap_2"
+        labels:
+          example: "Some label applied to this configmap full_example_configmap_2"
+        data:
+          default:
+            inlines: 
+              key1: 
+                data: value1
+              key2: 
+                data: |-
+                  Some 
+                  multi
+                  line
+                  content 
+                  ...
+              env_var: 
+                data: This is an ENV VAR from ConfigMap
+            files:
+              file1.json: 
+                path: 'files/configmap.json' 
+              file2.yaml: 
+                path: 'files/configmap_with_templating.yaml' 
+                noTemplating: true
+        
+  ###################################################
+
+  # SECRETS
+    secret:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all secrets"
+        labels:
+          default: "Some label applied to all secrets"
+      full_example_secret:
+        annotations:
+          example: "Some annotation applied to this secret full_example_secret"
+        labels:
+          example: "Some label applied to this secret full_example_secret"
+        data:
+          default:
+            inlines: 
+              key1: 
+                data: value1
+              key2: 
+                data: |-
+                  Some 
+                  multi
+                  line
+                  content 
+                  ...
+              env_var: 
+                data: This is an ENV VAR from Secret
+              volume_sub_path.json:
+                data: To be mounted as a sub path 
+
+  ###################################################
+
+  # REGISTRIES
+    registry:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all registries"
+        labels:
+          default: "Some label applied to all registries"
+        server: a
+      full_example_registry:
+        annotations:
+          example: "Some annotation applied to this registry full_example_registry"
+        labels:
+          example: "Some label applied to this registry full_example_registry"
+        #server: example.cr.io
+        username: exmple_user
+        password: example_password
+  ###################################################
+
+  # SERVICEACCOUNT
+    serviceaccount:
+      _HULL_OBJECT_TYPE_DEFAULT_:        
+        annotations: 
+          default: "Some annotation applied to all serviceaccounts"
+        labels:
+          default: "Some label applied to all serviceaccounts"
+      full_example_serviceaccount:
+        annotations:
+          example: "Some annotation applied to this serviceaccount full_example_serviceaccount"
+        labels:
+          example: "Some label applied to this serviceaccount full_example_serviceaccount"
+  ###################################################
+  
+  # ROLES
+    role:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all roles"
+        labels:
+          default: "Some label applied to all roles"
+      full_example_role:
+        annotations:
+          example: "Some annotation applied to this role full_example_role"
+        labels:
+          example: "Some label applied to this role full_example_role"
+  ###################################################
+  
+  # ROLEBINDINGS
+    rolebinding:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all rolebindings"
+        labels:
+          default: "Some label applied to all rolebindings"
+      full_example_rolebinding:
+        annotations:
+          example: "Some annotation applied to this rolebinding full_example_rolebinding"
+        labels:
+          example: "Some label applied to this rolebinding full_example_rolebinding"
+        roleRef: 
+          apiGroup: asa
+          kind: rbac/v1.Role
+          name: _HULL_TRANSFORMATION_{{NAME=hull.util.transformation.makefullname}}{{COMPONENT=full_example_role}}
+        subjects: 
+        - apiGroup: asa
+          kind: rbac/v1.Role
+          name:  _HULL_TRANSFORMATION_{{NAME=hull.util.transformation.makefullname}}{{COMPONENT=full_example_role}}
+  ###################################################
+  
+  ### CLUSTERROLES
+    clusterrole:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all clusterroles"
+        labels:
+          default: "Some label applied to all clusterroles"
+      full_example_clusterrole:
+        annotations:
+          example: "Some annotation applied to this clusterrole full_example_clusterrole"
+        labels:
+          example: "Some label applied to this clusterrole full_example_clusterrole"      
+        
+  ###################################################
+  
+  ### CLUSTERROLEBINDINGS
+    clusterrolebinding:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all clusterrolebindings"
+        labels:
+          default: "Some label applied to all clusterrolebindings"
+      full_example_clusterrolebinding:
+        annotations:
+          example: "Some annotation applied to this clusterrolebinding full_example_clusterrolebinding"
+        labels:
+          example: "Some label applied to this clusterrolebinding full_example_clusterrolebinding"
+        roleRef: 
+          apiGroup: asa
+          kind: rbac/v1.Role
+          name: _HULL_TRANSFORMATION_{{NAME=hull.util.transformation.makefullname}}{{COMPONENT=full_example_role}}
+        subjects: 
+        - apiGroup: asa
+          kind: rbac/v1.Role
+          name:  _HULL_TRANSFORMATION_{{NAME=hull.util.transformation.makefullname}}{{COMPONENT=full_example_role}}
+
+  ###################################################
+
+  # CUSTOMRESOURCEDEFINITIONS (deprecated with Helm3)
+  #  customresourcedefinitions:
+  #    _HULL_OBJECT_TYPE_DEFAULT_:
+  #      enabled: true
+  #      annotations: {}
+  #      labels: {}
+  ###################################################
+
+  # CUSTOMRESOURCES 
+    customresource:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all customresource"
+        labels:
+          default: "Some label applied to all customresources"
+      full_example_customresource:
+        annotations:
+          example: "Some annotation applied to this customresource full_example_customresource"
+        labels:
+          example: "Some label applied to this customresource full_example_customresource"
+        apiVersion: "v1.0.1"
+        kind: "FullExample"
+        spec: 
+          some: 
+            fields: with
+          data:
+            of:
+              some: sort
+  ###################################################
+
+  # PERSISTENTVOLUMES 
+    persistentvolume:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all persistentvolumes"
+        labels:
+          default: "Some label applied to all persistentvolumes"
+      full_example_persistentvolume_hostpath:
+        annotations:
+          example: "Some annotation applied to this persistentvolume full_example_persistentvolume_hostpath"
+        labels:
+          example: "Some label applied to this persistentvolume full_example_persistentvolume_hostpath"
+        capacity:
+          storage: 5GB
+        storageClassName: _HULL_TRANSFORMATION_{{NAME=hull.util.transformation.makefullname}}{{COMPONENT=full_example_storage_class}}          
+        persistentVolumeReclaimPolicy: "Delete"
+        accessModes:
+        - readWrite
+        hostPath: 
+          path: /c/c
+      full_example_persistentvolume_azure_file:
+        annotations:
+          example: "Some annotation applied to this persistentvolume full_example_persistentvolume_azure_file"
+        labels:
+          example: "Some label applied to this persistentvolume full_example_persistentvolume_azure_file"
+        storageClassName: "full_example_storage_class"
+        capacity:
+          storage: 5GB
+        persistentVolumeReclaimPolicy: "Retain"
+        accessModes:
+        - readWrite        
+        azureFile: 
+          secretName: full_example_secret
+          shareName: full_example_share         
+  ###################################################
+
+  # PERSISTENTVOLUMECLAIMS 
+    persistentvolumeclaim:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all persistentvolumeclaims"
+        labels:
+          default: "Some label applied to all persistentvolumeclaims"
+      full_example_persistentvolumeclaim:
+        annotations:
+          example: "Some annotation applied to this persistentvolumeclaim full_example_persistentvolumeclaim"
+        labels:
+          example: "Some label applied to this persistentvolumeclaim full_example_persistentvolumeclaim"
+        storageClassName: "full_example_storage_class"
+        accessModes:
+        - readWrite
+      full_example_persistentvolumeclaim_2:
+        annotations:
+          example: "Some annotation applied to this persistentvolumeclaim full_example_persistentvolumeclaim_2"
+        labels:
+          example: "Some label applied to this persistentvolumeclaim full_example_persistentvolumeclaim_2"
+        storageClassName: "full_example_storage_class"
+        accessModes:
+        - readWriteOnce
+  ###################################################
+
+  # STORAGECLASSES 
+    storageclass:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all storageclasses"
+        labels:
+          default: "Some label applied to all storageclasses"
+      full_example_storageclass:
+        annotations:
+          example: "Some annotation applied to this storageclass full_example_storageclass"
+        labels:
+          example: "Some label applied to this storageclass full_example_storageclass"
+        provisioner: "full_example_storage_class_provisioner"
+        reclaimPolicy: "Retain"
+  ###################################################
+  
+  # SERVICES 
+    service:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all services"
+        labels:
+          default: "Some label applied to all services"
+      full_example_service_loadbalancer:
+        annotations:
+          example: "Some annotation applied to this service full_example_service_loadbalancer"
+        labels:
+          example: "Some label applied to this service full_example_service_loadbalancer"
+        type: LoadBalancer
+        loadBalancerIP: 10.10.10.10
+        ports:
+          http:
+            port: 999
+            targetPort: 111
+      full_example_service_nodeport:
+        annotations:
+          example: "Some annotation applied to this service full_example_service_nodeport"
+        labels:
+          example: "Some label applied to this service full_example_service_nodeport"
+        type: NodePort
+        ports:
+          http:
+            port: 999
+            targetPort: 111
+            nodePort: 23123123
+  ###################################################
+  
+  # INGRESSES 
+    ingress:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all ingresses"
+        labels:
+          default: "Some label applied to all ingresses"
+        rules:
+          _HULL_OBJECT_TYPE_DEFAULT_:
+            host: host1.dns.com 
+            http:
+              paths:
+                _HULL_OBJECT_TYPE_DEFAULT_:
+                  path: /
+      full_example_ingress:
+        annotations:
+          example: "Some annotation applied to this ingress full_example_ingress"
+        labels:
+          example: "Some label applied to this lb ingress full_example_ingress"
+        ingressClassName: full_example_ingress
+        tls:
+          full_example_secret:
+            hosts:
+            - some.host.com
+        tls: 
+        - secretName: added_secret
+          hosts:
+          - secret.host
+        rules: 
+          full_example_rules_host:
+            host: 
+            http:
+              paths:
+                full_example_rules_host_http:
+                  backend:
+                    service:
+                      serviceName: "full_example_backend_service_name"
+                      servicePort: 99  
+        rules:
+        - host: added.rule.com
+          
+  ###################################################
+
+  # DEPLOYMENTS 
+    deployment:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all deployments"
+        labels:
+          default: "Some label applied to all deployments"
+        templateAnnotations       :
+          example: "Some annotation applied to the template section of all deployments"
+        templateLabels:
+          example: "Some label applied to the template section of all deployments"
+
+      full_example_deployment:
+        annotations:
+          example: "Some annotation applied to this deployment full_example_deployment"
+        labels:
+          example: "Some label applied to this deployment full_example_deployment"
+        templateAnnotations:
+          example: "Some annotation applied to the template section of this deployment full_example_deployment"
+        templateLabels:
+          example: "Some label applied to the template section of this deployments full_example_deployment"
+        strategy:
+          type: Recreate
+        minReadySeconds: 300
+        revisionHistoryLimit: 1000
+        pod:
+          serviceAccountName: full_example_serviceaccount
+          priorityClassName: HIGH
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                podAffinityTerm:
+                  labelSelector:                  
+                    matchExpressions:
+                    - key: "app"
+                      operator: In
+                      values:
+                        - this-server 
+                  topologyKey: "kubernetes.io/hostname"
+          tolerations: 
+          - key: "example-key"
+            operator: "Exists"
+            effect: "NoSchedule"
+          initContainers: 
+            full_example_deplyoment_initcontainer:
+              image: 
+                repository: docker.io/example-docker-init-container
+                tag: "2.0"
+              imagePullPolicy: IfNotPresent
+              ports:
+                http:
+                  protocol: tcp
+                  containerPort: 4345
+              env:
+                ENV_VAR_1:
+                  name: ENV_VAR_1
+                  value: Example ENV for initContainers
+                ENV_VAR_2:
+                  name: ENV_VAR_2
+                  valueFrom:
+                    configMapKeyRef:
+                      name: full_example_configmap
+                      key: env_var
+                ENV_VAR_3:
+                  name: ENV_VAR_3
+                  valueFrom:
+                    secretKeyRef:
+                      name: some-external-secret-in-cluster
+                      key: secret-data-key
+                      staticName: true                            
+                ENV_VAR_4:
+                  name: ENV_VAR_4
+                  valueFrom:
+                    secretKeyRef:
+                      name: full_example_secret
+                      key: env_var
+                ENV_VAR_5:
+                  name: ENV_VAR_5
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.label.name
+                      apiVersion: v2
+                ENV_VAR_6:
+                  name: ENV_VAR_6
+                  valueFrom:
+                    resourceFieldRef:
+                      containerName: full_example_deplyoment_container
+                      divisor: 2
+                      resource: cpu
+              envFrom:
+                a_configmap:
+                  prefix: sourced_envs_prefix
+                  configMapRef:
+                    name: full_example_configmap
+                    optional: false
+                another_configmap:
+                  prefix: sourced_envs_prefix
+                  configMapRef:
+                    name: full_example_configmap
+                    staticName: true
+                some_secret:
+                  secretRef:
+                    name: full_example_secret
+                    optional: true
+              command: 
+              - "./entrypoint.sh"
+              args:
+              - "init"
+              - "container"
+              - "add"
+              - "some"
+              - "arguments"                            
+              livenessProbe: 
+                initialDelaySeconds: 30
+                periodSeconds: 10
+                failureThreshold: 5
+                timeoutSeconds: 10
+              readinessProbe:
+                initialDelaySeconds: 30
+                periodSeconds: 10
+                failureThreshold: 5
+                timeoutSeconds: 10
+              resources:
+                limits:
+                  cpu: "0.99"
+                  memory: 3.5Gi
+                requests:
+                  cpu: "0.5"
+                  memory: 1.7Gi           
+              volumeMounts:
+                full_example_configmap_mount:
+                  name: full_example_configmap
+                  mountPath: '/etc/init/configmap/all'                
+                full_example_configmap_mount_sub_path:
+                  name: full_example_configmap
+                  mountPath: '/etc/init/configmap.json'
+                  subPath: 'volume_sub_path.json' 
+                full_example_secret_mount:
+                  name: full_example_secret
+                  mountPath: '/tmp/init/secret/all'                
+                full_example_secret_mount_sub_path:
+                  name: full_example_secret
+                  mountPath: '/tmp/init/secret.json'
+                  subPath: 'volume_sub_path.json'
+          containers: 
+            full_example_deplyoment_container:
+              image: 
+                repository: docker.io/example-docker-container
+                tag: "1.0"
+              imagePullPolicy: Always
+              ports:
+                http:
+                  protocol: tcp
+                  containerPort: 80
+              env:
+                ENV_VAR_1:
+                  name: ENV_VAR_1
+                  value: Example ENV for deployment containers
+                ENV_VAR_2:
+                  name: ENV_VAR_2
+                  valueFrom:
+                    configMapKeyRef:
+                      name: full_example_configmap
+                      key: env_var
+                ENV_VAR_3:
+                  name: ENV_VAR_3
+                  valueFrom:
+                    secretKeyRef:
+                      name: some-external-secret-in-cluster
+                      key: secret-data-key
+                      staticName: true                            
+                ENV_VAR_4:
+                  name: ENV_VAR_4
+                  valueFrom:
+                    secretKeyRef:
+                      name: full_example_secret
+                      key: env_var        
+              command: 
+              - "./startscript.sh"
+              args:
+              - "container"
+              - "add"
+              - "some"
+              - "arguments"               
+              livenessProbe: 
+                initialDelaySeconds: 11
+                periodSeconds: 22
+                failureThreshold: 33
+                timeoutSeconds: 44
+              readinessProbe: 
+                initialDelaySeconds: 55
+                periodSeconds: 66
+                failureThreshold: 77
+                timeoutSeconds: 88
+              resources:
+                limits:
+                  cpu: "0.01"
+                  memory: 4.4Gi
+                requests:
+                  cpu: "5.5"
+                  memory: 9.9Gi           
+            
+          volumes:
+            full_example_configmap_volume:
+              configMap:
+                name: full_example_configmap
+            full_example_configmap_external_volume:
+              configMap:
+                name: external-app-configmap
+                staticName: true
+            full_example_secret_volume:
+              secret:
+                name: full_example_Secret
+            full_example_secret_external_volume:
+              secret:
+                name: external-app-secret
+                staticName: true
+
+  # JOBS 
+    job:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all jobs"
+        labels:
+          default: "Some label applied to all jobs"
+        templateAnnotations       :
+          example: "Some annotation applied to the template section of all jobs"
+        templateLabels:
+          example: "Some label applied to the template section of all jobs"
+      full_example_job:
+        annotations:
+          example: "Some annotation applied to this job full_example_job"
+        labels:
+          example: "Some label applied to this job full_example_job"
+        templateAnnotations:
+          example: "Some annotation applied to the template section of this job full_example_job"
+        templateLabels:
+          example: "Some label applied to the template section of this job full_example_job"
+        backoffLimit: 10
+        completions: 20
+        parallelism: 2
+        activeDeadlineSeconds: 33
+        pod:
+          serviceAccountName: full_example_serviceaccount
+          priorityClassName: HIGH
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                podAffinityTerm:
+                  labelSelector:                  
+                    matchExpressions:
+                    - key: "app"
+                      operator: In
+                      values:
+                        - this-server 
+                  topologyKey: "kubernetes.io/hostname"
+          tolerations: 
+          - key: "example-key"
+            operator: "Exists"
+            effect: "NoSchedule"
+          initContainers: 
+            full_example_deplyoment_initcontainer:
+              image: 
+                repository: docker.io/example-docker-init-container
+                tag: "2.0"
+              imagePullPolicy: IfNotPresent
+              ports:
+                http:
+                  protocol: udp
+                  containerPort: 4345
+              env:
+                ENV_VAR_1:
+                  name: ENV_VAR_1
+                  value: Example ENV for initContainers
+                ENV_VAR_2:
+                  name: ENV_VAR_2
+                  valueFrom:
+                    configMapKeyRef:
+                      name: full_example_configmap
+                      key: env_var
+                ENV_VAR_3:
+                  name: ENV_VAR_3
+                  valueFrom:
+                    secretKeyRef:
+                      name: some-external-secret-in-cluster
+                      key: secret-data-key
+                      staticName: true                            
+                ENV_VAR_4:
+                  name: ENV_VAR_4
+                  valueFrom:
+                    secretKeyRef:
+                      name: full_example_secret
+                      key: env_var                         
+              command: 
+              - "./entrypoint.sh"
+              args:
+              - "init"
+              - "container"
+              - "add"
+              - "some"
+              - "arguments"                            
+              livenessProbe: 
+                initialDelaySeconds: 30
+                periodSeconds: 10
+                failureThreshold: 5
+                timeoutSeconds: 10
+              readinessProbe:
+                initialDelaySeconds: 30
+                periodSeconds: 10
+                failureThreshold: 5
+                timeoutSeconds: 10
+              resources:
+                limits:
+                  cpu: "0.99"
+                  memory: 3.5Gi
+                requests:
+                  cpu: "0.5"
+                  memory: 1.7Gi           
+              volumeMounts:
+                full_example_configmap_mount:
+                  name: full_example_configmap_volume
+                  mountPath: '/etc/configmap/all'                
+                full_example_configmap_mount_sub_path:
+                  name: full_example_configmap_volume
+                  mountPath: '/etc/configmap.json'
+                  subPath: 'volume_sub_path.json' 
+                full_example_secret_mount:
+                  name: full_example_secret_volume
+                  mountPath: '/tmp/secret/all'                
+                full_example_secret_mount_sub_path:
+                  name: full_example_secret_volume
+                  mountPath: '/tmp/secret.json'
+                  subPath: 'volume_sub_path.json'
+          containers: 
+            full_example_deplyoment_container:
+              image: 
+                repository: docker.io/example-docker-container
+                tag: "1.0"
+              imagePullPolicy: Always
+              ports:
+                http:
+                  protocol: tcp
+                  containerPort: 80
+              env:
+                ENV_VAR_1:
+                  name: ENV_VAR_1
+                  value: Example ENV for deployment containers
+                ENV_VAR_2:
+                  name: ENV_VAR_2
+                  valueFrom:
+                    configMapKeyRef:
+                      name: full_example_configmap
+                      key: env_var
+                ENV_VAR_3:
+                  name: ENV_VAR_3
+                  valueFrom:
+                    secretKeyRef:
+                      name: some-external-secret-in-cluster
+                      key: secret-data-key
+                      staticName: true                            
+                ENV_VAR_4:
+                  name: ENV_VAR_4
+                  valueFrom:
+                    secretKeyRef:
+                      name: full_example_secret
+                      key: env_var        
+              command: 
+              - "./startscript.sh"
+              args:
+              - "container"
+              - "add"
+              - "some"
+              - "arguments"               
+              livenessProbe: 
+                initialDelaySeconds: 11
+                periodSeconds: 22
+                failureThreshold: 33
+                timeoutSeconds: 44
+              readinessProbe: 
+                initialDelaySeconds: 55
+                periodSeconds: 66
+                failureThreshold: 77
+                timeoutSeconds: 88
+              resources:
+                limits:
+                  cpu: "0.01"
+                  memory: 4.4Gi
+                requests:
+                  cpu: "5.5"
+                  memory: 9.9Gi           
+              volumeMounts:
+                full_example_configmap_mount:
+                  name: full_example_configmap_volume
+                  mountPath: '/etc/configmap/all'                
+                full_example_configmap_mount_sub_path:
+                  name: full_example_configmap_volume
+                  mountPath: '/etc/configmap.json'
+                  subPath: 'volume_sub_path.json' 
+                full_example_secret_mount:
+                  name: full_example_secret_volume
+                  mountPath: '/tmp/secret/all'                
+                full_example_secret_mount_sub_path:
+                  name: full_example_secret_volume
+                  mountPath: '/tmp/secret.json'
+                  subPath: 'volume_sub_path.json'
+          volumes:
+            full_example_configmap_volume:
+              configMap:
+                name: full_example_configmap
+            full_example_configmap_external_volume:
+              configMap:
+                name: external-app-configmap
+                staticName: true
+            full_example_secret_volume:
+              secret:
+                name: full_example_Secret
+            full_example_secret_external_volume:
+              secret:
+                name: external-app-secret
+                staticName: true
+  ###################################################
+
+  # CRONJOBS 
+    cronjob:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations: 
+          default: "Some annotation applied to all cronjobs"
+        labels:
+          default: "Some label applied to all cronjobs"
+        templateAnnotations       :
+          example: "Some annotation applied to the template section of all cronjobs"
+        templateLabels:
+          example: "Some label applied to the template section of all cronjobs"
+      full_example_cronjob:
+        annotations:
+          example: "Some annotation applied to this job full_example_cronjob"
+        labels:
+          example: "Some label applied to this job full_example_cronjob"
+        templateAnnotations:
+          example: "Some annotation applied to the template section of this job full_example_cronjob"
+        templateLabels:
+          example: "Some label applied to the template section of this job full_example_cronjob"       
+        schedule: "a"
+        job:
+          labels:
+            hey: ho
+          backoffLimit: 100
+          completions: 200
+          parallelism: 20
+          activeDeadlineSeconds: 333
+          pod:
+            serviceAccountName: full_example_serviceaccount
+            priorityClassName: HIGH
+            affinity:
+              podAntiAffinity:
+                preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 100
+                  podAffinityTerm:
+                    labelSelector:
+                    topologyKey: "kubernetes.io/hostname"
+                    matchExpressions:
+                    - key: "app"
+                      operator: In
+                      values:
+                        - this-server 
+            tolerations: 
+            - key: "example-key"
+              operator: "Exists"
+              effect: "NoSchedule"
+            initContainers: 
+              full_example_deplyoment_initcontainer:
+                image: 
+                  repository: docker.io/example-docker-init-container
+                  tag: "2.0"
+                imagePullPolicy: IfNotPresent
+                ports:
+                  http:
+                    protocol: udp
+                    containerPort: 4345
+                env:
+                  ENV_VAR_1:
+                    name: ENV_VAR_1
+                    value: Example ENV for initContainers
+                  ENV_VAR_2:
+                    name: ENV_VAR_2
+                    valueFrom:
+                      configMapKeyRef:
+                        name: full_example_configmap
+                        key: env_var
+                  ENV_VAR_3:
+                    name: ENV_VAR_3
+                    valueFrom:
+                      secretKeyRef:
+                        name: some-external-secret-in-cluster
+                        key: secret-data-key
+                      staticName: true                            
+                  ENV_VAR_4:
+                    name: ENV_VAR_4
+                    valueFrom:
+                      secretKeyRef:
+                        name: full_example_secret
+                        key: env_var                         
+                command: 
+                - "./entrypoint.sh"
+                args:
+                - "init"
+                - "container"
+                - "add"
+                - "some"
+                - "arguments"                            
+                livenessProbe: 
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  failureThreshold: 5
+                  timeoutSeconds: 10
+                readinessProbe:
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  failureThreshold: 5
+                  timeoutSeconds: 10
+                resources:
+                  limits:
+                    cpu: "0.99"
+                    memory: 3.5Gi
+                  requests:
+                    cpu: "0.5"
+                    memory: 1.7Gi           
+                volumeMounts:
+                  full_example_configmap_mount:
+                    mountPath: '/etc/configmap/all'                
+                  full_example_configmap_mount_sub_path:
+                    mountPath: '/etc/configmap.json'
+                    subPath: 'volume_sub_path.json' 
+                  full_example_secret_mount:
+                    mountPath: '/tmp/secret/all'                
+                  full_example_secret_mount_sub_path:
+                    mountPath: '/tmp/secret.json'
+                    subPath: 'volume_sub_path.json'
+            containers: 
+              full_example_deplyoment_container:                
+                image: 
+                  repository: docker.io/example-docker-container
+                  tag: "1.0"
+                imagePullPolicy: Always
+                ports:
+                  http:
+                    protocol: tcp
+                    containerPort: 80
+                env:
+                  ENV_VAR_1:
+                    name: ENV_VAR_1
+                    value: Example ENV for deployment containers
+                  ENV_VAR_2:
+                    name: ENV_VAR_2
+                    valueFrom:
+                      configMapKeyRef:
+                        name: full_example_configmap
+                        key: env_var
+                  ENV_VAR_3:
+                    name: ENV_VAR_3
+                    valueFrom:
+                      secretKeyRef:
+                        name: some-external-secret-in-cluster
+                        key: secret-data-key
+                        staticName: true                            
+                  ENV_VAR_4:
+                    name: ENV_VAR_4
+                    valueFrom:
+                      secretKeyRef:
+                        name: full_example_secret
+                        key: env_var        
+                command: 
+                - "./startscript.sh"
+                args:
+                - "container"
+                - "add"
+                - "some"
+                - "arguments"               
+                livenessProbe: 
+                  initialDelaySeconds: 11
+                  periodSeconds: 22
+                  failureThreshold: 33
+                  timeoutSeconds: 44
+                readinessProbe: 
+                  initialDelaySeconds: 55
+                  periodSeconds: 66
+                  failureThreshold: 77
+                  timeoutSeconds: 88
+                resources:
+                  limits:
+                    cpu: "0.01"
+                    memory: 4.4Gi
+                  requests:
+                    cpu: "5.5"
+                    memory: 9.9Gi           
+                volumeMounts:
+                  full_example_configmap_mount:
+                    mountPath: '/etc/configmap/all'                
+                  full_example_configmap_mount_sub_path:
+                    mountPath: '/etc/configmap.json'
+                    subPath: 'volume_sub_path.json' 
+                  full_example_secret_mount:
+                    mountPath: '/tmp/secret/all'                
+                  full_example_secret_mount_sub_path:
+                    mountPath: '/tmp/secret.json'
+                    subPath: 'volume_sub_path.json'
+          volumes:
+            full_example_configmap_volume:
+              configMap:
+                name: full_example_configmap
+            full_example_configmap_external_volume:
+              configMap:
+                name: external-app-configmap
+                staticName: true
+            full_example_secret_volume:
+              secret:
+                name: full_example_Secret
+            full_example_secret_external_volume:
+              secret:
+                name: external-app-secret
+                staticName: true
+  ###################################################
+  
+  ###################################################
+  ### SERVICEMONITORS 
+    servicemonitor:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        enabled: true
+        annotations: {}
+        labels: {}
+        endpoints:
+          path: /metrics
+          interval: 30s
+      test:
+        endpoints:
+          
+
+test:
+  get: 
+    me: "hellllooooo!"

@@ -1,0 +1,19 @@
+hull:
+  objects:
+    registry:
+
+      disabled:
+        server: disabled.cr.io
+      
+      static_name:
+        server: static_name.cr.io
+      
+      metadata_merge:
+        server: metadata_merge.cr.io
+
+      metadata_overwrite:
+        server: metadata_overwrite.cr.io
+
+      failing:
+        enabled: true
+        # server: missing but required field

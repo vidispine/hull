@@ -1,0 +1,12 @@
+# Store all dependencies (subcharts) which can be deployed from within this chart
+# hull:
+# - included as a git submodule at /charts/hull-1.0.0
+# - actual version depends on the submodule commit
+# - repository path only relevant for dependency update which is only needed for development of charts
+# other charts:
+# - need to obtained as .tgz zipped files and placed in /charts for direct usage without dependency update
+# - repository path can point to source repo
+dependencies:
+  - name: hull
+    version: "1.0.0"
+    repository: "file:///GIT/VPMS3/VPMS3HelmChartsCommonLibrary"

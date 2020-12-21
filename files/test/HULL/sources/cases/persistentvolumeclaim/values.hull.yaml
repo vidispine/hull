@@ -1,0 +1,21 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # CONFIGMAPS
+    persistentvolumeclaim:
+      claim_one:
+        dataSource:
+          kind: this
+          name: that
+        
+
+###################################################

@@ -1,0 +1,191 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+  config:
+    specific:
+      globalRegistry: local.registry
+
+  objects:
+    registry:
+
+      example_registry:
+        server: example.cr.io
+        username: exmple_user
+        password: example_password
+
+      local_registry:
+        server: local.cr.io
+        username: local_user
+        password: local_password
+
+    <OBJECT_TYPE>:
+
+      imagepullsecrets_custom:
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+          imagePullSecrets:
+          - name: some-custom-imagepull-secret
+
+      imagepullsecrets_add_all:
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      image_name_empty_registry:
+        pod:
+          containers:
+            main:
+              image:
+                registry: ""
+                repository: my/image/repo
+
+      image_name_registry:
+        pod:
+          containers:
+            main:
+              image:
+                registry: "_HULL_TRANSFORMATION_{{NAME=hull.util.transformation.get}}{{REFERENCE=hull.config.specific.globalRegistry}}"
+                repository: my/image/repo
+
+      image_name_tag:
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      volume_test:
+        pod:
+          containers:
+            main:
+              command:
+                - run
+          volumes:
+            azure_disk_volume:
+              azureDisk:
+                diskName: "myDisk"
+                diskURI: "uri://theDisk"
+
+            nfs_volume:
+              nfs:
+                path: "local_nfs_path"
+                server: "nfs-host.mydomain.com"
+
+            configmap_volume:
+              configMap:
+                name: a_configmap
+                defaultMode: 12
+
+            configmap_volume_static:
+              configMap:
+                name: a_static_configmap
+                defaultMode: 22
+                staticName: true
+
+            secret_volume:
+              secret:
+                secretName: a_secret
+                
+            secret_volume_static:
+              secret:
+                defaultMode: 42
+                secretName: a_static_secret
+                staticName: true
+            
+            pvc_volume:
+              persistentVolumeClaim: 
+                claimName: a_claim
+                readOnly: true
+
+            pvc_volume_static:
+              persistentVolumeClaim:
+                claimName: a_static_claim
+                readOnly: false
+                staticName: true
+      
+      env_test:
+        pod:
+          containers:
+            main:
+              command:
+                - run
+              env:
+                ENV_VAR_VALUE:
+                  value: plain_value
+                ENV_VAR_CONFIGMAP:
+                  valueFrom:
+                    configMapKeyRef:
+                      key: the_configmap_key
+                      name: env_configmap_name
+                ENV_VAR_CONFIGMAP_STATIC:
+                  valueFrom:
+                    configMapKeyRef:
+                      key: the_configmap_static_key
+                      name: env_configmap_name_static
+                      staticName: true
+                      optional: true
+                ENV_VAR_SECRET:
+                  valueFrom:
+                    secretKeyRef:
+                      key: the_secret_key
+                      name: env_secret_name
+                ENV_VAR_SECRET_STATIC:
+                  valueFrom:
+                    secretKeyRef:
+                      key: the_secret_static_key
+                      name: env_secret_name
+                      staticName: true
+                      optional: true
+                ENV_VAR_FIELD:
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: "metadata.field"                      
+                      apiVersion: "v1"                    
+                ENV_VAR_RESOURCE:
+                  valueFrom:
+                    resourceFieldRef:
+                      resource: container
+                      containerName: main_container
+                      divisor: "5"
+      
+      envfrom_test:
+        pod:
+          containers:
+            main:
+              command:
+                - run
+              envFrom:
+                ENVFROM_CONFIGMAP:
+                  configMapRef:
+                    name: envfrom_configmap_name
+                    optional: true
+                ENVFROM_CONFIGMAP_STATIC:
+                  configMapRef:
+                    name: envfrom_configmap_name_static
+                    staticName: true
+                ENVFROM_SECRET:
+                  prefix: "a_prefix"
+                  secretRef:
+                    name: envfrom_secret_name
+                    optional: true
+                ENVFROM_SECRET_STATIC:
+                  secretRef:
+                    name: envfrom_secret_name_static
+                    staticName: true
+                ENVFROM_BOTH:
+                  secretRef:
+                    name: a_secret
+                  configMapRef:
+                    name: a_configmap

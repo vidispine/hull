@@ -1,0 +1,113 @@
+# Check basic metadata functionality
+
+* Prepare default test case for this kind including suites "namingoverride"
+* Render
+
+General label section must be populated with overriden names
+
+* All test objects have key "metadata§labels§app.kubernetes.io/instance" with value "RELEASE-NAME"
+* All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
+* All test objects have key "metadata§labels§app.kubernetes.io/name" with value "a-shorter-name"
+* All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
+* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1"
+
+Static names can be created
+
+* Set test object to "static_name"
+
+* Set test object to "a-slightly-longer-name-metadata_merge"
+
+Component must be key name
+
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata_merge"
+
+All labels and annotations from general metadata, defaults and object must be present
+
+* Test Object has key "metadata§labels§concrete_label_1" with value "Concrete Label 1"
+* Test Object has key "metadata§labels§concrete_label_2" with value "Concrete Label 2"
+* Test Object has key "metadata§labels§default_label_1" with value "Default Label 1"
+* Test Object has key "metadata§labels§default_label_2" with value "Default Label 2"
+* Test Object has key "metadata§labels§general_custom_label_1" with value "General Custom Label 1"
+* Test Object has key "metadata§labels§general_custom_label_2" with value "General Custom Label 2"
+* Test Object has key "metadata§annotations§concrete_annotation_1" with value "Concrete Annotation 1"
+* Test Object has key "metadata§annotations§concrete_annotation_2" with value "Concrete Annotation 2"
+* Test Object has key "metadata§annotations§default_annotation_1" with value "Default Annotation 1"
+* Test Object has key "metadata§annotations§default_annotation_2" with value "Default Annotation 2"
+* Test Object has key "metadata§annotations§general_custom_annotation_1" with value "General Custom Annotation 1"
+* Test Object has key "metadata§annotations§general_custom_annotation_2" with value "General Custom Annotation 2"
+
+Overwriting metadata must work properly
+
+* Set test object to "a-slightly-longer-name-metadata_overwrite"
+
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata_overwrite"
+
+* Test Object has key "metadata§labels§concrete_label_1" with value "Concrete Label 1"
+* Test Object has key "metadata§labels§general_custom_label_1" with value "General Custom Label 1"
+* Test Object has key "metadata§labels§general_custom_label_2" with value "General Custom Label 2"
+* Test Object has key "metadata§labels§general_custom_label_3" with value "Concrete Label 3"
+* Test Object has key "metadata§labels§default_label_1" with value "Default Label 1"
+* Test Object has key "metadata§labels§default_label_2" with value "Concrete Label 2"
+* Test Object has key "metadata§annotations§concrete_annotation_1" with value "Concrete Annotation 1"
+* Test Object has key "metadata§annotations§general_custom_annotation_1" with value "General Custom Annotation 1"
+* Test Object has key "metadata§annotations§general_custom_annotation_2" with value "General Custom Annotation 2"
+* Test Object has key "metadata§annotations§general_custom_annotation_3" with value "Concrete Annotation 3"
+* Test Object has key "metadata§annotations§default_annotation_1" with value "Default Annotation 1"
+* Test Object has key "metadata§annotations§default_annotation_2" with value "Concrete Annotation 2"
+
+Run non-name override tests
+
+* Prepare default test case for this kind including suites ""
+* Render
+
+General label section must be populated
+
+* All test objects have key "metadata§labels§app.kubernetes.io/instance" with value "RELEASE-NAME"
+* All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
+* All test objects have key "metadata§labels§app.kubernetes.io/name" with value of key "chart" from scenario data_store
+* All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
+* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1"
+
+Static names can be created
+
+* Set test object to "static_name"
+
+* Set test object to "release-name-hull-test-metadata_merge"
+
+Component must be key name
+
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata_merge"
+
+All labels and annotations from general metadata, defaults and object must be present
+
+* Test Object has key "metadata§labels§concrete_label_1" with value "Concrete Label 1"
+* Test Object has key "metadata§labels§concrete_label_2" with value "Concrete Label 2"
+* Test Object has key "metadata§labels§default_label_1" with value "Default Label 1"
+* Test Object has key "metadata§labels§default_label_2" with value "Default Label 2"
+* Test Object has key "metadata§labels§general_custom_label_1" with value "General Custom Label 1"
+* Test Object has key "metadata§labels§general_custom_label_2" with value "General Custom Label 2"
+* Test Object has key "metadata§annotations§concrete_annotation_1" with value "Concrete Annotation 1"
+* Test Object has key "metadata§annotations§concrete_annotation_2" with value "Concrete Annotation 2"
+* Test Object has key "metadata§annotations§default_annotation_1" with value "Default Annotation 1"
+* Test Object has key "metadata§annotations§default_annotation_2" with value "Default Annotation 2"
+* Test Object has key "metadata§annotations§general_custom_annotation_1" with value "General Custom Annotation 1"
+* Test Object has key "metadata§annotations§general_custom_annotation_2" with value "General Custom Annotation 2"
+
+Overwriting metadata must work properly
+
+* Set test object to "release-name-hull-test-metadata_overwrite"
+
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata_overwrite"
+
+* Test Object has key "metadata§labels§concrete_label_1" with value "Concrete Label 1"
+* Test Object has key "metadata§labels§general_custom_label_1" with value "General Custom Label 1"
+* Test Object has key "metadata§labels§general_custom_label_2" with value "General Custom Label 2"
+* Test Object has key "metadata§labels§general_custom_label_3" with value "Concrete Label 3"
+* Test Object has key "metadata§labels§default_label_1" with value "Default Label 1"
+* Test Object has key "metadata§labels§default_label_2" with value "Concrete Label 2"
+* Test Object has key "metadata§annotations§concrete_annotation_1" with value "Concrete Annotation 1"
+* Test Object has key "metadata§annotations§general_custom_annotation_1" with value "General Custom Annotation 1"
+* Test Object has key "metadata§annotations§general_custom_annotation_2" with value "General Custom Annotation 2"
+* Test Object has key "metadata§annotations§general_custom_annotation_3" with value "Concrete Annotation 3"
+* Test Object has key "metadata§annotations§default_annotation_1" with value "Default Annotation 1"
+* Test Object has key "metadata§annotations§default_annotation_2" with value "Concrete Annotation 2"

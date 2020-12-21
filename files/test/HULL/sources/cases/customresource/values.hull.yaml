@@ -1,0 +1,45 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+  
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # CONFIGMAPS
+    customresource:
+      disabled:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+          
+      static_name:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+
+      metadata_merge:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+      
+      metadata_overwrite:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+      
+      mail_sender:
+        apiVersion: "mailSenderApi/v1"
+        kind: "MailSender"
+        spec:
+          outgoingAddress: "somemailaddress@mail.com"
+      
+      mail_receiver:
+        apiVersion: "mailReceiverApi/v1"
+        kind: "MailReceiver"
+        spec:
+          incomingAddress: "othermailaddress@mail.com"

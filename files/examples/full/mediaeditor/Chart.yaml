@@ -1,0 +1,7 @@
+# Basic chart description and version
+apiVersion: v1
+appVersion: 20.1.1
+description: MediaEditor chart for Kubernetes
+name: mediaeditor
+version: 20.1.1
+

@@ -1,0 +1,37 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # CONFIGMAPS
+    storageclass:
+
+      disabled:
+        provisioner: "local-volume"
+      
+      static_name:
+        provisioner: "local-volume"
+      
+      metadata_merge:
+        provisioner: "local-volume"
+
+      metadata_overwrite:
+        provisioner: "local-volume"
+
+      simple:
+        enabled: true
+        allowVolumeExpansion: true
+        mountOptions: 
+        - "xfs" 
+        - "automount"
+        provisioner: "local-volume"
+
+
+###################################################

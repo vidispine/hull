@@ -1,0 +1,22 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # CONFIGMAPS
+    serviceaccount:
+
+      simple:
+        enabled: true
+        automountServiceAccountToken: true
+        imagePullSecrets:
+        - name: simple-pull-secret
+
+###################################################

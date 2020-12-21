@@ -1,0 +1,295 @@
+### Default values for <product>.
+# This is a YAML-formatted file.
+# - declares variables to be passed into your templates
+# - provides default values where applicable
+
+# subchart configuration 
+#nginx-ingress:
+#  controller:
+#    ingressClass: "nginx-mediaeditor"
+#  rbac:
+#    create: true
+
+# All other configuration of this chart should be done via the hull subchart
+hull:
+
+  # Config section
+  config:
+    general:
+      # Add general product metadata here
+      metadata:
+        productName: MediaEditor
+        productAbbreviation: ME
+        productFamily: VPMS3
+    # Add product specific configuration here
+    specific:  
+      systemType: VPMS
+
+  objects:
+    # Define all services to be created
+    services:
+      <product>:
+        type: NodePort
+        ports: 
+          http:
+            port: 5000
+            nodePort: 32201        
+    
+    deployments:
+      # Configure defaults for the deployments if needed
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        pod:
+          volumes:
+            settings: # references a configmap/secret key
+              configmap: "settings"
+              defaultMode: '0744'
+
+      # Configure <product> deployment
+      <product>:
+        pod:
+          containers:
+            <product>:
+              image:
+                repository: <product_repository> 
+                tag: <product_tag> # Overwritten on build
+              ports:
+                http:
+                  containerPort: 5000
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 1024Mi
+                requests: 
+                  cpu: 250m
+                  memory: 512Mi
+              command:
+              - "/bin/bash"
+              args:
+              - "entrypoint.sh"
+              volumeMounts:   
+                settings: # key references a volume key
+                  '/app/appsettings.json': 
+                    subPath: 'appsettings.json'
+                  '/app/appsettings.Azure.json':
+                    subPath: 'appsettings.json' 
+                  '/app/entrypoint.sh':
+                    subPath: 'entrypoint.sh'
+    
+    # Configure <product> ingress
+    ingresses:
+      <product>:
+        enabled: false
+        ingressClass: "nginx-<product>"
+        hosts:
+          <product>:
+            dnsAddress:
+            paths:
+              main:
+                path: '/'
+                serviceName: <product> # point to key in services
+                servicePort: 5000
+
+    # Configure Configmaps
+    configmaps:
+      settings:
+        data:
+          # Entrypoint script to update any mounted certificates
+          entrypoint.sh: |- 
+            #!/bin/bash
+
+            set -euo pipefail
+            
+            echo "Updating certificates ..."
+            update-ca-certificates
+            echo "Updating certificates done."
+            echo ""
+            echo "Starting <product> ..."          
+            dotnet /app/<product>.dll
+        files:
+          # Include appsettings file from rendered files folder
+          "appsettings.json": "files/appsettings.json"
+        
+    jobs:
+      # Installation job
+      installation:
+        enabled: true
+        config:        
+          endpoints: 
+            # If the product runs in Vidispine standalone it is possible
+            # to add Vidispine configuration here via API calls.
+            # If however Platform and ConfigPortal is available, data should
+            # be inserted vie ConfigPortal into Vidispine where possible.
+            10_vidispine:
+              subresources:
+                10_metadatafields:               
+                  entities: 
+                    V3_<product>_Text:
+                      config:                      
+                        name: V3_<product>_Text
+                        type: string
+                        index: index
+                    V3_<product>_Bool:
+                      config:
+                        name: V3_<product>_Bool
+                        type: bool
+                        index: index
+            # Register product in AuthenticationService
+            20_authenticationService:
+              subresources:
+                10_resources:                
+                  entities:
+                    <product>:
+                      remove: true
+                      config:
+                        name: <product>
+                    <product>scope:
+                      register: true
+                      config:
+                        scopes:
+                        - displayName: 'Access to <product> API'
+                          name: <product>scope
+                          showInDiscoveryDocument: true
+                        enabled: true
+                        name: <product>scope
+                        displayName: 'Access to <product> API'
+                    &ConfigPortalScope configportalscope: {}
+                    &PlatformWorkflowScope api1: {}
+                    &MediaPortalScope mediaportalscope: {}
+                    &IdentityScope identityscope: {}
+                20_clients:                
+                  _HULL_OBJECT_TYPE_DEFAULT_:
+                    config:
+                      requireClientSecret: false
+                      requireConsent: false
+                      allowRememberConsent: true
+                      allowAccessTokensViaBrowser: true
+                      allowOfflineAccess: true
+                      alwaysIncludeUserClaimsInIdToken: false
+                      identityTokenLifetime: 3600
+                      accessTokenLifetime: 10800
+                      authorizationCodeLifetime: 30800
+                      absoluteRefreshTokenLifetime: 2592000
+                      slidingRefreshTokenLifetime: 86400
+                      refreshTokenUsage: 1
+                      updateAccessTokenClaimsOnRefresh: true
+                      refreshTokenExpiration: 1
+                      accessTokenType: 0
+                      includeJwtId: false
+                      alwaysSendClientClaims: true   
+                      clientClaimsPrefix: ''    
+                  entities:
+                    &InstallerClientId installerclient:
+                      register: false
+                      remove: false
+                      config:
+                        clientId: *InstallerClientId
+                        clientSecret: &InstallerClientSecret 575810cd-cc43-4deb-8a6c-478e71d51427   
+                    <product>:
+                      config:
+                        clientName: '<product> Client'
+                        clientId: <product>frontend
+                        clientSecrets:
+                        - description: 'Client for <product> GUI'
+                          value: "90731259-08A6-4b0d-8F5F-7FC848C77602"
+                        alwaysIncludeUserClaimsInIdToken: true
+                        allowedGrantTypes:
+                        - 'implicit'       
+                        allowedScopes: 
+                        - 'openid'
+                        - 'identityscope'
+                        - 'profile'
+                        - *MediaEditorScope
+                        - *PlatformWorkflowScope
+                        - *ConfigPortalScope
+                        - *MediaPortalScope  
+                        claims:
+                        - value: 'MP_API_CONSUMER'
+                          type: role
+                        - value: 'CP_API_CONSUMER'
+                          type: role
+                        - value: 'CP_API_CONSUMER'
+                          type: client_role
+                        - value: 'admin'
+                          type: mediaportal_user
+                        allowedCorsOrigins:
+                          _HULL_TRANSFORMATION_:
+                            _NAME_: hull.transformation.producturis
+                            APPENDS: 
+                            - ""                  
+                        redirectUris:
+                          _HULL_TRANSFORMATION_:
+                            _NAME_: hull.transformation.producturis
+                            APPENDS: 
+                            - "/"
+                            - "/assets/silent-refresh.html"
+                        postLogoutRedirectUris:
+                          _HULL_TRANSFORMATION_:
+                            _NAME_: hull.transformation.producturis
+                            APPENDS: 
+                            - "/"                  
+            30_configPortal:            
+              subresources:
+                10_product:               
+                  entities:
+                    product:
+                      identifier: 62e052b1-6864-4502-87dc-944be4f5d783
+                      config: 
+                        Guid: 62e052b1-6864-4502-87dc-944be4f5d783
+                        Name: <product>
+                        Link: "<product>"
+                        OrderNo: 5
+                        Icon: 
+                          _HULL_TRANSFORMATION_:
+                            _NAME_: hull.transformation.producticon
+                            ICON_FILE: "files/<product>.icon"
+                20_usecasedefinitions:                
+                  entities:
+                    general:
+                      identifier: 8398a4a6-c442-481b-97df-660ac217cacf
+                      config: 
+                        Name: General
+                        Guid: 8398a4a6-c442-481b-97df-660ac217cacf                      
+                        UseCaseGroupName: General
+                        UseCaseGroupOrderNo: 1
+                        OrderNo: 1
+                        ProductGuid:
+                        - 62e052b1-6864-4502-87dc-944be4f5d783
+                        Json: | 
+                          {"Overview":{"AllowToggleView":false,"View":"detailed","Columns":[]},"Fields":[{"Name":"proxyShapeTag","DisplayName":"Proxy Shape Tag","ControlDescription":"This is used for searching and importing videos","Type":"TagInput_FileType"},{"Name":"blackItemId","DisplayName":"Item ID for Black Screen","ControlDescription":"This is the Vidispine Item ID that is used for showing the black screen in the video player","Type":"String_Basic"},{"Name":"streamingServerUrl","DisplayName":"Streaming Server URL","Type":"CustomInput_SystemEndpoint","ControlDescription":"This the URL needed to playback videos","SystemEndpoint_Type":"ME_STREAMING_SERVER_API","IsRequired":true,"Input":[{"Name":"Name","DisplayName":"Name","Type":"String_Name","IsRequired":true,"DefaultValue":"Streaming Server URL","Placeholder":"Enter Name","TooltipMessage":"Enter Name of the Streaming Server URL"},{"Name":"Label","DisplayName":"Label","Type":"String_Label","IsRequired":true,"DefaultValue":"Streaming Server URL","Placeholder":"Enter Label","TooltipMessage":"Enter Label of the Streaming Server URL"},{"Name":"Url","DisplayName":"Endpoint URL","Type":"String_Url","IsRequired":true,"DefaultValue":"","Placeholder":"Please enter Streaming Server DASH URL e.g.: http://localhost/dash","TooltipMessage":"Enter Endpoint URL of the Streaming Server URL","Pattern":"https?://.+"},{"Name":"IsActive","DisplayName":"Status","Type":"Toggle_Status"}]},{"Name":"showMpCollection","DisplayName":"Show MediaPortal Collection","Type":"Toggle_Basic"},{"Name":"mediaPortalServiceUrl","DisplayName":"MediaPortal Api","Type":"CustomInput_SystemEndpoint","SystemEndpoint_Type":"ME_MEDIA_PORTAL_API","ControlDescription":"This the URL needed if we show Media Portal Collection ","ParentControlName":"showMpCollection","IsRequired":true,"Input":[{"Name":"Name","DisplayName":"Name","Type":"String_Name","IsEnvironmentDependent":false,"IsRequired":true,"DefaultValue":"MediaPortal API","Placeholder":"Enter Name","TooltipMessage":"Enter Name of the MediaPortal API"},{"Name":"Label","DisplayName":"Label","Type":"String_Label","IsEnvironmentDependent":false,"IsRequired":true,"DefaultValue":"MediaPortal API","Placeholder":"Enter Label","TooltipMessage":"Enter Label of the MediaPortal API"},{"Name":"Url","DisplayName":"Endpoint URL","Type":"String_Url","IsEnvironmentDependent":true,"IsRequired":true,"DefaultValue":"","Placeholder":"Please enter Webservice Endpoint e.g.: http://localhost:8676/api/api/v3","TooltipMessage":"Enter Endpoint URL of the MediaPortal API","Pattern":"https?://.+"},{"Name":"IsActive","DisplayName":"Status","Type":"Toggle_Status","IsEnvironmentDependent":true}]}],"Actions":[{"IsEnabled":true,"Name":"Edit","OrderNo":1,"TooltipMessage":"Edit this General Configuration","Type":"edit"}],"AllowMultipleConfig":false}
+                        UseCaseType: dynamic
+                    publish:
+                      identifier: c9689fe0-a0e9-40d7-af82-500bba342b62
+                      config: 
+                        Name: Publish
+                        Guid: c9689fe0-a0e9-40d7-af82-500bba342b62                      
+                        UseCaseGroupName: Publish
+                        UseCaseGroupOrderNo: 2
+                        OrderNo: 1
+                        ProductGuid:
+                        - 62e052b1-6864-4502-87dc-944be4f5d783
+                        Json: | 
+                          {"Overview":{"AllowToggleView":false,"View":"detailed","Columns":[]},"Fields":[{"Name":"targetStorage","DisplayName":"Target Storage","Type":"VS_Storage","IsRequired":true,"InputProperties":{"Storage":"Storage"}},{"Name":"userSelectableWF","DisplayName":"User-Selectable Workflows","Type":"Multiple_Workflow","IsRequired":true},{"Name":"userSelectableMetadata","DisplayName":"User-Selectable Metadata","Type":"CustomInput_MaskedControl"},{"Name":"supportedPublishShapes","DisplayName":"Shape for Publish","Type":"TagInput_FileType"}],"Actions":[{"IsEnabled":true,"Name":"Edit","OrderNo":1,"TooltipMessage":"Edit this Publish Configuration","Type":"edit"},{"IsEnabled":true,"Name":"Workflow Designer","OrderNo":3,"TooltipMessage":"Open Workflow Designer","Type":"openWorkflow","SystemEndpointName":"workflow designer"}],"AllowMultipleConfig":false}
+                        UseCaseType: dynamic
+                    project:
+                      identifier: 859c5e47-84c7-45c8-89ea-4f577bdd821b
+                      config: 
+                        Name: Project
+                        Guid: 859c5e47-84c7-45c8-89ea-4f577bdd821b                      
+                        UseCaseGroupName: Project
+                        UseCaseGroupOrderNo: 3
+                        OrderNo: 1
+                        ProductGuid:
+                        - 62e052b1-6864-4502-87dc-944be4f5d783
+                        Json: | 
+                          {"Overview":{"AllowToggleView":false,"View":"detailed","Columns":[]},"Fields":[{"Name":"userSelectableMetadata","DisplayName":"User-selectable Metadata","Type":"CustomInput_MaskedControl"},{"Name":"deletionLock","DisplayName":"Deletion Lock","Type":"RadioButton_Extended","IsRequired":true,"Options":[{"Value":"INF","Display":"Infinite"},{"Value":"CUS","Display":"Custom","IsCustomized":true,"Fields":[{"Name":"defaultDeletionLockPeriod","DisplayName":"Period(Hours)","IsRequired":true,"Type":"Number_Basic","Minimum":0,"DefaultValue":0}]}]}],"Actions":[{"IsEnabled":true,"Name":"Edit","OrderNo":1,"TooltipMessage":"Edit this item","Type":"edit"}],"AllowMultipleConfig":false}
+                        UseCaseType: dynamic
+                  
+
+
+
+
+
+
+
+

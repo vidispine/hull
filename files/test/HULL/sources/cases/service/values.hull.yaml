@@ -1,0 +1,38 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+  
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # CONFIGMAPS
+    service:
+
+      loadbalancer:
+        type: LoadBalancer
+        loadBalancerIP: 10.10.10.10
+        ports:
+          http:
+            port: 10
+            targetPort: 1010
+
+      nodeport:
+        type: NodePort
+        ports:
+          http:
+            port: 20
+            targetPort: 2020
+            nodePort: 202020
+      
+      no_selector:
+        type: ClusterIP
+        
+      selector:
+        type: ClusterIP
+        selector:
+          app.kubernetes.io/component: some_other_component
