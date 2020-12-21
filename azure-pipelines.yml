@@ -71,7 +71,7 @@ steps:
       tar -xvzf chart-releaser_1.1.1_linux_amd64.tar.gz -C ./
       ls
       sudo chmod +x ./cr
-      ./cr package ./hull --package-path /package
+      sudo ./cr package ./hull --package-path /package
       #sudo docker pull quay.io/helmpk/chart-releaser:v1.1.1
       #sudo docker run -v /hull:/hull -v $(Agent.TempDirectory):/tmp --entrypoint cr quay.io/helmpk/chart-releaser:v1.1.1 package /hull/hull --package-path /hull
   #condition: eq(variables['create_subchart'],true)
