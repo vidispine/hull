@@ -1,0 +1,15 @@
+apiVersion: v2
+name: hull
+version: 1.18.1
+kubeVersion: ">= 1.18.0"
+description: HULL - Helm UtiLity Library
+type: library
+keywords:
+- hull
+- utility
+home: https://github.com/vidispine/hull
+dependencies: []
+maintainers:
+- name: georg weber
+  email: georgmartin.weber@s4m.com
+appVersion: 1.18.1
