@@ -25,7 +25,7 @@ steps:
       echo deb https://dl.bintray.com/gauge/gauge-deb stable main | sudo tee -a /etc/apt/sources.list
       sudo apt-get update
       sudo apt-get install gauge
-      cd hull/files/test/HULL
+      cd files/test/HULL
       sudo pip install -r requirements.txt
 
   displayName: 'install gauge'
@@ -45,7 +45,7 @@ steps:
           set -euo pipefail
           echo starting gauge test
           ls
-          cd hull/files/test/HULL
+          cd files/test/HULL
           ls
           gauge run -p -l debug specs
     displayName: 'gauge test'
