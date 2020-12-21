@@ -67,7 +67,7 @@ steps:
       echo package chart
       cd $(Agent.TempDirectory)
       wget https://github.com/helm/chart-releaser/releases/download/v1.1.1/chart-releaser_1.1.1_linux_amd64.tar.gz
-      tar -xvzf $file -C ./
+      tar -xvzf chart-releaser_1.1.1_linux_amd64.tar.gz -C ./
       sudo chmod +x ./cr
       ./cr package /hull/hull --package-path /hull
       #sudo docker pull quay.io/helmpk/chart-releaser:v1.1.1
