@@ -3,17 +3,49 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+parameters:
+- name: HelmVersions
+  type: object
+  default:
+  - version: "3.0.0"
+  - version: "3.2.4"
+  - version: "3.4.2"
+
 trigger:
 - main
+- master
 
 pool:
-  vmImage: 'ubuntu-latest'
+    vmImage: 'ubuntu-20.04'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+      echo installing gauge
+      sudo apt-key adv --keyserver hkp://pool.sks-keyservers.net --recv-keys 023EDB0B
+      echo deb https://dl.bintray.com/gauge/gauge-deb stable main | sudo tee -a /etc/apt/sources.list
+      sudo apt-get update
+      sudo apt-get install gauge
+      cd hull/files/test/HULL
+      sudo pip install -r requirements.txt
+
+  displayName: 'install gauge'
+
+- ${{ each version in parameters.HelmVersions }}: # Each Helm Version
+  
+  - script: |
+        set -euo pipefail
+        echo installing helm
+        wget https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+        sudo chmod +x ./get-helm-3
+        sudo ./get-helm-3 --version v${{ version.version }}
+        helm version
+    displayName: 'install helm'
+
+  - script: |
+          set -euo pipefail
+          echo starting gauge test
+          ls
+          cd hull/files/test/HULL
+          ls
+          gauge run -p -l debug specs
+    displayName: 'gauge test'
