@@ -65,6 +65,6 @@ steps:
 - script: |
       set -euo pipefail
       echo package chart
-      docker pull quay.io/helmpk/chart-releaser:v1.1.1
-      docker run -v /hull:/hull --entrypoint "cr" quay.io/helmpk/chart-releaser:v1.1.1 package /hull/hull --package-path /hull    
+      sudo docker pull quay.io/helmpk/chart-releaser:v1.1.1
+      sudo docker run -v /hull:/hull -v $(Agent.TempDirectory):/tmp --entrypoint cr quay.io/helmpk/chart-releaser:v1.1.1 package /hull/hull --package-path /hull
   #condition: eq(variables['create_subchart'],true)
