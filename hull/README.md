@@ -1,28 +1,30 @@
 # HULL: Helm UtiLity Library
 
-This Helm library chart is designed to ease building, maintaining and configuring Helm charts. When integrated as a sub chart into a Helm chart,  object creation can optionally be done by defining objects in the `values.yaml` file (and all additional files merged with it) under the `hull` subchart key. 
+This Helm library chart is designed to ease building, maintaining and configuring Helm charts. When integrated as a sub chart into your Helm chart, specifying your deployments can be done by defining the wanted resources in the `values.yaml` file(s) under the `hull` subchart key. No template files in the `/templates` folder need to be created, adapted and maintained to define regular K8s objects when using the HULL library. 
 
-No template files in the `/templates` folder need to be created, adapted and maintained to define regular K8s objects when using HULL. Everything is rendered via the HULL library and the Go templating functions therein, producing JSON schema validated Kubernetes (K8S) objects for deployment.
+When objects are defined in the `values.yaml` all Kubernetes YAML is rendered via the HULL library and the Go templating functions therein. JSON schema validation with the `values.schema.json` aids producing K8S conforming objects for deployment.
 
 The HULL chart is inspired by the 'common' Helm chart concept:
 
 https://github.com/helm/charts/tree/master/incubator/common
 
+and uses [![Gauge Badge](https://gauge.org/Gauge_Badge.svg)](https://gauge.org) for testing.
+
 ## Feature Overview
 
-As highlighted, when included in a Helm chart the HULL library chart can take over the job of dynamically rendering K8S objects from their given specifications from the `values.yaml` file alone. With YAML object construction deferred to the HULL library instead of templates in the `/templates` folder you can centrally enforce best practices:
+As highlighted above, when included in a Helm chart the HULL library chart can take over the job of dynamically rendering K8S objects from their given specifications from the `values.yaml` file alone. With YAML object construction deferred to the HULL library functions instead of custom YAML templates in the `/templates` folder you can centrally enforce best practices:
 
-- Concentrate on what is needed to specify objects without having to write boilerplate YAML templates. The single interface of the HULL library can be used to both create and configure charts for deployment. To avoid misusage the library interface is JSON validated on input and rendering using the Helm integrated JSON Schema validation.
-- Objects by default get a unique name assigned based on the chart name, the release name and the objects component name.
+- Concentrate on what is needed to specify objects without having to write boilerplate YAML templates. The single interface of the HULL library can be used to both create and configure objects in charts for deployment. To avoid misconfigurations, the library interface is JSON validated on input (e.g. when using VSCode) and rendering using the Helm integrated JSON Schema validation. Furthermore extensive unit tests create K8S objects which are validated against the Kubernetes API JSON schema.
+- All objects by default get a unique Kubernetes `metadata.name` assigned based on the chart name, the release name and the objects component name.
 - Uniform and rich metadata is automatically attached to all objects created by the HULL library. 
   - Kubernetes standard labels as defined in https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/ are added to all objects metadata automatically. 
   - Within a Helm chart including HULL, further custom metadata can be set for 
     - all created K8S objects or 
     - all objects of a given K8S type or 
     - individual K8S objects. 
-- Kubernetes concepts are made available for configuration in all Helm charts at once when they integrate the HULL library. If new Kubernetes features come to life they are configurable in the HULL library and are immediately usable in all Helm charts without any additional work. Only updating the HULL chart to a newer version synced with the Kubernetes APIU versions is required. The HULL charts are versioned to reflect to the Kubernetes API versions supported. 
+- For all supported Kubernetes object types, all available Kubernetes properties are made available for configuration in Helm charts including the HULL library. Only updating the HULL chart to a newer Kubernetes API version is required to enable configuring new properties. The HULL charts are versioned to reflect the minimal Kubernetes API versions supported. 
 - Enable automatic hashing of referenced configmaps and secrets to facilitate pod restarts on changes of configuration
-- Flexible handling of ConfigMap and Secret input by choosing between inline specification of contents in `values.yaml` or import from external files for contents of larger sizes. When importing data from files the data can be either run through the templating engine or imported untemplated 'as is' if it already contains templating expressions.
+- Flexible handling of ConfigMap and Secret input by choosing between inline specification of contents in `values.yaml` or import from external files for contents of larger sizes. When importing data from files the data can be either run through the templating engine or imported untemplated 'as is' if it already contains templating expressions that shall be passed on to the consuming application.
 
 To learn more about the architecture of this library and it's features see ...
 
@@ -148,7 +150,7 @@ This is a deployment with standard metadata auto-created and a service account a
 
 The following highlights some additional features that come with using the HULL library.
 
-We can add custom metadata besides the standard metadata auto-created. The custom metadata labels and annotations can be applied to either all objects within this helm chart, all objects of a given type or just individual objevts. 
+We can add custom metadata besides the standard metadata auto-created. The custom metadata labels and annotations can be applied to either all objects within this helm chart, all objects of a given type or just individual objects. 
 
 The following `values.yaml` showcases all possibilities to set metadata:
 
@@ -264,6 +266,8 @@ In the context of Kubernetes and Helm there are basically two groups of people t
 
 ### The chart maintainers view
 
+When starting to work on Helm charts it very soon became apparent that some standard scenarios are not supported very well by Helm. Whilst there is much freedom given to the chart designers and maintainers in how to abstract the configuration, Helm offers no easy standard way to handle standard demands. 
+
 Helm chart maintainers typically create and maintain a varying number of helm charts. Let's first take a look at aspects of helm chart creation from a creators point of view. Getting started on building helm charts is challenging, especially for someone not experienced with the concepts of Kubernetes, Helm, YAML and Go Templating and all the relations between them which are needed to create sound helm charts. Furthermore, YAML and string templating don't go well together which is something rightfully critized, it can become very finicky to produce valid YAML output with templating expressions. Typically starting a new helm chart from scratch requires a significant amount of copying and pasting templates from existing charts and adapting them to the new products needs. This is a time consuming and error prone process. 
  
 Once charts have been created and published they need to be mainained. Maintaining a single halm chart can be reasonable done manually but let us assume it is required to maintain many helm charts, then the amount of (for the most part) duplicated YAML blocks in templates grows very fast. Assuming you need to fix a conceptional issue you likely need to do this in a variety of files each time which is tedious and time consuming.
@@ -345,7 +349,6 @@ At the top level of the YAML structure, HULL distinguishes between `config` and 
 | Parameter                       | Description                                                     | Default                      |                  Example |
 | ------------------------------- | ----------------------------------------------------------------| -----------------------------| -----------------------------------------|
 | `config` | Specification of configuration options. <br><br>Has only the following sub-fields: <br><br>`specific`<br>`general` | |
-| `config.specific` | Free form field that holds configuration options that are specific to the specific product contained in the helm chart. Typically the values specified here ought to be used to populate the contents of configuration files that a particular applications read their configuration from at startup. Hence the `config.specific` fields are typically being consumed in ConfigMaps or Secrets. | `{}` | `maxDatepickerRange:`&#160;`50`<br>`defaultPoolColor:`&#160;`"#FB6350"`<br>`updateInterval:`&#160;`60000`
 | `config.general` | In this section you might define everything that is not particular to a unique product but to a range of products you want to deploy via helm. See the subfields descriptions for their inteded usage. <br><br>Has only the following sub-fields: <br><br>`rbac`<br>`data`<br>`metadata` | |
 | `config.general.rbac` | Global switch which enables RBAC objects for installation. <br><br> If `true` the enabled objects are deployed to the cluster, if `false` no RBAC objects are created.<br><br> RBAC objects that are deployable are:<br>`serviceaccounts`<br>`roles`<br>`rolebindings`<br>`clusterroles`<br>`clusterrolebindings`  | `true` | `false` |
 | `config.general.data` | Free form field whereas subfields of this field should have a clearly defined meaning in the context of your product suite. <br><br>For example, assume all of your products or microservices (each coming as a seperate helm chart) depends on the same given endpoints (authentication, configuration, ...). You might have a shared Kubernetes job executed by each helm chart which targets those endpoints. Now you could specify an external HULL `values.yaml` containing the job specification and the endpoint definition here in a way you see fit and construct an overlay `values.yaml` rendered on top of each deployment and have a unified mechanism in place.  | `{}` |
@@ -363,6 +366,7 @@ At the top level of the YAML structure, HULL distinguishes between `config` and 
 | `config.general.metadata.annotations` | All specified annotations are automatically added to all objects of this helm chart. | `{}`| 
 | `config.general.metadata.nameOverride` | The name override is applied to values of metadata label `app.kubernetes.io/name`. If set this effectively replaces the chart name here.
 | `config.general.metadata.fullnameOverride` | If set, the fullname override is applied to all object names and replaces the `<release>-<chart>` pattern in object names.
+| `config.specific` | Free form field that holds configuration options that are specific to the specific product contained in the helm chart. Typically the values specified here ought to be used to populate the contents of configuration files that a particular applications read their configuration from at startup. Hence the `config.specific` fields are typically being consumed in ConfigMaps or Secrets. | `{}` | `maxDatepickerRange:`&#160;`50`<br>`defaultPoolColor:`&#160;`"#FB6350"`<br>`updateInterval:`&#160;`60000`
 
 ## _The `objects` section_
 
@@ -384,15 +388,15 @@ Some general remarks about the concepts behind rendering objects via the HULL li
 - the K8s objects that can be created via HULL aim at supporting the full configuration options that the Kubernetes API provides for each object. In the description of each HULL wrapped object it is noted down which Kubernetes properties are not supported for configuration via HULL. The top level configuration properties are slightly adapted from the K8S API version to shorten the effort to create metadata.
 - some lower level structures are also converted from the Kubernetes API array form to a dictionary form. This also enables more sophisticated merging of layers since arrays don't merge well, they only can be overwritten completely. Overwriting arrays however can make it hard to forget about elements that are contained in the default form of the array (you would need to know that they exist in the first place). In short, for a layered configuration approach without an endless amount of elements in arrays or dictionaries the dictionary is preferable for representing data since it offers a much better merging support.
 
-Below is the specification of the objects you can create via the HULL library:
+Below is the specification of the objects you can create via the HULL library under the top level `hull` key:
 
 | Parameter                       | Description                                                     | Default                      |                  Example |
 | ------------------------------- | ----------------------------------------------------------------| -----------------------------| -----------------------------------------|
 |
-| `objects` | Objects which are to be created within your helm chart are specified here. <br><br>Has only the following subfields: <br><br>`configmap`<br>`secret`<br>`registry`<br>`deployment`<br>`job`<br>`daemonset`<br>`statefulset`<br>`service`<br>`ingress`<br>`customresource`<br>`serviecaccount`|
-| `objects.configmap`<br>`objects.secret` | Configurationwise ConfigMaps and Secrets are configured identically. The difference between ConfigMaps and Secrets is that the contents of Secrets are somewhat encrypted whereas ConfigMap contents are visible to everyone. Secrets are decrypted when mounted so for usage there exists no difference in terms of specifying them with HULL. To work with Configmaps or Secrets you can either specify the contents inline in values.yaml or source them via an external file reference.<br><br> Dictionary with Key-Value pairs.<br><br>Key: <br>Unique `<hullConfigMapNameKey>` or `<hullSecretNameKey>` or `_HULL_OBJECT_TYPE_DEFAULT_` to provide defaults that should be applied to all ConfigMaps.<br><br>Value:<br>ConfigMap or Secret specification in the form of a `<hull.v1.VirtualFolder>`. See below for reference. | `{}`|
+| `objects` | Objects which are to be created within your helm chart are specified here. <br><br>Has only the following sub-fields: <br><br>`configmap`<br>`secret`<br>`registry`<br>`deployment`<br>`job`<br>`daemonset`<br>`statefulset`<br>`cronjob`<br>`serviceaccount`<br>`role`<br>`rolebinding`<br>`clusterrole`<br>`clusterrolebinding`<br>`storageclass`<br>`persistentvolume`<br>`persistentvolumeclaim`<br>`service`<br>`ingress`<br>`customresource`<br>`servicemonitor`|
+| `objects.configmap`<br>`objects.secret` | Configurationwise ConfigMaps and Secrets are configured identically. The difference between ConfigMaps and Secrets is that the contents of Secrets are encoded whereas ConfigMap contents are not. Secrets are decrypted when mounted so for usage there exists no difference in terms of specifying them within HULL. To work with a `configmap` or `secret` you can either specify the contents inline in `values.yaml` or source them via an external file reference.<br><br> Dictionary with Key-Value pairs.<br><br>Key: <br>Unique `<hullConfigMapNameKey>` or `<hullSecretNameKey>` or `_HULL_OBJECT_TYPE_DEFAULT_` to provide defaults that should be applied to all ConfigMaps or Secrets respectively.<br><br>Value:<br>ConfigMap or Secret specification in the form of a `<hull.v1.VirtualFolder>`. See below for reference. | `{}`|
 | `objects.registry` | Configuration of Docker Registry Secrets. <br><br> Dictionary with Key-Value pairs.<br><br>Key: <br>Unique `<hullRegistryNameKey>` or `_HULL_OBJECT_TYPE_DEFAULT_` to provide defaults that should be applied to all Registry Secrets<br><br>Value:<br>Registry specification in the form of a `<hull.v1.Registry>`. See below for reference. | `{}`
-| `objects.deployment`  | Configuration of Deployments. <br><br> Dictionary with Key-Value pairs.<br><br>Key: <br>Unique `<hullDeploymentNameKey>` or `_HULL_OBJECT_TYPE_DEFAULT_` to provide defaults that should be applied to all Deployments<br><br>Value:<br>Deployment specificationin the form of a `<hullDeploymentSpec>`. See below for reference. | `{}`
+| `objects.deployment`  | Configuration of Deployments. <br><br> Dictionary with Key-Value pairs.<br><br>Key: <br>Unique `<hullDeploymentNameKey>` or `_HULL_OBJECT_TYPE_DEFAULT_` to provide defaults that should be applied to all Deployments<br><br>Value:<br>Deployment specification in the form of a `<hullDeploymentSpec>`. See below for reference. | `{}`
 | `objects.job` | Configuration of Jobs. <br><br> Dictionary with Key-Value pairs.<br><br>Key: <br>Unique `<hullJobNameKey>` or `_HULL_OBJECT_TYPE_DEFAULT_` to provide defaults that should be applied to all Jobs<br><br>Value:<br>Job specificationin in the form of a `<hullJobSpec>`. See below for reference.  | `{}`
 | `objects.cronjob` | Configuration of CronJobs. <br><br> Dictionary with Key-Value pairs.<br><br>Key: <br>Unique `<hullCronJobNameKey>` or `_HULL_OBJECT_TYPE_DEFAULT_` to provide defaults that should be applied to all CronJobs<br><br>Value:<br>CronJob specificationin in the form of a `<hullCronJobSpec>`. See below for reference. | `{}`
 | `objects.service` | Configuration of Services. <br><br> Dictionary with Key-Value pairs.<br><br>Key: <br>Unique `<hullServiceNameKey>` or `_HULL_OBJECT_TYPE_DEFAULT_` to provide defaults that should be applied to all Services<br><br>Value:<br>Service specification in the form of a `<hull.v1.Service>`. See below for reference. | `{}`
