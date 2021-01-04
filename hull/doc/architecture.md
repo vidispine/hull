@@ -55,11 +55,17 @@ Additionally, depending on the requirements and preferences of the chart maintai
 
 ### Conclusion
 
-There are various groups of people that work with Helm. There might be a group of people concerned with maintaining and installing a specific chart to the best of their effort. But there are also people who maintain and consume a larger number of charts which likely are overwhelmed by the various design approaches to creating Helm charts. Out of necessity, this group of people needs to get involved deeply in the design of individual helm charts to be able to understand how to configure them. By that point you are also likely familiar with the Kubernetes API and YAML structures and feel closer to using this than dissecting the many individual abstractions introduced by Helm charts. That is why HULL allows you to write regular Kubernetes YAMLs for the most part and supports shortcuts where applicable to the frequent usecases by the light abstraction layer it introduces.
+There are various groups of people that work with Helm. There might be a group of people concerned with maintaining and installing a specific chart to the best of their effort. In this case the regular Helm workflow might be suited well.
+
+But there are also people who maintain and consume a larger number of charts which likely are overwhelmed by the various individual design approaches to creating Helm charts. For newcomers to this group, using the HULL library omits the quite tedious YAML template creation and placeholder logic by offering a simple interface to specifying objects directly.
+
+But out of necessity, this initially group of people new to Kubernetes needs to get involved deeper in the design of individual helm charts to be able to understand how to configure them when following the regular Helm workflow. By that point you are also likely familiar with the Kubernetes API objects and YAML structures and feel closer to using this directly than rebuilding every API object property via the abstractions introduced by Helm charts. 
+
+That is why HULL allows you out-of-the-box to specify complete Kubernetes objects and supports where possible to foster frequent usecases by a light abstraction layer.
 
 ## Components
 
-At the core of the HULL library is the interplay between `values.yaml`, `values.schema.json`, `hull_init.yaml` and the `/templates` that come with HULL.
+At the core of the HULL library is the interplay between `values.yaml`, `values.schema.json`, `hull_init.yaml` and the template files in `/templates` that come with HULL.
 
 ### The `values.yaml`
 
@@ -80,3 +86,6 @@ The `hull_init.yaml` needs to be placed in the parents charts `/templates` folde
 ### The `/templates`
 
 The templates folder in HULL contains only functions as it is mandatory for Helm library charts. 
+
+---
+Back to [README.md](./../README.md)

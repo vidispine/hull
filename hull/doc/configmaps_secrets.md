@@ -66,3 +66,6 @@ data:
     name: "i am file_2.yaml"
     templating: "{{ .Values.hull.config.general.metadata.labels.custom.label_1 }}"
 ```
+
+---
+Back to [README.md](./../README.md)
