@@ -1,38 +1,46 @@
 # HULL: Helm UtiLity Library
 
-This Helm library chart is designed to ease building, maintaining and configuring Helm charts. When integrated as a sub chart into your Helm chart, specifying your deployments can be done by defining the wanted resources in the `values.yaml` file(s) under the `hull` subchart key. No template files in the `/templates` folder need to be created, adapted and maintained to define regular K8s objects when using the HULL library. 
+## Introduction
 
-When objects are defined in the `values.yaml` all Kubernetes YAML is rendered via the HULL library and the Go templating functions therein. JSON schema validation with the `values.schema.json` aids producing K8S conforming objects for deployment.
+This Helm library chart is designed to ease building, maintaining and configuring [Helm](https://helm.sh) charts. It can be added to any existing Helm chart and used without the risk of breaking existing Helm charts functionalities, see [adding HULL to a Helm chart](./doc/setup.md) for more information.
 
-The HULL chart is inspired by the 'common' Helm chart concept:
+At the core, the HULL library chart provides Go Templating functions to create/render Kubernetes objects as YAML. But with the HULL library's functions no template files in the `/templates` folder need to be created, adapted and maintained to define the Kubernetes objects. Only an object definition in the `values.yaml`'s `hull` subchart key is required. JSON schema validation with the `values.schema.json` helps in directly producing Kubernetes API conforming objects for deployment.
 
-https://github.com/helm/charts/tree/master/incubator/common
+The HULL library chart idea is partly inspired by the [common](
+https://github.com/helm/charts/tree/master/incubator/common) Helm chart concept and for testing 
 
-and uses [![Gauge Badge](https://gauge.org/Gauge_Badge.svg)](https://gauge.org) for testing.
+[![Gauge Badge](https://gauge.org/Gauge_Badge.svg)](https://gauge.org) .
 
 ## Feature Overview
 
-As highlighted above, when included in a Helm chart the HULL library chart can take over the job of dynamically rendering K8S objects from their given specifications from the `values.yaml` file alone. With YAML object construction deferred to the HULL library functions instead of custom YAML templates in the `/templates` folder you can centrally enforce best practices:
+As highlighted above, when included in a Helm chart the HULL library chart can take over the job of dynamically rendering Kubernetes objects from their given specifications from the `values.yaml` file alone. With YAML object construction deferred to the HULL library's Go Templating functions instead of custom YAML templates in the `/templates` folder you can centrally enforce best practices:
 
-- Concentrate on what is needed to specify objects without having to write boilerplate YAML templates. The single interface of the HULL library can be used to both create and configure objects in charts for deployment. To avoid misconfigurations, the library interface is JSON validated on input (e.g. when using VSCode) and rendering using the Helm integrated JSON Schema validation. Furthermore extensive unit tests create K8S objects which are validated against the Kubernetes API JSON schema.
-- All objects by default get a unique Kubernetes `metadata.name` assigned based on the chart name, the release name and the objects component name.
+- Concentrate on what is needed to specify Kubernetes objects without having to add indidual YAML templates to your chart. This removes a common source of errors and maintanance from the regular Helm workflow. That the rendered output conforms to the Kubernetes API specification is validated by a large amount of CI unit tests. For more details refer to the documentation on [JSON Schema Validation](./doc/json_schema_validation.md).
+
+- The single interface of the HULL library is used to both create and configure objects in charts for deployment. This fosters the mutual understanding of chart creators/maintainers and consumers of how the chart actually works and what it contains. To avoid any misconfiguration, the interface to the library being part of the `values.yaml` is JSON validated on input when using a IDE supporting this (e.g. VSCode) and also on rendering using the Helm integrated JSON Schema validation. For more details refer to the documentation on [JSON Schema Validation](./doc/json_schema_validation.md).
+
 - Uniform and rich metadata is automatically attached to all objects created by the HULL library. 
   - Kubernetes standard labels as defined in https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/ are added to all objects metadata automatically. 
   - Within a Helm chart including HULL, further custom metadata can be set for 
     - all created K8S objects or 
     - all objects of a given K8S type or 
     - individual K8S objects. 
-- For all supported Kubernetes object types, all available Kubernetes properties are made available for configuration in Helm charts including the HULL library. Only updating the HULL chart to a newer Kubernetes API version is required to enable configuring new properties. The HULL charts are versioned to reflect the minimal Kubernetes API versions supported. 
-- Enable automatic hashing of referenced configmaps and secrets to facilitate pod restarts on changes of configuration
-- Flexible handling of ConfigMap and Secret input by choosing between inline specification of contents in `values.yaml` or import from external files for contents of larger sizes. When importing data from files the data can be either run through the templating engine or imported untemplated 'as is' if it already contains templating expressions that shall be passed on to the consuming application.
 
-To learn more about the architecture of this library and it's features see ...
+  For more details refer to the documentation on [Metadata](./doc/metadata.md).
 
-_IMPORTANT_: 
+- For all Kubernetes object types supported by HULL, all Kubernetes object properties are made available for configuration via the Helm charts `values.yaml`. Only updating the HULL chart to a newer Kubernetes API version is required to enable configuration of newer properties added to Kubernetes objects. This way continually patching existing Helm charts to support configuration of additional Kubernetes features is not required. The HULL charts are versioned to reflect the minimal Kubernetes API versions supported. 
+
+- Enable automatic hashing of referenced configmaps and secrets to facilitate pod restarts on changes of configuration (work in progress)
+
+- Flexible handling of ConfigMap and Secret input by choosing between inline specification of contents in `values.yaml` or import from external files for contents of larger sizes. When importing data from files the data can be either run through the templating engine or imported untemplated 'as is' if it already contains templating expressions that shall be passed on to the consuming application. For more details refer to the documentation on [ConfigMaps and Secrets](./doc/configmaps_secrets.md).
+
+To learn more about the general architecture of the HULL library a see the [Architecture Overview](./doc/architecture.md)
+
+**_IMPORTANT_**: 
 
 While there may be several benefits to rendering YAML via the HULL library please take note that it is a non-breaking addition to your Helm charts. The regular Helm workflow involving rendering of YAML templates in the `/templates` folder is completely unaffected by integration of the HULL library chart. Sometimes you might have very specific requirements on your configuration or object specification which the HULL library does not meet so you can use the regular Helm worflow for them and the HULL library for your more standard needs - easily in parallel in the same Helm chart. 
 
-## Introduction
+## A short example
 
 Take the nginx deployment example from the Kubernetes documentation https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment as a basis:
 
@@ -60,7 +68,7 @@ spec:
         - containerPort: 80
 ```
 
-To render this using the HULL library the following needs to be done:
+To render this analoguously using the HULL library the HULL library chart needs to be [setup for use](./doc/setup.md):
 
 - Create an "nginx" helm chart that should contain the nginx deployment. The templates folder can remain empty for now.
 - Inlude the HULL library chart as a subchart
@@ -73,15 +81,15 @@ hull:
   objects:
     deployment:
       nginx: # specify the nginx deployment under key 'nginx'
+        replicas: 3
         pod:
-          replicas: 3
           containers:
-            nginx:
+            image:
               repository: nginx
               tag: 1.14.2
 ```
 
-This produces the following rendered objects:
+This produces the following rendered objects when running the `helm template` command:
 
 ```yaml
 apiVersion: apps/v1
@@ -124,196 +132,9 @@ spec:
       initContainers: []
       serviceAccountName: release-name-hull-test-default
       volumes: []
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  annotations:
-    general_custom_annotation_1: General Custom Annotation 1
-    general_custom_annotation_2: General Custom Annotation 2
-    general_custom_annotation_3: General Custom Annotation 3
-  labels:
-    app.kubernetes.io/component: default
-    app.kubernetes.io/instance: RELEASE-NAME
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: hull-test
-    app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: "1"
-    general_custom_label_1: General Custom Label 1
-    general_custom_label_2: General Custom Label 2
-    general_custom_label_3: General Custom Label 3
-    helm.sh/chart: hull-test-1
-  name: release-name-hull-test-default
 ```
+This is a deployment with standard metadata auto-created and a service account associated with the deployment specified by only a few lines of YAML in the `values.yaml`.
 
-This is a deployment with standard metadata auto-created and a service account associated with the deployment.
-
-The following highlights some additional features that come with using the HULL library.
-
-We can add custom metadata besides the standard metadata auto-created. The custom metadata labels and annotations can be applied to either all objects within this helm chart, all objects of a given type or just individual objects. 
-
-The following `values.yaml` showcases all possibilities to set metadata:
-
-```yaml
-hull:
-  config:
-    general:       
-      metadata:
-        labels:         
-          custom: # Add some custom labels to all objects created in this chart
-            general_custom_label_1: General Custom Label 1
-            general_custom_label_2: General Custom Label 2
-            general_custom_label_3: General Custom Label 3
-        annotations: 
-          custom: # Add some custom annotations to all objects created in this chart
-            general_custom_annotation_1: General Custom Annotation 1
-            general_custom_annotation_2: General Custom Annotation 2
-            general_custom_annotation_3: General Custom Annotation 3    
-  objects:
-    deployment:
-      _HULL_OBJECT_TYPE_DEFAULT_: # this object key is used to set defaults per object type
-        annotations:
-          default_annotation_1:  Default Annotation 1
-          default_annotation_2:  Default Annotation 2
-          general_custom_annotation_3: Default Annotation 3 # overwrite the global default
-        labels:
-          default_label_1:  Default Label 1
-          default_label_2:  Default Label 2
-          general_custom_label_3: Default Label 3 # overwrites the global default
-      nginx: # specify the nginx deployment under key 'nginx'
-        pod:
-          replicas: 3
-          containers:
-            nginx:
-              repository: nginx
-              tag: 1.14.2
-```
-
-The outcome will be a K8S deployment object being deployed to the cluster that looks like this (the ServiceAccount is left out):
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  annotations:
-    default_annotation_1: Default Annotation 1
-    default_annotation_2: Default Annotation 2
-    general_custom_annotation_1: General Custom Annotation 1
-    general_custom_annotation_2: General Custom Annotation 2
-    general_custom_annotation_3: Default Annotation 3
-  labels:
-    app.kubernetes.io/component: nginx
-    app.kubernetes.io/instance: RELEASE-NAME
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: hull-test
-    app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: "1"
-    default_label_1: Default Label 1
-    default_label_2: Default Label 2
-    general_custom_label_1: General Custom Label 1
-    general_custom_label_2: General Custom Label 2
-    general_custom_label_3: Default Label 3
-    helm.sh/chart: hull-test-1
-  name: release-name-hull-test-nginx
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app.kubernetes.io/component: nginx
-      app.kubernetes.io/instance: RELEASE-NAME
-      app.kubernetes.io/name: hull-test
-  template:
-    metadata:
-      annotations:
-        default_annotation_1: Default Annotation 1
-        default_annotation_2: Default Annotation 2
-        general_custom_annotation_1: General Custom Annotation 1
-        general_custom_annotation_2: General Custom Annotation 2
-        general_custom_annotation_3: Default Annotation 3
-      labels:
-        app.kubernetes.io/component: nginx
-        app.kubernetes.io/instance: RELEASE-NAME
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: hull-test
-        app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: "1"
-        default_label_1: Default Label 1
-        default_label_2: Default Label 2
-        general_custom_label_1: General Custom Label 1
-        general_custom_label_2: General Custom Label 2
-        general_custom_label_3: Default Label 3
-        helm.sh/chart: hull-test-1
-    spec:
-      containers:
-      - env: []
-        envFrom: []
-        image: nginx:1.14.2
-        name: nginx
-        ports: []
-        volumeMounts: []
-      initContainers: []
-      serviceAccountName: release-name-hull-test-default
-      volumes: []
-```
-
-
-
-## Introduction & Motivation
-
-In the context of Kubernetes and Helm there are basically two groups of people that work with Helm charts:
-- the chart maintainers
-- the chart users
-
-### The chart maintainers view
-
-When starting to work on Helm charts it very soon became apparent that some standard scenarios are not supported very well by Helm. Whilst there is much freedom given to the chart designers and maintainers in how to abstract the configuration, Helm offers no easy standard way to handle standard demands. 
-
-Helm chart maintainers typically create and maintain a varying number of helm charts. Let's first take a look at aspects of helm chart creation from a creators point of view. Getting started on building helm charts is challenging, especially for someone not experienced with the concepts of Kubernetes, Helm, YAML and Go Templating and all the relations between them which are needed to create sound helm charts. Furthermore, YAML and string templating don't go well together which is something rightfully critized, it can become very finicky to produce valid YAML output with templating expressions. Typically starting a new helm chart from scratch requires a significant amount of copying and pasting templates from existing charts and adapting them to the new products needs. This is a time consuming and error prone process. 
- 
-Once charts have been created and published they need to be mainained. Maintaining a single halm chart can be reasonable done manually but let us assume it is required to maintain many helm charts, then the amount of (for the most part) duplicated YAML blocks in templates grows very fast. Assuming you need to fix a conceptional issue you likely need to do this in a variety of files each time which is tedious and time consuming.
-
-### The chart users view
-
-Initially chart users are faced with the same steep learning curve as the maintainers. They also need to be familiar with the underlying concepts to create a proper deployment configuration. This is worsened by the fact that each helm chart is basically a unique artifact with it's unique underlying implications of how it should be configured. Any more advanced user of Helm will be aware of the objects as they are represented by the Kubernetes API. But in order to specify the object with the properties they have in mind they need to understand the individual charts assumptions and the Helm machinery in the back. As an analogy, it is comparable to someone who wants to speak english (Kubernetes) being told he has to learn portugese (Helm) and all regional portugese dialects (actual Helm chart interfaces) to do so.
-
-The best practices guidelines that are available do cover some ground to align chart writing and understanding but still leave most design aspects to the maintainers. From personal experience you almost always need to inspect the files in the `/templates` folder to learn about the effects of changing configuration parameters in the `values.yaml`. 
-
-Additionally, depending on the requirements and preferences of the chart maintainer it is often the case that features required for a particular user are not implemented in the chart at all. To give an example of this, let's take a look at specifying `imagePullSecrets` for deployments within a helm chart:
-- It might not be possible to specify them with the given chart in case the chart maintainers did not opt for implementing them, maybe being focused on public cloud deployments only. In this case you need to submit a pull requrest, modify locally, fork or something else to fulfill your requirement.
-- The helm chart might have very different expectations on how they should be specified. Looking at some public helm charts available:
-  - The `cerebro` helm chart at `https://github.com/helm/charts/blob/master/stable/cerebro/templates/deployment.yaml` requires you to specify `imagePullSecrets` as an array/list of values (excluding the `name` keys) per image:
-  
-    ```yaml
-    {{- if .Values.image.pullSecrets }}
-    imagePullSecrets:
-    {{- range .Values.image.pullSecrets }}
-    - name: {{ . }}
-    {{- end }}
-    {{- end }}
-    ```
-  - The `sonarqube` helm chart at `https://github.com/helm/charts/blob/master/stable/cerebro/templates/deployment.yaml` requires you to specify `imagePullSecrets` as a string. This means you can only specify one:
-  
-    ```yaml
-    {{- if .Values.image.pullSecret }}
-    imagePullSecrets:
-    - name: {{ .Values.image.pullSecret }}
-    {{- end }}
-    ```
-
-  - The `prometheus` helm chart at `https://github.com/helm/charts/blob/master/stable/prometheus/templates/deployments/alertmanager.yaml` however wants `imagePullSecrets` provided as an array of key-value pairs with repeated `name` keys:
-  
-    ```yaml
-    {{- if .Values.imagePullSecrets }}
-    imagePullSecrets:
-    {{ toYaml .Values.imagePullSecrets | indent 2 }}
-    {{- end }}
-    ```
-
-## Further remarks
-
-There are various groups of people that work with Helm. There might be a group of people concerned with maintaining and installing a specific chart to the best of their effort. But there are also people who maintain and consume a larger number of charts which likely are overwhelmed by the various design approaches to creating Helm charts. Out of necessity, this group of people needs to get involved deeply in the design of individual helm charts to be able to understand how to configure them. By that point you are also likely familiar with the Kubernetes API and YAML structures and feel closer to using this than dissecting the many individual abstractions introduced by Helm charts. That is why HULL allows you to write regular Kubernetes YAMLs for the most part and only supports frequent usecases by the light abstraction layer it introduces.
-
-This is where the HULL library chart can step in. It allows Helm chart maintainers to create sound charts with reduced effort in a streamlined way. You can lay out all the objects needed for your chart in a concise manner and allow more experienced users to change the default setup to their needs.
 
 ## Testing and installing a chart
 
