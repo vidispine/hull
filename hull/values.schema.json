@@ -6468,8 +6468,7 @@
       "additionalProperties": false
     },
     "io.k8s.api.core.v1.EnvVar.Names": {
-      "enum": [
-        "name",
+      "enum": [       
         "value",
         "valueFrom"
       ]
@@ -19611,14 +19610,14 @@
       },
       "required": []
     },
-    "hull.Pod.Spec.v1.Names": {
+    "hull.Pod.v1.Names": {
       "enum": [
         "initContainers",
         "containers",
         "volumes"
       ]
     },
-    "hull.Pod.Spec.v1": {
+    "hull.Pod.v1": {
       "title": "Pod",
       "type": "object",
       "properties": {
@@ -19709,14 +19708,14 @@
       },
       "required": []
     },
-    "hull.Pod.v1.Names": {
+    "hull.PodTemplate.v1.Names": {
       "enum": [
         "templateAnnotations",
         "templateLabels",
         "pod"
       ]
     },
-    "hull.Pod.v1": {
+    "hull.PodTemplate.v1": {
       "type": "object",
       "properties": {
         "templateAnnotations": {
@@ -19741,7 +19740,7 @@
               "$ref": "#/definitions/io.k8s.api.core.v1.PodSpec"
             },
             {
-              "$ref": "#/definitions/hull.Pod.Spec.v1"
+              "$ref": "#/definitions/hull.Pod.v1"
             },
             {
               "propertyNames": {
@@ -19750,7 +19749,7 @@
                     "$ref": "#/definitions/io.k8s.api.core.v1.PodSpec.Names"
                   },
                   {
-                    "$ref": "#/definitions/hull.Pod.Spec.v1.Names"
+                    "$ref": "#/definitions/hull.Pod.v1.Names"
                   }
                 ]
               }
@@ -19823,12 +19822,12 @@
       },
       "required": []
     },
-    "hull.Ingress.Rule.Spec.v1.Names": {
+    "hull.Ingress.Rule.Path.v1.Names": {
       "enum": [
         "paths"
       ]
     },
-    "hull.Ingress.Rule.Spec.v1": {
+    "hull.Ingress.Rule.Path.v1": {
       "type": "object",
       "properties": {
         "paths": {
@@ -19869,7 +19868,7 @@
       "type": "object",
       "properties": {
         "http": {
-          "$ref": "#/definitions/hull.Ingress.Rule.Spec.v1"
+          "$ref": "#/definitions/hull.Ingress.Rule.Path.v1"
         }
       },
       "required": []
@@ -20422,7 +20421,7 @@
           "$ref": "#/definitions/io.k8s.api.batch.v1.JobSpec"
         },
         {
-          "$ref": "#/definitions/hull.Pod.v1"
+          "$ref": "#/definitions/hull.PodTemplate.v1"
         },
         {
           "propertyNames": {
@@ -20434,7 +20433,7 @@
                 "$ref": "#/definitions/io.k8s.api.batch.v1.JobSpec.Names"
               },
               {
-                "$ref": "#/definitions/hull.Pod.v1.Names"
+                "$ref": "#/definitions/hull.PodTemplate.v1.Names"
               }
             ]
           }
@@ -20581,7 +20580,7 @@
                       "$ref": "#/definitions/io.k8s.api.apps.v1.DeploymentSpec"
                     },
                     {
-                      "$ref": "#/definitions/hull.Pod.v1"
+                      "$ref": "#/definitions/hull.PodTemplate.v1"
                     },
                     {
                       "propertyNames": {
@@ -20593,7 +20592,7 @@
                             "$ref": "#/definitions/io.k8s.api.apps.v1.DeploymentSpec.Names"
                           },
                           {
-                            "$ref": "#/definitions/hull.Pod.v1.Names"
+                            "$ref": "#/definitions/hull.PodTemplate.v1.Names"
                           }
                         ]
                       }
@@ -20630,7 +20629,7 @@
                       "$ref": "#/definitions/io.k8s.api.apps.v1.DaemonSetSpec"
                     },
                     {
-                      "$ref": "#/definitions/hull.Pod.v1"
+                      "$ref": "#/definitions/hull.PodTemplate.v1"
                     },
                     {
                       "propertyNames": {
@@ -20642,7 +20641,7 @@
                             "$ref": "#/definitions/io.k8s.api.apps.v1.DaemonSetSpec.Names"
                           },
                           {
-                            "$ref": "#/definitions/hull.Pod.v1.Names"
+                            "$ref": "#/definitions/hull.PodTemplate.v1.Names"
                           }
                         ]
                       }
@@ -20668,7 +20667,7 @@
                       "$ref": "#/definitions/io.k8s.api.apps.v1.StatefulSetSpec"
                     },
                     {
-                      "$ref": "#/definitions/hull.Pod.v1"
+                      "$ref": "#/definitions/hull.PodTemplate.v1"
                     },
                     {
                       "propertyNames": {
@@ -20680,7 +20679,7 @@
                             "$ref": "#/definitions/io.k8s.api.apps.v1.StatefulSetSpec.Names"
                           },
                           {
-                            "$ref": "#/definitions/hull.Pod.v1.Names"
+                            "$ref": "#/definitions/hull.PodTemplate.v1.Names"
                           }
                         ]
                       }

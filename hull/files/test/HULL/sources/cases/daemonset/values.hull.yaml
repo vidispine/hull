@@ -130,35 +130,29 @@ hull:
                   containerPort: 4345
               env:
                 ENV_VAR_1:
-                  name: ENV_VAR_1
                   value: Example ENV for initContainers
                 ENV_VAR_2:
-                  name: ENV_VAR_2
                   valueFrom:
                     configMapKeyRef:
                       name: full_example_configmap
                       key: env_var
                 ENV_VAR_3:
-                  name: ENV_VAR_3
                   valueFrom:
                     secretKeyRef:
                       name: some-external-secret-in-cluster
                       key: secret-data-key
                       staticName: true                            
                 ENV_VAR_4:
-                  name: ENV_VAR_4
                   valueFrom:
                     secretKeyRef:
                       name: full_example_secret
                       key: env_var
                 ENV_VAR_5:
-                  name: ENV_VAR_5
                   valueFrom:
                     fieldRef:
                       fieldPath: metadata.label.name
                       apiVersion: v2
                 ENV_VAR_6:
-                  name: ENV_VAR_6
                   valueFrom:
                     resourceFieldRef:
                       containerName: full_example_deplyoment_container
@@ -231,23 +225,19 @@ hull:
                   containerPort: 80
               env:
                 ENV_VAR_1:
-                  name: ENV_VAR_1
                   value: Example ENV for deployment containers
                 ENV_VAR_2:
-                  name: ENV_VAR_2
                   valueFrom:
                     configMapKeyRef:
                       name: full_example_configmap
                       key: env_var
                 ENV_VAR_3:
-                  name: ENV_VAR_3
                   valueFrom:
                     secretKeyRef:
                       name: some-external-secret-in-cluster
                       key: secret-data-key
                       staticName: true                            
                 ENV_VAR_4:
-                  name: ENV_VAR_4
                   valueFrom:
                     secretKeyRef:
                       name: full_example_secret
