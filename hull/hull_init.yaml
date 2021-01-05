@@ -75,7 +75,7 @@ metadata:
 {{- $allObjects = merge $allObjects (dict "Secret" (dict)) }}
 {{- $allObjects = merge $allObjects (dict "Registry" (dict "API_KIND" "Secret")) }}
 {{- $allObjects = merge $allObjects (dict "Service" (dict)) }}
-{{- $allObjects = merge $allObjects (dict "Ingress" (dict "API_VERSION" "networking.k8s.io/v1beta1")) }}
+{{- $allObjects = merge $allObjects (dict "Ingress" (dict "API_VERSION" "networking.k8s.io/v1")) }}
 {{- $allObjects = merge $allObjects (dict "CronJob" (dict "API_VERSION" "batch/v1beta1")) }}
 
 {{- /*

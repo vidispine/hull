@@ -16,10 +16,7 @@
     },
     "authenticated": {
       "description": "Authenticated indicates that the token was associated with a known user.",
-      "type": [
-        "boolean",
-        "null"
-      ]
+      "type": "boolean"
     },
     "error": {
       "description": "Error indicates that the token couldn't be checked",
@@ -45,10 +42,7 @@
             ]
           },
           "description": "Any additional information provided by the authenticator.",
-          "type": [
-            "object",
-            "null"
-          ]
+          "type": "object"
         },
         "groups": {
           "description": "The names of groups this user is a part of.",
@@ -78,10 +72,7 @@
           ]
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     }
   },

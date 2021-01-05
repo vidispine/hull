@@ -272,8 +272,10 @@ def validateJson(test_object):
     schema_version = schema_version_split[0].split(".")[0]
     if len(schema_version_split) > 1:
         schema_version = schema_version + "-" + schema_version_split[1]
-    schema_file = str(test_object["kind"]).lower().split(".")[0] + "-" + schema_version + ".json"
-
+    schema_file = os.path.join(schema_dir, str(test_object["kind"]).lower().split(".")[0] + "-" + schema_version + ".json")
+    if not os.path.exists(schema_file):
+        schema_file = os.path.join(schema_dir, str(test_object["kind"]).lower().split(".")[0] + "-core-" + schema_version + ".json")
+        
     with open(os.path.join(schema_dir, schema_file)) as json_file:
         schema = json.load(json_file)
 

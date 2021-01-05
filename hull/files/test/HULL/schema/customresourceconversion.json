@@ -53,20 +53,14 @@
             "port": {
               "description": "port is an optional service port at which the webhook will be contacted. `port` should be a valid port number (1-65535, inclusive). Defaults to 443 for backward compatibility.",
               "format": "int32",
-              "type": [
-                "integer",
-                "null"
-              ]
+              "type": "integer"
             }
           },
           "required": [
             "namespace",
             "name"
           ],
-          "type": [
-            "object",
-            "null"
-          ],
+          "type": "object",
           "additionalProperties": false
         },
         "url": {
@@ -77,10 +71,7 @@
           ]
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     }
   },

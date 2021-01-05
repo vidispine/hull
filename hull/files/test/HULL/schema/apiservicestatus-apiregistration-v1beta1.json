@@ -41,16 +41,17 @@
           "type",
           "status"
         ],
-        "type": [
-          "object",
-          "null"
-        ],
+        "type": "object",
         "additionalProperties": false
       },
       "type": [
         "array",
         "null"
       ],
+      "x-kubernetes-list-map-keys": [
+        "type"
+      ],
+      "x-kubernetes-list-type": "map",
       "x-kubernetes-patch-merge-key": "type",
       "x-kubernetes-patch-strategy": "merge"
     }

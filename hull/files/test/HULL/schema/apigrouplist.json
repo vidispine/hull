@@ -25,9 +25,6 @@
             "type": [
               "string",
               "null"
-            ],
-            "enum": [
-              "APIGroup"
             ]
           },
           "name": {
@@ -50,10 +47,7 @@
               "groupVersion",
               "version"
             ],
-            "type": [
-              "object",
-              "null"
-            ],
+            "type": "object",
             "additionalProperties": false
           },
           "serverAddressByClientCIDRs": {
@@ -74,10 +68,7 @@
                 "clientCIDR",
                 "serverAddress"
               ],
-              "type": [
-                "object",
-                "null"
-              ],
+              "type": "object",
               "additionalProperties": false
             },
             "type": [
@@ -103,10 +94,7 @@
                 "groupVersion",
                 "version"
               ],
-              "type": [
-                "object",
-                "null"
-              ],
+              "type": "object",
               "additionalProperties": false
             },
             "type": "array"
@@ -116,10 +104,7 @@
           "name",
           "versions"
         ],
-        "type": [
-          "object",
-          "null"
-        ],
+        "type": "object",
         "x-kubernetes-group-version-kind": [
           {
             "group": "",
@@ -139,9 +124,6 @@
       "type": [
         "string",
         "null"
-      ],
-      "enum": [
-        "APIGroupList"
       ]
     }
   },

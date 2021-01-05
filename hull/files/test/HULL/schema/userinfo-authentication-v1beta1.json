@@ -15,10 +15,7 @@
         ]
       },
       "description": "Any additional information provided by the authenticator.",
-      "type": [
-        "object",
-        "null"
-      ]
+      "type": "object"
     },
     "groups": {
       "description": "The names of groups this user is a part of.",

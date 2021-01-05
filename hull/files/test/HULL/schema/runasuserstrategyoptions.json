@@ -21,10 +21,7 @@
           "min",
           "max"
         ],
-        "type": [
-          "object",
-          "null"
-        ],
+        "type": "object",
         "additionalProperties": false
       },
       "type": [

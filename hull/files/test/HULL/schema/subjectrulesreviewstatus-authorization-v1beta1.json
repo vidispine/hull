@@ -10,10 +10,7 @@
     },
     "incomplete": {
       "description": "Incomplete is true when the rules returned by this call are incomplete. This is most commonly encountered when an authorizer, such as an external authorizer, doesn't support rules evaluation.",
-      "type": [
-        "boolean",
-        "null"
-      ]
+      "type": "boolean"
     },
     "nonResourceRules": {
       "description": "NonResourceRules is the list of actions the subject is allowed to perform on non-resources. The list ordering isn't significant, may contain duplicates, and possibly be incomplete.",
@@ -47,10 +44,7 @@
         "required": [
           "verbs"
         ],
-        "type": [
-          "object",
-          "null"
-        ],
+        "type": "object",
         "additionalProperties": false
       },
       "type": [
@@ -116,10 +110,7 @@
         "required": [
           "verbs"
         ],
-        "type": [
-          "object",
-          "null"
-        ],
+        "type": "object",
         "additionalProperties": false
       },
       "type": [

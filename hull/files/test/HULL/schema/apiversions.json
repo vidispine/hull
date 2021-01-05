@@ -13,9 +13,6 @@
       "type": [
         "string",
         "null"
-      ],
-      "enum": [
-        "APIVersions"
       ]
     },
     "serverAddressByClientCIDRs": {
@@ -36,10 +33,7 @@
           "clientCIDR",
           "serverAddress"
         ],
-        "type": [
-          "object",
-          "null"
-        ],
+        "type": "object",
         "additionalProperties": false
       },
       "type": [

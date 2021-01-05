@@ -19,10 +19,7 @@
           ]
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     },
     "resourceAttributes": {
@@ -78,10 +75,7 @@
           ]
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     }
   },

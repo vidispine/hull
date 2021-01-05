@@ -13,9 +13,6 @@
       "type": [
         "string",
         "null"
-      ],
-      "enum": [
-        "CertificateSigningRequest"
       ]
     },
     "metadata": {
@@ -29,10 +26,7 @@
             ]
           },
           "description": "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations",
-          "type": [
-            "object",
-            "null"
-          ]
+          "type": "object"
         },
         "clusterName": {
           "description": "The name of the cluster which the object belongs to. This is used to distinguish resources with same name and namespace in different clusters. This field is not set anywhere right now and apiserver is going to ignore it if set in create or update request.",
@@ -52,10 +46,7 @@
         "deletionGracePeriodSeconds": {
           "description": "Number of seconds allowed for this object to gracefully terminate before it will be removed from the system. Only set when deletionTimestamp is also set. May only be shortened. Read-only.",
           "format": "int64",
-          "type": [
-            "integer",
-            "null"
-          ]
+          "type": "integer"
         },
         "deletionTimestamp": {
           "description": "Time is a wrapper around time.Time which supports correct marshaling to YAML and JSON.  Wrappers are provided for many of the factory methods that the time package offers.",
@@ -89,10 +80,7 @@
         "generation": {
           "description": "A sequence number representing a specific generation of the desired state. Populated by the system. Read-only.",
           "format": "int64",
-          "type": [
-            "integer",
-            "null"
-          ]
+          "type": "integer"
         },
         "labels": {
           "additionalProperties": {
@@ -102,10 +90,7 @@
             ]
           },
           "description": "Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: http://kubernetes.io/docs/user-guide/labels",
-          "type": [
-            "object",
-            "null"
-          ]
+          "type": "object"
         },
         "managedFields": {
           "description": "ManagedFields maps workflow-id and version to the set of fields that are managed by that workflow. This is mostly for internal housekeeping, and users typically shouldn't need to set or understand this field. A workflow can be the user's name, a controller's name, or the name of a specific apply path like \"ci-cd\". The set of fields is always in the version that the workflow used when modifying the object.",
@@ -128,10 +113,7 @@
               },
               "fieldsV1": {
                 "description": "FieldsV1 stores a set of fields in a data structure like a Trie, in JSON format.\n\nEach key is either a '.' representing the field itself, and will always map to an empty set, or a string representing a sub-field or item. The string will follow one of these four formats: 'f:<name>', where <name> is the name of a field in a struct, or key in a map 'v:<value>', where <value> is the exact json formatted value of a list item 'i:<index>', where <index> is position of a item in a list 'k:<keys>', where <keys> is a map of  a list item's key fields to their unique values If a key maps to an empty Fields value, the field that key represents is part of the set.\n\nThe exact format is defined in sigs.k8s.io/structured-merge-diff",
-                "type": [
-                  "object",
-                  "null"
-                ]
+                "type": "object"
               },
               "manager": {
                 "description": "Manager is an identifier of the workflow managing these fields.",
@@ -156,10 +138,7 @@
                 ]
               }
             },
-            "type": [
-              "object",
-              "null"
-            ],
+            "type": "object",
             "additionalProperties": false
           },
           "type": [
@@ -175,7 +154,7 @@
           ]
         },
         "namespace": {
-          "description": "Namespace defines the space within each name must be unique. An empty namespace is equivalent to the \"default\" namespace, but \"default\" is the canonical representation. Not all objects are required to be scoped to a namespace - the value of this field for those objects will be empty.\n\nMust be a DNS_LABEL. Cannot be updated. More info: http://kubernetes.io/docs/user-guide/namespaces",
+          "description": "Namespace defines the space within which each name must be unique. An empty namespace is equivalent to the \"default\" namespace, but \"default\" is the canonical representation. Not all objects are required to be scoped to a namespace - the value of this field for those objects will be empty.\n\nMust be a DNS_LABEL. Cannot be updated. More info: http://kubernetes.io/docs/user-guide/namespaces",
           "type": [
             "string",
             "null"
@@ -192,17 +171,11 @@
               },
               "blockOwnerDeletion": {
                 "description": "If true, AND if the owner has the \"foregroundDeletion\" finalizer, then the owner cannot be deleted from the key-value store until this reference is removed. Defaults to false. To set this field, a user needs \"delete\" permission of the owner, otherwise 422 (Unprocessable Entity) will be returned.",
-                "type": [
-                  "boolean",
-                  "null"
-                ]
+                "type": "boolean"
               },
               "controller": {
                 "description": "If true, this reference points to the managing controller.",
-                "type": [
-                  "boolean",
-                  "null"
-                ]
+                "type": "boolean"
               },
               "kind": {
                 "description": "Kind of the referent. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
@@ -223,10 +196,7 @@
               "name",
               "uid"
             ],
-            "type": [
-              "object",
-              "null"
-            ],
+            "type": "object",
             "additionalProperties": false
           },
           "type": [
@@ -258,10 +228,7 @@
           ]
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     },
     "spec": {
@@ -281,10 +248,7 @@
             ]
           },
           "description": "Extra information about the requesting user. See user.Info interface for details.",
-          "type": [
-            "object",
-            "null"
-          ]
+          "type": "object"
         },
         "groups": {
           "description": "Group information about the requesting user. See user.Info interface for details.",
@@ -297,12 +261,14 @@
           "type": [
             "array",
             "null"
-          ]
+          ],
+          "x-kubernetes-list-type": "atomic"
         },
         "request": {
           "description": "Base64-encoded PKCS#10 CSR data",
           "format": "byte",
-          "type": "string"
+          "type": "string",
+          "x-kubernetes-list-type": "atomic"
         },
         "signerName": {
           "description": "Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:\n 1. If it's a kubelet client certificate, it is assigned\n    \"kubernetes.io/kube-apiserver-client-kubelet\".\n 2. If it's a kubelet serving certificate, it is assigned\n    \"kubernetes.io/kubelet-serving\".\n 3. Otherwise, it is assigned \"kubernetes.io/legacy-unknown\".\nDistribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.",
@@ -319,7 +285,7 @@
           ]
         },
         "usages": {
-          "description": "allowedUsages specifies a set of usage contexts the key will be valid for. See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3\n     https://tools.ietf.org/html/rfc5280#section-4.2.1.12",
+          "description": "allowedUsages specifies a set of usage contexts the key will be valid for. See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3\n     https://tools.ietf.org/html/rfc5280#section-4.2.1.12\nValid values are:\n \"signing\",\n \"digital signature\",\n \"content commitment\",\n \"key encipherment\",\n \"key agreement\",\n \"data encipherment\",\n \"cert sign\",\n \"crl sign\",\n \"encipher only\",\n \"decipher only\",\n \"any\",\n \"server auth\",\n \"client auth\",\n \"code signing\",\n \"email protection\",\n \"s/mime\",\n \"ipsec end system\",\n \"ipsec tunnel\",\n \"ipsec user\",\n \"timestamping\",\n \"ocsp signing\",\n \"microsoft sgc\",\n \"netscape sgc\"",
           "items": {
             "type": [
               "string",
@@ -329,7 +295,8 @@
           "type": [
             "array",
             "null"
-          ]
+          ],
+          "x-kubernetes-list-type": "atomic"
         },
         "username": {
           "description": "Information about the requesting user. See user.Info interface for details.",
@@ -342,10 +309,7 @@
       "required": [
         "request"
       ],
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     },
     "status": {
@@ -356,12 +320,21 @@
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "x-kubernetes-list-type": "atomic"
         },
         "conditions": {
           "description": "Conditions applied to the request, such as approval or denial.",
           "items": {
             "properties": {
+              "lastTransitionTime": {
+                "description": "Time is a wrapper around time.Time which supports correct marshaling to YAML and JSON.  Wrappers are provided for many of the factory methods that the time package offers.",
+                "format": "date-time",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
               "lastUpdateTime": {
                 "description": "Time is a wrapper around time.Time which supports correct marshaling to YAML and JSON.  Wrappers are provided for many of the factory methods that the time package offers.",
                 "format": "date-time",
@@ -384,30 +357,35 @@
                   "null"
                 ]
               },
+              "status": {
+                "description": "Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be \"False\" or \"Unknown\". Defaults to \"True\". If unset, should be treated as \"True\".",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
               "type": {
-                "description": "request approval state, currently Approved or Denied.",
+                "description": "type of the condition. Known conditions include \"Approved\", \"Denied\", and \"Failed\".",
                 "type": "string"
               }
             },
             "required": [
               "type"
             ],
-            "type": [
-              "object",
-              "null"
-            ],
+            "type": "object",
             "additionalProperties": false
           },
           "type": [
             "array",
             "null"
-          ]
+          ],
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map"
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     }
   },

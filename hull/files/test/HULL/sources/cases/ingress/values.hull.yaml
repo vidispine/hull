@@ -38,13 +38,17 @@ hull:
                 standard:
                   path: /standard                    
                   backend:
-                    serviceName: service1_standard
-                    servicePort: 80
+                    service:
+                      name: service1_standard
+                      port: 
+                        number: 80
                 backup:
                   path: /backup
                   backend:
-                    serviceName: service1_backup
-                    servicePort: 80
+                    service:
+                      name: service1_backup
+                      port: 
+                        number: 80
           second_host:
             host: host.two.com
             http:              
@@ -52,13 +56,17 @@ hull:
                 standard:
                   path: /standard                    
                   backend:
-                    serviceName: service1_standard
-                    servicePort: 80
+                    service:
+                      name: service1_standard
+                      port: 
+                        number: 80
                 backup:
                   path: /backup
                   backend:
-                    serviceName: service1_backup
-                    servicePort: 80
+                    service:
+                      name: service1_backup
+                      port: 
+                        number: 80
         tls:          
           first_host:
             secretName: mysecret

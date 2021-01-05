@@ -2,12 +2,9 @@
   "description": "EventSeries contain information on series of events, i.e. thing that was/is happening continuously for some time.",
   "properties": {
     "count": {
-      "description": "Number of occurrences in this series up to the last heartbeat time",
+      "description": "count is the number of occurrences in this series up to the last heartbeat time.",
       "format": "int32",
-      "type": [
-        "integer",
-        "null"
-      ]
+      "type": "integer"
     },
     "lastObservedTime": {
       "description": "MicroTime is version of Time with microsecond level precision.",
@@ -16,19 +13,11 @@
         "string",
         "null"
       ]
-    },
-    "state": {
-      "description": "Information whether this series is ongoing or finished. Deprecated. Planned removal for 1.18",
-      "type": [
-        "string",
-        "null"
-      ]
     }
   },
   "required": [
     "count",
-    "lastObservedTime",
-    "state"
+    "lastObservedTime"
   ],
   "type": "object",
   "additionalProperties": false,

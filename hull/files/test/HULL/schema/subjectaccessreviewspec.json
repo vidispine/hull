@@ -15,10 +15,7 @@
         ]
       },
       "description": "Extra corresponds to the user.Info.GetExtra() method from the authenticator.  Since that is input to the authorizer it needs a reflection here.",
-      "type": [
-        "object",
-        "null"
-      ]
+      "type": "object"
     },
     "group": {
       "description": "Groups is the groups you're testing for.",
@@ -51,10 +48,7 @@
           ]
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     },
     "resourceAttributes": {
@@ -110,10 +104,7 @@
           ]
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     },
     "uid": {

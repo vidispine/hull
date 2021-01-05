@@ -10,10 +10,7 @@
           ]
         },
         {
-          "type": [
-            "integer",
-            "null"
-          ]
+          "type": "integer"
         }
       ]
     }

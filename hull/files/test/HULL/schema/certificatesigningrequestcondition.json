@@ -1,5 +1,13 @@
 {
   "properties": {
+    "lastTransitionTime": {
+      "description": "Time is a wrapper around time.Time which supports correct marshaling to YAML and JSON.  Wrappers are provided for many of the factory methods that the time package offers.",
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "lastUpdateTime": {
       "description": "Time is a wrapper around time.Time which supports correct marshaling to YAML and JSON.  Wrappers are provided for many of the factory methods that the time package offers.",
       "format": "date-time",
@@ -22,8 +30,15 @@
         "null"
       ]
     },
+    "status": {
+      "description": "Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be \"False\" or \"Unknown\". Defaults to \"True\". If unset, should be treated as \"True\".",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "type": {
-      "description": "request approval state, currently Approved or Denied.",
+      "description": "type of the condition. Known conditions include \"Approved\", \"Denied\", and \"Failed\".",
       "type": [
         "string",
         "null"

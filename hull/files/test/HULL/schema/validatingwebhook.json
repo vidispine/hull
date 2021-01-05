@@ -46,20 +46,14 @@
             "port": {
               "description": "If specified, the port on the service that hosting webhook. Default to 443 for backward compatibility. `port` should be a valid port number (1-65535, inclusive).",
               "format": "int32",
-              "type": [
-                "integer",
-                "null"
-              ]
+              "type": "integer"
             }
           },
           "required": [
             "namespace",
             "name"
           ],
-          "type": [
-            "object",
-            "null"
-          ],
+          "type": "object",
           "additionalProperties": false
         },
         "url": {
@@ -70,10 +64,7 @@
           ]
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     },
     "failurePolicy": {
@@ -133,10 +124,7 @@
               "key",
               "operator"
             ],
-            "type": [
-              "object",
-              "null"
-            ],
+            "type": "object",
             "additionalProperties": false
           },
           "type": [
@@ -152,16 +140,11 @@
             ]
           },
           "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed.",
-          "type": [
-            "object",
-            "null"
-          ]
+          "type": "object"
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
+      "x-kubernetes-map-type": "atomic",
       "additionalProperties": false
     },
     "objectSelector": {
@@ -200,10 +183,7 @@
               "key",
               "operator"
             ],
-            "type": [
-              "object",
-              "null"
-            ],
+            "type": "object",
             "additionalProperties": false
           },
           "type": [
@@ -219,16 +199,11 @@
             ]
           },
           "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed.",
-          "type": [
-            "object",
-            "null"
-          ]
+          "type": "object"
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
+      "x-kubernetes-map-type": "atomic",
       "additionalProperties": false
     },
     "rules": {
@@ -263,7 +238,7 @@
             ]
           },
           "operations": {
-            "description": "Operations is the operations the admission hook cares about - CREATE, UPDATE, or * for all operations. If '*' is present, the length of the slice must be one. Required.",
+            "description": "Operations is the operations the admission hook cares about - CREATE, UPDATE, DELETE, CONNECT or * for all of those operations and any future admission operations that are added. If '*' is present, the length of the slice must be one. Required.",
             "items": {
               "type": [
                 "string",
@@ -296,10 +271,7 @@
             ]
           }
         },
-        "type": [
-          "object",
-          "null"
-        ],
+        "type": "object",
         "additionalProperties": false
       },
       "type": [
@@ -317,10 +289,7 @@
     "timeoutSeconds": {
       "description": "TimeoutSeconds specifies the timeout for this webhook. After the timeout passes, the webhook call will be ignored or the API call will fail based on the failure policy. The timeout value must be between 1 and 30 seconds. Default to 30 seconds.",
       "format": "int32",
-      "type": [
-        "integer",
-        "null"
-      ]
+      "type": "integer"
     }
   },
   "required": [

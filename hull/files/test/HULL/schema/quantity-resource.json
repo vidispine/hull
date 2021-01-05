@@ -4,10 +4,9 @@
       "type": "string"
     },
     {
-      "type": "number"
+      "type": "integer"
     }
   ],
   "$schema": "http://json-schema.org/schema#",
-  "type": "object",
-  "additionalProperties": false
+  "type": "object"
 }

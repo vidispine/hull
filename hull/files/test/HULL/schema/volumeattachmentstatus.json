@@ -20,18 +20,12 @@
           ]
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     },
     "attached": {
       "description": "Indicates the volume is successfully attached. This field must only be set by the entity completing the attach operation, i.e. the external-attacher.",
-      "type": [
-        "boolean",
-        "null"
-      ]
+      "type": "boolean"
     },
     "attachmentMetadata": {
       "additionalProperties": {
@@ -41,10 +35,7 @@
         ]
       },
       "description": "Upon successful attach, this field is populated with any information returned by the attach operation that must be passed into subsequent WaitForAttach or Mount calls. This field must only be set by the entity completing the attach operation, i.e. the external-attacher.",
-      "type": [
-        "object",
-        "null"
-      ]
+      "type": "object"
     },
     "detachError": {
       "description": "VolumeError captures an error encountered during a volume operation.",
@@ -65,10 +56,7 @@
           ]
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     }
   },

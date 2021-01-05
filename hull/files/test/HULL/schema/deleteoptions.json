@@ -24,27 +24,18 @@
     "gracePeriodSeconds": {
       "description": "The duration in seconds before the object should be deleted. Value must be non-negative integer. The value zero indicates delete immediately. If this value is nil, the default grace period for the specified type will be used. Defaults to a per object value if not specified. zero means delete immediately.",
       "format": "int64",
-      "type": [
-        "integer",
-        "null"
-      ]
+      "type": "integer"
     },
     "kind": {
       "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
       "type": [
         "string",
         "null"
-      ],
-      "enum": [
-        "DeleteOptions"
       ]
     },
     "orphanDependents": {
       "description": "Deprecated: please use the PropagationPolicy, this field will be deprecated in 1.7. Should the dependent objects be orphaned. If true/false, the \"orphan\" finalizer will be added to/removed from the object's finalizers list. Either this field or PropagationPolicy may be set, but not both.",
-      "type": [
-        "boolean",
-        "null"
-      ]
+      "type": "boolean"
     },
     "preconditions": {
       "description": "Preconditions must be fulfilled before an operation (update, delete, etc.) is carried out.",
@@ -64,10 +55,7 @@
           ]
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     },
     "propagationPolicy": {
@@ -141,11 +129,6 @@
       "version": "v1beta2"
     },
     {
-      "group": "auditregistration.k8s.io",
-      "kind": "DeleteOptions",
-      "version": "v1alpha1"
-    },
-    {
       "group": "authentication.k8s.io",
       "kind": "DeleteOptions",
       "version": "v1"
@@ -198,6 +181,11 @@
     {
       "group": "certificates.k8s.io",
       "kind": "DeleteOptions",
+      "version": "v1"
+    },
+    {
+      "group": "certificates.k8s.io",
+      "kind": "DeleteOptions",
       "version": "v1beta1"
     },
     {
@@ -223,6 +211,11 @@
     {
       "group": "events.k8s.io",
       "kind": "DeleteOptions",
+      "version": "v1"
+    },
+    {
+      "group": "events.k8s.io",
+      "kind": "DeleteOptions",
       "version": "v1beta1"
     },
     {
@@ -236,7 +229,17 @@
       "version": "v1alpha1"
     },
     {
+      "group": "flowcontrol.apiserver.k8s.io",
+      "kind": "DeleteOptions",
+      "version": "v1beta1"
+    },
+    {
       "group": "imagepolicy.k8s.io",
+      "kind": "DeleteOptions",
+      "version": "v1alpha1"
+    },
+    {
+      "group": "internal.apiserver.k8s.io",
       "kind": "DeleteOptions",
       "version": "v1alpha1"
     },
@@ -249,6 +252,11 @@
       "group": "networking.k8s.io",
       "kind": "DeleteOptions",
       "version": "v1beta1"
+    },
+    {
+      "group": "node.k8s.io",
+      "kind": "DeleteOptions",
+      "version": "v1"
     },
     {
       "group": "node.k8s.io",
@@ -294,11 +302,6 @@
       "group": "scheduling.k8s.io",
       "kind": "DeleteOptions",
       "version": "v1beta1"
-    },
-    {
-      "group": "settings.k8s.io",
-      "kind": "DeleteOptions",
-      "version": "v1alpha1"
     },
     {
       "group": "storage.k8s.io",

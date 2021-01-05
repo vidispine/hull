@@ -89,5 +89,35 @@ spec:
 {{- define "hull.object.ingress.paths" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
-- {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list)) | indent 1 }}
-{{- end }}
+- backend:
+{{ if hasKey $spec.backend "service" }}
+    service:
+      name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $spec.backend.service.name "SPEC" $spec.backend.service) }}
+{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.backend.service "HULL_OBJECT_KEYS" (list "name")) | indent 6 }}
+{{ end }}
+{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "backend")) | indent 2 }}
+{{ end }}
+
+
+
+{{- /*
+| Purpose:  
+|   
+|   Create the backend: section for an ingress
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   SPEC: The dictionary to work with
+|
+*/ -}}
+{{- define "hull.object.ingress.backend" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $spec := default nil (index . "SPEC") -}}
+{{- if hasKey $spec "service" }}   
+service: 
+  name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $spec.service.name "SPEC" $spec.service) }}
+{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.service "HULL_OBJECT_KEYS" (list "name")) | indent 2}}
+{{ end }}
+{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "service")) }}
+{{ end }}

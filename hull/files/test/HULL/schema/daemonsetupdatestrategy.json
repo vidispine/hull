@@ -13,18 +13,12 @@
               ]
             },
             {
-              "type": [
-                "integer",
-                "null"
-              ]
+              "type": "integer"
             }
           ]
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     },
     "type": {

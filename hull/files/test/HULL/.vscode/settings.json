@@ -4,5 +4,6 @@
         "*.cpt": "gauge"
     },
     "files.autoSave": "afterDelay",
-    "files.autoSaveDelay": 500
+    "files.autoSaveDelay": 500,
+    "python.pythonPath": "C:\\Users\\webe028\\AppData\\Local\\Programs\\Python\\Python37\\python.exe"
 }

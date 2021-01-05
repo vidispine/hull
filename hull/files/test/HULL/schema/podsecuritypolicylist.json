@@ -25,9 +25,6 @@
             "type": [
               "string",
               "null"
-            ],
-            "enum": [
-              "PodSecurityPolicy"
             ]
           },
           "metadata": {
@@ -41,10 +38,7 @@
                   ]
                 },
                 "description": "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations",
-                "type": [
-                  "object",
-                  "null"
-                ]
+                "type": "object"
               },
               "clusterName": {
                 "description": "The name of the cluster which the object belongs to. This is used to distinguish resources with same name and namespace in different clusters. This field is not set anywhere right now and apiserver is going to ignore it if set in create or update request.",
@@ -64,10 +58,7 @@
               "deletionGracePeriodSeconds": {
                 "description": "Number of seconds allowed for this object to gracefully terminate before it will be removed from the system. Only set when deletionTimestamp is also set. May only be shortened. Read-only.",
                 "format": "int64",
-                "type": [
-                  "integer",
-                  "null"
-                ]
+                "type": "integer"
               },
               "deletionTimestamp": {
                 "description": "Time is a wrapper around time.Time which supports correct marshaling to YAML and JSON.  Wrappers are provided for many of the factory methods that the time package offers.",
@@ -101,10 +92,7 @@
               "generation": {
                 "description": "A sequence number representing a specific generation of the desired state. Populated by the system. Read-only.",
                 "format": "int64",
-                "type": [
-                  "integer",
-                  "null"
-                ]
+                "type": "integer"
               },
               "labels": {
                 "additionalProperties": {
@@ -114,10 +102,7 @@
                   ]
                 },
                 "description": "Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: http://kubernetes.io/docs/user-guide/labels",
-                "type": [
-                  "object",
-                  "null"
-                ]
+                "type": "object"
               },
               "managedFields": {
                 "description": "ManagedFields maps workflow-id and version to the set of fields that are managed by that workflow. This is mostly for internal housekeeping, and users typically shouldn't need to set or understand this field. A workflow can be the user's name, a controller's name, or the name of a specific apply path like \"ci-cd\". The set of fields is always in the version that the workflow used when modifying the object.",
@@ -140,10 +125,7 @@
                     },
                     "fieldsV1": {
                       "description": "FieldsV1 stores a set of fields in a data structure like a Trie, in JSON format.\n\nEach key is either a '.' representing the field itself, and will always map to an empty set, or a string representing a sub-field or item. The string will follow one of these four formats: 'f:<name>', where <name> is the name of a field in a struct, or key in a map 'v:<value>', where <value> is the exact json formatted value of a list item 'i:<index>', where <index> is position of a item in a list 'k:<keys>', where <keys> is a map of  a list item's key fields to their unique values If a key maps to an empty Fields value, the field that key represents is part of the set.\n\nThe exact format is defined in sigs.k8s.io/structured-merge-diff",
-                      "type": [
-                        "object",
-                        "null"
-                      ]
+                      "type": "object"
                     },
                     "manager": {
                       "description": "Manager is an identifier of the workflow managing these fields.",
@@ -168,10 +150,7 @@
                       ]
                     }
                   },
-                  "type": [
-                    "object",
-                    "null"
-                  ],
+                  "type": "object",
                   "additionalProperties": false
                 },
                 "type": [
@@ -187,7 +166,7 @@
                 ]
               },
               "namespace": {
-                "description": "Namespace defines the space within each name must be unique. An empty namespace is equivalent to the \"default\" namespace, but \"default\" is the canonical representation. Not all objects are required to be scoped to a namespace - the value of this field for those objects will be empty.\n\nMust be a DNS_LABEL. Cannot be updated. More info: http://kubernetes.io/docs/user-guide/namespaces",
+                "description": "Namespace defines the space within which each name must be unique. An empty namespace is equivalent to the \"default\" namespace, but \"default\" is the canonical representation. Not all objects are required to be scoped to a namespace - the value of this field for those objects will be empty.\n\nMust be a DNS_LABEL. Cannot be updated. More info: http://kubernetes.io/docs/user-guide/namespaces",
                 "type": [
                   "string",
                   "null"
@@ -204,17 +183,11 @@
                     },
                     "blockOwnerDeletion": {
                       "description": "If true, AND if the owner has the \"foregroundDeletion\" finalizer, then the owner cannot be deleted from the key-value store until this reference is removed. Defaults to false. To set this field, a user needs \"delete\" permission of the owner, otherwise 422 (Unprocessable Entity) will be returned.",
-                      "type": [
-                        "boolean",
-                        "null"
-                      ]
+                      "type": "boolean"
                     },
                     "controller": {
                       "description": "If true, this reference points to the managing controller.",
-                      "type": [
-                        "boolean",
-                        "null"
-                      ]
+                      "type": "boolean"
                     },
                     "kind": {
                       "description": "Kind of the referent. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
@@ -235,10 +208,7 @@
                     "name",
                     "uid"
                   ],
-                  "type": [
-                    "object",
-                    "null"
-                  ],
+                  "type": "object",
                   "additionalProperties": false
                 },
                 "type": [
@@ -270,10 +240,7 @@
                 ]
               }
             },
-            "type": [
-              "object",
-              "null"
-            ],
+            "type": "object",
             "additionalProperties": false
           },
           "spec": {
@@ -281,13 +248,10 @@
             "properties": {
               "allowPrivilegeEscalation": {
                 "description": "allowPrivilegeEscalation determines if a pod can request to allow privilege escalation. If unspecified, defaults to true.",
-                "type": [
-                  "boolean",
-                  "null"
-                ]
+                "type": "boolean"
               },
               "allowedCSIDrivers": {
-                "description": "AllowedCSIDrivers is a whitelist of inline CSI drivers that must be explicitly set to be embedded within a pod spec. An empty value indicates that any CSI driver can be used for inline ephemeral volumes. This is an alpha field, and is only honored if the API server enables the CSIInlineVolume feature gate.",
+                "description": "AllowedCSIDrivers is an allowlist of inline CSI drivers that must be explicitly set to be embedded within a pod spec. An empty value indicates that any CSI driver can be used for inline ephemeral volumes. This is a beta field, and is only honored if the API server enables the CSIInlineVolume feature gate.",
                 "items": {
                   "description": "AllowedCSIDriver represents a single inline CSI Driver that is allowed to be used.",
                   "properties": {
@@ -299,10 +263,7 @@
                   "required": [
                     "name"
                   ],
-                  "type": [
-                    "object",
-                    "null"
-                  ],
+                  "type": "object",
                   "additionalProperties": false
                 },
                 "type": [
@@ -324,7 +285,7 @@
                 ]
               },
               "allowedFlexVolumes": {
-                "description": "allowedFlexVolumes is a whitelist of allowed Flexvolumes.  Empty or nil indicates that all Flexvolumes may be used.  This parameter is effective only when the usage of the Flexvolumes is allowed in the \"volumes\" field.",
+                "description": "allowedFlexVolumes is an allowlist of Flexvolumes.  Empty or nil indicates that all Flexvolumes may be used.  This parameter is effective only when the usage of the Flexvolumes is allowed in the \"volumes\" field.",
                 "items": {
                   "description": "AllowedFlexVolume represents a single Flexvolume that is allowed to be used.",
                   "properties": {
@@ -336,10 +297,7 @@
                   "required": [
                     "driver"
                   ],
-                  "type": [
-                    "object",
-                    "null"
-                  ],
+                  "type": "object",
                   "additionalProperties": false
                 },
                 "type": [
@@ -348,7 +306,7 @@
                 ]
               },
               "allowedHostPaths": {
-                "description": "allowedHostPaths is a white list of allowed host paths. Empty indicates that all host paths may be used.",
+                "description": "allowedHostPaths is an allowlist of host paths. Empty indicates that all host paths may be used.",
                 "items": {
                   "description": "AllowedHostPath defines the host volume conditions that will be enabled by a policy for pods to use. It requires the path prefix to be defined.",
                   "properties": {
@@ -361,16 +319,10 @@
                     },
                     "readOnly": {
                       "description": "when set to true, will allow host volumes matching the pathPrefix only if all volume mounts are readOnly.",
-                      "type": [
-                        "boolean",
-                        "null"
-                      ]
+                      "type": "boolean"
                     }
                   },
-                  "type": [
-                    "object",
-                    "null"
-                  ],
+                  "type": "object",
                   "additionalProperties": false
                 },
                 "type": [
@@ -379,7 +331,7 @@
                 ]
               },
               "allowedProcMountTypes": {
-                "description": "AllowedProcMountTypes is a whitelist of allowed ProcMountTypes. Empty or nil indicates that only the DefaultProcMountType may be used. This requires the ProcMountType feature flag to be enabled.",
+                "description": "AllowedProcMountTypes is an allowlist of allowed ProcMountTypes. Empty or nil indicates that only the DefaultProcMountType may be used. This requires the ProcMountType feature flag to be enabled.",
                 "items": {
                   "type": [
                     "string",
@@ -392,7 +344,7 @@
                 ]
               },
               "allowedUnsafeSysctls": {
-                "description": "allowedUnsafeSysctls is a list of explicitly allowed unsafe sysctls, defaults to none. Each entry is either a plain sysctl name or ends in \"*\" in which case it is considered as a prefix of allowed sysctls. Single * means all unsafe sysctls are allowed. Kubelet has to whitelist all allowed unsafe sysctls explicitly to avoid rejection.\n\nExamples: e.g. \"foo/*\" allows \"foo/bar\", \"foo/baz\", etc. e.g. \"foo.*\" allows \"foo.bar\", \"foo.baz\", etc.",
+                "description": "allowedUnsafeSysctls is a list of explicitly allowed unsafe sysctls, defaults to none. Each entry is either a plain sysctl name or ends in \"*\" in which case it is considered as a prefix of allowed sysctls. Single * means all unsafe sysctls are allowed. Kubelet has to allowlist all allowed unsafe sysctls explicitly to avoid rejection.\n\nExamples: e.g. \"foo/*\" allows \"foo/bar\", \"foo/baz\", etc. e.g. \"foo.*\" allows \"foo.bar\", \"foo.baz\", etc.",
                 "items": {
                   "type": [
                     "string",
@@ -419,10 +371,7 @@
               },
               "defaultAllowPrivilegeEscalation": {
                 "description": "defaultAllowPrivilegeEscalation controls the default setting for whether a process can gain more privileges than its parent process.",
-                "type": [
-                  "boolean",
-                  "null"
-                ]
+                "type": "boolean"
               },
               "forbiddenSysctls": {
                 "description": "forbiddenSysctls is a list of explicitly forbidden sysctls, defaults to none. Each entry is either a plain sysctl name or ends in \"*\" in which case it is considered as a prefix of forbidden sysctls. Single * means all sysctls are forbidden.\n\nExamples: e.g. \"foo/*\" forbids \"foo/bar\", \"foo/baz\", etc. e.g. \"foo.*\" forbids \"foo.bar\", \"foo.baz\", etc.",
@@ -460,10 +409,7 @@
                         "min",
                         "max"
                       ],
-                      "type": [
-                        "object",
-                        "null"
-                      ],
+                      "type": "object",
                       "additionalProperties": false
                     },
                     "type": [
@@ -484,24 +430,15 @@
               },
               "hostIPC": {
                 "description": "hostIPC determines if the policy allows the use of HostIPC in the pod spec.",
-                "type": [
-                  "boolean",
-                  "null"
-                ]
+                "type": "boolean"
               },
               "hostNetwork": {
                 "description": "hostNetwork determines if the policy allows the use of HostNetwork in the pod spec.",
-                "type": [
-                  "boolean",
-                  "null"
-                ]
+                "type": "boolean"
               },
               "hostPID": {
                 "description": "hostPID determines if the policy allows the use of HostPID in the pod spec.",
-                "type": [
-                  "boolean",
-                  "null"
-                ]
+                "type": "boolean"
               },
               "hostPorts": {
                 "description": "hostPorts determines which host port ranges are allowed to be exposed.",
@@ -523,10 +460,7 @@
                     "min",
                     "max"
                   ],
-                  "type": [
-                    "object",
-                    "null"
-                  ],
+                  "type": "object",
                   "additionalProperties": false
                 },
                 "type": [
@@ -536,17 +470,11 @@
               },
               "privileged": {
                 "description": "privileged determines if a pod can request to be run as privileged.",
-                "type": [
-                  "boolean",
-                  "null"
-                ]
+                "type": "boolean"
               },
               "readOnlyRootFilesystem": {
                 "description": "readOnlyRootFilesystem when set to true will force containers to run with a read only root file system.  If the container specifically requests to run with a non-read only root file system the PSP should deny the pod. If set to false the container may run with a read only root file system if it wishes but it will not be forced to.",
-                "type": [
-                  "boolean",
-                  "null"
-                ]
+                "type": "boolean"
               },
               "requiredDropCapabilities": {
                 "description": "requiredDropCapabilities are the capabilities that will be dropped from the container.  These are required to be dropped and cannot be added.",
@@ -584,10 +512,7 @@
                         "min",
                         "max"
                       ],
-                      "type": [
-                        "object",
-                        "null"
-                      ],
+                      "type": "object",
                       "additionalProperties": false
                     },
                     "type": [
@@ -603,10 +528,7 @@
                 "required": [
                   "rule"
                 ],
-                "type": [
-                  "object",
-                  "null"
-                ],
+                "type": "object",
                 "additionalProperties": false
               },
               "runAsUser": {
@@ -632,10 +554,7 @@
                         "min",
                         "max"
                       ],
-                      "type": [
-                        "object",
-                        "null"
-                      ],
+                      "type": "object",
                       "additionalProperties": false
                     },
                     "type": [
@@ -658,7 +577,7 @@
                 "description": "RuntimeClassStrategyOptions define the strategy that will dictate the allowable RuntimeClasses for a pod.",
                 "properties": {
                   "allowedRuntimeClassNames": {
-                    "description": "allowedRuntimeClassNames is a whitelist of RuntimeClass names that may be specified on a pod. A value of \"*\" means that any RuntimeClass name is allowed, and must be the only item in the list. An empty list requires the RuntimeClassName field to be unset.",
+                    "description": "allowedRuntimeClassNames is an allowlist of RuntimeClass names that may be specified on a pod. A value of \"*\" means that any RuntimeClass name is allowed, and must be the only item in the list. An empty list requires the RuntimeClassName field to be unset.",
                     "items": {
                       "type": [
                         "string",
@@ -678,10 +597,7 @@
                 "required": [
                   "allowedRuntimeClassNames"
                 ],
-                "type": [
-                  "object",
-                  "null"
-                ],
+                "type": "object",
                 "additionalProperties": false
               },
               "seLinux": {
@@ -723,10 +639,7 @@
                         ]
                       }
                     },
-                    "type": [
-                      "object",
-                      "null"
-                    ],
+                    "type": "object",
                     "additionalProperties": false
                   }
                 },
@@ -759,10 +672,7 @@
                         "min",
                         "max"
                       ],
-                      "type": [
-                        "object",
-                        "null"
-                      ],
+                      "type": "object",
                       "additionalProperties": false
                     },
                     "type": [
@@ -782,7 +692,7 @@
                 "additionalProperties": false
               },
               "volumes": {
-                "description": "volumes is a white list of allowed volume plugins. Empty indicates that no volumes may be used. To allow all volumes you may use '*'.",
+                "description": "volumes is an allowlist of volume plugins. Empty indicates that no volumes may be used. To allow all volumes you may use '*'.",
                 "items": {
                   "type": [
                     "string",
@@ -801,17 +711,11 @@
               "supplementalGroups",
               "fsGroup"
             ],
-            "type": [
-              "object",
-              "null"
-            ],
+            "type": "object",
             "additionalProperties": false
           }
         },
-        "type": [
-          "object",
-          "null"
-        ],
+        "type": "object",
         "x-kubernetes-group-version-kind": [
           {
             "group": "policy",
@@ -831,9 +735,6 @@
       "type": [
         "string",
         "null"
-      ],
-      "enum": [
-        "PodSecurityPolicyList"
       ]
     },
     "metadata": {
@@ -849,10 +750,7 @@
         "remainingItemCount": {
           "description": "remainingItemCount is the number of subsequent items in the list which are not included in this list response. If the list request contained label or field selectors, then the number of remaining items is unknown and the field will be left unset and omitted during serialization. If the list is complete (either because it is not chunking or because this is the last chunk), then there are no more remaining items and this field will be left unset and omitted during serialization. Servers older than v1.15 do not set this field. The intended use of the remainingItemCount is *estimating* the size of a collection. Clients should not rely on the remainingItemCount to be set or to be exact.",
           "format": "int64",
-          "type": [
-            "integer",
-            "null"
-          ]
+          "type": "integer"
         },
         "resourceVersion": {
           "description": "String that identifies the server's internal version of this object that can be used by clients to determine when objects have changed. Value must be treated as opaque by clients and passed unmodified back to the server. Populated by the system. Read-only. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency",
@@ -869,10 +767,7 @@
           ]
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     }
   },

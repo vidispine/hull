@@ -20,10 +20,7 @@
                       ]
                     },
                     {
-                      "type": [
-                        "integer",
-                        "null"
-                      ]
+                      "type": "integer"
                     }
                   ]
                 },
@@ -35,10 +32,7 @@
                   ]
                 }
               },
-              "type": [
-                "object",
-                "null"
-              ],
+              "type": "object",
               "additionalProperties": false
             },
             "type": [
@@ -49,7 +43,7 @@
           "to": {
             "description": "List of destinations for outgoing traffic of pods selected for this rule. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all destinations (traffic not restricted by destination). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the to list.",
             "items": {
-              "description": "NetworkPolicyPeer describes a peer to allow traffic from. Only certain combinations of fields are allowed",
+              "description": "NetworkPolicyPeer describes a peer to allow traffic to/from. Only certain combinations of fields are allowed",
               "properties": {
                 "ipBlock": {
                   "description": "IPBlock describes a particular CIDR (Ex. \"192.168.1.1/24\",\"2001:db9::/64\") that is allowed to the pods matched by a NetworkPolicySpec's podSelector. The except entry describes CIDRs that should not be included within this rule.",
@@ -75,10 +69,7 @@
                   "required": [
                     "cidr"
                   ],
-                  "type": [
-                    "object",
-                    "null"
-                  ],
+                  "type": "object",
                   "additionalProperties": false
                 },
                 "namespaceSelector": {
@@ -117,10 +108,7 @@
                           "key",
                           "operator"
                         ],
-                        "type": [
-                          "object",
-                          "null"
-                        ],
+                        "type": "object",
                         "additionalProperties": false
                       },
                       "type": [
@@ -136,16 +124,11 @@
                         ]
                       },
                       "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed.",
-                      "type": [
-                        "object",
-                        "null"
-                      ]
+                      "type": "object"
                     }
                   },
-                  "type": [
-                    "object",
-                    "null"
-                  ],
+                  "type": "object",
+                  "x-kubernetes-map-type": "atomic",
                   "additionalProperties": false
                 },
                 "podSelector": {
@@ -184,10 +167,7 @@
                           "key",
                           "operator"
                         ],
-                        "type": [
-                          "object",
-                          "null"
-                        ],
+                        "type": "object",
                         "additionalProperties": false
                       },
                       "type": [
@@ -203,23 +183,15 @@
                         ]
                       },
                       "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed.",
-                      "type": [
-                        "object",
-                        "null"
-                      ]
+                      "type": "object"
                     }
                   },
-                  "type": [
-                    "object",
-                    "null"
-                  ],
+                  "type": "object",
+                  "x-kubernetes-map-type": "atomic",
                   "additionalProperties": false
                 }
               },
-              "type": [
-                "object",
-                "null"
-              ],
+              "type": "object",
               "additionalProperties": false
             },
             "type": [
@@ -228,10 +200,7 @@
             ]
           }
         },
-        "type": [
-          "object",
-          "null"
-        ],
+        "type": "object",
         "additionalProperties": false
       },
       "type": [
@@ -247,7 +216,7 @@
           "from": {
             "description": "List of sources which should be able to access the pods selected for this rule. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list.",
             "items": {
-              "description": "NetworkPolicyPeer describes a peer to allow traffic from. Only certain combinations of fields are allowed",
+              "description": "NetworkPolicyPeer describes a peer to allow traffic to/from. Only certain combinations of fields are allowed",
               "properties": {
                 "ipBlock": {
                   "description": "IPBlock describes a particular CIDR (Ex. \"192.168.1.1/24\",\"2001:db9::/64\") that is allowed to the pods matched by a NetworkPolicySpec's podSelector. The except entry describes CIDRs that should not be included within this rule.",
@@ -273,10 +242,7 @@
                   "required": [
                     "cidr"
                   ],
-                  "type": [
-                    "object",
-                    "null"
-                  ],
+                  "type": "object",
                   "additionalProperties": false
                 },
                 "namespaceSelector": {
@@ -315,10 +281,7 @@
                           "key",
                           "operator"
                         ],
-                        "type": [
-                          "object",
-                          "null"
-                        ],
+                        "type": "object",
                         "additionalProperties": false
                       },
                       "type": [
@@ -334,16 +297,11 @@
                         ]
                       },
                       "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed.",
-                      "type": [
-                        "object",
-                        "null"
-                      ]
+                      "type": "object"
                     }
                   },
-                  "type": [
-                    "object",
-                    "null"
-                  ],
+                  "type": "object",
+                  "x-kubernetes-map-type": "atomic",
                   "additionalProperties": false
                 },
                 "podSelector": {
@@ -382,10 +340,7 @@
                           "key",
                           "operator"
                         ],
-                        "type": [
-                          "object",
-                          "null"
-                        ],
+                        "type": "object",
                         "additionalProperties": false
                       },
                       "type": [
@@ -401,23 +356,15 @@
                         ]
                       },
                       "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed.",
-                      "type": [
-                        "object",
-                        "null"
-                      ]
+                      "type": "object"
                     }
                   },
-                  "type": [
-                    "object",
-                    "null"
-                  ],
+                  "type": "object",
+                  "x-kubernetes-map-type": "atomic",
                   "additionalProperties": false
                 }
               },
-              "type": [
-                "object",
-                "null"
-              ],
+              "type": "object",
               "additionalProperties": false
             },
             "type": [
@@ -439,10 +386,7 @@
                       ]
                     },
                     {
-                      "type": [
-                        "integer",
-                        "null"
-                      ]
+                      "type": "integer"
                     }
                   ]
                 },
@@ -454,10 +398,7 @@
                   ]
                 }
               },
-              "type": [
-                "object",
-                "null"
-              ],
+              "type": "object",
               "additionalProperties": false
             },
             "type": [
@@ -466,10 +407,7 @@
             ]
           }
         },
-        "type": [
-          "object",
-          "null"
-        ],
+        "type": "object",
         "additionalProperties": false
       },
       "type": [
@@ -513,10 +451,7 @@
               "key",
               "operator"
             ],
-            "type": [
-              "object",
-              "null"
-            ],
+            "type": "object",
             "additionalProperties": false
           },
           "type": [
@@ -532,16 +467,11 @@
             ]
           },
           "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed.",
-          "type": [
-            "object",
-            "null"
-          ]
+          "type": "object"
         }
       },
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
+      "x-kubernetes-map-type": "atomic",
       "additionalProperties": false
     },
     "policyTypes": {

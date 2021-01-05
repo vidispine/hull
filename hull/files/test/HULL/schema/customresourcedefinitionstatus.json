@@ -57,10 +57,7 @@
         "plural",
         "kind"
       ],
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "additionalProperties": false
     },
     "conditions": {
@@ -103,10 +100,7 @@
           "type",
           "status"
         ],
-        "type": [
-          "object",
-          "null"
-        ],
+        "type": "object",
         "additionalProperties": false
       },
       "type": [

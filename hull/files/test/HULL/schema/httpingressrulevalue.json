@@ -32,10 +32,7 @@
                   "kind",
                   "name"
                 ],
-                "type": [
-                  "object",
-                  "null"
-                ],
+                "type": "object",
                 "additionalProperties": false
               },
               "serviceName": {
@@ -54,10 +51,7 @@
                     ]
                   },
                   {
-                    "type": [
-                      "integer",
-                      "null"
-                    ]
+                    "type": "integer"
                   }
                 ]
               }
@@ -83,10 +77,7 @@
         "required": [
           "backend"
         ],
-        "type": [
-          "object",
-          "null"
-        ],
+        "type": "object",
         "additionalProperties": false
       },
       "type": [

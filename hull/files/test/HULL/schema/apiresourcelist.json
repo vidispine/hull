@@ -20,9 +20,6 @@
       "type": [
         "string",
         "null"
-      ],
-      "enum": [
-        "APIResourceList"
       ]
     },
     "resources": {
@@ -111,10 +108,7 @@
           "kind",
           "verbs"
         ],
-        "type": [
-          "object",
-          "null"
-        ],
+        "type": "object",
         "additionalProperties": false
       },
       "type": [
