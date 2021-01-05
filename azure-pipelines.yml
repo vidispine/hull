@@ -25,6 +25,7 @@ pool:
 
 steps:
 - script: |
+      set -euo pipefail
       echo installing gauge
       sudo apt-key adv --keyserver hkp://pool.sks-keyservers.net --recv-keys 023EDB0B
       echo deb https://dl.bintray.com/gauge/gauge-deb stable main | sudo tee -a /etc/apt/sources.list
@@ -32,7 +33,7 @@ steps:
       sudo apt-get install gauge
       cd hull/files/test/HULL
       sudo pip install -r requirements.txt
-
+      gauge
   displayName: 'install gauge'
   condition: eq('${{ parameters.RunTests }}',true)
 
