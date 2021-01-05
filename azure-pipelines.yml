@@ -51,7 +51,7 @@ steps:
 
   - script: |
       set -euo pipefail
-      echo starting gauge test
+      echo starting gauge test against helm version `helm version`
       ls
       cd hull/files/test/HULL
       ls
