@@ -1,7 +1,0 @@
-# Basic chart description and version
-apiVersion: v1
-appVersion: 20.1.1 # Will be set/overwritten on build creation
-description: <product> chart for Kubernetes
-name: <product> # replace with Chart Name, must be identical to the charts folder name
-version: 20.1.1 # Will be set/overwritten on build creation
-

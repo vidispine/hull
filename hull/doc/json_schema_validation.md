@@ -21,11 +21,11 @@ A few steps are needed to enable this feature in VSCode:
 
 - Install the `YAML extension` in VS Code. You can install the extension directly in Visual Studio Code. Just navigate to Extensions, search for the `YAML extension` and install it.
 - After installing the `YAML extension` go to settings and then search for "schema" and click on "Edit in settings.json" to configure the extension:
-  - Associate the file endings you want to validate with the `values.schema.json` of HULL:
+  - Associate the file endings you want to validate with the `values.schema.json` of HULL, you could for example use `*.hull.yaml` as an ending for HULL `values.yaml` files:
   
   ```yaml
   "yaml.schemas": {
-     "D:\\GIT\\hull\\hull\\values.schema.json": "*.hull.yaml"
+     "D:\\GIT\\hull\\hull\\values.schema.json": [ "*.hull.yaml", "values.yaml" ]
   }
   ```
   

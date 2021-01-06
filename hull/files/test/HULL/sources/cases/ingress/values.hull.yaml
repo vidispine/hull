@@ -31,7 +31,7 @@ hull:
       
       multi:
         rules:
-          one_host:
+          first_host:
             host: host.one.com
             http:              
               paths:                  
@@ -72,5 +72,53 @@ hull:
             secretName: mysecret
             hosts:
               - "host.one.com"
-          
+    
+      staticnames:
+        rules:
+          first_host:
+            host: host.one.com
+            http:              
+              paths:                  
+                standard:
+                  path: /external
+                  backend:
+                    service:
+                      name: external_service
+                      staticName: true
+                      port: 
+                        number: 80                
+          second_host:
+            host: host.two.com
+            http:              
+              paths:                  
+                standard:
+                  path: /standard                    
+                  backend:
+                    service:
+                      name: service1_standard
+                      port: 
+                        number: 80                
+          third_host:
+            host: host.three.com
+            http:              
+              paths:                  
+                standard:
+                  path: /transform                    
+                  backend:
+                    service:
+                      name: _HULL_TRANSFORMATION_{{NAME=hull.util.transformation.makefullname}}{{COMPONENT=full_name_transformed}}
+                      staticName: true
+                      port: 
+                        number: 80                
+        tls:          
+          first_host:
+            secretName: external_secret
+            staticName: true
+            hosts:
+              - "host.one.com"
+          second_host:
+            secretName: local_secret            
+            hosts:
+              - "host.two.com"
+
   ###################################################

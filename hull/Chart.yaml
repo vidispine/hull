@@ -1,7 +1,7 @@
 apiVersion: v2
 name: hull
-version: 1.18.1
-kubeVersion: ">= 1.18.0"
+version: 1.20.0
+kubeVersion: ">= 1.20.0"
 description: HULL - Helm UtiLity Library
 type: library
 keywords:

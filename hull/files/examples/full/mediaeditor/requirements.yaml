@@ -1,9 +1,0 @@
-# Store all dependencies (subcharts) which can be deployed from within this chart
-dependencies:
-  - name: hull
-    version: "1.0.0"
-    repository: "file:///GIT/VPMS3/VPMS3HelmChartsCommonLibrary"
-  - name: nginx-ingress
-    version: "1.11.0"
-    repository: https://kubernetes-charts.storage.googleapis.com
-    condition: nginx-ingress.enabled

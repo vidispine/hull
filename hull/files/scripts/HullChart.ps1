@@ -2,7 +2,7 @@
 .SYNOPSIS
     This script performs operations on a HELM chart.
 .DESCRIPTION
-    This script handles all steps to install or test a HELM chart for VPMS3
+    This script handles steps to install or test a HELM chart
 .PARAMETER HelmChartDirectoryPath
     Path to the directory containing the HELM chart to operate on
 .PARAMETER KubeConfigFilePath

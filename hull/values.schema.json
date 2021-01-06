@@ -13427,6 +13427,10 @@
           "description": "Name is the referenced service. The service must exist in the same namespace as the Ingress object.",
           "type": "string"
         },
+        "staticName": {
+          "title": "StaticName",
+          "type": "boolean"
+        },
         "port": {
           "$ref": "#/definitions/io.k8s.api.networking.v1.ServiceBackendPort",
           "description": "Port of the referenced service. A port name or port number is required for a IngressServiceBackend."
@@ -13472,7 +13476,8 @@
     "io.k8s.api.networking.v1.IngressTLS.Names": {
       "enum": [
         "hosts",
-        "secretName"
+        "secretName",
+        "staticName"
       ]
     },
     "io.k8s.api.networking.v1.IngressTLS": {
@@ -13489,6 +13494,10 @@
         "secretName": {
           "description": "SecretName is the name of the secret used to terminate TLS traffic on port 443. Field is left optional to allow TLS routing based on SNI hostname alone. If the SNI host in a listener conflicts with the \"Host\" header field used by an IngressRule, the SNI host is used for termination and value of the Host header is used for routing.",
           "type": "string"
+        },
+        "staticName": {
+          "title": "StaticName",
+          "type": "boolean"
         }
       },
       "type": "object",
@@ -22257,18 +22266,42 @@
         },
         "config": {
           "$id": "#/definitions/root/config",
+          "description": "Specification of configuration options for this chart.",
           "title": "Config",
           "type": "object",
           "required": [],
           "properties": {
             "general": {
               "$id": "#/definitions/root/config/general",
+              "description": "In this section you might define everything that is not particular to a unique product but to a range of products you want to deploy via helm. See the subfields descriptions for their inteded usage.",              
               "title": "General",
               "type": "object",
               "required": [],
               "properties": {
+                "createImagePullSecretsFromRegistries": {
+                  "$id": "#/definitions/root/config/general/createImagePullSecretsFromRegistries",
+                  "description": "If true, image pull secrets are created from all defined registries and added to pods.",
+                  "type": "boolean",
+                  "examples": [
+                    true
+                  ],
+                  "default": true
+                },       
+                "fullnameOverride": {
+                  "$id": "#/definitions/root/config/general/fullnameOverride",
+                  "description": "Global value to use as the fullname, overriding the dynamically created fullname.",
+                  "title": "FullnameOverride",
+                  "type": "string"
+                },             
+                "nameOverride": {
+                  "$id": "#/definitions/root/config/general/nameOverride",
+                  "description": "Global value to use as the name of the app, overriding the dynamically created name.",
+                  "title": "FullnameOverride",
+                  "type": "string"
+                },                
                 "rbac": {
                   "$id": "#/definitions/root/config/general/rbac",
+                  "description": "Global switch which enables RBAC objects for installation. If true the enabled objects are deployed to the cluster, if false no RBAC objects are created.",  
                   "title": "Rbac",
                   "type": "boolean",
                   "examples": [
@@ -22279,18 +22312,20 @@
                 "metadata": {
                   "$id": "#/definitions/root/config/general/metadata",
                   "title": "Metadata",
+                  "description": "Defined metadata fields here will be automatically added to all objects metadata.",
                   "type": "object",
                   "required": [],
                   "properties": {
                     "labels": {
                       "$id": "#/definitions/root/config/general/metadata/labels",
                       "title": "Labels",
-                      "description": "The labels to add to all objects that are rendered through HULL.",
+                      "description": "Labels added to all objects. The common labels refer to the Kubernetes and Helm common labels and custom labels can be freely specified.",
                       "type": "object",
                       "required": [],
                       "properties": {
                         "common": {
                           "$id": "#/definitions/root/config/general/metadata/labels/common",
+                          "description": "Common labels specification as defined in https://helm.sh/docs/chart_best_practices/labels/ and https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/. Unless specifically overwriten with empty values all metadata labels are automatically added to all objects according to their default definition. It should be considered to set a value for config.general.metadata.labels.common.app.kubernetes.io/part-of if the helm chart is part-of a product suite.",
                           "title": "Common",
                           "type": "object",
                           "required": [],
@@ -22298,42 +22333,49 @@
                             "app.kubernetes.io/managed-by": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/managed-by",
                               "title": "App.kubernetes.io/managed-by",
+                              "description": "Managed by metadata.",
                               "type": "null",
                               "default": null
                             },
                             "app.kubernetes.io/version": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/version",
                               "title": "App.kubernetes.io/version",
+                              "description": "Version metadata.",
                               "type": "null",
                               "default": null
                             },
                             "app.kubernetes.io/part-of": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/part-of",
                               "title": "App.kubernetes.io/part-of",
+                              "description": "Part-of metadata.",
                               "type": "null",
                               "default": null
                             },
                             "app.kubernetes.io/name": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/name",
                               "title": "App.kubernetes.io/name",
+                              "description": "Name metadata.",
                               "type": "null",
                               "default": null
                             },
                             "app.kubernetes.io/instance": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/instance",
                               "title": "App.kubernetes.io/instance",
+                              "description": "Instance metadata.",
                               "type": "null",
                               "default": null
                             },
                             "app.kubernetes.io/component": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/component",
                               "title": "App.kubernetes.io/component",
+                              "description": "Component metadata.",
                               "type": "null",
                               "default": null
                             },
                             "helm.sh/chart": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/helm.sh/chart",
                               "title": "Helm.sh/chart",
+                              "description": "Helm metadata.",
                               "type": "null",
                               "default": null
                             }
@@ -22347,7 +22389,8 @@
                           "required": [],
                           "properties": {}
                         }
-                      }
+                      },
+                      "additionalProperties": false
                     },
                     "annotations": {
                       "$id": "#/definitions/root/config/general/metadata/annotations",
@@ -22355,19 +22398,41 @@
                       "description": "The annotations to add to all objects that are rendered through HULL.",
                       "type": "object",
                       "required": [],
-                      "properties": {}
+                      "properties": {
+                        "custom": {
+                          "$id": "#/definitions/root/config/general/metadata/annotations/custom",
+                          "title": "Custom",
+                          "description": "The custom annotations to add to all objects that are rendered through HULL.",
+                          "type": "object",
+                          "required": [],
+                          "properties": {}
+                        },
+                        "hashes": {
+                          "$id": "#/definitions/root/config/general/metadata/annotations/hashes",
+                          "title": "Custom",
+                          "description": "If true, annotations are created from hashes of used ConfigMaps and Secrets.",
+                          "type": "boolean",
+                          "examples": [
+                            true
+                          ],
+                          "default": false
+                        }
+                      },
+                      "additionalProperties": false
                     }
-                  }
+                  },
+                  "additionalProperties": false
                 },
                 "data": {
                   "$id": "#/definitions/root/config/general/data",
                   "title": "Data",
-                  "description": "If you create and manage multiple microservices/products within a larger suite you can define metadata which is relevant to all sibling helm charts here. This way you can centrally refer to these fields in all charts.",
+                  "description": "Free form field whereas subfields of this field should have a clearly defined meaning in the context of your product suite. <br><br>For example, assume all of your products or microservices (each coming as a seperate helm chart) depends on the same given endpoints (authentication, configuration, ...). You might have a shared Kubernetes job executed by each helm chart which targets those endpoints. Now you could specify an external HULL values.yaml containing the job specification and the endpoint definition here in a way you see fit and construct an overlay values.yaml rendered on top of each deployment and have a unified mechanism in place.",
                   "type": "object",
                   "required": [],
                   "properties": {}
                 }
-              }
+              },
+              "additionalProperties": false
             },
             "specific": {
               "$id": "#/definitions/root/config/specific",
@@ -22378,7 +22443,8 @@
               "properties": {}
             }
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
     "root.Names": {
@@ -22390,7 +22456,7 @@
     "hull": {
       "title": "Hull",
       "type": "object",
-      "description": "Root element for properties of the HULL library.",
+      "description": "Root element for all properties of the HULL library.",
       "required": [
         "hull"
       ],

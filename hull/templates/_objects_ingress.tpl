@@ -43,11 +43,7 @@ spec:
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $component := default "" (index . "COMPONENT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
-{{ $secretName := include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component) }}
-{{ if $spec.staticName }}
-{{ $secretName = $component }}
-{{ end }}
-- secretName: {{ $secretName }}
+- secretName: {{ include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $spec.secretName "SPEC" $spec) }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "secretName")) | indent 2 }}
 {{ end }}
 
