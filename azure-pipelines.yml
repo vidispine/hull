@@ -76,7 +76,7 @@ steps:
       ls
       sudo chmod +x ./cr
       sudo ./cr package ./hull 
-      sudo ./cr upload --git-repo hull --owner vidispine --token 27bed03ee13e7139cdb95e6b0c82dafce07c5b7a
+      sudo ./cr upload --git-repo hull --owner vidispine --token 27bed03ee13e7139cdb95e6b0c82dafce07c5b7a || true
       #sudo docker pull quay.io/helmpk/chart-releaser:v1.1.1
       #sudo docker run -v /hull:/hull -v $(Agent.TempDirectory):/tmp --entrypoint cr quay.io/helmpk/chart-releaser:v1.1.1 package /hull/hull --package-path /hull 
   #condition: eq(variables['create_subchart'],true)
