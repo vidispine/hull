@@ -69,7 +69,7 @@ steps:
 - script: |
       set -euo pipefail
       echo package chart
-      cp -r hull $(Agent.TempDirectory)/hull
+      cp -r . $(Agent.TempDirectory)
       cd $(Agent.TempDirectory)
       wget https://github.com/helm/chart-releaser/releases/download/v1.1.1/chart-releaser_1.1.1_linux_amd64.tar.gz
       tar -xvzf chart-releaser_1.1.1_linux_amd64.tar.gz -C ./
