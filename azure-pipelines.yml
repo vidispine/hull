@@ -5,7 +5,7 @@
 
 parameters:
 - name: RunTests
-  default: true
+  default: false
 - name: HelmVersions
   type: object
   default:
