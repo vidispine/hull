@@ -1,5 +1,0 @@
-hull:
-  config:
-    general:
-      nameOverride: "a-shorter-name"
-      fullnameOverride: "a-slightly-longer-name" 
