@@ -79,7 +79,7 @@ steps:
       sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
       mkdir .cr-index
       wget https://vidispine.github.io/hull/helm/index.yaml -O .cr-index/index.yaml
-      sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) -c https://vidispine.github.io/hull/helm/index.yaml
+      sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) -charts-repo https://vidispine.github.io/hull/helm/index.yaml --push --pages-branch gh-pages
       #sudo docker pull quay.io/helmpk/chart-releaser:v1.1.1
       #sudo docker run -v /hull:/hull -v $(Agent.TempDirectory):/tmp --entrypoint cr quay.io/helmpk/chart-releaser:v1.1.1 package /hull/hull --package-path /hull 
   #condition: eq(variables['create_subchart'],true)
