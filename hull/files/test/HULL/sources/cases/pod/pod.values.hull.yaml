@@ -65,6 +65,23 @@ hull:
               image:
                 repository: my/image/repo
                 tag: "99.9"
+      
+      removal_test:
+        pod:
+          containers:
+            keep:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              ports:
+                keep:
+                  containerPort: 80
+                remove:
+                  containerPort: 80
+            remove:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
 
       volume_test:
         pod:
@@ -114,7 +131,11 @@ hull:
                 claimName: a_static_claim
                 readOnly: false
                 staticName: true
-      
+            
+            to_be_removed:
+              persistentVolumeClaim:
+                claimName: remove_me
+
       env_test:
         pod:
           containers:

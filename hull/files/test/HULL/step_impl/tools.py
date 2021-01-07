@@ -263,7 +263,7 @@ def validate_test_object_against_json_schema(test_object):
 ### non-steps
 
 def assert_values_equal(actual, expected, key=None):
-    assert expected == actual, "For key '"+ key + "' there was expected value:\n\n" + expected + "\n\nbut found:\n\n" + actual + "\n\n"
+    assert expected == actual, "For key '"+ key + "' there was expected value:\n\n" + str(expected) + "\n\nbut found:\n\n" + str(actual) + "\n\n"
 
 def validateJson(test_object):
     

@@ -41,6 +41,8 @@ hull:
       
       disabled:
         enabled: false
+      
+      nulled: null
         
       static_name:
         staticName: true

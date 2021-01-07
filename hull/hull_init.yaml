@@ -112,6 +112,7 @@ metadata:
 {{- $defaultSpec = (index $.Values.hull.objects $lowerObjectType)._HULL_OBJECT_TYPE_DEFAULT_ }}
 {{- range $objectKey, $spec := (index $.Values.hull.objects $lowerObjectType) }}
 {{- if ne $objectKey "_HULL_OBJECT_TYPE_DEFAULT_" -}}
+{{ if (gt (len (keys (default dict $spec))) 0) }}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 {{ $spec = merge $spec $defaultSpec }}
 
@@ -123,6 +124,7 @@ metadata:
 {{ toYaml $objectSpec }}
 
 ---
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

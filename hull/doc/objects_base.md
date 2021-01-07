@@ -1,10 +1,10 @@
-# Base options for all objects
+# Base properties for all objects
 
 The following configuration properties are available to all objects specified via HULL.
 
 ## JSON Schema Elements
 
-### The `hull.ObjectBase.v1` options
+### The `hull.ObjectBase.v1` properties
 
 You can add the following optional properties to any object specified via HULL: 
 

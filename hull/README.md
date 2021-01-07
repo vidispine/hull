@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This Helm library chart is designed to ease building, maintaining and configuring [Helm](https://helm.sh) charts. It can be added to any existing Helm chart and used without the risk of breaking existing Helm charts functionalities, see [adding HULL to a Helm chart](./doc/setup.md) for more information.
+This Helm library chart is designed to ease building, maintaining and configuring Kubernetes objects in [Helm](https://helm.sh) charts. It can be added to any existing Helm chart and used without the risk of breaking the Helm charts functionalities, see [adding HULL to a Helm chart](./doc/setup.md) for more information.
 
 At the core, the HULL library chart provides Go Templating functions to create/render Kubernetes objects as YAML. But with the HULL library's functions no template files in the `/templates` folder need to be created, adapted and maintained to define the Kubernetes objects. Only an object definition in the `values.yaml`'s `hull` subchart key is required. JSON schema validation with the `values.schema.json` helps in directly producing Kubernetes API conforming objects for deployment.
 

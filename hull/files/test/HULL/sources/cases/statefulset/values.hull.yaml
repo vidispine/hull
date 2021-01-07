@@ -75,11 +75,21 @@ hull:
         pod:
           containers: {}
 
+      removal_test:
+        serviceName: removal_test
+        pod:
+          containers:
+            remove: null
+            keep:
+              ports:
+                remove: null
+                
       volume_test:
         serviceName: volume_test
         pod:
-          containers: {}
-
+          volumes:
+            to_be_removed: null
+      
       env_test:
         serviceName: env_test
         pod:

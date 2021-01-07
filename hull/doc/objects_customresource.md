@@ -6,7 +6,7 @@ Only for this object type you need to explicitly provide the `kind` and `apiVers
 
 ## JSON Schema Elements
 
-### The `hull.CustomResource.v1` options
+### The `hull.CustomResource.v1` properties
 
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------

@@ -4,26 +4,26 @@ ConfigMaps and Secrets can be created very efficient using the HULL library. The
 
 ## JSON Schema Elements
 
-### The `hull.VirtualFolder.v1` options
+### The `hull.VirtualFolder.v1` properties
 
-> The configuration of `hull.VirtualFolder.v1` is based on a key value dictionary.
+> The key-value pairs of value type `hull.VirtualFolder.v1` are converted to an array on rendering
 
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------
-`inlines` | Dictionary with Key-Value pairs. Can be used to specify ConfigMap or Secret contents inline in the `values.yaml`.<br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.VirtualFolderInline.v1`** options. See below for reference. | `{}` | `entryscript.sh:`<br>&#160;&#160;`data:`&#160;`|-`<br>&#160;&#160;&#160;&#160;`#!/bin/bash`<br>&#160;&#160;&#160;&#160;`echo`&#160;`'hello'`<br>`readme.txt:`<br>&#160;&#160;`data:`&#160;`'Just`&#160;`a`&#160;`text'`
-`files` | Dictionary with Key-Value pairs. Can be used to specify ConfigMap or Secret data sourced from external directories.<br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.VirtualFolderFile.v1`** options. See below for reference. | `{}` | `settings.json:`<br>&#160;&#160;`path:`&#160;`'files/settings.json'`<br>`application.config:`<br>&#160;&#160;`path:`&#160;`'files/appconfig.yaml'`<br>&#160;&#160;`noTemplating: true`
+`inlines` | Dictionary with Key-Value pairs. Can be used to specify ConfigMap or Secret contents inline in the `values.yaml`.<br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.VirtualFolderInline.v1`** properties. See below for reference. | `{}` | `entryscript.sh:`<br>&#160;&#160;`data:`&#160;`|-`<br>&#160;&#160;&#160;&#160;`#!/bin/bash`<br>&#160;&#160;&#160;&#160;`echo`&#160;`'hello'`<br>`readme.txt:`<br>&#160;&#160;`data:`&#160;`'Just`&#160;`a`&#160;`text'`
+`files` | Dictionary with Key-Value pairs. Can be used to specify ConfigMap or Secret data sourced from external directories.<br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.VirtualFolderFile.v1`** properties. See below for reference. | `{}` | `settings.json:`<br>&#160;&#160;`path:`&#160;`'files/settings.json'`<br>`application.config:`<br>&#160;&#160;`path:`&#160;`'files/appconfig.yaml'`<br>&#160;&#160;`noTemplating: true`
 
-### The `hull.VirtualFolderInlines.v1` options
+### The `hull.VirtualFolderInlines.v1` properties
 
-> The configuration of `hull.VirtualFolderInlines.v1` is based on a key value dictionary.
+> The key-value pairs of value type `hull.VirtualFolderInlines.v1` are converted to an array on rendering
 
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------
 | `data` | The actual data to store in the ConfigMap or Secret | | `'Just`&#160;`a`&#160;`text'`
 
-### The `hull.VirtualFolderFiles.v1` options
+### The `hull.VirtualFolderFiles.v1` properties
 
-> The configuration of `hull.VirtualFolderFiles.v1` is based on a key value dictionary.
+> The key-value pairs of value type `hull.VirtualFolderFiles.v1` are converted to an array on rendering
 
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------

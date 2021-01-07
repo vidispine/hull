@@ -85,6 +85,19 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
 
+      removal_test:
+        pod:
+          containers:
+            remove: null
+            keep:
+              ports:
+                remove: null
+                
+      volume_test:
+        pod:
+          volumes:
+            to_be_removed: null
+
       full_example_deployment:
         annotations:
           example: "Some annotation applied to this deployment full_example_deployment"

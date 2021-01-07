@@ -27,7 +27,12 @@
 * Set test object to "release-name-hull-test-image_name_tag"
 * Test Object has key "spec§template§spec§containers§0§image" with value "my/image/repo:99.9"
 
+* Set test object to "release-name-hull-test-removal_test"
+* Test Object has key "spec§template§spec§containers" with array value that has "1" items
+* Test Object has key "spec§template§spec§containers§0§ports" with array value that has "1" items
+
 * Set test object to "release-name-hull-test-volume_test"
+* Test Object has key "spec§template§spec§volumes" with array value that has "8" items
 * Test Object has key "spec§template§spec§volumes§0§name" with value "azure_disk_volume"
 * Test Object has key "spec§template§spec§volumes§0§azureDisk§diskName" with value "myDisk"
 * Test Object has key "spec§template§spec§volumes§0§azureDisk§diskURI" with value "uri://theDisk"
