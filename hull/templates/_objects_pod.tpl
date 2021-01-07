@@ -42,7 +42,7 @@ spec:
 {{- include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultPodBasePath.initContainers._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec.pod "KEY" "initContainers" "OBJECT_TEMPLATE" "hull.object.container" ) | indent 2 -}}
 {{- include "hull.object.pod.serviceAccountName" . | indent 2 -}}
 {{- include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultPodBasePath.volumes._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec.pod "KEY" "volumes" "OBJECT_TEMPLATE" "hull.object.volume" ) | indent 2 -}}
-{{- include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.pod "HULL_OBJECT_KEYS" (list "containers" "initContainers" "volumes")) | indent 2 -}}
+{{- include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.pod "HULL_OBJECT_KEYS" (list "imagePullSecrets" "serviceAccountName" "containers" "initContainers" "volumes")) | indent 2 -}}
 {{- end -}}
 
 
@@ -66,16 +66,20 @@ spec:
 {{- define "hull.object.pod.imagePullSecrets" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
-{{ if hasKey $spec "imagePullSecrets" }}
+{{ if hasKey $spec.pod "imagePullSecrets" }}
 imagePullSecrets: 
-{{ $spec.imagePullSecrets | toYaml }}
+{{ $spec.pod.imagePullSecrets | toYaml }}
 {{- else -}}
 {{ if $parent.Values.hull.config.general.createImagePullSecretsFromRegistries }}
+{{ if (gt (len (keys (default dict $parent.Values.hull.objects.registry))) 1) }}
 imagePullSecrets: 
 {{- range $name, $specRegistry := $parent.Values.hull.objects.registry }}
 {{- if (ne $name "_HULL_OBJECT_TYPE_DEFAULT_") }}
 - name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "SPEC" (index $parent.Values.hull.objects.registry $name) "COMPONENT" $name) }}
 {{- end }}
+{{- end }}
+{{- else }}
+imagePullSecrets: []
 {{- end }}
 {{- end }}
 {{- end }}
@@ -102,10 +106,8 @@ imagePullSecrets:
 {{ if hasKey $spec "serviceAccountName" }}
 serviceAccountName: {{ $spec.serviceAccountName }}
 {{ else }}
-{{ if $parent.Values.hull.config.general.rbac }}
 {{ if $parent.Values.hull.objects.serviceaccount.default.enabled }}
 serviceAccountName: {{ include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "COMPONENT" "default") }}
-{{ end }}
 {{ end }}
 {{ end }}
 {{ end }}

@@ -65,7 +65,7 @@ That is why HULL allows you out-of-the-box to specify complete Kubernetes object
 
 ## Components
 
-At the core of the HULL library is the interplay between `values.yaml`, `values.schema.json`, `hull_init.yaml` and the template files in `/templates` that come with HULL.
+At the core of the HULL library is the interplay between `values.yaml`, `values.schema.json`, `hull.yaml` and the template files in `/templates` that come with HULL.
 
 ### The `values.yaml`
 
@@ -79,9 +79,9 @@ The `values.schema.json` of each HULL library release is built from the respecti
 
 This means that misconfigurations of the `values.yaml` `hull` subsection are either visible on input or catched on processing the chart.
 
-### The `hull_init.yaml`
+### The `hull.yaml`
 
-The `hull_init.yaml` needs to be placed in the parents charts `/templates` folder. It contains a loop over all handled object types and their specific configurational properties. Within the loop all objects of a handled type (as specified in `values.yaml`) are iterated over and the corresponding rendering function is called for the specified and enabled object. 
+The `hull.yaml` needs to be placed in the parents charts `/templates` folder. It contains a loop over all handled object types and their specific configurational properties. Within the loop all objects of a handled type (as specified in `values.yaml`) are iterated over and the corresponding rendering function is called for the specified and enabled object. 
 
 ### The `/templates`
 

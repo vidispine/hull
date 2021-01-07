@@ -1,13 +1,13 @@
 # Basic chart description and version
 apiVersion: v1
-appVersion: 1.0
+appVersion: 1.20.0
 description: hull-test
 name: hull-test
-version: 1.0
+version: 1.20.1
 dependencies:
   - name: hull
-    version: "1.0.0"
-    repository: "file:///HULL"
+    version: "1.20.1"
+    repository: "https://vidispine.github.io/hull"
 
       
 

@@ -19,7 +19,7 @@
 {{ $annotations = merge $annotations $parent.Values.hull.config.general.metadata.annotations.custom }}
 {{- end -}}
 {{ if default false (index . "MERGE_TEMPLATE_METADATA") }}
-{{ $annotations = merge $annotations ((include "hull.metadata.annotations.custom" (merge (dict "LABELS_METADATA" "templateAnnotations") . ) | fromYaml)) }}
+{{ $annotations = merge $annotations ((include "hull.metadata.annotations.custom" (merge (dict "ANNOTATIONS_METADATA" "templateAnnotations") . ) | fromYaml)) }}
 {{- end -}}
 annotations:
 {{ toYaml $annotations | indent 2 }}

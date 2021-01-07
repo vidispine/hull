@@ -21909,7 +21909,7 @@
       ],
       "properties": {
         "job": {
-          "$ref": "#/definitions/job"
+          "$ref": "#/definitions/job.v1"
         }
       }
     },

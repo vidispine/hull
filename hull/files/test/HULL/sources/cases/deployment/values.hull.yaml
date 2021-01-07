@@ -270,4 +270,7 @@ hull:
               image:
                 repository: nginx
                 tag: 1.14.2
+              ports:
+                http:
+                  containerPort: 80
   ###################################################

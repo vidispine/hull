@@ -117,13 +117,13 @@ def copy_the_hull_chart_files_to_test_execution_folder():
 def copy_the_hull_chart_files_to_test_object_in_chart(case, chart):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     hull_path = os.path.join(dir_path,'./../../../../')
-    dst_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart, "charts/hull-1.19.0.1/")
+    dst_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart, "charts/hull-1.0.0/")
     try:
         copyfile(hull_path, "Chart.yaml", dst_path)
         copyfile(hull_path, "README.md", dst_path)
         copyfile(hull_path, "values.schema.json", dst_path)
         copyfile(hull_path, "values.yaml", dst_path)
-        copyfile(hull_path, "hull_init.yaml", os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart, "templates"))
+        copyfile(hull_path, "hull.yaml", os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart, "templates"))
         copytree(os.path.join(hull_path, "templates"), os.path.join(dst_path, "templates"))
     except Exception as e:
         print("Oops!", e.__str__, "occurred.")
@@ -283,7 +283,7 @@ def validateJson(test_object):
     
 def get_render_path(case, chart, values_file):
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    return os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered', chart, 'templates',  'hull_init.yaml')
+    return os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered', chart, 'templates',  'hull.yaml')
 
 def render_chart(case, chart, values_file):
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -300,8 +300,8 @@ def render_chart(case, chart, values_file):
     args = ("helm", "template", chart_path, "--debug", "--output-dir", render_path) + suites + ("-f",  os.path.join(chart_path, values_file))
     
     popen = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    print('STDOUT:\n', popen.stdout)
-    print('STDERR:\n', popen.stderr)
+    print('STDOUT:\n', popen.stdout.decode("utf-8").replace("\n",os.linesep))
+    print('STDERR:\n', popen.stderr.decode("utf-8").replace("\n",os.linesep) if popen.stderr is not None else "")
     return popen
 
 def copytree(src, dst, symlinks=False, ignore=None):
@@ -323,7 +323,7 @@ def copyfile(src_dir, src_filename, dst_dir):
 
 def get_objects(case, chart):
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    rendered_file_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered', chart, 'templates',  'hull_init.yaml')
+    rendered_file_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered', chart, 'templates',  'hull.yaml')
 
     assert os.path.isfile(rendered_file_path)
     
@@ -331,12 +331,10 @@ def get_objects(case, chart):
     with open(rendered_file_path) as file_in:
         
         item = None
-        lineCount = 0
         itemIndex = -1
         for line in file_in:
             if line.startswith("---"):                
                 items.append([])
-                itemCount = itemIndex + 1
             items[itemIndex].append(line)
     
     data_store.scenario.objects = []
