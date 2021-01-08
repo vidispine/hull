@@ -1,6 +1,6 @@
 # Adding the HULL library chart to a Helm chart
 
-If you do not have a Helm chart to start with you can make a copy of the [_hull-test_ Helm chart](./files/test/HULL/sources/charts/hull-test) which is used for unit testing. You then then need to rename the chart folder to your desired Helm chart's name and adjust the `Chart.yaml` to your desired charts name. After that you can add the HULL library chart to your Helm chart.
+If you do not have a Helm chart to start with you can make a copy of the [_hull-test_ Helm chart](./../files/test/HULL/sources/charts/hull-test) which is used for unit testing. You then need to rename the chart folder to your desired Helm chart's name and adjust the `Chart.yaml` to your desired charts name. 
 
 To add the HULL library chart to an exsting Helm chart:
 
