@@ -11,3 +11,6 @@ Registry Secrets can be created by specifying only the needed information and le
 | `server` | Docker Registry host address. | `""` | `myregistry.azurecr.io`
 | `username` | Docker Registry username. | `""` | `the_user`
 | `password` | Docker Registry password. | `""` | `the_pAsSwOrD`
+
+---
+Back to [README.md](./../README.md)
