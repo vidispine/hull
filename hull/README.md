@@ -310,7 +310,7 @@ spec:
 ```
 
 ### Advanced Example
-Now to render the nginx deployment example with extra features of the HULL library applied you can create the below `values.yaml` file in your parent chart. This example showcases:
+Now to render the nginx deployment example showcasing extra features of the HULL library you can create the below `values.yaml` file in your parent chart. This example highlights:
 
 - hierarchical metadata handling
 - default RBAC setup of objects

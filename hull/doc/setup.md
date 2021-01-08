@@ -16,7 +16,7 @@ To add the HULL library chart to an exsting Helm chart:
   
 - from the HULL library chart you included, you need to copy the file named `hull.yaml` from the HULL charts root folder to your parent charts `/templates` folder. 
 
-  **This is required to have the HULL library functions render the objects specified under the key `hull.objects` in the parent chart! As of this moment Helm only considers files in the parent charts `/templates` folder for rendering. Consider adding this step to your build pipeline when creating releases of your Helm chart which include HULL.**
+  ⚠️**This is required to have the HULL library functions render the objects specified under the key `hull.objects` in the parent chart! As of this moment Helm only considers files in the parent charts `/templates` folder for rendering. Consider adding this step to your build pipeline when creating releases of your Helm chart which include HULL.**⚠️
 
 If these preliminary steps have been taken you can start using the HULL chart to render Kubernetes objects from your Helm chart.
 
