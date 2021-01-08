@@ -44,9 +44,8 @@ As highlighted above, when included in a Helm chart the HULL library chart can t
 
 To learn more about the general architecture and features of the HULL library see the [Architecture Overview](./doc/architecture.md)
 
-⚠️**_IMPORTANT!_**⚠️: 
+**⚠️While there may be several benefits to rendering YAML via the HULL library please take note that it is a non-breaking addition to your Helm charts. The regular Helm workflow involving rendering of YAML templates in the `/templates` folder is completely unaffected by integration of the HULL library chart. Sometimes you might have very specific requirements on your configuration or object specification which the HULL library does not meet so you can use the regular Helm worflow for them and the HULL library for your more standard needs - easily in parallel in the same Helm chart.⚠️**
 
-> While there may be several benefits to rendering YAML via the HULL library please take note that it is a non-breaking addition to your Helm charts. The regular Helm workflow involving rendering of YAML templates in the `/templates` folder is completely unaffected by integration of the HULL library chart. Sometimes you might have very specific requirements on your configuration or object specification which the HULL library does not meet so you can use the regular Helm worflow for them and the HULL library for your more standard needs - easily in parallel in the same Helm chart. 
 ## Creating and configuring a HULL based chart
 
 The tasks of creating and configuring a HULL based helm chart can be considered as two sides of the same coin. Both sides interact with the same interface (the HULL library) to specify the objects that should be created. The task from a creators/maintainers perspective is foremeost to provide the ground structure for the objects that make up the particular application which is to be wrapped in a Helm chart. The consumer of the chart is tasked with appropriately adding his system specific context to the ground structure wherein he has the freedom to change and even add objects as needed to achieve his goals. At deploy time the creators base structure is merged with the consumers system-specific yaml file to build the complete configuration. Interacting via the same library interface fosters common understanding of how to work with the library on both sides and can eliminate most of the tedious copy&paste creation and examination heavy configuration processes.
@@ -216,7 +215,7 @@ To render this analoguously using the HULL library your chart needs to be [setup
 
 ### Minimal Example
 
-A minimal example of creating the expected result from above would be to create a `values.yaml` like below in your parent chart (commented with some explanations). Note that some features of HULL are explicitly disabled to obtain the output matching the above example closely:
+A minimal example of creating the expected result from above would be to create a `values.yaml` like below in your parent chart (commented with some explanations). Note that some default features of HULL such as RBAC and dynamic naming are explicitly disabled here to obtain the output matching the above example closely:
 
 ```yaml
 hull:
@@ -255,7 +254,6 @@ hull:
                       # arrays on rendering the chart.
                   containerPort: 80
 ```
-Note that RBAC was disabled to no produce
 
 This produces the following rendered deployment when running the `helm template` command (commented with some brief explanations):
 
