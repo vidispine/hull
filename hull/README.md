@@ -34,7 +34,7 @@ As highlighted above, when included in a Helm chart the HULL library chart can t
     - all created Kubernetes objects of a given type or 
     - any individual Kubernetes object. 
 
-  For more details refer to the documentation on [Metadata](./doc/metadata.md) and the advanced example below.
+  For more details on metadata overwriting refer to the advanced example below.
 
 - Flexible handling of ConfigMap and Secret input by choosing between inline specification of contents in `values.yaml` or import from external files for contents of larger sizes. When importing data from files the data can be either run through the templating engine or imported untemplated 'as is' if it already contains templating expressions that shall be passed on to the consuming application. 
 
@@ -184,7 +184,7 @@ Installing or upgrading a chart using HULL follows the standard procedures for e
   `<PATH_TO_HELM_V3_BINARY> upgrade --install --debug --create-namespace --atomic --namespace <CHART_RELEASE_NAMESPACE> --kubeconfig <PATH_TO_K8S_CLUSTER_KUBECONFIG> -f <PATH_TO_SYSTEM_SPECIFIC_VALUES_YAML> <RELEASE_NAME> <PATH_TO_CHART_DIRECTORY>`
 
 
-## First Example
+## First Examples
 
 Using the nginx deployment example from the Kubernetes documentation https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment as something we want to create with our HULL based Helm chart:
 
@@ -309,7 +309,7 @@ spec:
       volumes: []
 ```
 
-# More Advanced Example
+### Advanced Example
 Now to render the nginx deployment example with extra features of the HULL library applied you can create the below `values.yaml` file in your parent chart. This example showcases:
 
 - hierarchical metadata handling
