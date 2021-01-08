@@ -9,7 +9,9 @@ Essentially, the HULL library chart provides Go Templating functions to create/r
 The HULL library chart idea is partly inspired by the [common](
 https://github.com/helm/charts/tree/master/incubator/common) Helm chart concept and for testing 
 
-[![Gauge Badge](https://gauge.org/Gauge_Badge.svg)](https://gauge.org) .
+[![Gauge Badge](https://gauge.org/Gauge_Badge.svg)](https://gauge.org).
+
+[![Build Status](https://dev.azure.com/arvato-systems-dmm/VPMS3%20CrossCutting/_apis/build/status/vidispine.hull?branchName=main)](https://dev.azure.com/arvato-systems-dmm/VPMS3%20CrossCutting/_build/latest?definitionId=589&branchName=main)
 
 ## Key Features Overview
 
