@@ -4,7 +4,7 @@
 
 This Helm library chart is designed to ease building, maintaining and configuring Kubernetes objects in [Helm](https://helm.sh) charts. It can be added to any existing Helm chart and used without risk of breaking the Helm charts functionalities, see [adding the HULL library chart to a Helm chart](./doc/setup.md) for more information.
 
-At the core, the HULL library chart provides Go Templating functions to create/render Kubernetes objects as YAML. Due to the HULL library's extensive functions no template files in the `/templates` folder need to be created, adapted and maintained to define the Kubernetes objects. Only an object definition in the `values.yaml`'s `hull` subchart key is required to create it. JSON schema validation based on the [Helm JSON validation](https://helm.sh/docs/topics/charts/#schema-files) (via `values.schema.json`) helps in writing Kubernetes API conforming objects for deployment.
+Essentially, the HULL library chart provides Go Templating functions to create/render Kubernetes objects as YAML. Due to the HULL library's extensive usage of Go Templating functions no template files in the `/templates` folder need to be created, adapted and maintained to define the Kubernetes objects. Only an object definition in the parent charts `values.yaml`' is required to manage Kubernetes object creation. JSON schema validation based on the [Helm JSON validation](https://helm.sh/docs/topics/charts/#schema-files) (via `values.schema.json`) aids in writing Kubernetes API conforming objects for rendering from the beginning.
 
 The HULL library chart idea is partly inspired by the [common](
 https://github.com/helm/charts/tree/master/incubator/common) Helm chart concept and for testing 
@@ -15,36 +15,174 @@ https://github.com/helm/charts/tree/master/incubator/common) Helm chart concept 
 
 As highlighted above, when included in a Helm chart the HULL library chart can take over the job of dynamically rendering Kubernetes objects from their given specifications from the `values.yaml` file alone. With YAML object construction deferred to the HULL library's Go Templating functions instead of custom YAML templates in the `/templates` folder you can centrally enforce best practices:
 
-- Concentrate on what is needed to specify Kubernetes objects without having to add indidual boilerplate YAML templates to your chart. This removes a common source of errors and maintanance from the regular Helm workflow. To have the HULL rendered output conform to the Kubernetes API specification a large amount of unit tests validate rendered output against the original Kubernetes API JSON schema. 
+- Concentrate on what is needed to specify Kubernetes objects without having to add indidual boilerplate YAML templates to your chart. This removes a common source of errors and maintanance from the regular Helm workflow. To have the HULL rendered output conform to the Kubernetes API specification, a large number of unit tests validate the HULL rendered output against the Kubernetes API JSON schema. 
 
   For more details refer to the documentation on [JSON Schema Validation](./doc/json_schema_validation.md).
 
-- For all Kubernetes object types supported by HULL, all the Kubernetes object type's properties are available for configuring directly. This relieves chart maintainers from having to patch in missing configuration options and the Helm chart users from forking the Helm chart. Only updating the HULL chart to a newer version with matching Kubernetes API version is required to enable configuration of properties added to Kubernetes objects in newer API versions. The HULL charts are versioned to reflect the minimal Kubernetes API versions supported by them. 
+- For all Kubernetes object types supported by HULL, full access to the respective Kubernetes object properties is directly available. This relieves chart maintainers from having to add missing configuration options and the Helm chart users from forking the Helm chart to add configuration options they need. Only updating the HULL chart to a newer version with matching Kubernetes API version is required to enable configuration of properties added to Kubernetes objects meanwhile in newer API versions. The HULL charts are versioned to reflect the minimal Kubernetes API versions supported by them. 
 
-- The single interface of the HULL library is used to both create and configure objects in charts for deployment. This fosters the mutual understanding of chart creators/maintainers and consumers of how the chart actually works and what it contains. To avoid any misconfiguration, the interface to the library - the `values.yaml` of the HULL library - is fully JSON validated. When using a IDE supporting live JSON schema validation (e.g. VSCode) you can get IDE guidance when creating the HULL objects. In all cases, JSON schema conformance of the HULL input is validated before rendering. 
+   For more details refer to the documentation on [Architecture Overview](./doc/architecture.md).
+
+- The single interface of the HULL library is used to both create and configure objects in charts for deployment. This fosters the mutual understanding of chart creators/maintainers and consumers of how the chart actually works and what it contains. Digging into the `/templates` folder to understand the Helm charts implications is not required anymore. To avoid any misconfiguration, the interface to the library - the `values.yaml` of the HULL library - is fully JSON validated. When using an IDE supporting live JSON schema validation (e.g. VSCode) you can get IDE guidance when creating the HULL objects.  Before rendering, JSON schema conformance is validated by the HULL library.
 
   For more details refer to the documentation on [JSON Schema Validation](./doc/json_schema_validation.md).
 
 - Uniform and rich metadata is automatically attached to all objects created by the HULL library. 
   - Kubernetes standard labels as defined for [Kubernetes](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/) and [Helm](https://helm.sh/docs/chart_best_practices/labels/#standard-labels) are added to all objects metadata automatically. 
-  - Within a Helm chart including HULL, additional custom metadata can be set for:
+  - Additional custom labels and annotations metadata can be set hierarchically for:
     - all created Kubernetes objects or 
     - all created Kubernetes objects of a given type or 
     - any individual Kubernetes object. 
 
-  For more details refer to the documentation on [Metadata](./doc/metadata.md).
+  For more details refer to the documentation on [Metadata](./doc/metadata.md) and the advanced example below.
 
 - Flexible handling of ConfigMap and Secret input by choosing between inline specification of contents in `values.yaml` or import from external files for contents of larger sizes. When importing data from files the data can be either run through the templating engine or imported untemplated 'as is' if it already contains templating expressions that shall be passed on to the consuming application. 
 
   For more details refer to the documentation on [ConfigMaps and Secrets](./doc/configmaps_secrets.md).
 
-- Enable automatic hashing of referenced configmaps and secrets to facilitate pod restarts on changes of configuration (planned)
+- Enable automatic hashing of referenced configmaps and secrets to facilitate pod restarts on changes of configuration (work in progress)
 
 To learn more about the general architecture and features of the HULL library see the [Architecture Overview](./doc/architecture.md)
 
-**_IMPORTANT!_**: 
+⚠️**_IMPORTANT!_**⚠️: 
 
 > While there may be several benefits to rendering YAML via the HULL library please take note that it is a non-breaking addition to your Helm charts. The regular Helm workflow involving rendering of YAML templates in the `/templates` folder is completely unaffected by integration of the HULL library chart. Sometimes you might have very specific requirements on your configuration or object specification which the HULL library does not meet so you can use the regular Helm worflow for them and the HULL library for your more standard needs - easily in parallel in the same Helm chart. 
+## Creating and configuring a HULL based chart
+
+The tasks of creating and configuring a HULL based helm chart can be considered as two sides of the same coin. Both sides interact with the same interface (the HULL library) to specify the objects that should be created. The task from a creators/maintainers perspective is foremeost to provide the ground structure for the objects that make up the particular application which is to be wrapped in a Helm chart. The consumer of the chart is tasked with appropriately adding his system specific context to the ground structure wherein he has the freedom to change and even add objects as needed to achieve his goals. At deploy time the creators base structure is merged with the consumers system-specific yaml file to build the complete configuration. Interacting via the same library interface fosters common understanding of how to work with the library on both sides and can eliminate most of the tedious copy&paste creation and examination heavy configuration processes.
+
+So all that is needed to create a helm chart based on HULL is a standard scaffolded helm chart directory structure. Add the HULL library chart as a subchart, copy the `hull.yaml` from the HULL library chart to your parent Helm charts `/templates` folder. Then just configure the default objects to deploy via the `values.yaml` and you are done. There is no limit as to how many objects of whcih type you create for your deployment package.
+
+But besides allowing to define complex objects and their relations with HULL you could also use it to wrap simple Kubernetes Objects you would otherwise either deploy via kubectl (being out of line from the management perspective with helm releases) or have to write a significant amnount of Helm boilerplate templates to achieve this.
+
+The base structure of the `values.yaml` understood by HULL is given here in the next section. This essentially forms the single interface for producing and consuming HULL based charts. Any object is only created in case it is defined and enabled in the `values.yaml`, this means you might want to preconfigure objects for consumers that would just need to enable them if they want to use them.
+
+At the top level of the YAML structure, HULL distinguishes between `config` and `objects`. While the `config` subconfiguration is intended to deal with chart specific settings such as metadata and product settings, the concrete Kubernetes objects to be rendered are specified under the `objects` key.
+
+### _The `config` section_
+
+Within the `config` section you can configure general settings for your Helm chart.
+
+| Parameter                       | Description                                                     | Default                      |                  Example |
+| ------------------------------- | ----------------------------------------------------------------| -----------------------------| -----------------------------------------|
+| `config` | Specification of configuration options for this chart. <br><br>Has only the following sub-fields: <br><br>`specific`<br>`general` | |
+| `config.general` | In this section you might define everything that is not particular to a unique product but to a range of products you want to deploy via helm. See the subfields descriptions for their inteded usage. <br><br>Has only the following sub-fields: <br><br>`rbac`<br>`data`<br>`metadata` | |
+| `config.general.nameOverride` | The name override is applied to values of metadata label `app.kubernetes.io/name`. If set this effectively replaces the chart name here.
+| `config.general.fullnameOverride` | If set, the fullname override is applied to all object names and replaces the `<release>-<chart>` pattern in object names.
+| `config.general.createImagePullSecretsFromRegistries` | If true, image pull secrets are created from all defined registries and added to pods. | `true` | `false` |
+| `config.general.rbac` | Global switch which enables RBAC objects for installation. <br><br> If `true` all enabled RBAC objects are deployed to the cluster, if `false` no RBAC objects are created at all.<br><br> RBAC objects that are deployable are:<br>`roles`<br>`rolebindings`<br>`clusterroles`<br>`clusterrolebindings`  | `true` | `false` |
+| `config.general.data` | Free form field whereas subfields of this field should have a clearly defined meaning in the context of your product suite. <br><br>For example, assume all of your products or microservices (each coming as a seperate helm chart) depends on the same given endpoints (authentication, configuration, ...). You might have a shared Kubernetes job executed by each helm chart which targets those endpoints. Now you could specify an external HULL `values.yaml` containing the job specification and the endpoint definition here in a way you see fit and construct an overlay `values.yaml` rendered on top of each deployment and have a unified mechanism in place.  | `{}` |
+| `config.general.metadata` | Defined metadata fields here will be automatically added to all objects metadata. <br><br>Has only the following sub-fields: <br><br>`labels`<br>`annotations`| | 
+| `config.general.metadata.labels` | Labels that are added to all objects. The `common` labels refer to the Kubernetes and Helm common labels and `custom` labels can be freely specified. <br><br>Has only the following sub-fields: <br><br>`common`<br>`custom`| | 
+| `config.general.metadata.labels.common` | Common labels specification as defined in https://helm.sh/docs/chart_best_practices/labels/ and https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/. <br><br>Unless specifically overwriten with empty values (`''`) all metadata labels are automatically added to all objects according to their default definition. It should be considered to set a value for `config.general.metadata.labels.common.'app.kubernetes.io/part-of'` if the helm chart is part-of a product suite. | | 
+| `config.general.metadata.labels.common.'app.kubernetes.io/managed-by'` | Managed by metadata. | `{{ .Release.Service }}` |
+| `config.general.metadata.labels.common.'app.kubernetes.io/version'` | Version metadata. | `{{ .Chart.AppVersion }}` |
+| `config.general.metadata.labels.common.'app.kubernetes.io/part-of'` | Part-of metadata. | `"unspecified"` |
+| `config.general.metadata.labels.common.'app.kubernetes.io/name'` | Name metadata. | `{{ printf "%s-%s" .ChartName <hullObjectKey> }}`
+| `config.general.metadata.labels.common.'app.kubernetes.io/instance'` | Instance metadata. | `{{ .Release.Name }}`
+| `config.general.metadata.labels.common.'app.kubernetes.io/component'` | Component metadata. | `<hullObjectKey>`
+| `config.general.metadata.labels.common.'helm.sh/chart'` | Helm metadata. | `{{ (printf "%s-%s" .Chart.Name .Chart.Version) | replace "+" "_" }}`
+| `config.general.metadata.labels.custom` | All specified custom labels are automatically added to all objects of this helm chart. | `{}`| 
+| `config.general.metadata.annotations` | All specified annotations are automatically added to all objects of this helm chart. | `{}`| 
+| `config.general.metadata.annotations.custom` | All specified custom annotations are automatically added to all objects of this helm chart. | `{}`| 
+| `config.specific` | Free form field that holds configuration options that are specific to the specific product contained in the helm chart. Typically the values specified here ought to be used to populate the contents of configuration files that a particular applications read their configuration from at startup. Hence the `config.specific` fields are typically being consumed in ConfigMaps or Secrets. | `{}` | `maxDatepickerRange:`&#160;`50`<br>`defaultPoolColor:`&#160;`"#FB6350"`<br>`updateInterval:`&#160;`60000`
+
+### _The `objects` section_
+
+The top-level object types beneath `hull.objects` represent the supported Kubernetes object types you might want to create instances from. Each object type is a dictionary where the entries values are the objects properties and each object has it's own key which is unique to the object type it belongs to. Further K8S object types can be added as needed to the library so it can easily be extended. 
+
+#### _Keys of object instances_
+
+One important aspect is that for all top-level object types, instances of a particular type are always identified by a key which is unique to the instance and object type combination. The same key can however be used for instances of different object types.
+
+By having keys that identify instances you can:
+
+- do multi-layered merging of object properties by stacking `values.yaml` files on top of each other. You might start with defining the default object structure of the application or micro service defined in the given helm chart. Then you might add a `values.yaml` layer for a particular environment like staging or production. Then you might add a `values.yaml` layer for credentials. And so on. By uniquely identifying the instances of a particular K8s object type it becomes easy to adjust the objects properties through a multitude of layers.
+- use the key of an instance for naming the instance. All instance names are constructed by the following ground rule: `{{ printf "%s-%s" .ReleaseName key }}`. This generates unique, dynamic names per object type and release + instance key combination. 
+
+  For example, assuming the parent Helm chart is named `my_webservice` and the release named `staging` and given this specification in `values.yaml`:
+
+  ```yaml
+  hull:
+    objects:
+      deployment:
+        nginx:
+          pod:
+            containers:
+              nginx:
+                repository: nginx
+                tag: 1.14.2
+  ```
+
+  a Kubernetes deployment object with the following `metadata.name` is created:
+
+  `my_webservice-staging-nginx`
+
+  > Note that you can opt to define a static name for instances you create by adding a property `staticName: true` to your objects definition. If you do so the objects name will exactly match the key name you chose.
+
+- each particular instance can have an `enabled` sub-field set to `true` or `false`. This way you can predefine instances of object types in your helm charts `values.yaml` but not deploy them in a default scenario. Or enable them by default and refrain from deploying them in a particular environment by disabling them in an overlayed system specific `values.yaml`. Note that unless you explicitly specify `enabled: false` each instance you define will be created by default, a missing `enabled` key is equivalent to `enabled: true`.
+
+- cross-referencing objects within a helm chart by the instance key is a useful feature of the HULL library. This is possible in these contexts:
+  -  when a reference to a ConfigMap or Secret comes into play you can just use the key of the targeted instance and the dynamic name will be rendered in the output. This is possible for referencing 
+    - a ConfigMap or Secret behind a Volume or 
+    - a Secret behind an Ingress' TLS specification or
+    - a ConfigMap or Secret behind an environment value added to a container spec.
+  - when referencing Services in the backend of an ingress' host you can specify the key to reference the backend service.
+  
+  > Note that you can in these cases opt to refer to a static name instead too. Adding a property `staticName: true` to the dictionary with your reference will force the referenced objects name to exactly match the name you entered.
+
+#### _Values of object instances_
+
+The values of object instance keys reflects the Kubernetes objects to create for the chart. To specify these objects efficiently, the available properties for configuration can be split into three groups:
+
+1. [HULL basic object configuration](doc/object_base.md) whose properties are available for all object types and instances.
+2. Specialized properties for some object types. Below is a reference of which object type supports which special properties in addition to the basic object configuration. 
+3. Kubernetes object properties. For each object type it is possible to specify all existing Kubernetes properties. In case a HULL property overwrites a identically named Kubernetes property the HULL property has precedence. Some of the typical top-level Kubernetes object properties and fields don't require setting them with HULL based objects because they can be deducted automatically:
+    - the `apiVersion` and `kind` are determined by the HULL object type and Kubernetes API version and don't require to be explicitly set (except for objects of type `customresource`).
+    - the top-level `metadata` dictionary on objects is handled by HULL via the `annotations` and `labels` fields and the naming rules explained above. So the `metadata` field does not require configuration and is hence not configurable for any object. 
+
+Some lower level structures are also converted from the Kubernetes API array form to a dictionary form or are modified to improve working with them. This also enables more sophisticated merging of layers since arrays don't merge well, they only can be overwritten completely. Overwriting arrays however can make it hard to forget about elements that are contained in the default form of the array (you would need to know that they existed in the first place). In short, for a layered configuration approach without an endless amount of elements the dictionary is preferable for representing data since it offers a much better merging support.
+
+Here is an overview of which top level properties are available for which object type in HULL. The HULL properties are grouped by the respective HULL JSON schema group they belong to. A detailed description of these groups and their properties is found in the documentation of this helm chart and the respective linked documents.
+
+HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> Properties
+------------------------------ | --------------------| ----------------------------------
+`configmap` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.VirtualFolder.v1**](doc/objects_configmaps_secrets.md)<br>`data` |  [**configmap-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#configmap-v1-core)<br>`binaryData`<br>`immutable`
+`secret` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.VirtualFolder.v1**](doc/objects_configmaps_secrets.md)<br>`data` |  [**secret-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#secret-v1-core)<br>`immutable`<br>`stringData`<br>`type` 
+`registry` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Registry.v1**](doc/objects_registry.md)<br>`server`<br>`username`<br>`password` | [**secret-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#secret-v1-core)
+`deployment` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**deploymentspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#deploymentspec-v1-apps)<br>`minReadySeconds`<br>`paused`<br>`progressDeadlineSeconds`<br>`replicas`<br>`revisionHistoryLimit`<br>`strategy` 
+`job` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**jobspec-v1-batch**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#jobspec-v1-batch)<br>`activeDeadlineSeconds`<br>`backoffLimit`<br>`completions`<br>`manualSelector`<br>`parallelism`<br>`ttlSecondsAfterFinished` 
+`daemonset` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**daemonsetspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#daemonsetspec-v1-apps)<br>`minReadySeconds`<br>`revisionHistoryLimit`<br>`updateStrategy` 
+`statefulset` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**statefulsetspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#statefulsetspec-v1-apps)<br>`podManagementPolicy`<br>`replicas`<br>`revisionHistoryLimit`<br>`updateStrategy`<br>`serviceName`<br>`volumeClaimTemplates` 
+`cronjob` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Job.v1**](./README.md)<br>`job` | [**cronjobspec-v1beta1-batch**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#cronjobspec-v1beta1-batch)<br>`concurrencyPolicy`<br>`failedJobsHistoryLimit`<br>`schedule`<br>`startingDeadlineSeconds`<br>`successfulJobsHistoryLimit`<br>`suspend` 
+`serviceaccount` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**serviceaccount-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#serviceaccount-v1-core)<br>`automountServiceAccountToken`<br>`imagePullSecrets`<br>`secrets`
+`role` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**role-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#role-v1-rbac-authorization-k8s-io)<br>`rules`
+`rolebinding` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**rolebinding-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#rolebinding-v1-rbac-authorization-k8s-io)<br>`roleRef`<br>`subjects`
+`clusterrole` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**clusterrole-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#clusterrole-v1-rbac-authorization-k8s-io)<br>`aggregationRule`<br>`rules`
+`clusterrolebinding` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**clusterrolebinding-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#clusterrolebinding-v1-rbac-authorization-k8s-io)<br>`roleRef`<br>`subjects`
+`storageclass` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**storageclass-v1-storage-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#storageclass-v1-storage-k8s-io)<br>`allowVolumeExpansion`<br>`allowedTopologies`<br>`mountOptions`<br>`parameters`<br>`provisioner`<br>`reclaimPolicy`<br>`volumeBindingMode`
+`persistentvolume` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**persistentvolumespec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#persistentvolumespec-v1-core)<br>`accessModes`<br>`awsElasticBlockStore`<br>`azureDisk`<br>`azureFile`<br>`capacity`<br>`cephfs`<br>`cinder`<br>`claimRef`<br>`csi`<br>`fc`<br>`flexVolume`<br>`flocker`<br>`gcePersistentDisk`<br>`glusterfs`<br>`hostPath`<br>`iscsi`<br>`lcal`<br>`mountOptions`<br>`nfs`<br>`nodeAffinity`<br>`persistentVolumeReclaimPolicy`<br>`photonPersistentDisk`<br>`portworxVolume`<br>`quobyte`<br>`rbd`<br>`scaleIO`<br>`storageClassName`<br>`storageos`<br>`volumeMode`<br>`vsphereVolume`
+`persistentvolumeclaim` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**persistentvolumeclaimspec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#persistentvolumeclaimspec-v1-core)<br>`accessModes`<br>`dataSource`<br>`resources`<br>`selector`<br>`storageClassName`<br>`volumeMode`<br>`volumeName`
+`service` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Service.v1**](doc/objects_service.md)<br>`ports` | [**servicespec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#servicespec-v1-core)<br>`clusterIP`<br>`externalIPs`<br>`externalName`<br>`externalTrafficPolicy`<br>`healthCheckNodePort`<br>`ipFamily`<br>`loadBalancerIP`<br>`loadBalancerSourceRanges`<br>`publishNotReadyAddresses`<br>`selector`<br>`sessionAffinity`<br>`sessionAffinityConfig`<br>`topologyKeys`<br>`type`
+`ingress` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Ingress.v1**](doc/objects_ingress.md)<br>`tls`<br>`rules` | [**ingressclass-v1-networking-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#ingressclass-v1-networking-k8s-io)<br>`backend`<br>`ingressClassName`
+`customresource` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.CustomResource.v1**](doc/objects_customresource.md)<br>`apiVersion`<br>`kind`<br>`spec`
+`servicemonitor` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**ServiceMonitor CRD**](https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/crds/crd-servicemonitors.yaml)<br>`spec`
+
+## Testing and installing a HULL based chart
+To test or install a chart based on HULL the standard Helm v3 tooling is usable. See also the Helm documentation at the [Helm website](https://helm.sh). 
+
+### Testing a HULL based chart
+
+To inspect the outcome of a specific `values.yaml` configuration you can simply render the templates which would be deployed to Kubernetes and inspect them with the below command adapted to your needs:
+
+  `<PATH_TO_HELM_V3_BINARY> template --debug --namespace <CHART_RELEASE_NAMESPACE> --kubeconfig <PATH_TO_K8S_CLUSTER_KUBECONFIG> -f <PATH_TO_SYSTEM_SPECIFIC_VALUES_YAML> --output-dir <PATH_TO_OUTPUT_DIRECTORY> <PATH_TO_CHART_DIRECTORY>`
+
+### Install or upgrade a release: 
+
+Installing or upgrading a chart using HULL follows the standard procedures for every Helm chart:
+
+  `<PATH_TO_HELM_V3_BINARY> upgrade --install --debug --create-namespace --atomic --namespace <CHART_RELEASE_NAMESPACE> --kubeconfig <PATH_TO_K8S_CLUSTER_KUBECONFIG> -f <PATH_TO_SYSTEM_SPECIFIC_VALUES_YAML> <RELEASE_NAME> <PATH_TO_CHART_DIRECTORY>`
+
 
 ## First Example
 
@@ -75,9 +213,10 @@ spec:
 ```
 
 To render this analoguously using the HULL library your chart needs to be [setup for using HULL](./doc/setup.md). In the following section we asume the parent Helm chart is named `hull-test` and we use the `helm template` command to test render the `values.yaml`'s.
+
 ### Minimal Example
 
-A minimal example of creating this result would mean to create a `values.yaml` like this in your parent chart (commented with some explanations). Note that some comfort features of HULL are explicitly disabled to obtain the output matching the above example closely:
+A minimal example of creating the expected result from above would be to create a `values.yaml` like below in your parent chart (commented with some explanations). Note that some features of HULL are explicitly disabled to obtain the output matching the above example closely:
 
 ```yaml
 hull:
@@ -112,8 +251,8 @@ hull:
                 tag: 1.14.2
               ports:
                 http: # unique key per container here too. All key-value structures
-                      # which are array in the K8S objects are converted to arrays
-                      # on rendering the chart.
+                      # which are finally arrays in the K8S objects are converted to 
+                      # arrays on rendering the chart.
                   containerPort: 80
 ```
 Note that RBAC was disabled to no produce
@@ -123,7 +262,7 @@ This produces the following rendered deployment when running the `helm template`
 ```yaml
 apiVersion: apps/v1 # derived from object type 'deployment'
 kind: Deployment # derived from object type 'deployment'
-metadata: # automatically created from charts metadata
+metadata: 
   annotations: {}
   labels: # standard Kubernetes metadata is created always automatically.
     app.kubernetes.io/component: nginx 
@@ -137,8 +276,8 @@ metadata: # automatically created from charts metadata
               # but with staticName: true in the HULL spec it is just the key name
 spec:
   replicas: 3
-  selector: # selectors auto-created to match the unique metadata combination 
-            # found also in the in the objects metadata labels.
+  selector: # selector is auto-created to match the unique metadata combination 
+            # found also in the in the object's metadata labels.
     matchLabels:
       app.kubernetes.io/component: nginx
       app.kubernetes.io/instance: RELEASE-NAME
@@ -146,7 +285,7 @@ spec:
   template:
     metadata:
       annotations: {}
-      labels: # auto-created metadata also added to pod template 
+      labels: # auto-created metadata is added to pod template 
         app.kubernetes.io/component: nginx
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
@@ -162,7 +301,8 @@ spec:
         name: nginx
         ports:
         - containerPort: 80
-          name: http # name 'http' derived from the key of the HULL port
+          name: http # name 'http' derived from the key of the port 
+                     # object defined in the values.yaml
         volumeMounts: []
       imagePullSecrets: {}
       initContainers: []
@@ -170,7 +310,7 @@ spec:
 ```
 
 # More Advanced Example
-Now to render the nginx deployment example with some extra features applied you might create the following `values.yaml` file in your parent chart. This example showcases:
+Now to render the nginx deployment example with extra features of the HULL library applied you can create the below `values.yaml` file in your parent chart. This example showcases:
 
 - hierarchical metadata handling
 - default RBAC setup of objects
@@ -182,7 +322,7 @@ hull:
     general:  # This time we are not setting rbac: false 
               # so RBAC default objects are created. 
               # If the default objects don't match the use-case
-              # you can tweak all aspects individually if needed.
+              # you can tweak all aspects individually if needed
       metadata:
         labels:         
           custom: # Additional labels added to all K8S objects
@@ -197,7 +337,7 @@ hull:
   objects:
     deployment:
       _HULL_OBJECT_TYPE_DEFAULT_: # A special object key available for
-                                  # all object types allowing to define 
+                                  # all object types allowing defining 
                                   # defaults for properties of all object 
                                   # type instances created.
         annotations:  
@@ -216,15 +356,15 @@ hull:
           
       nginx: # specify the nginx deployment under key 'nginx'
         # This time we're not setting the metadata.name to be static so 
-        # it will be created dynmically and be unique
+        # name will be created dynmically and will be unique
         annotations:
-          general_custom_annotation_3: Specific Object Annotation 3 # overwrite third 
+          general_custom_annotation_3: Specific Object Annotation 3 # overwrite a
                                                                     # general annotation
           default_annotation_2: Specific Object Annotation 2 # overwrite a default annotation
           specific_annotation_1: Specific Object Annotation 1 # add a specific annotation 
                                                               # to the all this object's metadata
         labels: 
-          general_custom_label_3: Specific Object Label 3 # overwrite third 
+          general_custom_label_3: Specific Object Label 3 # overwrite a
                                                           # general label
           default_label_2: Specific Object Label 2 # overwrite a default label
           specific_label_1: Specific Object Label 1 # add a specific label 
@@ -273,7 +413,7 @@ metadata:
     general_custom_label_2: General Custom Label 2 # if they are not overwritten for the object type's
     general_custom_label_3: General Custom Label 3 # default or specific instance
     helm.sh/chart: hull-test-1.20.1
-  name: release-name-hull-test-default # This is the default ServiceAccount created for this chart
+  name: release-name-hull-test-default # This is the default ServiceAccount created for this chart.
                                        # As all object instances by default it will be assigned a 
                                        # dynamically created unique name in context of this object type.
                                        # In the simple example we disabled this rendering by 
@@ -410,140 +550,5 @@ spec:
       serviceAccountName: release-name-hull-test-default # the dynamically created name
       volumes: []
 ```
-Read below on how to utilise the features of the HULL library to the best effect.
-## Testing and installing a chart
 
-To test or install a chart the standard Helm v3 tooling is usable. See also the Helm documentation at the [Helm website](https://helm.sh). 
-
-## Creating and configuring chart
-
-The tasks of creating and configuring a HULL based helm chart can be considered as two sides of the same coin. Both sides interact with the same interface (the HULL library) to specify the objects that should be created. The task from a creators/maintainers perspective is foremeost to provide the ground structure for the objects that make up the particular application which is to be wrapped in a helm chart. The consumer of the chart is tasked with appropriately adding his system specific context to the ground structure wherein he has the freedom to change and even add objects as needed to achieve his goals. At deploy time the creators base structure is merged with the consumers system-specific yaml file to build the complete configuration. Interacting via the same library interface fosters common understanding of how to work with the library on both sides and can eliminate most of the tedious copy&paste creation and examination heavy configuration processes.
-
-So all that is needed to create a helm chart based on HULL is a standard scaffolded helm chart directory structure. Add the HULL library chart as a subchart, copy the `hull.yaml` from the HULL library chart to your parent Helm charts `/templates` folder. Then just configure the default objects to deploy via the `values.yaml` and you are done. There is no limit as to how many objects of whatever type you create for your products deployment.
-
-But besides allowing to define complex objects and their relations with HULL you could also use it to wrap simple Kubernetes Objects you would otherwise either deploy via kubectl (being out of line from the management perspective with helm releases) or have to write a significant amnount of boilerplate to achieve this.
-
-The base structure of the `values.yaml` understood by HULL is given here in the next section. This essentially forms the single interface for producing and consuming HULL based charts. Any object is only created in case it is defined and enabled in the `values.yaml`, this means you might want to preconfigure objects for consumers that would just need to enable them if they want to use them.
-
-At the top level of the YAML structure, HULL distinguishes between `config` and `objects`. While the `config` subconfiguration is intended to deal with metadata and product specific settings, concrete objects to be rendered are specified under the `objects` key.
-
-### _The `config` section_
-
-Within the `config` section you can configure some general settings for your Helm chart.
-
-| Parameter                       | Description                                                     | Default                      |                  Example |
-| ------------------------------- | ----------------------------------------------------------------| -----------------------------| -----------------------------------------|
-| `config` | Specification of configuration options for this chart. <br><br>Has only the following sub-fields: <br><br>`specific`<br>`general` | |
-| `config.general` | In this section you might define everything that is not particular to a unique product but to a range of products you want to deploy via helm. See the subfields descriptions for their inteded usage. <br><br>Has only the following sub-fields: <br><br>`rbac`<br>`data`<br>`metadata` | |
-| `config.general.rbac` | Global switch which enables RBAC objects for installation. <br><br> If `true` the enabled objects are deployed to the cluster, if `false` no RBAC objects are created.<br><br> RBAC objects that are deployable are:<br>`serviceaccounts`<br>`roles`<br>`rolebindings`<br>`clusterroles`<br>`clusterrolebindings`  | `true` | `false` |
-| `config.general.data` | Free form field whereas subfields of this field should have a clearly defined meaning in the context of your product suite. <br><br>For example, assume all of your products or microservices (each coming as a seperate helm chart) depends on the same given endpoints (authentication, configuration, ...). You might have a shared Kubernetes job executed by each helm chart which targets those endpoints. Now you could specify an external HULL `values.yaml` containing the job specification and the endpoint definition here in a way you see fit and construct an overlay `values.yaml` rendered on top of each deployment and have a unified mechanism in place.  | `{}` |
-| `config.general.metadata` | Defined metadata fields here will be automatically added to all objects metadata. <br><br>Has only the following sub-fields: <br><br>`labels`<br>`annotations`| | 
-| `config.general.metadata.labels` | Labels added to all objects. The `common` labels refer to the Kubernetes and Helm common labels and `custom` labels can be freely specified. <br><br>Has only the following sub-fields: <br><br>`common`<br>`custom`| | 
-| `config.general.metadata.labels.common` | Common labels specification as defined in https://helm.sh/docs/chart_best_practices/labels/ and https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/. <br><br>Unless specifically overwriten with empty values (`''`) all metadata labels are automatically added to all objects according to their default definition. It should be considered to set a value for `config.general.metadata.labels.common.'app.kubernetes.io/part-of'` if the helm chart is part-of a product suite. | | 
-| `config.general.metadata.labels.common.'app.kubernetes.io/managed-by'` | Managed by metadata. | `{{ .Release.Service }}` |
-| `config.general.metadata.labels.common.'app.kubernetes.io/version'` | Version metadata. | `{{ .Chart.AppVersion }}` |
-| `config.general.metadata.labels.common.'app.kubernetes.io/part-of'` | Part-of metadata. | `"unspecified"` |
-| `config.general.metadata.labels.common.'app.kubernetes.io/name'` | Name metadata. | `{{ printf "%s-%s" .ChartName <hullObjectKey> }}`
-| `config.general.metadata.labels.common.'app.kubernetes.io/instance'` | Instance metadata. | `{{ .Release.Name }}`
-| `config.general.metadata.labels.common.'app.kubernetes.io/component'` | Component metadata. | `<hullObjectKey>`
-| `config.general.metadata.labels.common.'helm.sh/chart'` | Helm metadata. | `{{ (printf "%s-%s" .Chart.Name .Chart.Version) | replace "+" "_" }}`
-| `config.general.metadata.labels.custom` | All specified custom labels are automatically added to all objects of this helm chart. | `{}`| 
-| `config.general.metadata.annotations` | All specified annotations are automatically added to all objects of this helm chart. | `{}`| 
-| `config.general.metadata.nameOverride` | The name override is applied to values of metadata label `app.kubernetes.io/name`. If set this effectively replaces the chart name here.
-| `config.general.metadata.fullnameOverride` | If set, the fullname override is applied to all object names and replaces the `<release>-<chart>` pattern in object names.
-| `config.specific` | Free form field that holds configuration options that are specific to the specific product contained in the helm chart. Typically the values specified here ought to be used to populate the contents of configuration files that a particular applications read their configuration from at startup. Hence the `config.specific` fields are typically being consumed in ConfigMaps or Secrets. | `{}` | `maxDatepickerRange:`&#160;`50`<br>`defaultPoolColor:`&#160;`"#FB6350"`<br>`updateInterval:`&#160;`60000`
-
-### _The `objects` section_
-
-The top-level object types beneath `hull.objects` represent the supported Kubernetes object types you might want to create instances from without creating custom templates in the `/templates` folder. Each object type is a dictionary where the entries values are the objects properties and each object has it's own key which is unique to the object type it belongs to. Further K8S object types can be added as needed to the library so it can easily be brought on par with a new Kubenetes release. 
-
-#### _Keys of object instances_
-
-One important aspect is that for all top-level object types, instances of a particular type are always identified by a key which is unique to the instance and object type combination. The same key can however be used for instances of different object types.
-
-- do multi-layered merging of object properties by stacking `values.yaml` files on top of each other. You might start with defining the default object structure of the application or micro service defined in the given helm chart. Then you might add a `values.yaml` layer for a particular environment like staging or production. Then you might add a `values.yaml` layer for credentials. And so on. By uniquely identifying the instances of a particular K8s object type it becomes easy to adjust the objects properties through a multitude of layers.
-- use the key of an instance is used for naming the instance. All instance names are constructed by the following ground rule: `{{ printf "%s-%s" .ReleaseName key }}`. This generates unique, dynamic names per object type and release + instance key combination. 
-
-  For example, assuming the parent Helm chart is named `my_webservice` and the release named `staging` and given this specification in `values.yaml`:
-
-  ```yaml
-  hull:
-    objects:
-      deployment:
-        nginx:
-          pod:
-            containers:
-              nginx:
-                repository: nginx
-                tag: 1.14.2
-  ```
-
-  a Kubernetes deployment object with the following `metadata.name` is created:
-
-  `my_webservice-staging-nginx`
-
-  > Note that you can opt to define a static name for instances you create by adding a property `staticName: true` to your objects definition. If you do so the objects name will exactly match the key name you chose.
-
-- each particular instance can have an `enabled` sub-field set to `true` or `false`. This way you can predefine instances of object types in your helm charts `values.yaml` but not deploy them in a default scenario. Or enable them by default and refrain from deploying them in a particular environment by disabling them in an overlayed system specific `values.yaml`. Note that unless you explicitly specify `enabled: false` each instance you define will be created by default, a missing `enabled` key is equivalent to `enabled: true`.
-
-- cross-referencing objects within a helm chart by the instance key is a useful feature of the HULL library. This is possible in these contexts:
-  -  when a reference to a ConfigMap or Secret comes into play you can just use the key of the targeted instance and the dynamic name will be rendered in the output. This is possible for referencing 
-    - a ConfigMap or Secret behind a Volume or 
-    - a Secret behind an Ingress' TLS specification or
-    - a ConfigMap or Secret behind an environment value added to a container spec.
-  - when referencing Services in the backend of an ingress' host you can specify the key to reference the backend service.
-  
-  > Note that you can in these cases opt to refer to a static name instead too. Adding a property `staticName: true` to the dictionary with your reference will force the referenced objects name to exactly match the name you entered.
-
-#### _Values of object instances_
-
-The values of object instance keys reflects the Kubernetes objects to create for the chart. To specify these objects efficiently, the available properties for configuration can be split into three groups:
-
-1. [HULL basic object configuration](doc/object_base.md) whose properties are available for all object types and instances.
-2. Specialized properties for some object types. Below is a reference of which object type supports which special properties in addition to the basic object configuration. If 
-3. Kubernetes object properties. For each object type it is possible to specify all relevant Kubernetes properties. In case a HULL property overwrites a identically named Kubernetes property the HULL property has precedence.
-
-    Besides using added options which are usable for the HULL objects you have all the matching Kubernetes object specific properties at your disposal for configuration. 
-
-    But some of the typical top-level Kubernetes object properties and fields don't require setting them with HULL based objects because they can be deducted automatically:
-    - the `apiVersion` and `kind` are determined by the HULL object type and Kubernetes API version and don't require to be explicitly set (except for objects of type `customresource`).
-    - the top-level `metadata` dictionary on objects is handled by HULL via the `annotations` and `labels` fields and the naming rules explained above. So the `metadata` field does not require configuration and is hence not configurable for any object. 
-
-Some lower level structures are also converted from the Kubernetes API array form to a dictionary form or are modified to improve working with them. This also enables more sophisticated merging of layers since arrays don't merge well, they only can be overwritten completely. Overwriting arrays however can make it hard to forget about elements that are contained in the default form of the array (you would need to know that they exist in the first place). In short, for a layered configuration approach without an endless amount of elements in arrays or dictionaries the dictionary is preferable for representing data since it offers a much better merging support.
-
-Here is an overview of which top level properties are available for which object type in HULL. The HULL properties are grouped by the respective HULL JSON schema group they belong to. A detailed description of these groups and their properties is found in the documentation of this helm chart and the respective linked documents.
-
-HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> Properties
------------------------------- | --------------------| ----------------------------------
-`configmap` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.VirtualFolder.v1**](doc/objects_configmaps_secrets.md)<br>`data` |  [**configmap-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#configmap-v1-core)<br>`binaryData`<br>`immutable`
-`secret` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.VirtualFolder.v1**](doc/objects_configmaps_secrets.md)<br>`data` |  [**secret-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#secret-v1-core)<br>`immutable`<br>`stringData`<br>`type` 
-`registry` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Registry.v1**](doc/objects_registry.md)<br>`server`<br>`username`<br>`password` | [**secret-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#secret-v1-core)
-`deployment` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**deploymentspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#deploymentspec-v1-apps)<br>`minReadySeconds`<br>`paused`<br>`progressDeadlineSeconds`<br>`replicas`<br>`revisionHistoryLimit`<br>`strategy` 
-`job` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**jobspec-v1-batch**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#jobspec-v1-batch)<br>`activeDeadlineSeconds`<br>`backoffLimit`<br>`completions`<br>`manualSelector`<br>`parallelism`<br>`ttlSecondsAfterFinished` 
-`daemonset` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**daemonsetspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#daemonsetspec-v1-apps)<br>`minReadySeconds`<br>`revisionHistoryLimit`<br>`updateStrategy` 
-`statefulset` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**statefulsetspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#statefulsetspec-v1-apps)<br>`podManagementPolicy`<br>`replicas`<br>`revisionHistoryLimit`<br>`updateStrategy`<br>`serviceName`<br>`volumeClaimTemplates` 
-`cronjob` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Job.v1**](./README.md)<br>`job` | [**cronjobspec-v1beta1-batch**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#cronjobspec-v1beta1-batch)<br>`concurrencyPolicy`<br>`failedJobsHistoryLimit`<br>`schedule`<br>`startingDeadlineSeconds`<br>`successfulJobsHistoryLimit`<br>`suspend` 
-`serviceaccount` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**serviceaccount-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#serviceaccount-v1-core)<br>`automountServiceAccountToken`<br>`imagePullSecrets`<br>`secrets`
-`role` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**role-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#role-v1-rbac-authorization-k8s-io)<br>`rules`
-`rolebinding` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**rolebinding-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#rolebinding-v1-rbac-authorization-k8s-io)<br>`roleRef`<br>`subjects`
-`clusterrole` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**clusterrole-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#clusterrole-v1-rbac-authorization-k8s-io)<br>`aggregationRule`<br>`rules`
-`clusterrolebinding` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**clusterrolebinding-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#clusterrolebinding-v1-rbac-authorization-k8s-io)<br>`roleRef`<br>`subjects`
-`storageclass` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**storageclass-v1-storage-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#storageclass-v1-storage-k8s-io)<br>`allowVolumeExpansion`<br>`allowedTopologies`<br>`mountOptions`<br>`parameters`<br>`provisioner`<br>`reclaimPolicy`<br>`volumeBindingMode`
-`persistentvolume` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**persistentvolumespec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#persistentvolumespec-v1-core)<br>`accessModes`<br>`awsElasticBlockStore`<br>`azureDisk`<br>`azureFile`<br>`capacity`<br>`cephfs`<br>`cinder`<br>`claimRef`<br>`csi`<br>`fc`<br>`flexVolume`<br>`flocker`<br>`gcePersistentDisk`<br>`glusterfs`<br>`hostPath`<br>`iscsi`<br>`lcal`<br>`mountOptions`<br>`nfs`<br>`nodeAffinity`<br>`persistentVolumeReclaimPolicy`<br>`photonPersistentDisk`<br>`portworxVolume`<br>`quobyte`<br>`rbd`<br>`scaleIO`<br>`storageClassName`<br>`storageos`<br>`volumeMode`<br>`vsphereVolume`
-`persistentvolumeclaim` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**persistentvolumeclaimspec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#persistentvolumeclaimspec-v1-core)<br>`accessModes`<br>`dataSource`<br>`resources`<br>`selector`<br>`storageClassName`<br>`volumeMode`<br>`volumeName`
-`service` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Service.v1**](doc/objects_service.md)<br>`ports` | [**servicespec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#servicespec-v1-core)<br>`clusterIP`<br>`externalIPs`<br>`externalName`<br>`externalTrafficPolicy`<br>`healthCheckNodePort`<br>`ipFamily`<br>`loadBalancerIP`<br>`loadBalancerSourceRanges`<br>`publishNotReadyAddresses`<br>`selector`<br>`sessionAffinity`<br>`sessionAffinityConfig`<br>`topologyKeys`<br>`type`
-`ingress` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Ingress.v1**](doc/objects_ingress.md)<br>`tls`<br>`rules` | [**ingressclass-v1-networking-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#ingressclass-v1-networking-k8s-io)<br>`backend`<br>`ingressClassName`
-`customresource` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.CustomResource.v1**](doc/objects_customresource.md)<br>`apiVersion`<br>`kind`<br>`spec`
-`servicemonitor` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**ServiceMonitor CRD**](https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/crds/crd-servicemonitors.yaml)<br>`spec`
-
-### Test a chart:
-
-To inspect the outcome of a specific `values.yaml` configuration you can render the templates which would be deployed to Kubernetes and inspect them with the below command adapted to your needs:
-
-  `<PATH_TO_HELM_V3_BINARY> template --debug --namespace <CHART_RELEASE_NAMESPACE> --kubeconfig <PATH_TO_K8S_CLUSTER_KUBECONFIG> -f <PATH_TO_SYSTEM_SPECIFIC_VALUES_YAML> --output-dir <PATH_TO_OUTPUT_DIRECTORY> <PATH_TO_CHART_DIRECTORY>`
-
-### Install or upgrade a release: 
-
-Installing or upgrading a chart using HULL follows the standard procedures for every Helm chart:
-
-  `<PATH_TO_HELM_V3_BINARY> upgrade --install --debug --create-namespace --atomic --namespace <CHART_RELEASE_NAMESPACE> --kubeconfig <PATH_TO_K8S_CLUSTER_KUBECONFIG> -f <PATH_TO_SYSTEM_SPECIFIC_VALUES_YAML> <RELEASE_NAME> <PATH_TO_CHART_DIRECTORY>`
+Read the additional documentation in the [documentation folder](./doc) on how to utilize the features of the HULL library to the full effect.
