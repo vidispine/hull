@@ -1,5 +1,6 @@
 # Architecture
 
+Before discussing the architecture behind HULL it is useful to take a look at the motivation that spurred the creation of it.
 ## Motivation
 
 In the context of Kubernetes and Helm there are basically two groups of people that work with Helm charts:
@@ -64,13 +65,13 @@ But there are also people who maintain and/or consume a larger number of charts 
 
 ## Components
 
-At the core of the HULL library is the interplay between `values.yaml`, `values.schema.json`, `hull.yaml` and the template files in `/templates` that come with HULL.
+At the core of the HULL library is the interplay between `values.yaml`, [`values.schema.json`](./../values.schema.json), [`hull.yaml`](./../hull.yaml) and the template files in [`/templates`](./../templates) that come with HULL.
 
-### The `values.yaml`
+### The parent charts `values.yaml`
 
 For the HULL related functionalities only entries under the `hull` subkey are relevant. No other top level key is relevant for HULL so it can co-exist with any other Helm chart configuration properties.
 
-### The `values.schema.json`
+### The [`values.schema.json`](./../values.schema.json)
 
 The `values.schema.json` of each HULL library release is built from the respective version of the Kubernetes API JSON Schema which is:
 - extended with the HULL specific properties to provide the HULL specific functionalities and
@@ -78,13 +79,64 @@ The `values.schema.json` of each HULL library release is built from the respecti
 
 This means that misconfigurations of the `values.yaml` `hull` subsection are either visible on input directly or catched on rendering the objects.
 
-### The `hull.yaml`
+### The [`hull.yaml`](./../hull.yaml)
 
 The `hull.yaml` needs to be placed in the parents charts `/templates` folder. It contains a loop over all handled object types and their specific configurational properties. Within the loop all objects of the handled object types (as specified in `values.yaml`) are iterated over and the corresponding rendering function is called for the specified and enabled object. 
 
-### The `/templates`
+### The [`/templates`](./../templates)
 
 The templates folder in HULL contains only functions as it is mandatory for Helm library charts. 
 
+## End-to-End process
+
+The end to end process using HULL contains the following phases:
+
+1. [Setup of Helm chart using HULL](setup.md).
+2. Define the input to the Helm chart in `values.yaml` and maybe additional `values.yaml`'s which are superimposed. This can be heavily supported by [IDE`s that offer live input validation via JSON schema](json_schema_validation.md).
+3. If you are satisfied with the specification of objects you can test render your chart to check the result or install it in a test cluster. Behind the scenes the following takes place:
+    
+    1. JSON Schema validation of merged `values.yaml` via the `values.schema.json` included in HULL. It is based on the strict Kubernetes API schema and modified to incorporate the schemas of the additional HULL objects.
+
+        ⚠️**Any schema viaolations will prevent further processing.**⚠️
+
+    2. The `hull.yaml` in the templates folder is processed. 
+  
+        An iteration over all implemented object types and defined and enabled object instances hands over to the object instance definition to the appropriate rendering template. Different basic rendering templates are triggered for:
+
+        - objects with a simple structure:
+          - `serviceaccount`
+          - `storageclass`
+          - `customresource`
+        - objects with a simple structure depending on RBAC enablement:
+          - `role`
+          - `rolebinding`
+          - `clusterrole`
+          - `clusterrolebinding`
+        - objects with a `spec` field:
+          - `perstistentvolume`
+          - `persistentvolumeclaim`
+          - `servicemonitor`
+        - objects which are based on pod definitions
+          - `deployment`
+          - `job`
+          - `daemonset`
+          - `statefulset`
+        - objects with individual templates:
+          - `configmap`
+          - `secret`
+          - `registry`
+          - `service`
+          - `ingress`
+          - `cronjob`
+
+        Then each object is processed individually:
+        
+        1. Apply object type defaults from the `_HULL_OBJECT_TYPE_DEFAULT_` instance. 
+        2. Preprocess the YAML and apply any [transformations](transformations.md) provided.
+        2. Create the [metadata section](metadata.md) of the object
+        3. Process all properties handled by HULL
+        4. Add remaining Kubernetes API schema properties that were defined
+
+    3. The output is all defined objects concatenated in one file or handed over to the Kubernetes cluster API for deployment.
 ---
 Back to [README.md](./../README.md)
