@@ -14,13 +14,11 @@ Some transformations are part of the HULL library and can be used out of the box
 
 ## Limitations
 
-Currently transformations are only supported for transforming string and dictionary values. It is based on the detection of a key word (__HULL_TRANSFORMATION__) in key names or string values so it is not 100% guaranteed that a chart does not use this expression otherwise even though it is unlikely.
+Currently transformations are only supported for transforming string and dictionary values. It is based on the detection of a key word (__\_HULL_TRANSFORMATION\___) in key names or string values so it is not 100% guaranteed that a chart does not use this expression otherwise even though it is unlikely.
 
 So there is no guarantee that this works in all scenarios but it can be a really useful addition to enhance your charts functionality.
 
 ## Transformations
-
-Check the first transformation for a deeper explanation of how transformations work.
 
 ### Example of a string transformation 
 
@@ -173,9 +171,9 @@ Input type validation might demand an `object` as an input fields type. Similar 
 
 ```yaml
 _HULL_TRANSFORMATION_:
-  NAME: 
-  ARGUMENT1:
-  ARGUMENT2:
+  NAME: "<TRANSFORMATION_NAME>"
+  ARGUMENT1: "..."
+  ARGUMENT2: "..."
   ...
 ```
 ## Provided transformations

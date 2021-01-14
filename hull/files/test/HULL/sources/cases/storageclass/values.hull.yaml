@@ -5,14 +5,13 @@
 ###################################################
 ### CONFIG
 hull:
-
   ###################################################
   ### OBJECTS
   objects:
-
+ 
   # CONFIGMAPS
     storageclass:
-
+    
       disabled:
         provisioner: "local-volume"
       
