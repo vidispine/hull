@@ -28,15 +28,15 @@
         {{- if typeIs "string" $value -}}
             {{- if (hasPrefix "_HULL_TRANSFORMATION_" $value) -}}
                 {{- $paramsString := trimPrefix "_HULL_TRANSFORMATION_" $value -}}
-                {{- $paramsSplitted := regexFindAll "({{[A-Z]+=.+?}})" $paramsString -1 -}}
+                {{- $paramsSplitted := regexFindAll "(<<<[A-Z]+=.+?>>>)" $paramsString -1 -}}
                 {{- $params := dict -}}
                 {{- range $p := $paramsSplitted -}}
-                    {{- $params = set $params (trimPrefix "{{" (first (regexSplit "=" $p -1))) (trimSuffix "}}" (last (regexSplit "=" $p -1))) -}}                
+                    {{- $params = set $params (trimPrefix "<<<" (first (regexSplit "=" $p -1))) (trimSuffix ">>>" (last (regexSplit "=" $p -1))) -}}                
                 {{- end -}}
                 {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key) $params -}}
                 {{- /* 
                 */ -}}
-                {{- $valDict := fromYaml (include $params.NAME $pass) -}} 
+                {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
                 {{- $source := unset $source $key -}}
                 {{- $source := set $source $key (index $valDict $key) -}}  
             {{- end -}}
@@ -44,10 +44,32 @@
     {{- end -}}
 {{- end -}}
 {{- if typeIs "[]interface {}" $source -}}
-    {{- range $listentry := $source -}}
-        {{- $newlistentry := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $listentry "CALLER" nil "CALLER_KEY" nil) -}}
+    {{- if typeIs "string" (first $source) }}
+        {{- $transformedSource := list }}
+        {{- range $listentry := $source -}}
+            {{- if (hasPrefix "_HULL_TRANSFORMATION_" $listentry) -}}
+                {{- $paramsString := trimPrefix "_HULL_TRANSFORMATION_" $listentry -}}
+                {{- $paramsSplitted := regexFindAll "(<<<[A-Z]+=.+?>>>)" $paramsString -1 -}}
+                {{- $params := dict -}}
+                {{- range $p := $paramsSplitted -}}
+                    {{- $params = set $params (trimPrefix "<<<" (first (regexSplit "=" $p -1))) (trimSuffix ">>>" (last (regexSplit "=" $p -1))) -}}                
+                {{- end -}}
+                {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" "key") $params -}}
+                {{- /* 
+                */ -}}
+                {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
+                {{- $transformedSource = append $transformedSource (index $valDict "key") -}}  
+            {{- else -}}
+                {{- $transformedSource = append $transformedSource $listentry -}} 
+            {{- end -}}
+        {{- end -}}
+        {{- $t2 := set $caller $callerKey $transformedSource -}}
+    {{- else -}}
+        {{- range $listentry := $source -}}
+            {{- $newlistentry := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $listentry "CALLER" nil "CALLER_KEY" nil) -}}
+        {{- end -}}
+        {{- $t2 := set $caller $callerKey $source -}}
     {{- end -}}
-    {{- $t2 := set $caller $callerKey $source -}}
 {{- end -}}
 {{- end -}}
 
@@ -85,4 +107,18 @@
 {{- $current = (index $current $pathElement) }}
 {{- end -}}
 {{ $key }}: {{ $current }}
+{{- end -}}
+
+{{- define "hull.util.transformation.custom2" -}}
+{{- $key := (index . "KEY") -}}
+{{ $content := (index . "CONTENT") }}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{ $key }}: {{  $content }}
+{{- end -}}
+
+{{- define "hull.util.transformation.custom" -}}
+{{- $key := (index . "KEY") -}}
+{{ $content := (index . "CONTENT") }}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{ $key }}: {{ tpl  $content (merge (dict "Template" $parent.Template "PARENT" $parent) .) }}
 {{- end -}}
