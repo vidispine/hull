@@ -66,6 +66,14 @@ hull:
                   >>>"
                 repository: my/image/repo
 
+      image_name_tag:
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+                
       custom_args:
         pod:
           containers:
@@ -86,14 +94,6 @@ hull:
 ]
 >>>"
 
-
-      image_name_tag:
-        pod:
-          containers:
-            main:
-              image:
-                repository: my/image/repo
-                tag: "99.9"
       
       removal_test:
         pod:

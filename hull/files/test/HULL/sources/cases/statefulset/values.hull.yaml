@@ -75,6 +75,11 @@ hull:
         pod:
           containers: {}
 
+      custom_args:
+        serviceName: custom_args
+        pod:
+          containers: {}
+
       removal_test:
         serviceName: removal_test
         pod:
