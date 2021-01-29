@@ -6,8 +6,14 @@
 ### CONFIG
 hull:
   config:
-    specific:
+    specific: # Here you can put all that is particular configuration for your app
       globalRegistry: local.registry
+      
+      if_this_arg_is_defined: --this-is-defined # Whenever this is not empty ...
+      then_add_this_arg: --hence-is-this # also add this argument
+      
+      if_this_arg_is_not_defined:  # Whenever this is not empty ...
+      then_use_this_arg: --and-this-because-other-is-not-defined # also add this argument
 
   objects:
     registry:
@@ -55,8 +61,31 @@ hull:
           containers:
             main:
               image:
-                registry: "_HULL_TRANSFORMATION_{{NAME=hull.util.transformation.get}}{{REFERENCE=hull.config.specific.globalRegistry}}"
+                registry: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                  {{ (index . \"PARENT\").Values.hull.config.specific.globalRegistry }}
+                  >>>"
                 repository: my/image/repo
+
+      custom_args:
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              args: 
+              - "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+[
+{{ if (index . \"PARENT\").Values.hull.config.specific.if_this_arg_is_defined }}
+\"{{ (index . \"PARENT\").Values.hull.config.specific.if_this_arg_is_defined }}\",
+\"{{ (index . \"PARENT\").Values.hull.config.specific.then_add_this_arg }}\",
+{{ end }}
+{{ if not (index . \"PARENT\").Values.hull.config.specific.if_this_arg_is_not_defined }}
+\"{{ (index . \"PARENT\").Values.hull.config.specific.then_use_this_arg }}\"
+{{ end }}
+]
+>>>"
+
 
       image_name_tag:
         pod:

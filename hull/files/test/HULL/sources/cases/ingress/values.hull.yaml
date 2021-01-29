@@ -106,7 +106,7 @@ hull:
                   path: /transform                    
                   backend:
                     service:
-                      name: _HULL_TRANSFORMATION_{{NAME=hull.util.transformation.makefullname}}{{COMPONENT=full_name_transformed}}
+                      name: _HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.makefullname>>><<<COMPONENT=full_name_transformed>>>
                       staticName: true
                       port: 
                         number: 80                

@@ -10,3 +10,4 @@ reports
 # Gauge - python compiled files
 *.pyc
 
+test_execution

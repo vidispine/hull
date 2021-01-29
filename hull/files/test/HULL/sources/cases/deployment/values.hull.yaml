@@ -58,7 +58,7 @@ hull:
           containers:
             main:
               image:
-                registry: local.registry
+                
                 repository: my/image/repo
 
       image_name_tag:

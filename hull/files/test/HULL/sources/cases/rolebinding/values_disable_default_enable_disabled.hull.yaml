@@ -55,7 +55,7 @@ hull:
         roleRef: 
           apiGroup: rbac.authorization.k8s.io
           kind: Role
-          name: _HULL_TRANSFORMATION_{{NAME=hull.util.transformation.makefullname}}{{COMPONENT=simple}}
+          name: _HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.makefullname>>><<<COMPONENT=simple>>>
 
 
 ###################################################

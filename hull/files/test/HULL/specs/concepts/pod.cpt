@@ -24,6 +24,11 @@
 * Set test object to "release-name-hull-test-image_name_registry"
 * Test Object has key "spec§template§spec§containers§0§image" with value "local.registry/my/image/repo"
 
+* Set test object to "release-name-hull-test-custom_args"
+* Test Object has key "spec§template§spec§containers§0§args§0" with value "--this-is-defined"
+* Test Object has key "spec§template§spec§containers§0§args§1" with value "--hence-is-this"
+* Test Object has key "spec§template§spec§containers§0§args§2" with value "--and-this-because-other-is-not-defined"
+
 * Set test object to "release-name-hull-test-image_name_tag"
 * Test Object has key "spec§template§spec§containers§0§image" with value "my/image/repo:99.9"
 
