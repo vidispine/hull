@@ -11,9 +11,9 @@ Let us first take at the problems that might arise for both groups before taking
 
 ### The chart maintainers view
 
-While there is much freedom given to the chart designers and maintainers in how to abstract the configuration of the packaged applications, Helm unfortunately offers no fast, easy and maintanance free way to handle recurring demands. It is fully focussed on having custom YAML templates for all objects in a chart in order to produce output. But considering that Helm chart maintainers might create and have to maintain a large number of Helm charts this way of working can become difficult. 
+While there is much freedom given to the chart designers and maintainers in how to abstract the configuration of the packaged applications, Helm unfortunately offers no fast, easy and maintenance free way to handle recurring demands. It is fully focussed on having custom YAML templates for all objects in a chart in order to produce output. But considering that Helm chart maintainers might create and have to maintain a large number of Helm charts this way of working can become difficult. 
 
-First of, getting started on building helm charts is challenging - especially for someone not experienced with the concepts of Kubernetes, Helm, YAML and Go Templating and all the relations between them which are needed to create sound helm charts. Furthermore, YAML and string templating don't play nice together which is something [rightfully critized](https://grafana.com/blog/2020/01/09/introducing-tanka-our-way-of-deploying-to-kubernetes/). It can become very finicky to produce valid YAML output with templating expressions. Typically starting a new helm chart from scratch requires a significant amount of copying and pasting templates from existing charts and adapting them to the new products needs. This is a time consuming and error prone process. 
+First of, getting started on building helm charts is challenging - especially for someone not experienced with the concepts of Kubernetes, Helm, YAML and Go Templating and all the relations between them which are needed to create sound helm charts. Furthermore, YAML and string templating don't play nice together which is something [rightfully criticized](https://grafana.com/blog/2020/01/09/introducing-tanka-our-way-of-deploying-to-kubernetes/). It can become very finicky to produce valid YAML output with templating expressions. Typically starting a new helm chart from scratch requires a significant amount of copying and pasting templates from existing charts and adapting them to the new products needs. This is a time consuming and error prone process. 
  
 Once charts have been created and published they need to be maintained. A maintainer maintaining a single Helm chart can reasonably do his work but let us assume it is required of her/him to maintain many helm charts. Then the amount of (for the large part) duplicated YAML blocks in templates grows very fast. Assuming you need to fix a conceptional issue you likely need to do this in a variety of files each time which is tedious and time consuming.
 
@@ -21,12 +21,12 @@ Once charts have been created and published they need to be maintained. A mainta
 
 Initially, chart users are faced with the same steep learning curve as the maintainers. They also need to be familiar with the underlying concepts to create a proper deployment configuration. This is worsened by the fact that each helm chart is basically a unique artifact with it's unique underlying implications of how it should be configured. 
 
-But any more advanced user of Helm will be aware of the objects as they are represented by the Kubernetes API. In order to specify the objects with the properties they have in mind they need to understand the individual chart creators assumptions on how to configure the chart and the relations behind. As an analogy, it is comparable to someone who wants to speak english (Kubernetes YAML) being told he has to learn portugese (Helm YAML) and all regional portugese dialects (individual Helm chart interfaces) to do so.
+But any more advanced user of Helm will be aware of the objects as they are represented by the Kubernetes API. In order to specify the objects with the properties they have in mind they need to understand the individual chart creators assumptions on how to configure the chart and the relations behind. As an analogy, it is comparable to someone who wants to speak english (Kubernetes YAML) being told he has to learn portuguese (Helm YAML) and all regional portuguese dialects (individual Helm chart interfaces) to do so.
 
 The best practices guidelines that are available do cover some ground to align chart writing and foster common understanding but still leave most design aspects to the maintainers. From personal experience it is almost always needed to inspect the files in the `/templates` folder to learn about the effects of changing configuration parameters in the `values.yaml`. 
 
 Moreover, depending on the requirements and preferences of the chart maintainer it is often the case that features required for a particular user are not implemented in the chart at all. To give an example of this, let's take a look at specifying `imagePullSecrets` for deployments within a helm chart:
-- It might not be possible to specify them with the given chart in case the chart maintainers did not opt for implementing them, maybe being focused on public cloud deployments only. In this case you need to submit a pull requrest, modify locally, fork or something else to fulfill your requirement.
+- It might not be possible to specify them with the given chart in case the chart maintainers did not opt for implementing them, maybe being focused on public cloud deployments only. In this case you need to submit a pull request, modify locally, fork or something else to fulfill your requirement.
 - The helm chart might have very different expectations on how they should be specified. Looking at some public helm charts available:
   - The `cerebro` helm chart at `https://github.com/helm/charts/blob/master/stable/cerebro/templates/deployment.yaml` requires you to specify `imagePullSecrets` as an array/list of values (excluding the `name` keys) per image:
   
@@ -61,7 +61,7 @@ This is not helpful to the user to have an intuition of what he needs to do. The
 
 There are various groups of people that work with Helm. There might be a group of people concerned with maintaining and installing a single specific chart to the best of their effort. In this case the regular Helm workflow might be suited for them well enough.
 
-But there are also people who maintain and/or consume a larger number of charts which likely are overwhelmed by the various individual design approaches to creating Helm charts. To this group, using the HULL library can omit the tedious YAML template creation and placeholder logic by offering a common interface to specifying objects directly, allowing the consumer to specify complete Kubernetes objects out-of-the-box and support frequent usecases by a light abstraction layer.
+But there are also people who maintain and/or consume a larger number of charts which likely are overwhelmed by the various individual design approaches to creating Helm charts. To this group, using the HULL library can omit the tedious YAML template creation and placeholder logic by offering a common interface to specifying objects directly, allowing the consumer to specify complete Kubernetes objects out-of-the-box and support frequent use-cases by a light abstraction layer.
 
 ## Components
 
@@ -69,7 +69,7 @@ At the core of the HULL library is the interplay between `values.yaml`, [`values
 
 ### The parent charts `values.yaml`
 
-For the HULL related functionalities only entries under the `hull` subkey are relevant. No other top level key is relevant for HULL so it can co-exist with any other Helm chart configuration properties.
+For the HULL related functionalities only entries under the `hull` sub-key are relevant. No other top level key is relevant for HULL so it can co-exist with any other Helm chart configuration properties.
 
 ### The [`values.schema.json`](./../values.schema.json)
 
@@ -97,7 +97,7 @@ The end to end process using HULL contains the following phases:
     
     1. JSON Schema validation of merged `values.yaml` via the `values.schema.json` included in HULL. It is based on the strict Kubernetes API schema and modified to incorporate the schemas of the additional HULL objects.
 
-        ⚠️**Any schema viaolations will prevent further processing.**⚠️
+        ⚠️ **Any schema violations will prevent further processing.** ⚠️
 
     2. The `hull.yaml` in the templates folder is processed. 
   

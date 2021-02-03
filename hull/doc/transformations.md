@@ -1,6 +1,6 @@
 # Using and creating Transformations
 
-Helm itself has by desgin no support for templating within the `values.yaml`. The `values.yaml` itself must be valid YAML and must not contain templating expressions. HULL can overcome this limitation to a certain degree.
+Helm itself has by design no support for templating within the `values.yaml`. The `values.yaml` itself must be valid YAML and must not contain templating expressions. HULL can overcome this limitation to a certain degree.
 
 As a simple example, it is often efficient to at least have possibilities to simply cross-reference fields in the `values.yaml`. One way this can be achieved is by using YAML anchors, the downside here is that an anchor and the reference to it need to be in the same YAML file. Considering that one main feature of Helm is to allow merging of multiple `values.yaml`'s this approach is very limited in scope.
 
@@ -20,7 +20,7 @@ Currently transformations are supported for limited scenarios. You can use trans
 - values which are of string type
 - values which are array elements and are of string type
 
-⚠️**Triggering transformations is based on the detection of a starting prefix (__\_HULL_TRANSFORMATION\___) in key names (for dictionary values) or string values so it is not 100% guaranteed that a chart does not use this expression as a key or value but otherwise even though it is highly unlikely.**
+⚠️ **Triggering transformations is based on the detection of a starting prefix (__\_HULL_TRANSFORMATION\___) in key names (for dictionary values) or string values so it is not 100% guaranteed that a chart does not use this expression as a key or value but otherwise even though it is highly unlikely.** ⚠️
 
 ## Transformations
 
@@ -81,7 +81,7 @@ The general syntax for string transformations is:
 
   This argument is specific to the transformation. Here it references the key from which we want to get the value from in dot-notation.
 
-⚠️**Note that the arguments themselves cannot contain the start-of and end-of argument signifiers `<<<` and `>>>`! These are important for string-splitting the arguments to the transformation.**
+⚠️ **Note that the arguments themselves cannot contain the start-of and end-of argument signifiers `<<<` and `>>>`! These are important for string-splitting the arguments to the transformation.** ⚠️
 
 Now we can take a look at the transformation itself.
 
@@ -202,7 +202,7 @@ Note that the result of the transformation is an array with possible multiple en
 
 ### Example of a complex custom transformation
 
-The HULL library comes with the predefined `hull.util.transformation.tpl` transformation which adds a crucial funtionality to HULL rendered string and object values. While the principal HULL concept is to provide full control over all object values to the creators and consumers directly it might be required to still wrap logic decisions in the creation of some string, dictionary or string array values. A very typical example might be the arguments to a containers command which could depend on custom application specific fields the user should be able to define. It can be argued that this adds in a functionality that is the most basic in the regular helm workflow. In HULL this should be used with care but allows more flexibility for some HULL rendered objects that would otherwise be missing.
+The HULL library comes with the predefined `hull.util.transformation.tpl` transformation which adds a crucial functionality to HULL rendered string and object values. While the principal HULL concept is to provide full control over all object values to the creators and consumers directly it might be required to still wrap logic decisions in the creation of some string, dictionary or string array values. A very typical example might be the arguments to a containers command which could depend on custom application specific fields the user should be able to define. It can be argued that this adds in a functionality that is the most basic in the regular helm workflow. In HULL this should be used with care but allows more flexibility for some HULL rendered objects that would otherwise be missing.
 
 So in short, this transformation puts the templating back into the calculation of values. Consider the following HULL configuration: 
 
@@ -253,7 +253,7 @@ On rendering the following happens:
 
   Following additional rules apply to the usage of templating expressions in this manner:
 
-  - when refering to the `.Values` in `values.yaml` you need to refer to 
+  - when referring to the `.Values` in `values.yaml` you need to refer to 
 
     ```yaml
     (index . \"PARENT\").Values
@@ -360,4 +360,4 @@ Arguments:
 
 Produces:
 
-The processed result of exeuting `tpl` on the string. Depending on where this transformation is used this can be a dictionary, a string or an array of strings.
+The processed result of executing `tpl` on the string. Depending on where this transformation is used this can be a dictionary, a string or an array of strings.
