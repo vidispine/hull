@@ -29,6 +29,7 @@ hull:
         password: local_password
 
     <OBJECT_TYPE>:
+      
       service_account:
         pod:
           containers:

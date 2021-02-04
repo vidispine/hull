@@ -28,7 +28,12 @@ hull:
     
   # CONFIGMAPS
     statefulset:      
-            
+
+      service_account:
+        serviceName: service_account
+        pod:
+          containers: {}
+    
       disabled:
         serviceName: disabled
         pod:
