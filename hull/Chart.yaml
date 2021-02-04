@@ -2,7 +2,7 @@ apiVersion: v2
 name: hull
 version: 1.20.1
 kubeVersion: ">= 1.20.0"
-description: HULL - Helm UtiLity Library
+description: HULL - Helm Uniform Layer Library
 type: library
 keywords:
 - hull
