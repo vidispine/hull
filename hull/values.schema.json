@@ -22225,6 +22225,7 @@
         }
       ]
     },
+    
     "root": {
       "$id": "#/definitions/root",
       "title": "Root",
@@ -22236,6 +22237,7 @@
           "title": "Objects",
           "type": "object",
           "required": [],
+          "additionalProperties": false,
           "properties": {
             "configmap": {
               "$id": "#/definitions/root/objects/configmap",
@@ -22395,8 +22397,8 @@
                 }
               }
             },
-            "cronjob.v1": {
-              "$id": "#/definitions/cronjob.v1",
+            "cronjob": {
+              "$id": "#/definitions/cronjob",
               "title": "Cronjob",
               "type": "object",
               "required": [],
