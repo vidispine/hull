@@ -22,6 +22,7 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-transformation"
 * Test Object has key "roleRef§name" with value "release-name-hull-test-simple"
 * Test Object has key "subjects§0§name" with value "release-name-hull-test-simple"
+* Test Object has key "subjects§0§namespace" with value "default"
 
 ## Defaulting
 * Render values file "values_disable_default.hull.yaml"

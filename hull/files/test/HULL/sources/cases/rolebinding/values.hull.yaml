@@ -54,7 +54,7 @@ hull:
           kind: Role
           name: _HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.makefullname>>><<<COMPONENT=simple>>>
         subjects: 
-        - apiGroup: rbac.authorization.k8s.io
+        - namespace: _HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT={{ (index . "PARENT").Release.Namespace }}>>>
           kind: ServiceAccount
           name: _HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.makefullname>>><<<COMPONENT=simple>>>
 
