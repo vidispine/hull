@@ -96,12 +96,11 @@ objects:
     default:
       enabled: true
       roleRef:
-        apiGroup: "rbac.authorization.k8s.io/v1"
+        apiGroup: "rbac.authorization.k8s.io"
         kind: "Role"
         name:  _HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.makefullname>>><<<COMPONENT=default>>>
       subjects: 
-      - apiGroup: "rbac.authorization.k8s.io/v1"
-        kind: ServiceAccount
+      - kind: ServiceAccount
         name: _HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.makefullname>>><<<COMPONENT=default>>>
 ###################################################
 
