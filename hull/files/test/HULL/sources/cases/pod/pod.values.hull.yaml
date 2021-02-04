@@ -29,6 +29,14 @@ hull:
         password: local_password
 
     <OBJECT_TYPE>:
+      service_account:
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+          serviceAccountName: another_account
 
       imagepullsecrets_custom:
         pod:

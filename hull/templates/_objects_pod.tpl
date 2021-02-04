@@ -103,8 +103,8 @@ imagePullSecrets: []
 {{- define "hull.object.pod.serviceAccountName" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
-{{ if hasKey $spec "serviceAccountName" }}
-serviceAccountName: {{ $spec.serviceAccountName }}
+{{ if hasKey $spec.pod "serviceAccountName" }}
+serviceAccountName: {{ $spec.pod.serviceAccountName }}
 {{ else }}
 {{ if $parent.Values.hull.objects.serviceaccount.default.enabled }}
 serviceAccountName: {{ include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "COMPONENT" "default") }}

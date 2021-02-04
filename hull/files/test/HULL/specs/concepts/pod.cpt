@@ -3,8 +3,9 @@
 * Prepare default test case for this kind including suites "pod,imagepullsecrets"
 * Render
 
-* Set test object to "release-name-hull-test-imagepullsecrets_custom"
-* Test Object has key "spec§template§spec§imagePullSecrets§0§name" with value "some-custom-imagepull-secret"
+* Set test object to "release-name-hull-test-service_account"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "another_account"
+
 
 * Set test object to "release-name-hull-test-imagepullsecrets_add_all"
 * Test Object does not have key "spec§template§spec§imagePullSecrets"
