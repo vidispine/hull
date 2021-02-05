@@ -248,3 +248,8 @@ hull:
                     name: a_secret
                   configMapRef:
                     name: a_configmap
+                ENVFROM_SECRET_STATIC_LONG:
+                  secretRef:
+                    name: a_very_loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong_secret_name
+                    staticName: true
+                

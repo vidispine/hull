@@ -97,3 +97,4 @@
 * Test Object has key "spec§template§spec§containers§0§envFrom§3§secretRef§name" with value "release-name-hull-test-envfrom_secret_name"
 * Test Object has key "spec§template§spec§containers§0§envFrom§3§secretRef§optional" set to true
 * Test Object has key "spec§template§spec§containers§0§envFrom§4§secretRef§name" with value "envfrom_secret_name_static"
+* Test Object has key "spec§template§spec§containers§0§envFrom§5§secretRef§name" with value "a_very_loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong_secret_name"
