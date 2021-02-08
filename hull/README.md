@@ -4,7 +4,7 @@
 
 This Helm library chart is designed to ease building, maintaining and configuring Kubernetes objects in [Helm](https://helm.sh) charts. It can be added to any existing Helm chart and used without risk of breaking the Helm charts functionalities, see [adding the HULL library chart to a Helm chart](./doc/setup.md) for more information.
 
-Essentially, the HULL library chart provides Go Templating functions to create/render Kubernetes objects as YAML. Due to the HULL library's extensive usage of Go Templating functions no template files in the `/templates` folder need to be created, adapted and maintained to define the Kubernetes objects. Only an object definition in the parent charts `values.yaml`' is required to manage Kubernetes object creation. JSON schema validation based on the [Helm JSON validation](https://helm.sh/docs/topics/charts/#schema-files) (via `values.schema.json`) aids in writing Kubernetes API conforming objects for rendering from the beginning.
+While the original concept of Helm charts is suited very well to create tailormade configuration packages for applications, this comes at a cost of having to create and maintain a lot of boilerplate templates and mappings for off the shelf recurring use cases as well. To make writing and maintainging charts easier and faster - especially for standard use cases - is the aim of this project. Essentially, the HULL library chart provides Go Templating functions to create/render Kubernetes objects as YAML. Due to the HULL library's extensive usage of Go Templating functions no template files in the `/templates` folder need to be created, adapted and maintained to define Kubernetes objects. Only an object definition in the parent charts `values.yaml`' is required to render Kubernetes objects. JSON schema validation based on the [Helm JSON validation](https://helm.sh/docs/topics/charts/#schema-files) (via `values.schema.json`) aids in writing Kubernetes API conforming objects right from the beginning when [using an IDE that supports live JSON schema validation](./doc/json_schema_validation.md).
 
 The HULL library chart idea is partly inspired by the [common](
 https://github.com/helm/charts/tree/master/incubator/common) Helm chart concept and for testing 
@@ -17,19 +17,19 @@ https://github.com/helm/charts/tree/master/incubator/common) Helm chart concept 
 
 As highlighted above, when included in a Helm chart the HULL library chart can take over the job of dynamically rendering Kubernetes objects from their given specifications from the `values.yaml` file alone. With YAML object construction deferred to the HULL library's Go Templating functions instead of custom YAML templates in the `/templates` folder you can centrally enforce best practices:
 
-- Concentrate on what is needed to specify Kubernetes objects without having to add individual boilerplate YAML templates to your chart. This removes a common source of errors and maintenance from the regular Helm workflow. To have the HULL rendered output conform to the Kubernetes API specification, a large number of unit tests validate the HULL rendered output against the Kubernetes API JSON schema. 
+- Concentrate on what is needed to specify Kubernetes objects without having to add individual boilerplate YAML templates to your chart. This removes a common source of errors and maintenance from the regular Helm workflow. **To have the HULL rendered output conform to the Kubernetes API specification, a large number of unit tests validate the HULL rendered output against the Kubernetes API JSON schema.**
 
   For more details refer to the documentation on [JSON Schema Validation](./doc/json_schema_validation.md).
 
-- For all Kubernetes object types supported by HULL, full access to the respective Kubernetes object properties is directly available. This relieves chart maintainers from having to add missing configuration options and the Helm chart users from forking the Helm chart to add configuration options they need. Only updating the HULL chart to a newer version with matching Kubernetes API version is required to enable configuration of properties added to Kubernetes objects meanwhile in newer API versions. The HULL charts are versioned to reflect the minimal Kubernetes API versions supported by them. 
+- For all Kubernetes object types supported by HULL, **full configurational access to the Kubernetes object types properties is directly available**. This relieves chart maintainers from having to add missing configuration options one by one and the Helm chart users from forking the Helm chart to add just the properties they need for their confiuguration. Only updating the HULL chart to a newer version with matching Kubernetes API version is required to enable configuration of properties added to Kubernetes objects meanwhile in newer API versions. The HULL charts are versioned to reflect the minimal Kubernetes API versions supported by them. 
 
    For more details refer to the documentation on [Architecture Overview](./doc/architecture.md).
 
-- The single interface of the HULL library is used to both create and configure objects in charts for deployment. This fosters the mutual understanding of chart creators/maintainers and consumers of how the chart actually works and what it contains. Digging into the `/templates` folder to understand the Helm charts implications is not required anymore. To avoid any misconfiguration, the interface to the library - the `values.yaml` of the HULL library - is fully JSON validated. When using an IDE supporting live JSON schema validation (e.g. VSCode) you can get IDE guidance when creating the HULL objects.  Before rendering, JSON schema conformance is validated by the HULL library.
+- The single interface of the HULL library is used to both create and configure objects in charts for deployment. This fosters the mutual understanding of chart creators/maintainers and consumers of how the chart actually works and what it contains. Digging into the `/templates` folder to understand the Helm charts implications is not required anymore. To avoid any misconfiguration, the interface to the library - the `values.yaml` of the HULL library - is fully JSON validated. **When using an IDE supporting live JSON schema validation (e.g. VSCode) you can get IDE guidance when creating the HULL objects.  Before rendering, JSON schema conformance is validated by the HULL library.**
 
   For more details refer to the documentation on [JSON Schema Validation](./doc/json_schema_validation.md).
 
-- Uniform and rich metadata is automatically attached to all objects created by the HULL library. 
+- **Uniform and rich metadata is automatically attached to all objects created by the HULL library.** 
   - Kubernetes standard labels as defined for [Kubernetes](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/) and [Helm](https://helm.sh/docs/chart_best_practices/labels/#standard-labels) are added to all objects metadata automatically. 
   - Additional custom labels and annotations metadata can be set hierarchically for:
     - all created Kubernetes objects or 
@@ -38,11 +38,11 @@ As highlighted above, when included in a Helm chart the HULL library chart can t
 
   For more details on metadata overwriting refer to the advanced example below.
 
-- Flexible handling of ConfigMap and Secret input by choosing between inline specification of contents in `values.yaml` or import from external files for contents of larger sizes. When importing data from files the data can be either run through the templating engine or imported un-templated 'as is' if it already contains templating expressions that shall be passed on to the consuming application. 
+- Flexible handling of ConfigMap and Secret input by choosing between inline specification of contents in `values.yaml` or import from external files for contents of larger sizes. When importing data from files the data can be either run through the templating engine or imported un-templated 'as is' if it already contains templating expressions that shall be passed on to the consuming application. **Adding ConfigMaps or Secrets to your deployment requires only a few lines of code.**
 
   For more details refer to the documentation on [ConfigMaps and Secrets](./doc/configmaps_secrets.md).
 
-- For more complex scenarios where actual values in the target YAML are subject to configurations in the `values.yaml`, there is a some support to dynamically populate values by injecting Go Templating expressions defined in place of the value in the `values.yaml`. For example, if your concrete container arguments depend on various other settings in `values.yaml` you can inject the conditions into the calculation of the arguments.
+- For more complex scenarios where actual values in the target YAML are subject to configurations in the `values.yaml`, there is **support to dynamically populate values by injecting Go Templating expressions defined in place of the value in the `values.yaml`**. For example, if your concrete container arguments depend on various other settings in `values.yaml` you can inject the conditions into the calculation of the arguments.
 
   For more details refer to the documentation on [Transformations](./doc/transformations.md).
 
