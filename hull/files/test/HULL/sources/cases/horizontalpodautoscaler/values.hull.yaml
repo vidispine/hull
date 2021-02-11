@@ -1,0 +1,60 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # horizontalpodautoscaler
+    horizontalpodautoscaler:
+      
+      disabled:
+        scaleTargetRef:
+          name: disabled
+          kind: "Deployment"
+        maxReplicas: 3
+      
+      static_name:
+        scaleTargetRef:
+          name: static_name
+          kind: "Deployment"
+        maxReplicas: 3
+
+      metadata_merge:
+        scaleTargetRef:
+          name: metadata_merge
+          kind: "Deployment"
+        maxReplicas: 3
+
+      metadata_overwrite:
+        scaleTargetRef:
+          name: metadata_overwrite
+          kind: "Deployment"
+        maxReplicas: 3
+
+      internal:
+        minReplicas: 1
+        maxReplicas: 2
+        targetCPUUtilizationPercentage: 50
+        scaleTargetRef:
+          apiVersion: "v1"
+          kind: "Deployment"
+          name: target_deployment
+          
+      external:
+        minReplicas: 1
+        maxReplicas: 2
+        targetCPUUtilizationPercentage: 50
+        scaleTargetRef:
+          apiVersion: "v1"
+          kind: "Deployment"
+          name: target_deployment
+          staticName: true
+      
+
+###################################################

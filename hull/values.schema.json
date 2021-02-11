@@ -2904,6 +2904,10 @@
         "name": {
           "description": "Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names",
           "type": "string"
+        },
+        "staticName": {
+          "description": "Specify whether the ConfigMap refers to an internally named object",
+          "type": "boolean"
         }
       },
       "required": [
@@ -2983,6 +2987,14 @@
       ],
       "additionalProperties": false
     },
+    "io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerSpec.Names": {
+       "enum": [
+        "maxReplicas",
+        "minReplicas",
+        "scaleTargetRef",
+        "targetCPUUtilizationPercentage"
+      ]
+    },
     "io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerSpec": {
       "description": "specification of a horizontal pod autoscaler.",
       "properties": {
@@ -3010,8 +3022,7 @@
         "scaleTargetRef",
         "maxReplicas"
       ],
-      "type": "object",
-      "additionalProperties": false
+      "type": "object"
     },
     "io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerStatus": {
       "description": "current status of a horizontal pod autoscaler",
@@ -22225,7 +22236,31 @@
         }
       ]
     },
-    
+    "horizontalpodautoscaler.v1": {
+      "$id": "#/definitions/horizontalpodautoscaler.v1",
+      "title": "HorizontalPodAutoscaler",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerSpec.Names"
+              }
+            ]
+          }
+        }
+      ]
+    },
     "root": {
       "$id": "#/definitions/root",
       "title": "Root",
@@ -22689,6 +22724,29 @@
                     },
                     {
                       "$ref": "#/definitions/servicemonitor.v1"
+                    }
+                  ],
+                  "properties": {}
+                }
+              }
+            },
+            "horizontalpodautoscaler": {
+              "$id": "#/definitions/root/objects/horizontalpodautoscaler",
+              "title": "HorizontalPodAutoscaler",
+              "type": "object",
+              "required": [],
+              "patternProperties": {
+                "^[^_].*$": {
+                  "type": [
+                    "null",
+                    "object"
+                  ],
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "$ref": "#/definitions/horizontalpodautoscaler.v1"
                     }
                   ],
                   "properties": {}
