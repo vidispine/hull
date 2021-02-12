@@ -1,0 +1,37 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # PRIORITYCLASS
+    priorityclass:
+      
+      disabled:
+        value: 100
+      
+      static_name:
+        value: 100
+      
+      metadata_merge:
+        value: 100
+
+      metadata_overwrite:
+        value: 100
+
+      minimal:
+        value: 100
+
+      full:
+        description: "Some priority class"
+        globalDefault: true
+        preemptionPolicy: PreemptLowerPriority
+        value: 50
+
+###################################################

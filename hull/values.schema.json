@@ -14544,6 +14544,14 @@
       ],
       "additionalProperties": false
     },
+    "io.k8s.api.policy.v1beta1.PodDisruptionBudgetSpec.Names":
+    {
+      "enum": [
+        "maxUnavailable",
+        "minAvailable",
+        "selector"
+      ]
+    },
     "io.k8s.api.policy.v1beta1.PodDisruptionBudgetSpec": {
       "description": "PodDisruptionBudgetSpec is a description of a PodDisruptionBudget.",
       "properties": {
@@ -14560,8 +14568,7 @@
           "description": "Label query over pods whose evictions are managed by the disruption budget."
         }
       },
-      "type": "object",
-      "additionalProperties": false
+      "type": "object"
     },
     "io.k8s.api.policy.v1beta1.PodDisruptionBudgetStatus": {
       "description": "PodDisruptionBudgetStatus represents information about the status of a PodDisruptionBudget. Status may trail the actual state of a system.",
@@ -16146,13 +16153,18 @@
       "type": "object",
       "additionalProperties": false
     },
+    "io.k8s.api.scheduling.v1.PriorityClass.Names":
+    {
+      "enum": [
+        "description",
+        "globalDefault",
+        "preemptionPolicy",
+        "value"
+      ]
+    },
     "io.k8s.api.scheduling.v1.PriorityClass": {
       "description": "PriorityClass defines mapping from a priority class name to the priority integer value. The value can be any valid integer.",
       "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
         "description": {
           "description": "description is an arbitrary string that usually provides guidelines on when this priority class should be used.",
           "type": "string"
@@ -16160,14 +16172,6 @@
         "globalDefault": {
           "description": "globalDefault specifies whether this PriorityClass should be considered as the default priority for pods that do not have any priority class. Only one PriorityClass can be marked as `globalDefault`. However, if more than one PriorityClasses exists with their `globalDefault` field set to true, the smallest value of such global default PriorityClasses will be used as the default priority.",
           "type": "boolean"
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string"
-        },
-        "metadata": {
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta",
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         },
         "preemptionPolicy": {
           "description": "PreemptionPolicy is the Policy for preempting pods with lower priority. One of Never, PreemptLowerPriority. Defaults to PreemptLowerPriority if unset. This field is beta-level, gated by the NonPreemptingPriority feature-gate.",
@@ -16189,8 +16193,7 @@
           "kind": "PriorityClass",
           "version": "v1"
         }
-      ],
-      "additionalProperties": false
+      ]
     },
     "io.k8s.api.scheduling.v1.PriorityClassList": {
       "description": "PriorityClassList is a collection of priority classes.",
@@ -22261,6 +22264,56 @@
         }
       ]
     },
+    "poddisruptionbudget.v1": {
+      "$id": "#/definitions/poddisruptionbudget.v1",
+      "title": "PodDisruptionBudget",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.policy.v1beta1.PodDisruptionBudgetSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.policy.v1beta1.PodDisruptionBudgetSpec.Names"
+              }
+            ]
+          }
+        }        
+      ]
+    },
+    "priorityclass.v1": {
+      "$id": "#/definitions/priorityclass.v1",
+      "title": "PriorityClass",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1.PriorityClass"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.scheduling.v1.PriorityClass.Names"
+              }
+            ]
+          }
+        }        
+      ]
+    },
     "root": {
       "$id": "#/definitions/root",
       "title": "Root",
@@ -22747,6 +22800,52 @@
                     },
                     {
                       "$ref": "#/definitions/horizontalpodautoscaler.v1"
+                    }
+                  ],
+                  "properties": {}
+                }
+              }
+            },
+            "poddisruptionbudget": {
+              "$id": "#/definitions/root/objects/poddisruptionbudget",
+              "title": "PodDisruptionBudget",
+              "type": "object",
+              "required": [],
+              "patternProperties": {
+                "^[^_].*$": {
+                  "type": [
+                    "null",
+                    "object"
+                  ],
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "$ref": "#/definitions/poddisruptionbudget.v1"
+                    }
+                  ],
+                  "properties": {}
+                }
+              }
+            },
+            "priorityclass": {
+              "$id": "#/definitions/root/objects/priorityclass",
+              "title": "PriorityClass",
+              "type": "object",
+              "required": [],
+              "patternProperties": {
+                "^[^_].*$": {
+                  "type": [
+                    "null",
+                    "object"
+                  ],
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "$ref": "#/definitions/priorityclass.v1"
                     }
                   ],
                   "properties": {}

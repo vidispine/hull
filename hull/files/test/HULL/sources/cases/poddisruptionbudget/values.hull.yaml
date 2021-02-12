@@ -1,0 +1,23 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # poddisruptionbudget
+    poddisruptionbudget:
+      
+      simple:
+        maxUnavailable: 1
+        minAvailable: 2
+        selector:
+          matchLabels:
+            name: simple
+
+###################################################

@@ -41,6 +41,7 @@ metadata:
 {{- $allObjects = merge $allObjects (dict "ServiceAccount" (dict "HULL_TEMPLATE" $template)) }}
 {{- $allObjects = merge $allObjects (dict "StorageClass" (dict "HULL_TEMPLATE" $template "API_VERSION" "storage.k8s.io/v1")) }}
 {{- $allObjects = merge $allObjects (dict "CustomResource" (dict "HULL_TEMPLATE" $template)) }}
+{{- $allObjects = merge $allObjects (dict "PriorityClass" (dict "HULL_TEMPLATE" $template "API_VERSION" "scheduling.k8s.io/v1")) }}
 
 {{- /*
 ### Load pod based objects
@@ -58,6 +59,7 @@ metadata:
 {{- $allObjects = merge $allObjects (dict "PersistentVolume" (dict "HULL_TEMPLATE" $template)) }}
 {{- $allObjects = merge $allObjects (dict "PersistentVolumeClaim" (dict "HULL_TEMPLATE" $template)) }}
 {{- $allObjects = merge $allObjects (dict "ServiceMonitor" (dict "HULL_TEMPLATE" $template "API_VERSION" "monitoring.coreos.com/v1")) }}
+{{- $allObjects = merge $allObjects (dict "PodDisruptionBudget" (dict "HULL_TEMPLATE" $template "API_VERSION" "policy/v1beta1")) }}
 
 {{- /*
 ### Load rbac'ed objects

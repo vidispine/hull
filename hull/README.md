@@ -180,6 +180,8 @@ HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> P
 ------------------------------ | --------------------| ----------------------------------
 `customresource` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.CustomResource.v1**](doc/objects_customresource.md)<br>`apiVersion`<br>`kind`<br>`spec`
 `horizontalpodautoscaler` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.HorizontalPodAutoscaler.v1**](doc/objects_horizontalpodautoscaler.md)<br>`scaleTargetRef` | [**horizontalpodautoscalerspec-v1-autoscaling**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#horizontalpodautoscalerspec-v1-autoscaling)<br>`maxReplicas`<br>`minReplicas`<br>`targetCPUUtilizationPercentage`
+`poddisruptionbudget` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**poddisruptionbudgetspec-v1-policy**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#poddisruptionbudgetspec-v1beta1-policy)<br>`maxUnavailable`<br>`minAvailable`<br>`selector`
+`priorityclass` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**priorityclass-v1-scheduling-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#priorityclass-v1-scheduling-k8s-io)<br>`description`<br>`globalDefault`<br>`preemptionPolicy`<br>`value`
 
 **[Cluster APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#-strong-cluster-apis-strong-)**
 HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> Properties
