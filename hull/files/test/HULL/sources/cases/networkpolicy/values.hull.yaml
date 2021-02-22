@@ -1,0 +1,65 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # NETWORKPOLICY
+    networkpolicy:
+      disabled:
+        podSelector: 
+          matchLabels:
+            key: value
+      
+      static_name:
+        podSelector: 
+          matchLabels:
+            key: value
+      
+      metadata_merge:
+        podSelector: 
+          matchLabels:
+            key: value 
+
+      metadata_overwrite:
+        podSelector: 
+          matchLabels:
+            key: value
+
+      minimal:
+        podSelector: 
+          matchLabels:
+            key: value
+
+      standard:
+        egress:
+        - ports:
+          - port: 80
+            protocol: TCP
+          - port: udp-out
+            protocol: UDP
+          to:
+          - ipBlock: 
+              cidr: 192.168.1.1/24
+        ingress:
+        - ports:
+          - port: 89
+            protocol: TCP
+          - port: udp-in
+            protocol: UDP
+          from:
+          - ipBlock: 
+              cidr: 192.168.1.1/1
+        policyTypes: 
+        - "Ingress"
+        - "Egress"
+        podSelector: 
+          matchLabels:
+            key: value
+###################################################

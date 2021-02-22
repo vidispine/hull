@@ -1,0 +1,38 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # validatingwebhookconfiguration
+    validatingwebhookconfiguration:
+      standard:
+        webhooks:
+          first_hook:
+            failurePolicy: Ignore
+            matchPolicy: Exact
+            name: my webhook
+            clientConfig:
+              service: 
+                name: service_check
+                namespace: service_check_namespace
+            sideEffects: None
+            admissionReviewVersions:
+            - first_draft
+            timeoutSeconds: 30
+          second_hook:
+            failurePolicy: Fail
+            name: my webhook 2
+            clientConfig:
+              url: http://some_url
+            sideEffects: NoneOnDryRun 
+            admissionReviewVersions:
+            - second_draft
+
+###################################################

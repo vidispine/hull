@@ -349,7 +349,7 @@ objects:
 ###################################################
 
 # PODDISRUPTIONBUDGET
-  poddisruptionbudget :
+  poddisruptionbudget:
     _HULL_OBJECT_TYPE_DEFAULT_:
       enabled: true
       annotations: {}
@@ -357,9 +357,61 @@ objects:
 ###################################################
 
 # PRIORITYCLASS
-  priorityclass :
+  priorityclass:
     _HULL_OBJECT_TYPE_DEFAULT_:
       enabled: true
       annotations: {}
       labels: {}
 ###################################################
+
+# ENDPOINTS
+  endpoints:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+###################################################
+
+# MUTATINGWEBHOOKCONFIGURATION
+  mutatingwebhookconfiguration:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+      webhooks:
+        _HULL_OBJECT_TYPE_DEFAULT_: {}
+###################################################
+
+# VALIDATINGWEBHOOKCONFIGURATION
+  validatingwebhookconfiguration:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+      webhooks:
+        _HULL_OBJECT_TYPE_DEFAULT_: {}
+###################################################
+
+# PODSECURITYPOLICY
+  podsecuritypolicy:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+##################################################
+
+# RESOURCEQUOTA
+  resourcequota:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+##################################################
+
+# NETWORKPOLICY
+  networkpolicy:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+##################################################

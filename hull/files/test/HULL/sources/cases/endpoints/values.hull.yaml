@@ -1,0 +1,27 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # endpoints
+    endpoints:
+      standard:
+        subsets:
+        - addresses:
+          - hostname: some_host
+            ip: 100.100.100.100
+            nodeName: my_node
+          ports:
+          - appProtocol: HTTP
+            name: test_port
+            port: 87
+            protocol: TCP
+
+###################################################

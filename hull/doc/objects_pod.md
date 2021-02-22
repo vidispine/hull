@@ -24,7 +24,7 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------
-`initContainers` | Dictionary with init containers to add to the pods `spec.initContainers` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.Container.v1`** properties. See below for reference.  | `{}` |
+`initContainers` | Dictionary with init containers to add to the pods `spec.initContainers` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.Container.v1`** properties. See below for reference.<br><br>⚠️ **Due to the conversion between dictionary and array the order of elements is changed so that all keys are alphanumerically sorted ascending before the key-value pairs are converted to array elements. Unfortunately this cannot be avoided. In the case of initContainers - where order of items is important for order of execution - this means that the initContainer keys need to be chosen so that their alphanumeric order matches the desired order of execution. This can be simply achieved by eg. adding prefixes `01_`, `02_`, ... to the initContainer key names.** ⚠️ | `{}` |
 `containers` | Dictionary with containers to add to the pods `spec.containers` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.Container.v1`** properties. See below for reference. | `{}` || `{}` | 
 `volumes` | Dictionary with volumes to add to the pods `spec.volumes` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.Volume.v1`** properties. See below for reference. | `{}` |
 

@@ -1,0 +1,24 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # RESOURCEQUOTA
+    resourcequota:
+      quota_one:
+        hard: 
+          cpu: "10"
+          memory: 20Gi
+        scopes:
+        - scope_one
+        - scope_two
+        
+
+###################################################
