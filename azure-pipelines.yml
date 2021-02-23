@@ -6,15 +6,6 @@
 parameters:
 - name: RunTests
   default: true
-- name: HelmVersions
-  type: object
-  default:
-  - version: "3.0.0"
-  - version: "3.2.4"
-  - version: "3.3.4"
-  - version: "3.4.0"
-  - version: "3.4.1"
-  - version: "3.4.2"
 
 trigger:
 - main
@@ -23,63 +14,26 @@ trigger:
 pool:
     vmImage: 'ubuntu-20.04'
 
-steps:
-- script: |
-      set -euo pipefail
-      echo installing gauge
-      sudo apt-key adv --keyserver hkp://pool.sks-keyservers.net --recv-keys 023EDB0B
-      echo deb https://dl.bintray.com/gauge/gauge-deb stable main | sudo tee -a /etc/apt/sources.list
-      sudo apt-get update
-      sudo apt-get install gauge
-      cd hull/files/test/HULL
-      sudo pip install -r requirements.txt
-      gauge
-  displayName: 'install gauge'
-  condition: eq('${{ parameters.RunTests }}',true)
-
-- ${{ each version in parameters.HelmVersions }}: # Each Helm Version
+jobs:
+- job: ProcessExternalHelmChart
+  steps:
   
-  - script: |
-      set -euo pipefail
-      echo installing helm
-      wget https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-      sudo chmod +x ./get-helm-3
-      sudo ./get-helm-3 --version v${{ version.version }}
-      helm version
-    displayName: 'install helm'
-    condition: eq('${{ parameters.RunTests }}',true)
+  - template: azure-pipelines-test.yml  # Template reference
 
   - script: |
-      set -euo pipefail
-      echo starting gauge test against helm version `helm version`
-      ls
-      cd hull/files/test/HULL
-      ls
-      gauge run -p -l debug specs
-    displayName: 'gauge test'
-    condition: eq('${{ parameters.RunTests }}',true)
-
-#- task: Docker@2
-#  displayName: 'Merge Registry and Repository fields to single Repository field'
-#  inputs:
-#    container: 'quay.io/helmpk/chart-releaser:v1.1.1'
-#    command: run
-#    arguments: "--entrypoint cr -v /hull:/hull -v $(Agent.TempDirectory):/tmp quay.io/helmpk/chart-releaser:v1.1.1 package /hull/hull --package-path /tmp"
-
-- script: |
-      set -euo pipefail
-      echo package chart
-      cp -r . $(Agent.TempDirectory)
-      cd $(Agent.TempDirectory)
-      wget https://github.com/helm/chart-releaser/releases/download/v1.1.1/chart-releaser_1.1.1_linux_amd64.tar.gz
-      tar -xvzf chart-releaser_1.1.1_linux_amd64.tar.gz -C ./
-      ls
-      sudo chmod +x ./cr
-      sudo ./cr package ./hull 
-      sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
-      mkdir .cr-index
-      wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
-      sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) --charts-repo https://vidispine.github.io/hull --push 
-      #sudo docker pull quay.io/helmpk/chart-releaser:v1.1.1
-      #sudo docker run -v /hull:/hull -v $(Agent.TempDirectory):/tmp --entrypoint cr quay.io/helmpk/chart-releaser:v1.1.1 package /hull/hull --package-path /hull 
-  #condition: eq(variables['create_subchart'],true)
+        set -euo pipefail
+        echo package chart
+        cp -r . $(Agent.TempDirectory)
+        cd $(Agent.TempDirectory)
+        wget https://github.com/helm/chart-releaser/releases/download/v1.1.1/chart-releaser_1.1.1_linux_amd64.tar.gz
+        tar -xvzf chart-releaser_1.1.1_linux_amd64.tar.gz -C ./
+        ls
+        sudo chmod +x ./cr
+        sudo ./cr package ./hull 
+        sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
+        mkdir .cr-index
+        wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
+        sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) --charts-repo https://vidispine.github.io/hull --push 
+        #sudo docker pull quay.io/helmpk/chart-releaser:v1.1.1
+        #sudo docker run -v /hull:/hull -v $(Agent.TempDirectory):/tmp --entrypoint cr quay.io/helmpk/chart-releaser:v1.1.1 package /hull/hull --package-path /hull
+    name: "Create release"
