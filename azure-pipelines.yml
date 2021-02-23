@@ -15,12 +15,12 @@ pool:
     vmImage: 'ubuntu-20.04'
 
 jobs:
-- job: Run Tests
+- job: RunTests
   steps:
   
   - template: azure-pipelines-test.yml  # Template reference
 
-- job: Create Release
+- job: CreateRelease
   steps:
   
   - script: |
