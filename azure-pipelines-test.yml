@@ -32,11 +32,6 @@ parameters:
   - version: "3.5.1"
   - version: "3.5.2"
 
-trigger: none
-
-pool:
-    vmImage: 'ubuntu-20.04'
-
 steps:
 - script: |
       set -euo pipefail
