@@ -15,7 +15,7 @@
       ]
     },
     "conditions": {
-      "description": "The latest available observations of an object's current state. When a job fails, one of the conditions will have type == \"Failed\". More info: https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/",
+      "description": "The latest available observations of an object's current state. More info: https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/",
       "items": {
         "description": "JobCondition describes current state of a job.",
         "properties": {
