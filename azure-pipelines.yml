@@ -21,6 +21,8 @@ jobs:
   - template: azure-pipelines-test.yml  # Template reference
 
 - job: Create Release
+  steps:
+  
   - script: |
         set -euo pipefail
         echo package chart
