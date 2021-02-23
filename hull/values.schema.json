@@ -10419,12 +10419,15 @@
     },
     "io.k8s.api.core.v1.ServiceSpec.Names": {
       "enum": [
+        "allocateLoadBalancerNodePorts",
         "clusterIP",
+	      "clusterIPs",
         "externalIPs",
         "externalName",
         "externalTrafficPolicy",
         "healthCheckNodePort",
-        "ipFamily",
+        "ipFamilies",
+	      "ipFamilyPolicy",
         "loadBalancerIP",
         "loadBalancerSourceRanges",
         "publishNotReadyAddresses",
