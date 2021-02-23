@@ -1,0 +1,74 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+parameters:
+- name: HelmVersions
+  type: object
+  default:
+  - version: "3.0.0"
+  - version: "3.0.1"
+  - version: "3.0.2"
+  - version: "3.0.3"
+  - version: "3.1.0"
+  - version: "3.1.1"
+  - version: "3.1.2"
+  - version: "3.1.3"
+  - version: "3.2.0"
+  - version: "3.2.1"
+  - version: "3.2.2"
+  - version: "3.2.3"
+  - version: "3.2.4"
+  - version: "3.3.0"
+  - version: "3.3.1"
+  - version: "3.3.2"
+  - version: "3.3.3"
+  - version: "3.3.4"
+  - version: "3.4.0"
+  - version: "3.4.1"
+  - version: "3.4.2"
+  - version: "3.5.0"
+  - version: "3.5.1"
+  - version: "3.5.2"
+
+trigger: none
+
+pool:
+    vmImage: 'ubuntu-20.04'
+
+steps:
+- script: |
+      set -euo pipefail
+      echo installing gauge
+      sudo apt-key adv --keyserver hkp://pool.sks-keyservers.net --recv-keys 023EDB0B
+      echo deb https://dl.bintray.com/gauge/gauge-deb stable main | sudo tee -a /etc/apt/sources.list
+      sudo apt-get update
+      sudo apt-get install gauge
+      cd hull/files/test/HULL
+      sudo pip install -r requirements.txt
+      gauge
+  displayName: 'install gauge'
+  condition: eq('${{ parameters.RunTests }}',true)
+
+- ${{ each version in parameters.HelmVersions }}: # Each Helm Version
+  
+  - script: |
+      set -euo pipefail
+      echo installing helm
+      wget https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+      sudo chmod +x ./get-helm-3
+      sudo ./get-helm-3 --version v${{ version.version }}
+      helm version
+    displayName: 'install helm'
+    condition: eq('${{ parameters.RunTests }}',true)
+
+  - script: |
+      set -euo pipefail
+      echo starting gauge test against helm version `helm version`
+      ls
+      cd hull/files/test/HULL
+      ls
+      gauge run -p -l debug specs
+    displayName: 'gauge test'
+    condition: eq('${{ parameters.RunTests }}',true)
