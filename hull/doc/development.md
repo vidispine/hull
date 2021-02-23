@@ -168,3 +168,86 @@ priorityclass :
 ### Add documentation to the `README.md`
 
 - add to the available object types and if needed add further documentation.
+
+## Creating a release branch for a new Kubernetes version
+
+### Create branch
+
+Branch must be named `release-1.x` where x is the minor version of the Kubernetes release. Switch to this branch.
+
+### Create JSON schema 
+
+Create a new matching JSON schema in the `kubernetes-json-schema` folder with the instructions given in the [README.md](./../../kubernetes-json-schema/README.md) there. Patch version can be the highest available. It is expected no object properties are changed between patch versions.
+
+### Adapt the JSON schema
+
+Copy the `_definition.json` from the newly created schema folder to `values.schema.json` in the `hull` charts root library overwriting the existing content. Compare the `values.schema.json` content with that of the previous release version branch and adapt as need (the complicated part). Consider copying the changes related to the objects that HULL deals with and leave other API changes alone.
+
+### Adapt `Chart.yaml`
+
+Set the versions in `Chart.yaml`:
+
+- `version: 1.x.1` where x is the Kubernetes major version
+- `appVersion: 1.x.y` where x is the Kubernetes major version and y the patch version of the schema
+- `kubeVersion: ">= 1.x.0"` where x is the Kubernetes major version
+
+### Adapt test chart
+Set the versions in `Chart.yaml` of the test chart at `hull/files/test/HULL/sources/charts/hull-test`:
+
+- `version: 1.x.1` where x is the Kubernetes major version
+- `appVersion: 1.x.y` where x is the Kubernetes major version and y the patch version of the schema
+- `kubeVersion: ">= 1.x.0"` where x is the Kubernetes major version
+- ```yaml
+  dependencies:
+  - name: hull
+    version: "1.x.1"
+    repository: "https://vidispine.github.io/hull"
+    ```
+     where x is the Kubernetes major version 
+
+### Adapt test schema
+
+Replace the files for the Kubernetes JSON schema in `hull/files/test/HULL/schema` with the created files from the new subfolder of `kubernetes-json-schema`. This makes the JSON validation test against the new version.
+
+### Adapt tests
+
+in the `specs/concepts/metadata_basic.cpt` change the version that is tested against:
+
+- `* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.x.y"` where x is the Kubernetes major version and y the patch version of the schema
+
+### Run tests
+
+All tests need to run successfully.
+
+## Creating a new minor version
+
+### Adapt the JSON schema (if needed)
+
+Make the changes required for the version update.
+
+### Adapt `Chart.yaml`
+
+Set the versions in `Chart.yaml`:
+
+- `version: 1.x.z` where x is the Kubernetes major version and z the increased minor version
+
+### Adapt test chart
+Set the versions in `Chart.yaml` of the test chart at `hull/files/test/HULL/sources/charts/hull-test`:
+
+- `version: 1.x.z` where x is the Kubernetes major version and z the increased minor version
+- ```yaml
+  dependencies:
+  - name: hull
+    version: "1.x.z"
+    repository: "https://vidispine.github.io/hull"
+  ```
+  where x is the Kubernetes major version and z the increased minor version
+
+### Adapt tests
+
+Add or modify test cases so that the new changes are covered adequately.
+
+### Run tests
+
+All tests need to run successfully to create a new release.
+
