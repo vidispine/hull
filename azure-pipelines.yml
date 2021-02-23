@@ -15,11 +15,12 @@ pool:
     vmImage: 'ubuntu-20.04'
 
 jobs:
-- job: ProcessExternalHelmChart
+- job: Run Tests
   steps:
   
   - template: azure-pipelines-test.yml  # Template reference
 
+- job: Create Release
   - script: |
         set -euo pipefail
         echo package chart
