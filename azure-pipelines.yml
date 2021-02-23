@@ -37,4 +37,4 @@ jobs:
         sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) --charts-repo https://vidispine.github.io/hull --push 
         #sudo docker pull quay.io/helmpk/chart-releaser:v1.1.1
         #sudo docker run -v /hull:/hull -v $(Agent.TempDirectory):/tmp --entrypoint cr quay.io/helmpk/chart-releaser:v1.1.1 package /hull/hull --package-path /hull
-    name: "Create release"
+   
