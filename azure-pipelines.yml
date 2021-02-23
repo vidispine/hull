@@ -14,11 +14,6 @@ pool:
     vmImage: 'ubuntu-20.04'
 
 jobs:
-- job: RunTests
-  steps:
-  
-  - template: azure-pipelines-test.yml  # Template reference
-
 - job: CreateRelease
   dependsOn: RunTests
   steps:
