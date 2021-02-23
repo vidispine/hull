@@ -44,7 +44,6 @@ steps:
       sudo pip install -r requirements.txt
       gauge
   displayName: 'install gauge'
-  condition: eq('${{ parameters.RunTests }}',true)
 
 - ${{ each version in parameters.HelmVersions }}: # Each Helm Version
   
@@ -56,7 +55,6 @@ steps:
       sudo ./get-helm-3 --version v${{ version.version }}
       helm version
     displayName: 'install helm'
-    condition: eq('${{ parameters.RunTests }}',true)
 
   - script: |
       set -euo pipefail
@@ -66,4 +64,3 @@ steps:
       ls
       gauge run -p -l debug specs
     displayName: 'gauge test'
-    condition: eq('${{ parameters.RunTests }}',true)
