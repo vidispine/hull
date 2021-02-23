@@ -376,7 +376,6 @@
               }
             },
             "type": "object",
-            "x-kubernetes-map-type": "atomic",
             "additionalProperties": false
           },
           "objectSelector": {
@@ -435,7 +434,6 @@
               }
             },
             "type": "object",
-            "x-kubernetes-map-type": "atomic",
             "additionalProperties": false
           },
           "rules": {

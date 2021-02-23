@@ -229,21 +229,11 @@
       "version": "v1alpha1"
     },
     {
-      "group": "flowcontrol.apiserver.k8s.io",
-      "kind": "DeleteOptions",
-      "version": "v1beta1"
-    },
-    {
       "group": "imagepolicy.k8s.io",
       "kind": "DeleteOptions",
       "version": "v1alpha1"
     },
     {
-      "group": "internal.apiserver.k8s.io",
-      "kind": "DeleteOptions",
-      "version": "v1alpha1"
-    },
-    {
       "group": "networking.k8s.io",
       "kind": "DeleteOptions",
       "version": "v1"
@@ -252,11 +242,6 @@
       "group": "networking.k8s.io",
       "kind": "DeleteOptions",
       "version": "v1beta1"
-    },
-    {
-      "group": "node.k8s.io",
-      "kind": "DeleteOptions",
-      "version": "v1"
     },
     {
       "group": "node.k8s.io",
@@ -302,6 +287,11 @@
       "group": "scheduling.k8s.io",
       "kind": "DeleteOptions",
       "version": "v1beta1"
+    },
+    {
+      "group": "settings.k8s.io",
+      "kind": "DeleteOptions",
+      "version": "v1alpha1"
     },
     {
       "group": "storage.k8s.io",

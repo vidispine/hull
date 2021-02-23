@@ -784,7 +784,6 @@
                     }
                   },
                   "type": "object",
-                  "x-kubernetes-map-type": "atomic",
                   "additionalProperties": false
                 },
                 "storageClassName": {
@@ -1452,12 +1451,12 @@
             "type": "object",
             "additionalProperties": false
           },
-          "type": [
-            "array",
-            "null"
-          ]
+          "type": "array"
         }
       },
+      "required": [
+        "sources"
+      ],
       "type": "object",
       "additionalProperties": false
     },

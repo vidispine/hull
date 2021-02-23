@@ -89,7 +89,6 @@
               }
             },
             "type": "object",
-            "x-kubernetes-map-type": "atomic",
             "additionalProperties": false
           },
           "podSelector": {
@@ -148,7 +147,6 @@
               }
             },
             "type": "object",
-            "x-kubernetes-map-type": "atomic",
             "additionalProperties": false
           }
         },

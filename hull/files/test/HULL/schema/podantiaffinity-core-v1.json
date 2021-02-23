@@ -65,7 +65,6 @@
                   }
                 },
                 "type": "object",
-                "x-kubernetes-map-type": "atomic",
                 "additionalProperties": false
               },
               "namespaces": {
@@ -171,7 +170,6 @@
               }
             },
             "type": "object",
-            "x-kubernetes-map-type": "atomic",
             "additionalProperties": false
           },
           "namespaces": {
