@@ -4,7 +4,7 @@
 
 This Helm library chart is designed to ease building, maintaining and configuring Kubernetes objects in [Helm](https://helm.sh) charts. It can be added to any existing Helm chart and used without risk of breaking the Helm charts functionalities, see [adding the HULL library chart to a Helm chart](./doc/setup.md) for more information.
 
-While the original concept of Helm charts is suited very well to create tailormade configuration packages for applications, this comes at a cost of having to create and maintain a lot of boilerplate templates and mappings for off the shelf recurring use cases as well. To make writing and maintainging charts easier and faster - especially for standard use cases - is the aim of this project. Essentially, the HULL library chart provides Go Templating functions to create/render Kubernetes objects as YAML. Due to the HULL library's extensive usage of Go Templating functions no template files in the `/templates` folder need to be created, adapted and maintained to define Kubernetes objects. Only an object definition in the parent charts `values.yaml`' is required to render Kubernetes objects. JSON schema validation based on the [Helm JSON validation](https://helm.sh/docs/topics/charts/#schema-files) (via `values.schema.json`) aids in writing Kubernetes API conforming objects right from the beginning when [using an IDE that supports live JSON schema validation](./doc/json_schema_validation.md).
+While the original concept of Helm charts is suited very well to create tailormade configuration packages for applications, this comes at a cost of having to create and maintain a lot of boilerplate templates and mappings for off the shelf recurring use cases as well. To make writing and maintaining charts easier and faster - especially for standard use cases - is the aim of this project. Essentially, the HULL library chart provides Go Templating functions to create/render Kubernetes objects as YAML. Due to the HULL library's extensive usage of Go Templating functions no template files in the `/templates` folder need to be created, adapted and maintained to define Kubernetes objects. Only an object definition in the parent charts `values.yaml`' is required to render Kubernetes objects. JSON schema validation based on the [Helm JSON validation](https://helm.sh/docs/topics/charts/#schema-files) (via `values.schema.json`) aids in writing Kubernetes API conforming objects right from the beginning when [using an IDE that supports live JSON schema validation](./doc/json_schema_validation.md).
 
 The HULL library chart idea is partly inspired by the [common](
 https://github.com/helm/charts/tree/master/incubator/common) Helm chart concept and for testing 
@@ -21,7 +21,7 @@ As highlighted above, when included in a Helm chart the HULL library chart can t
 
   For more details refer to the documentation on [JSON Schema Validation](./doc/json_schema_validation.md).
 
-- For all Kubernetes object types supported by HULL, **full configurational access to the Kubernetes object types properties is directly available**. This relieves chart maintainers from having to add missing configuration options one by one and the Helm chart users from forking the Helm chart to add just the properties they need for their confiuguration. Only updating the HULL chart to a newer version with matching Kubernetes API version is required to enable configuration of properties added to Kubernetes objects meanwhile in newer API versions. The HULL charts are versioned to reflect the minimal Kubernetes API versions supported by them. 
+- For all Kubernetes object types supported by HULL, **full configurational access to the Kubernetes object types properties is directly available**. This relieves chart maintainers from having to add missing configuration options one by one and the Helm chart users from forking the Helm chart to add just the properties they need for their configuration. Only updating the HULL chart to a newer version with matching Kubernetes API version is required to enable configuration of properties added to Kubernetes objects meanwhile in newer API versions. The HULL charts are versioned to reflect the minimal Kubernetes API versions supported by them. 
 
    For more details refer to the documentation on [Architecture Overview](./doc/architecture.md).
 
@@ -50,7 +50,15 @@ As highlighted above, when included in a Helm chart the HULL library chart can t
 
 To learn more about the general architecture and features of the HULL library see the [Architecture Overview](./doc/architecture.md)
 
-⚠️ **While there may be several benefits to rendering YAML via the HULL library please take note that it is a non-breaking addition to your Helm charts. The regular Helm workflow involving rendering of YAML templates in the `/templates` folder is completely unaffected by integration of the HULL library chart. Sometimes you might have very specific requirements on your configuration or object specification which the HULL library does not meet so you can use the regular Helm worflow for them and the HULL library for your more standard needs - easily in parallel in the same Helm chart.** ⚠️
+## Important information
+
+Some important things to mention:
+
+⚠️ **While there may be several benefits to rendering YAML via the HULL library please take note that it is a non-breaking addition to your Helm charts. The regular Helm workflow involving rendering of YAML templates in the `/templates` folder is completely unaffected by integration of the HULL library chart. Sometimes you might have very specific requirements on your configuration or object specification which the HULL library does not meet so you can use the regular Helm workflow for them and the HULL library for your more standard needs - easily in parallel in the same Helm chart.** ⚠️
+
+⚠️ **At this time HULL releases are tested against all existing non-beta and non-alpha Helm 3 CLI versions. Note that Helm CLI versions `3.0.1` and `3.0.2` are not compatible with HULL, all other currently existing non-beta and non-alpha versions are compatible.** ⚠️
+
+⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases starting with Kubernetes version `1.21`. At this time Kubernetes versions `1.19` and `1.20` have a matching HULL release.** ⚠️
 
 ## Creating and configuring a HULL based chart
 

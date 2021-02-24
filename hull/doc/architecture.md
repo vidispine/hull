@@ -107,6 +107,8 @@ The end to end process using HULL contains the following phases:
           - `serviceaccount`
           - `storageclass`
           - `customresource`
+          - `priorityclass`
+          - `endpoints`
         - objects with a simple structure depending on RBAC enablement:
           - `role`
           - `rolebinding`
@@ -116,11 +118,18 @@ The end to end process using HULL contains the following phases:
           - `perstistentvolume`
           - `persistentvolumeclaim`
           - `servicemonitor`
+          - `poddisruptionbudget`
+          - `podsecuritypolicy`
+          - `resourcequota`
+          - `networkpolicy`
         - objects which are based on pod definitions
           - `deployment`
           - `job`
           - `daemonset`
           - `statefulset`
+        - objects which are based on webhook definitions
+          - `mutatingwebhookconfiguration`
+          - `validatingwebhookconfiguration`
         - objects with individual templates:
           - `configmap`
           - `secret`
@@ -128,6 +137,7 @@ The end to end process using HULL contains the following phases:
           - `service`
           - `ingress`
           - `cronjob`
+          - `horizontalpodautoscaler`
 
         Then each object is processed individually:
         
