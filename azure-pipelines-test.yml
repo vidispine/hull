@@ -31,7 +31,7 @@ steps:
       sudo chmod +x ./get-helm-3
       sudo ./get-helm-3 --version v${{ version.version }}
       helm version
-    displayName: 'install helm'
+    displayName: 'install helm v${{ version.version }}'
     condition: gt(length('${{ version.version }}'),0)
     
   - script: |
@@ -41,5 +41,5 @@ steps:
       cd hull/files/test/HULL
       ls
       gauge run -p -l debug specs
-    displayName: 'gauge test'
+    displayName: 'gauge test against helm v${{ version.version }}'
     condition: gt(length('${{ version.version }}'),0)
