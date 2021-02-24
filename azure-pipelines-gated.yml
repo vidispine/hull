@@ -25,10 +25,10 @@ jobs:
     maxParallel: 10
     matrix: 
       3_0:
-        HelmMajorVersion: 3
-        HelmMinorVersion: 0
-        HelmPatchVersionEnd: 
-        - version: 3
+        HelmVersions: "['version':'3.0.0']"
+        #HelmMinorVersion: 0
+        #HelmPatchVersionEnd: 
+        #- version: 3
 #          value: 
  #         - version: "3.0.0"
   #       - version: "3.0.1"
@@ -66,19 +66,7 @@ jobs:
  #       - version: "3.5.2"
 #        
   steps:
-  - powershell: |
-      
-      $Versions = @()
-      for ($i=0; $i -le $(HelmPatchVersionEnd); $i++) 
-      {
-        $version = "$(HelmMajorVersion).$(HelmMinorVersion).$($i)"
-        Write-Host $version
-        $Versions += $version
-      }
-      
-      $VersionsJson = $Versions | ConvertTo-Json
-      Write-Host "##vso[task.setvariable variable=$VersionsJson;isOutput=true]$VersionsJson"
-    
-  #- template: azure-pipelines-test.yml  # Template reference
-  #  parameters:
-  #    HelmVersions: ${{ variables['VersionsJson'] }}
+   
+  - template: azure-pipelines-test.yml  # Template reference
+    parameters:
+      HelmVersions: ${{ $(HelmVersions) }}
