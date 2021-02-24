@@ -23,10 +23,11 @@ jobs:
 - job: RunTests
   strategy:
     maxParallel: 10
-    matrix: ${{ parameters.HelmVersions }}
-#        HelmMajorVersion: 3
-#        HelmMinorVersion: 0
-#        HelmPatchVersionEnd: 3
+    matrix: 
+      3_0:
+        HelmMajorVersion: 3
+        HelmMinorVersion: 0
+        HelmPatchVersionEnd: 3
 #          value: 
  #         - version: "3.0.0"
   #       - version: "3.0.1"
@@ -64,7 +65,17 @@ jobs:
  #       - version: "3.5.2"
 #        
   steps:
-  
+  - powershell: |
+      
+      $Versions = @[]
+      for ($i=0; $i -le ${{ parameters.HelmPatchVersionEnd }}; $i++) 
+      {
+        $version = "${{ parameters.HelmMajorVersion }}.${{ parameters.HelmMinorVersion }}.$($i)"
+        Write-Host $version
+        $Versions += $version
+      }
+      Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$Versions"
+    
   - template: azure-pipelines-test.yml  # Template reference
     parameters:
-      HelmVersions: $(HelmVersions)
+      HelmVersions: $(Versions)
