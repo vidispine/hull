@@ -17,7 +17,7 @@ jobs:
   strategy:
     maxParallel: 10
     matrix:
-      3_0:         
+      
         - name: "HelmVersions"
           value: 
           - version: "3.0.0"
