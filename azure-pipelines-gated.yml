@@ -25,7 +25,17 @@ jobs:
     maxParallel: 10
     matrix: 
       3_0:
-        HelmVersions: "['version':'3.0.0']"
+        HelmVersion0: "3.0.0"
+        HelmVersion1: "3.0.1"
+        HelmVersion2: "3.0.2"
+        HelmVersion3: "3.0.3"
+        HelmVersion4: ""
+        HelmVersion5: ""
+        HelmVersion6: ""
+        HelmVersion7: ""
+        HelmVersion8: ""
+        HelmVersion9: ""
+        
         #HelmMinorVersion: 0
         #HelmPatchVersionEnd: 
         #- version: 3
@@ -69,4 +79,14 @@ jobs:
    
   - template: azure-pipelines-test.yml  # Template reference
     parameters:
-      HelmVersions: $(HelmVersions)
+      HelmVersions: 
+      - version: $(HelmVersion0)
+      - version: $(HelmVersion1)
+      - version: $(HelmVersion2)
+      - version: $(HelmVersion3)
+      - version: $(HelmVersion4)
+      - version: $(HelmVersion5)
+      - version: $(HelmVersion6)
+      - version: $(HelmVersion7)
+      - version: $(HelmVersion8)
+      - version: $(HelmVersion9)      
