@@ -15,10 +15,54 @@ pool:
 jobs:
 - job: RunTests
   strategy:
-    maxParallel: 50
+    maxParallel: 10
     matrix:
       3_0_0:
         HelmVersion: "3.0.0"
+      3_0_1:
+        HelmVersion: "3.0.1"
+      3_0_2:
+        HelmVersion: "3.0.2"
+      3_0_3:
+        HelmVersion: "3.0.3"
+      3_1_0:
+        HelmVersion: "3.1.0"
+      3_1_1:
+        HelmVersion: "3.1.1"
+      3_1_2:
+        HelmVersion: "3.1.2"
+      3_1_3:
+        HelmVersion: "3.1.3"
+      3_2_0:
+        HelmVersion: "3.2.0"
+      3_2_1:
+        HelmVersion: "3.2.1"
+      3_2_2:
+        HelmVersion: "3.2.2"
+      3_2_3:
+        HelmVersion: "3.2.3"
+      3_2_4:
+        HelmVersion: "3.2.4"
+      3_3_0:
+        HelmVersion: "3.3.0"
+      3_3_1:
+        HelmVersion: "3.3.1"
+      3_3_2:
+        HelmVersion: "3.3.2"
+      3_3_3:
+        HelmVersion: "3.3.3"
+      3_3_4:
+        HelmVersion: "3.3.4"
+      3_4_0:
+        HelmVersion: "3.4.0"
+      3_4_1:
+        HelmVersion: "3.4.1"
+      3_4_2:
+        HelmVersion: "3.4.2"
+      3_5_0:
+        HelmVersion: "3.5.0"
+      3_5_1:
+        HelmVersion: "3.5.1"        
       3_5_2:
         HelmVersion: "3.5.2"
   steps:
@@ -27,4 +71,3 @@ jobs:
     parameters:
       HelmVersions:
       - version: $(HelmVersion)
-
