@@ -67,7 +67,7 @@ jobs:
   steps:
   - powershell: |
       
-      $Versions = @[]
+      $Versions = @()
       for ($i=0; $i -le $(HelmPatchVersionEnd); $i++) 
       {
         $version = "$(HelmMajorVersion).$(HelmMinorVersion).$($i)"
