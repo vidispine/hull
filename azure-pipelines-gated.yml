@@ -6,10 +6,13 @@
 parameters:
 - name: RunTests
   default: true
-- name: v3_0
+- name: HelmVersions
   type: object
   default:
-  - version: "3.0.0"
+  - name: "v3_0"
+    value:
+    - name: "version"
+      value: "3.0.0"
 
 trigger: none
 
@@ -20,9 +23,7 @@ jobs:
 - job: RunTests
   strategy:
     maxParallel: 10
-    matrix:
-      3_0:
-        HelmVersions: ${{ parameters.v3_0 }}
+    matrix: ${{ parameters.HelmVersions }}
 #        HelmMajorVersion: 3
 #        HelmMinorVersion: 0
 #        HelmPatchVersionEnd: 3
