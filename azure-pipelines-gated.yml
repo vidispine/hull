@@ -69,4 +69,4 @@ jobs:
    
   - template: azure-pipelines-test.yml  # Template reference
     parameters:
-      HelmVersions: ${{ $(HelmVersions) }}
+      HelmVersions: $(HelmVersions)
