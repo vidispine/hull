@@ -3,10 +3,10 @@ apiVersion: v1
 appVersion: 1.20.0
 description: hull-test
 name: hull-test
-version: 1.20.1
+version: 1.20.0
 dependencies:
   - name: hull
-    version: "1.20.1"
+    version: "1.20.0"
     repository: "https://vidispine.github.io/hull"
 
       
