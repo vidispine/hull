@@ -70,12 +70,12 @@ jobs:
       $Versions = @[]
       for ($i=0; $i -le $(HelmPatchVersionEnd); $i++) 
       {
-        $version = "$(HelmMajorVersion).$(parameters.HelmMinorVersion).$($i)"
+        $version = "$(HelmMajorVersion).$(HelmMinorVersion).$($i)"
         Write-Host $version
         $Versions += $version
       }
       Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$Versions"
     
-  - template: azure-pipelines-test.yml  # Template reference
-    parameters:
-      HelmVersions: $(Versions)
+  #- template: azure-pipelines-test.yml  # Template reference
+  #  parameters:
+  #    HelmVersions: $(Versions)
