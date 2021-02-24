@@ -2,91 +2,40 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
-
 parameters:
 - name: RunTests
   default: true
-- name: HelmVersions
-  type: object
-  default:
-  - name: "v3_0"
-    value:
-    - name: "version"
-      value: "3.0.0"
-
 trigger: none
-
 pool:
     vmImage: 'ubuntu-20.04'
-
 jobs:
 - job: RunTests
-  strategy:
-    maxParallel: 10
-    matrix: 
-      3_0:
-        HelmVersion0: "3.0.0"
-        HelmVersion1: "3.0.1"
-        HelmVersion2: "3.0.2"
-        HelmVersion3: "3.0.3"
-        HelmVersion4: ""
-        HelmVersion5: ""
-        HelmVersion6: ""
-        HelmVersion7: ""
-        HelmVersion8: ""
-        HelmVersion9: ""
-        
-        #HelmMinorVersion: 0
-        #HelmPatchVersionEnd: 
-        #- version: 3
-#          value: 
- #         - version: "3.0.0"
-  #       - version: "3.0.1"
-  #       - version: "3.0.2"
-  #       - version: "3.0.3"
-  #    3_1:
-  #      HelmVersions: 
-   #     - version: "3.1.0"
-   #     - version: "3.1.1"
-   #     - version: "3.1.2"
-   #     - version: "3.1.3"        
-   #   3_2:
-  #      HelmVersions: 
-   #     - version: "3.2.0"
-   #     - version: "3.2.1"
-  #      - version: "3.2.2"
-  #      - version: "3.2.3"
-  #      - version: "3.2.4"
-  #    3_3:
-  #      HelmVersions: 
-  #      - version: "3.3.0"
-  #      - version: "3.3.1"
-  #      - version: "3.3.2"
- #       - version: "3.3.3"
-  #      - version: "3.3.4"
- #     3_4:
- #       HelmVersions: 
- #       - version: "3.4.0"
- #       - version: "3.4.1"
- #       - version: "3.4.2"
-#      3_5:
- #       HelmVersions: 
-#        - version: "3.5.0"
-#        - version: "3.5.1"
- #       - version: "3.5.2"
-#        
   steps:
-   
+
   - template: azure-pipelines-test.yml  # Template reference
     parameters:
-      HelmVersions: 
-      - version: $(HelmVersion0)
-      - version: $(HelmVersion1)
-      - version: $(HelmVersion2)
-      - version: $(HelmVersion3)
-      - version: $(HelmVersion4)
-      - version: $(HelmVersion5)
-      - version: $(HelmVersion6)
-      - version: $(HelmVersion7)
-      - version: $(HelmVersion8)
-      - version: $(HelmVersion9)      
+      HelmVersions:
+      - version: "3.0.0"
+      - version: "3.0.1"
+      - version: "3.0.2"
+      - version: "3.0.3"
+      - version: "3.1.0"
+      - version: "3.1.1"
+      - version: "3.1.2"
+      - version: "3.1.3"
+      - version: "3.2.0"
+      - version: "3.2.1"
+      - version: "3.2.2"
+      - version: "3.2.3"
+      - version: "3.2.4"
+      - version: "3.3.0"
+      - version: "3.3.1"
+      - version: "3.3.2"
+      - version: "3.3.3"
+      - version: "3.3.4"
+      - version: "3.4.0"
+      - version: "3.4.1"
+      - version: "3.4.2"
+      - version: "3.5.0"
+      - version: "3.5.1"
+      - version: "3.5.2"
