@@ -7,8 +7,7 @@ parameters:
 - name: RunTests
   default: true
 
-trigger:
-- release-*
+trigger: none
 
 pool:
     vmImage: 'ubuntu-20.04'
