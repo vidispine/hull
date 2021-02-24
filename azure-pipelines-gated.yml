@@ -68,9 +68,9 @@ jobs:
   - powershell: |
       
       $Versions = @[]
-      for ($i=0; $i -le ${{ parameters.HelmPatchVersionEnd }}; $i++) 
+      for ($i=0; $i -le $(HelmPatchVersionEnd); $i++) 
       {
-        $version = "${{ parameters.HelmMajorVersion }}.${{ parameters.HelmMinorVersion }}.$($i)"
+        $version = "$(HelmMajorVersion).$(parameters.HelmMinorVersion).$($i)"
         Write-Host $version
         $Versions += $version
       }
