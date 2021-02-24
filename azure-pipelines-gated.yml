@@ -74,8 +74,10 @@ jobs:
         Write-Host $version
         $Versions += $version
       }
-      Write-Host "##vso[task.setvariable variable=$Versions;isOutput=true]$Versions"
+      
+      $VersionsJson = $Versions | ConvertTo-Json
+      Write-Host "##vso[task.setvariable variable=$VersionsJson;isOutput=true]$VersionsJson"
     
   - template: azure-pipelines-test.yml  # Template reference
     parameters:
-      HelmVersions: $(Versions)
+      HelmVersions: $(VersionsJson)
