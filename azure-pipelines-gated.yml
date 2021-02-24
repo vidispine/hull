@@ -19,10 +19,11 @@ jobs:
     matrix:
       3_0:
         HelmVersions: 
-        - version: "3.0.0"
-        - version: "3.0.1"
-        - version: "3.0.2"
-        - version: "3.0.3"
+        - name: "version"
+          value: "3.0.0"
+#        - version: "3.0.1"
+#        - version: "3.0.2"
+#        - version: "3.0.3"
       3_1:
         HelmVersions: 
         - version: "3.1.0"
