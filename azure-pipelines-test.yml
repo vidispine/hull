@@ -20,7 +20,7 @@ steps:
       sudo pip install -r requirements.txt
       gauge
   displayName: 'install gauge'
-  condition: gt(length(${{ parameters.HelmVersions }}),0)
+  condition: gt(length(${{join(' ',parameters.HelmVersions) }}),0)
 
 - ${{ each version in parameters.HelmVersions }}: # Each Helm Version
   
