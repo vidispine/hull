@@ -17,44 +17,47 @@ jobs:
   strategy:
     maxParallel: 10
     matrix:
-      
-        - name: "HelmVersions"
-          value: 
-          - version: "3.0.0"
+      3_0:
+        HelmVersions: ["3"]
+#        HelmMajorVersion: 3
+#        HelmMinorVersion: 0
+#        HelmPatchVersionEnd: 3
+#          value: 
+ #         - version: "3.0.0"
   #       - version: "3.0.1"
   #       - version: "3.0.2"
   #       - version: "3.0.3"
-      3_1:
-        HelmVersions: 
-        - version: "3.1.0"
-        - version: "3.1.1"
-        - version: "3.1.2"
-        - version: "3.1.3"        
-      3_2:
-        HelmVersions: 
-        - version: "3.2.0"
-        - version: "3.2.1"
-        - version: "3.2.2"
-        - version: "3.2.3"
-        - version: "3.2.4"
-      3_3:
-        HelmVersions: 
-        - version: "3.3.0"
-        - version: "3.3.1"
-        - version: "3.3.2"
-        - version: "3.3.3"
-        - version: "3.3.4"
-      3_4:
-        HelmVersions: 
-        - version: "3.4.0"
-        - version: "3.4.1"
-        - version: "3.4.2"
-      3_5:
-        HelmVersions: 
-        - version: "3.5.0"
-        - version: "3.5.1"
-        - version: "3.5.2"
-        
+  #    3_1:
+  #      HelmVersions: 
+   #     - version: "3.1.0"
+   #     - version: "3.1.1"
+   #     - version: "3.1.2"
+   #     - version: "3.1.3"        
+   #   3_2:
+  #      HelmVersions: 
+   #     - version: "3.2.0"
+   #     - version: "3.2.1"
+  #      - version: "3.2.2"
+  #      - version: "3.2.3"
+  #      - version: "3.2.4"
+  #    3_3:
+  #      HelmVersions: 
+  #      - version: "3.3.0"
+  #      - version: "3.3.1"
+  #      - version: "3.3.2"
+ #       - version: "3.3.3"
+  #      - version: "3.3.4"
+ #     3_4:
+ #       HelmVersions: 
+ #       - version: "3.4.0"
+ #       - version: "3.4.1"
+ #       - version: "3.4.2"
+#      3_5:
+ #       HelmVersions: 
+#        - version: "3.5.0"
+#        - version: "3.5.1"
+ #       - version: "3.5.2"
+#        
   steps:
   
   - template: azure-pipelines-test.yml  # Template reference
