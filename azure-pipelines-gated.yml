@@ -17,13 +17,13 @@ jobs:
   strategy:
     maxParallel: 10
     matrix:
-      3_0:
-        HelmVersions: 
-        - name: "version"
-          value: "3.0.0"
-#        - version: "3.0.1"
-#        - version: "3.0.2"
-#        - version: "3.0.3"
+      3_0:         
+        - name: "HelmVersions"
+          value: 
+          - version: "3.0.0"
+  #       - version: "3.0.1"
+  #       - version: "3.0.2"
+  #       - version: "3.0.3"
       3_1:
         HelmVersions: 
         - version: "3.1.0"
