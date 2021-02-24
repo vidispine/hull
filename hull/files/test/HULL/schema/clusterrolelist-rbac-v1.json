@@ -74,6 +74,7 @@
                     }
                   },
                   "type": "object",
+                  "x-kubernetes-map-type": "atomic",
                   "additionalProperties": false
                 },
                 "type": [

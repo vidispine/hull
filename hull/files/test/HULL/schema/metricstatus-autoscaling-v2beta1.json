@@ -1,6 +1,44 @@
 {
   "description": "MetricStatus describes the last-read state of a single metric.",
   "properties": {
+    "containerResource": {
+      "description": "ContainerResourceMetricStatus indicates the current value of a resource metric known to Kubernetes, as specified in requests and limits, describing a single container in each pod in the current scale target (e.g. CPU or memory).  Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the \"pods\" source.",
+      "properties": {
+        "container": {
+          "description": "container is the name of the container in the pods of the scaling target",
+          "type": "string"
+        },
+        "currentAverageUtilization": {
+          "description": "currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods.  It will only be present if `targetAverageValue` was set in the corresponding metric specification.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "currentAverageValue": {
+          "oneOf": [
+            {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "name": {
+          "description": "name is the name of the resource in question.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "currentAverageValue",
+        "container"
+      ],
+      "type": "object",
+      "additionalProperties": false
+    },
     "external": {
       "description": "ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.",
       "properties": {
@@ -90,6 +128,7 @@
             }
           },
           "type": "object",
+          "x-kubernetes-map-type": "atomic",
           "additionalProperties": false
         }
       },
@@ -189,6 +228,7 @@
             }
           },
           "type": "object",
+          "x-kubernetes-map-type": "atomic",
           "additionalProperties": false
         },
         "target": {
@@ -302,6 +342,7 @@
             }
           },
           "type": "object",
+          "x-kubernetes-map-type": "atomic",
           "additionalProperties": false
         }
       },
@@ -346,7 +387,7 @@
       "additionalProperties": false
     },
     "type": {
-      "description": "type is the type of metric source.  It will be one of \"Object\", \"Pods\" or \"Resource\", each corresponds to a matching field in the object.",
+      "description": "type is the type of metric source.  It will be one of \"ContainerResource\", \"External\", \"Object\", \"Pods\" or \"Resource\", each corresponds to a matching field in the object. Note: \"ContainerResource\" type is available on when the feature-gate HPAContainerMetrics is enabled",
       "type": [
         "string",
         "null"
