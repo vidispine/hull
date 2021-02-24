@@ -74,8 +74,8 @@ jobs:
         Write-Host $version
         $Versions += $version
       }
-      Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$Versions"
+      Write-Host "##vso[task.setvariable variable=$Versions;isOutput=true]$Versions"
     
-  #- template: azure-pipelines-test.yml  # Template reference
-  #  parameters:
-  #    HelmVersions: $(Versions)
+  - template: azure-pipelines-test.yml  # Template reference
+    parameters:
+      HelmVersions: $(Versions)
