@@ -6,32 +6,8 @@
 parameters:
 - name: HelmVersions
   type: object
-  default:
-  - version: "3.0.0"
-  #- version: "3.0.1"
-  #- version: "3.0.2"
-  - version: "3.0.3"
-  - version: "3.1.0"
-  #- version: "3.1.1"
-  #- version: "3.1.2"
-  - version: "3.1.3"
-  - version: "3.2.0"
-  #- version: "3.2.1"
-  #- version: "3.2.2"
-  #- version: "3.2.3"
-  - version: "3.2.4"
-  - version: "3.3.0"
-  #- version: "3.3.1"
-  #- version: "3.3.2"
-  #- version: "3.3.3"
-  - version: "3.3.4"
-  - version: "3.4.0"
-  #- version: "3.4.1"
-  - version: "3.4.2"
-  - version: "3.5.0"
-  #- version: "3.5.1"
-  - version: "3.5.2"
-
+  default: []
+  
 steps:
 - script: |
       set -euo pipefail
@@ -44,6 +20,7 @@ steps:
       sudo pip install -r requirements.txt
       gauge
   displayName: 'install gauge'
+  condition: gt(length('${{join(' ',parameters.HelmVersions) }}'),0)
 
 - ${{ each version in parameters.HelmVersions }}: # Each Helm Version
   
@@ -54,8 +31,9 @@ steps:
       sudo chmod +x ./get-helm-3
       sudo ./get-helm-3 --version v${{ version.version }}
       helm version
-    displayName: 'install helm'
-
+    displayName: 'install helm v${{ version.version }}'
+    condition: gt(length('${{ version.version }}'),0)
+    
   - script: |
       set -euo pipefail
       echo starting gauge test against helm version `helm version`
@@ -63,4 +41,5 @@ steps:
       cd hull/files/test/HULL
       ls
       gauge run -p -l debug specs
-    displayName: 'gauge test'
+    displayName: 'gauge test against helm v${{ version.version }}'
+    condition: gt(length('${{ version.version }}'),0)
