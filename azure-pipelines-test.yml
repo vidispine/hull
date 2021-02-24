@@ -32,7 +32,8 @@ steps:
       sudo ./get-helm-3 --version v${{ version.version }}
       helm version
     displayName: 'install helm'
-
+    condition: ne('${{ version.version }}'),'')
+    
   - script: |
       set -euo pipefail
       echo starting gauge test against helm version `helm version`
@@ -41,3 +42,4 @@ steps:
       ls
       gauge run -p -l debug specs
     displayName: 'gauge test'
+    condition: ne('${{ version.version }}'),'')
