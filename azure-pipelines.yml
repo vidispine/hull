@@ -16,9 +16,9 @@ jobs:
 - job: RunTests
   steps:
 
-  - template: azure-pipelines-test.yml  # Template reference
-    condition: eq('${{ parameters.RunTests }}','true')
+  - template: azure-pipelines-test.yml  # Template reference    
     parameters:
+      RunTests: ${{ parameters.RunTests }}
       HelmVersions:
       - version: "3.0.0"
 #     - version: "3.0.1"
