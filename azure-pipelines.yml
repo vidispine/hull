@@ -17,6 +17,7 @@ jobs:
   steps:
 
   - template: azure-pipelines-test.yml  # Template reference
+    condition: eq('${{ parameters.RunTests }}','true')
     parameters:
       HelmVersions:
       - version: "3.0.0"
@@ -42,8 +43,7 @@ jobs:
       - version: "3.4.2"
       - version: "3.5.0"
       - version: "3.5.1"
-      - version: "3.5.2"
-    condition: eq('${{ parameters.RunTests }}','true')
+      - version: "3.5.2"    
     
 - job: CreateRelease
   dependsOn: RunTests
