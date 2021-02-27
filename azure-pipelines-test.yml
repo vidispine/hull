@@ -7,6 +7,9 @@ parameters:
 - name: HelmVersions
   type: object
   default: []
+- name: RunTests
+  type: boolean
+  default: true
   
 steps:
 - script: |
