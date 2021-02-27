@@ -7,7 +7,11 @@ parameters:
   default: true
 
 trigger: none
-pr: none
+pr:
+  branches:
+    include:
+    - main
+    - release-*
 
 pool:
     vmImage: 'ubuntu-20.04'
