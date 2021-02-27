@@ -361,3 +361,6 @@ Arguments:
 Produces:
 
 The processed result of executing `tpl` on the string. Depending on where this transformation is used this can be a dictionary, a string or an array of strings.
+
+---
+Back to [README.md](./../README.md)

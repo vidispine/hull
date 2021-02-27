@@ -19,14 +19,14 @@
     The release name of the chart (with Operation 'Install')
 .PARAMETER UpdateDependencies
     Whether to run helm dependency update before the operation - NOTE: Only needed when developing and testing the included hull chart
-.PARAMETER Vpms3CommonChartDirectory
-    Path to the Vpms3Chart Directory to update dependencies with
+.PARAMETER HullChartDirectory
+    Path to the Hull Directory to update dependencies with
 
 .PARAMETER RenderOutputDirectoryPath
     Path to where test output should be rendered (with Operation 'Render')
 
 .EXAMPLE
-    C:\PS> ./Vpms3Chart.ps1 
+    C:\PS> ./HullChart.ps1 
         -HelmChartDirectoryPath "C:\helmcharts\scheduling\scheduling-ui\scheduling-ui" 
         -KubeConfigFilePath "C:\helmcharts\scheduling\scheduling-ui\roger-msc-prod.config" 
         -SystemValuesFilePath "C:\helmcharts\scheduling\scheduling-ui\systems\rogers-msc-prod.yaml" 
@@ -117,7 +117,7 @@ if ([String]::IsNullOrWhiteSpace($commonSourceDirectory))
 # Update dependencies FOR DEVELOPMENT ONLY of hull
 if ($UpdateDependencies)
 {
-    # Expects the hull library in file:///GIT/VPMS3/VPMS3HelmChartsCommonLibrary otherwise needs adaptation
+    # Expects the hull library in file:///GIT/HULL/hull otherwise needs adaptation
     # Execute "$HelmExecutablePath dep update --skip-refresh $HelmChartDirectoryPath"
 
     # Get the created hull-1.0.0.tgz file and the contained version
