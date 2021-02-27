@@ -11,9 +11,6 @@ parameters:
   type: boolean
   default: true
 
-trigger: none
-pr: none
-
 steps:
 - script: |
       set -euo pipefail
