@@ -355,6 +355,7 @@ spec:
 ```
 
 ### Advanced Example
+
 Now to render the nginx deployment example showcasing extra features of the HULL library you can could create the below `values.yaml` file in your parent chart. Note that this is a very advanced example of what is possible using this library chart. 
 
 This example highlights:
@@ -364,7 +365,6 @@ This example highlights:
 - dynamic naming mechanism
 - transformations
 - easy inclusion of ConfigMaps and/or Secrets
-
 
 ```yaml
 hull:
