@@ -355,11 +355,15 @@ spec:
 ```
 
 ### Advanced Example
-Now to render the nginx deployment example showcasing extra features of the HULL library you can create the below `values.yaml` file in your parent chart. This example highlights:
+Now to render the nginx deployment example showcasing extra features of the HULL library you can could create the below `values.yaml` file in your parent chart. 
+
+This example highlights:
 
 - hierarchical metadata handling
 - default RBAC setup of objects
 - dynamic naming mechanism
+- transformations
+
 
 ```yaml
 hull:
@@ -379,6 +383,12 @@ hull:
             general_custom_annotation_1: General Custom Annotation 1
             general_custom_annotation_2: General Custom Annotation 2
             general_custom_annotation_3: General Custom Annotation 3
+    specific: # Put configuration options specific to this chart here
+      nginx_tag: 1.14.2 # You can also use entries here to globally 
+                        # define values that are referenced in multiple
+                        # places in your chart. See how this field 
+                        # is accessed below in the deployment.
+
   objects:
     deployment:
       _HULL_OBJECT_TYPE_DEFAULT_: # A special object key available for
@@ -427,7 +437,16 @@ hull:
                    # unique key to make manipulating them easy.
               image:
                 repository: nginx
-                tag: 1.14.2
+                tag: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>>
+<<<CONTENT=\"{{ (index . \"PARENT\").Values.hull.config.specific.nginx_tag }}\">>>"
+                  # Applies a tpl transformation allowing to inject dynamic data based
+                  # on values in this values.yaml into the resulting field (here the tag
+                  # field of this container).
+                  # This example just references the value of the field which is specified # further above in the values.yaml and will produce 'image: nginx:1.14.2'
+                  # in the resulting deployment YAML but more complex conditional Go
+                  # templating logic is applicable. There are some limitations to using 
+                  # this approach though which are detailed in the transformation.md in 
+                  # the doc section.
               ports:
                 http: # unique key per container here too. All key-value structures
                       # which are array in the K8S objects are converted to arrays
