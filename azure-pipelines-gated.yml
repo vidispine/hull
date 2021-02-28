@@ -5,7 +5,14 @@
 parameters:
 - name: RunTests
   default: true
+
 trigger: none
+pr:
+  branches:
+    include:
+    - main
+    - release-*
+
 pool:
     vmImage: 'ubuntu-20.04'
 jobs:

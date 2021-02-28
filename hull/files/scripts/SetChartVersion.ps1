@@ -12,7 +12,7 @@
     Each entry consists of one or two segments which are then themselves delimited by ':' 
     - MANDATORY: the YAML Path to the 'image:' tag which should be overwritten in dot-notation
     - OPTIONAL: the image repository
-.PARAMETER Vpms3CommonLibraryVersion
+.PARAMETER HullLibraryVersion
     The version of the hull library to set in object metadata.
 .PARAMETER AdditionalOverwrites
     Specify additional keys that should be overwritten with given values.
@@ -42,7 +42,7 @@ Param(
         [Parameter(Mandatory=$true)]
         [string]$Version,
         [string]$ProductImages,
-        [string]$Vpms3CommonLibraryVersion,
+        [string]$HullLibraryVersion,
         [string]$AdditionalOverwrites,
         [string]$AdditionalOverwritesSplitChar = '='
     )
@@ -170,9 +170,9 @@ foreach ($entry in $replacements.Keys) {
     Set-Content -Path "$($valuesYamlPath)" -Value ($processed)
     
     $overwrites = ""
-    if (![String]::IsNullOrWhiteSpace($Vpms3CommonLibraryVersion))
+    if (![String]::IsNullOrWhiteSpace($HullCommonLibraryVersion))
     {
-        $overwrites += "hull.config.general.metadata.hullLibraryVersion$($AdditionalOverwritesSplitChar)$Vpms3CommonLibraryVersion$($AdditionalOverwritesSplitChar)$($AdditionalOverwritesSplitChar)"
+        $overwrites += "hull.config.general.metadata.hullLibraryVersion$($AdditionalOverwritesSplitChar)$HullLibraryVersion$($AdditionalOverwritesSplitChar)$($AdditionalOverwritesSplitChar)"
     }
 
     if (![String]::IsNullOrWhiteSpace($AdditionalOverwrites))
