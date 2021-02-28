@@ -6,29 +6,18 @@ ConfigMaps and Secrets can be created very efficient using the HULL library. The
 
 ### The `hull.VirtualFolder.v1` properties
 
-> The key-value pairs of value type `hull.VirtualFolder.v1` are converted to an array on rendering
 
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------
-`inlines` | Dictionary with Key-Value pairs. Can be used to specify ConfigMap or Secret contents inline in the `values.yaml`.<br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.VirtualFolderInline.v1`** properties. See below for reference. | `{}` | `entryscript.sh:`<br>&#160;&#160;`data:`&#160;`|-`<br>&#160;&#160;&#160;&#160;`#!/bin/bash`<br>&#160;&#160;&#160;&#160;`echo`&#160;`'hello'`<br>`readme.txt:`<br>&#160;&#160;`data:`&#160;`'Just`&#160;`a`&#160;`text'`
-`files` | Dictionary with Key-Value pairs. Can be used to specify ConfigMap or Secret data sourced from external directories.<br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.VirtualFolderFile.v1`** properties. See below for reference. | `{}` | `settings.json:`<br>&#160;&#160;`path:`&#160;`'files/settings.json'`<br>`application.config:`<br>&#160;&#160;`path:`&#160;`'files/appconfig.yaml'`<br>&#160;&#160;`noTemplating: true`
+`data:`&#160; | Dictionary with Key-Value pairs. Can be used to specify ConfigMap or Secret data sourced from inline specification or external files.<br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.VirtualFolderData.v1`** properties. See below for reference. | `{}` | `settings.json:`<br>&#160;&#160;`path:`&#160;`'files/settings.json'`<br>`application.config:`<br>&#160;&#160;`path:`&#160;`'files/appconfig.yaml'`<br>&#160;&#160;`noTemplating: true`<br>`readme.txt:`<br>&#160;&#160;`inline:`&#160;`'Just`&#160;`a`&#160;`text'`
 
-### The `hull.VirtualFolderInlines.v1` properties
-
-> The key-value pairs of value type `hull.VirtualFolderInlines.v1` are converted to an array on rendering
+### The `hull.VirtualFolderData.v1` properties
 
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------
-| `data` | The actual data to store in the ConfigMap or Secret | | `'Just`&#160;`a`&#160;`text'`
-
-### The `hull.VirtualFolderFiles.v1` properties
-
-> The key-value pairs of value type `hull.VirtualFolderFiles.v1` are converted to an array on rendering
-
-| Parameter | Description  | Default | Example 
-| --------  | -------------| ------- | --------
-| `path` | Path must be relative to the charts root path.<br> Files can contain templating expressions which are rendered by default, this can be disabled by setting `noTemplating: true` | | `'files/settings.json'`
-| `noTemplating` | If `noTemplating` is specified and set to `true`, no templating expressions are rendered when the file content is processed. <br>This can be useful in case you need to handle files already containing Go or Jinja templating expressions which should not be handled by Helm but by the deployed application.<br>If `noTemplating: false` or the key `noTemplating` is missing, templating expressions will be processed by Helm when importing the file. | `false`| `true`
+| `inline` | The actual data specified inline in the `values.yaml` to store in the ConfigMap or Secret. <br><br>Note: If set, the `path` and `noTemplating` properties are ignored. | | `'Just`&#160;`a`&#160;`text'`
+| `path` | An external file path to read contents from. Path must be relative to the charts root path.<br> Files can contain templating expressions which are rendered by default, this can be disabled by setting `noTemplating: true`.<br><br>Note: If `inline` property is set, the `path` and `noTemplating` properties are ignored. | | `'files/settings.json'`
+| `noTemplating` | If `noTemplating` is specified and set to `true`, no templating expressions are rendered when file content is processed. <br>This can be useful in case you need to handle files already containing Go or Jinja templating expressions which should not be handled by Helm but by the deployed application.<br>If `noTemplating: false` or the key `noTemplating` is missing, templating expressions will be processed by Helm when importing the file.<br><br>Note: This only works when importing from external files.<br><br>Note: If `inline` property is set, the `path` and `noTemplating` properties are ignored. | `false`| `true`
 
 ## Examples
 First off, define any ConfigMap or Secret under the `hull.objects` `configmap` or `secret` key by giving them a unique key name within the respective object type.
@@ -62,21 +51,18 @@ hull:
   objects:
     configmap:
       a_configmap:
-        data:
-          a_configmap_data_instance:
-            inlines:
-              inline_1:
-                data: |-
-                  Concrete Inline 1
-            files:
-              file_1.json:
-                path: files/file_1.json
-              file_2_templated.yaml:
-                path: files/file_2.yaml
-                noTemplating: true
-              file_2.yaml:
-                path: files/file_2.yaml
-                noTemplating: true
+        data:          
+          inline_1:
+            inline: |-
+              Concrete Inline 1
+          file_1.json:
+            path: files/file_1.json
+          file_2_templated.yaml:
+            path: files/file_2.yaml
+            noTemplating: true
+          file_2.yaml:
+            path: files/file_2.yaml
+            noTemplating: true
 ```
 
 This will create a ConfigMap with the following data section:

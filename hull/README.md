@@ -355,7 +355,7 @@ spec:
 ```
 
 ### Advanced Example
-Now to render the nginx deployment example showcasing extra features of the HULL library you can could create the below `values.yaml` file in your parent chart. 
+Now to render the nginx deployment example showcasing extra features of the HULL library you can could create the below `values.yaml` file in your parent chart. Note that this is a very advanced example of what is possible using this library chart. 
 
 This example highlights:
 
@@ -363,6 +363,7 @@ This example highlights:
 - default RBAC setup of objects
 - dynamic naming mechanism
 - transformations
+- easy inclusion of ConfigMaps and/or Secrets
 
 
 ```yaml
@@ -452,6 +453,18 @@ hull:
                       # which are array in the K8S objects are converted to arrays
                       # on rendering the chart.
                   containerPort: 80
+    secret: # this is to highlight the secret/configmap inclusion feature
+      nginx_secret: # secret objects have keys too
+        data: # specify for which contents a data entry shall be created
+              # within only a few lines of configuration. Contents can come from ...
+          an_inline_secret.txt: # ... an inline specified content or ...
+            inline: |- 
+              Top secret contents
+              spread over 
+              multiple lines...
+          contents_from_an_external_file.txt: # ... something from an external file.
+            path: files/my_secret.txt 
+
 ```
 
 This produces the following rendered objects when running the `helm template` command (commented with some brief explanations):
@@ -613,6 +626,30 @@ spec:
       initContainers: []
       serviceAccountName: release-name-hull-test-default # the dynamically created name
       volumes: []
+---
+# Source: hull-test/templates/hull.yaml
+apiVersion: v1
+data:
+  an_inline_secret.txt: "Top secret contents\nspread over \nmultiple lines..."
+  contents_from_an_external_file.txt: "Whatever was in this file ..."  
+kind: ConfigMap
+metadata:
+  annotations:
+    general_custom_annotation_1: General Custom Annotation 1 # All objects share the general_custom_annotations
+    general_custom_annotation_2: General Custom Annotation 2 # if they are not overwritten for the object type's
+    general_custom_annotation_3: General Custom Annotation 3 # default or specific instance
+  labels:
+    app.kubernetes.io/component: nginx_secret
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: hull-test
+    app.kubernetes.io/part-of: undefined
+    app.kubernetes.io/version: 1.20.0
+    general_custom_label_1: General Custom Label 1 # All objects share the general_custom_labels
+    general_custom_label_2: General Custom Label 2 # if they are not overwritten for the object type's
+    general_custom_label_3: General Custom Label 3 # default or specific instance
+    helm.sh/chart: hull-test-1.20.1
+  name: release-name-hull-test-nginx_secret
 ```
 
 Read the additional documentation in the [documentation folder](./doc) on how to utilize the features of the HULL library to the full effect.
