@@ -2,7 +2,7 @@
 
 This repository contains the HULL Helm library chart. It is designed to ease building, maintaining and configuring Kubernetes objects in Helm charts and can be added to any Helm chart as an addon to enhance functionality without any risk of breaking existing Helm chart configurations.
 
-The chart itself and all documentation related to it can be found in the hull folder which is the root folder of the HULL library helm chart. 
+The chart itself and all documentation related to it can be found in the [`hull`](hull) folder which is the root folder of the HULL library helm chart. 
 
 The Kubernetes API JSON Schemas are stored in the [`kubernetes-json-schema`](kubernetes-json-schema) folder. 
 
