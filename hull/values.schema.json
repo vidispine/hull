@@ -19576,6 +19576,42 @@
       },
       "required": []
     },
+    "hull.VirtualFolderData.v1.Names": {
+      "enum": [
+          "inline",
+          "path",
+          "noTemplating"
+        ]
+    },
+    "hull.VirtualFolderData.v1": {
+      "type": "object",
+      "properties": {
+        "inline": {
+          "title": "HullVirtualFolderInline",
+          "type": [
+                "null",
+                "string"
+              ],
+          "properties": {}
+        },
+        "path": {
+          "title": "HullVirtualFolderPath",
+          "type": [
+                "null",
+                "string"
+              ],
+          "required": [],
+          "properties": {}
+        },
+        "noTemplating": {
+          "title": "HullVirtualFolderNoTemplating",
+          "type": "boolean",
+          "properties": {},
+          "required": []
+        }
+      },
+      "required": []
+    },
     "hull.VirtualFolder.v1.Names": {
       "enum": [
         "data"
@@ -19590,23 +19626,33 @@
           "required": [],
           "patternProperties": {
             "^[^_].*$": {
-              "properties": {
-                "inlines": {
-                  "title": "Inlines",
-                  "type": "object",
-                  "required": [],
-                  "properties": {}
+              "type": [
+                "null",
+                "object"
+              ],
+              "anyOf": [
+                {
+                  "type": "null"
                 },
-                "files": {
-                  "title": "Files",
-                  "type": "object",
-                  "required": [],
-                  "properties": {}
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/hull.VirtualFolderData.v1"
+                    },
+                    {
+                      "propertyNames": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/definitions/hull.VirtualFolderData.v1.Names"
+                          }
+                        ]
+                      }
+                    }
+                  ]
                 }
-              },
-              "additionalProperties": false
+              ]
             }
-          }
+          }          
         }
       },
       "required": []

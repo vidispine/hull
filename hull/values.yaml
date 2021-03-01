@@ -42,8 +42,6 @@ objects:
       enabled: true
       annotations: {}
       labels: {}
-      data:
-        _HULL_OBJECT_TYPE_DEFAULT_: {}
 ###################################################
 
 # SECRETS
@@ -52,8 +50,6 @@ objects:
       enabled: true
       annotations: {}
       labels: {}
-      data:
-        _HULL_OBJECT_TYPE_DEFAULT_: {}
 ###################################################
 
 # REGISTRIES
