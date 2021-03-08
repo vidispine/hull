@@ -443,7 +443,8 @@ hull:
                   # Applies a tpl transformation allowing to inject dynamic data based
                   # on values in this values.yaml into the resulting field (here the tag
                   # field of this container).
-                  # This example just references the value of the field which is specified # further above in the values.yaml and will produce 'image: nginx:1.14.2'
+                  # This example just references the value of the field which is specified 
+                  # further above in the values.yaml and will produce 'image: nginx:1.14.2'
                   # in the resulting deployment YAML but more complex conditional Go
                   # templating logic is applicable. There are some limitations to using 
                   # this approach though which are detailed in the transformation.md in 
