@@ -45,6 +45,7 @@ jobs:
       - version: "3.5.0"
       - version: "3.5.1"
       - version: "3.5.2"
+      - version: "3.5.3"
     
 - job: CreateRelease
   dependsOn: RunTests
