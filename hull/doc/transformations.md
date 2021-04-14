@@ -264,7 +264,7 @@ On rendering the following happens:
   - When the `tpl`-ed string should result in a string array, use the 
 
     ```yaml
-    [ \"value1\",\"value2\"] 
+    [\"value1\",\"value2\"] 
     ```
 
     notation to produce the resulting string array. This overcomes typical indentation pitfalls with the 

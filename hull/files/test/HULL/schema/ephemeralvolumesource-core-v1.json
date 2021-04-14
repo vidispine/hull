@@ -1,10 +1,6 @@
 {
   "description": "Represents an ephemeral volume that is handled by a normal storage driver.",
   "properties": {
-    "readOnly": {
-      "description": "Specifies a read-only configuration for the volume. Defaults to false (read/write).",
-      "type": "boolean"
-    },
     "volumeClaimTemplate": {
       "description": "PersistentVolumeClaimTemplate is used to produce PersistentVolumeClaim objects as part of an EphemeralVolumeSource.",
       "properties": {
@@ -283,7 +279,7 @@
                       }
                     ]
                   },
-                  "description": "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/",
+                  "description": "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
                   "type": "object"
                 },
                 "requests": {
@@ -300,7 +296,7 @@
                       }
                     ]
                   },
-                  "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/",
+                  "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
                   "type": "object"
                 }
               },

@@ -467,7 +467,6 @@
           }
         },
         "required": [
-          "metadata",
           "eventTime"
         ],
         "type": "object",
