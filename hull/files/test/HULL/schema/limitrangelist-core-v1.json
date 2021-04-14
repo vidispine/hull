@@ -9,7 +9,7 @@
       ]
     },
     "items": {
-      "description": "Items is a list of LimitRange objects. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/",
+      "description": "Items is a list of LimitRange objects. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
       "items": {
         "description": "LimitRange sets resource usage limits for each kind of resource in a Namespace.",
         "properties": {

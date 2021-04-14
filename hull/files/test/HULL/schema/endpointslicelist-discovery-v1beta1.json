@@ -59,6 +59,35 @@
                   "type": "object",
                   "additionalProperties": false
                 },
+                "hints": {
+                  "description": "EndpointHints provides hints describing how an endpoint should be consumed.",
+                  "properties": {
+                    "forZones": {
+                      "description": "forZones indicates the zone(s) this endpoint should be consumed by to enable topology aware routing. May contain a maximum of 8 entries.",
+                      "items": {
+                        "description": "ForZone provides information about which zones should consume this endpoint.",
+                        "properties": {
+                          "name": {
+                            "description": "name represents the name of the zone.",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "type": "object",
+                        "additionalProperties": false
+                      },
+                      "type": [
+                        "array",
+                        "null"
+                      ],
+                      "x-kubernetes-list-type": "atomic"
+                    }
+                  },
+                  "type": "object",
+                  "additionalProperties": false
+                },
                 "hostname": {
                   "description": "hostname of this endpoint. This field may be used by consumers of endpoints to distinguish endpoints from each other (e.g. in DNS names). Multiple endpoints which use the same hostname should be considered fungible (e.g. multiple A values in DNS). Must be lowercase and pass DNS Label (RFC 1123) validation.",
                   "type": [
