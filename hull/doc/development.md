@@ -218,6 +218,18 @@ Set the versions in `Chart.yaml`:
 - `appVersion: 1.x.y` where x is the Kubernetes major version and y the patch version of the schema
 - `kubeVersion: ">= 1.x.0"` where x is the Kubernetes major version
 
+### Adapt `hull.yaml`
+
+In case that API versions of objects have been updated with a new Kubernetes release it is necessary to update the respective `API_VERSION`s in the `hull.yaml` to reflect the update and keep up to date with the created objects.
+
+For example, when `cronjob` migrated from `v1beta1` to `v1` with Kubernetes 1.21 the line:
+
+`{{- $allObjects = merge $allObjects (dict "CronJob" (dict "API_VERSION" "batch/v1beta1")) }}`
+
+is changed to
+
+`{{- $allObjects = merge $allObjects (dict "CronJob" (dict "API_VERSION" "batch/v1")) }}`
+
 ### Adapt test chart
 Set the versions in `Chart.yaml` of the test chart at `hull/files/test/HULL/sources/charts/hull-test`:
 
