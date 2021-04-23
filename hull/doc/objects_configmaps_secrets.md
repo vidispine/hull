@@ -82,5 +82,46 @@ data:
     templating: "{{ .Values.hull.config.general.metadata.labels.custom.label_1 }}"
 ```
 
+It is furthermore possible to combine the [transformation](./transformations.md) functionality with the templating of external files. This means you can dynamically calculate a field in the `values.yaml` via a transformation and then reference the result in the ConfigMap or Secret. 
+
+Here is an example showcasing this feature. See the following example:
+
+```yaml
+
+hull:  
+  config:
+    specific: # Here you can put all that is particular configuration for your app
+      value_to_resolve_1: trans 
+      value_to_resolve_2: formation
+      resolve_me: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+        {{ printf \"%s%s\" (index . \"PARENT\").Values.hull.config.specific.value_to_resolve_1 (index . \"PARENT\").Values.hull.config.specific.value_to_resolve_2 }}
+        >>>"  # Transformation to combine 'trans' and 'formation' to the word
+              # 'transformation' via referencing two other fields
+  objects:
+    configmap:
+      transformation_resolving:
+        enabled: true
+        staticName: false
+        data:
+          resolved_transformation.txt:
+            path: files/resolve_transformation.txt
+
+```
+
+and the external file `files/resolve_transformation.txt` with contents:
+
+```yaml
+This is a text file with a pointer to a {{ .Values.hull.config.specific.resolve_me }}.
+```
+
+When processing, the transformation is applied to the contents of `values.yaml` before the result is passed to the `tpl` function processing the external file's content. In the end a ConfigMap is built with the following expected `data` property:
+
+```yaml
+data:
+  resolved_transformation.txt: This is a text file with a pointer to a transformation.
+
+```
+
+
 ---
 Back to [README.md](./../README.md)
