@@ -18,7 +18,6 @@
 {{- if not (default false (index . "NO_TRANSFORMATIONS")) }}
 {{- $hullValues := $parent.Values.hull -}}
 {{ $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $spec) | fromYaml }}
-{{- end }}
 {{ $renderedHullValues := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $hullValues) | fromYaml }}
 {{ $temp := dict "hull" $hullValues }}
 {{ $parentClone := deepCopy $parent }}
