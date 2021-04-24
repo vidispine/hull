@@ -16,13 +16,21 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
 {{- if not (default false (index . "NO_TRANSFORMATIONS")) }}
+{{- $hullValues := $parent.Values.hull -}}
 {{ $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $spec) | fromYaml }}
-{{- end }}
+{{ $renderedHullValues := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $hullValues) | fromYaml }}
+{{ $temp := dict "hull" $hullValues }}
+{{ $parentClone := deepCopy $parent }}
+{{ $parentClone = set $parentClone "Values" $temp }}
+{{ template "hull.metadata.header" . }}
+{{ include "hull.object.configmap.data" (dict "PARENT_CONTEXT" $parentClone "SPEC" $spec) }}
+{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parentClone "SPEC" $spec "HULL_OBJECT_KEYS" (list "data")) }}
+{{- else }}
 {{ template "hull.metadata.header" . }}
 {{ include "hull.object.configmap.data" . }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "data")) }}
+{{- end }}
 {{ end }}
-
 
 
 {{- /*
