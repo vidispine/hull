@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "7" objects were rendered
+* Expected number of "6" objects were rendered
 * Validate
 
 ## Metadata
@@ -32,12 +32,6 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-no_templating"
 * Test Object has key "data§concrete_file_3_templated.yaml" with Base64 encoded value of "name: \"i am concrete_file_3.yaml\"\ntemplating: \"General Custom Label 1\""
 * Test Object has key "data§concrete_file_3_untemplated.yaml" with Base64 encoded value of "name: \"i am concrete_file_3.yaml\"\ntemplating: \"\{\{ .Values.hull.config.general.metadata.labels.custom.general_custom_label_1 \}\}\""
-
-## Transformation
-* Render
-* Set test object to "release-name-hull-test-transformation_resolved"
-* Test Object has key "data§concrete_file_4_resolved.txt" with Base64 encoded value of "This is a text file with a pointer to a transformation."
-
 ___
 
 * Clean the test execution folder
