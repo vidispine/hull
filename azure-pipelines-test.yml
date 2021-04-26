@@ -19,7 +19,7 @@ steps:
       #echo deb https://dl.bintray.com/gauge/gauge-deb stable main | sudo tee -a /etc/apt/sources.list
       #sudo apt-get update
       #sudo apt-get install gauge
-      sudo npm install -g @getgauge/cli
+      sudo curl -SsL https://downloads.gauge.org/stable | sh
       cd hull/files/test/HULL
       sudo pip install -r requirements.txt
       gauge
