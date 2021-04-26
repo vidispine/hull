@@ -60,7 +60,7 @@ Some important things to mention first before looking at the library in more det
 
 ⚠️ **Note that a single static file, the `hull.yaml`, must be copied 'as-is' without any modification from an embedded HULL charts root folder to the parent charts `/templates` folder to be able to render any YAML via HULL. It contains the code that initiates the HULL rendering pipeline, see [adding the HULL library chart to a Helm chart](./doc/setup.md) for more details!** ⚠️
 
-⚠️ **At this time HULL releases are tested against all existing non-beta and non-alpha Helm 3 CLI versions. Note that Helm CLI versions `3.0.1` and `3.0.2` are not compatible with HULL, all other currently existing non-beta and non-alpha versions are compatible.** ⚠️
+⚠️ **At this time HULL releases are tested against all existing non-beta and non-alpha Helm 3 CLI versions. Note that Helm CLI versions `3.0.x` are not compatible with HULL, all other currently existing non-beta and non-alpha versions are compatible.** ⚠️
 
 ⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases starting with Kubernetes version `1.21`. At this time Kubernetes versions `1.19` and `1.20` have a matching HULL release.** ⚠️
 
