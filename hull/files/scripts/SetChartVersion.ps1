@@ -199,6 +199,8 @@ foreach ($entry in $replacements.Keys) {
         }
     }
     
+    Set-Content -Path "$($valuesYamlPath)" -Value ($processed)
+    
     $overwrites = ""
     if (![String]::IsNullOrWhiteSpace($AdditionalOverwrites))
     {
