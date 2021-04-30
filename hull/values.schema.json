@@ -22389,6 +22389,13 @@
                               "description": "Helm metadata.",
                               "type": "null",
                               "default": null
+                            },
+                            "vidispine.hull/version": {
+                              "$id": "#/definitions/root/config/general/metadata/labels/common/vidispine.hull/version",
+                              "title": "Hull/version",
+                              "description": "HULL version.",
+                              "type": "null",
+                              "default": null
                             }
                           }
                         },
@@ -22455,13 +22462,20 @@
             }
           }
         },
+        "version": {
+          "$id": "#/definitions/root/version",
+          "description": "HULL Library version which can be injected during CI and will be written to metadata.",
+          "title": "Version",
+          "type": "string"
+        },
         "additionalProperties": false
       }
     },
     "root.Names": {
       "enum": [
         "config",
-        "objects"
+        "objects",
+        "version"
       ]
     },
     "hull": {

@@ -9,10 +9,12 @@
     Version to set in Chart.yaml fields 'appVersion' and 'version' and the image tags specified under 'ProductImages'
 .PARAMETER ProductImages
     Semicolon-delimited string containing information about the images for which the version is to be replaced in values.yaml.
-    Each entry consists of one or two segments which are then themselves delimited by ':' 
-    - MANDATORY: the YAML Path to the 'image:' tag which should be overwritten in dot-notation
-    - OPTIONAL: the image repository
-.PARAMETER Vpms3CommonLibraryVersion
+    Each entry consists of one, two or three segments which are then themselves delimited by ':'.
+    If only one segment exists, it represents the YAML Path to the 'image:' tag which should be overwritten in dot-notation
+    If two or three segments exist:
+    - the first segment represents the YAML Path to the 'image:' tag which should be overwritten in dot-notation
+    - the second or third segment needs to start with either 'REGISTRY=' or 'REPOSITORY=' to indicate the registry or repository to overwrite    
+.PARAMETER HullVersion
     The version of the hull library to set in object metadata.
 .PARAMETER AdditionalOverwrites
     Specify additional keys that should be overwritten with given values.
@@ -20,14 +22,11 @@
     Key value pairs are seperated by AdditionalOverwritesSplitChar too. 
     If key or value can contain AdditionalOverwritesSplitChar, make sure to escape it before input like '\='.
     Specify like this:
-
     <key1>=<value1>=<key2>=<value2>
     
     In consequence an equal number of entries must be input. Change the AdditionalOverwritesSplitChar if needed.
 .PARAMETER AdditionalOverwritesSplitChar
     Specify the split character for the AdditionalOverwrites
-
-
 .EXAMPLE
     C:\PS> ./SetChartVersion.ps1 
         -Version "20.1.1-alpha" 
@@ -42,7 +41,7 @@ Param(
         [Parameter(Mandatory=$true)]
         [string]$Version,
         [string]$ProductImages,
-        [string]$Vpms3CommonLibraryVersion,
+        [string]$HullVersion,
         [string]$AdditionalOverwrites,
         [string]$AdditionalOverwritesSplitChar = '='
     )
@@ -68,15 +67,35 @@ foreach ($image in $images) {
 
     # Add custom repository
     $repository = $null
+    $registry = $null
+
     if ($split.Length -gt 1)    
-    {        
-        $repository = $split[1]
+    {
+        for ($i = 1; $i -lt $split.Length; $i++)
+        {
+            if ($split[$i].StartsWith("REGISTRY="))
+            {
+                $registry = $split[$i].Substring("REGISTRY=".Length)
+            }
+            elseif ($split[$i].StartsWith("REPOSITORY="))
+            {
+                $repository = $split[$i].Substring("REPOSITORY=".Length)
+            }
+            else
+            {
+                if ($split.Length -eq 2)
+                {
+                    $registry = $split[$i]
+                }
+            }
+        }   
     }
 
     $replacements.Add(
         $split[0], @{
             "type" = "productImage" 
             "repository" = $repository
+            "registry" = $registry
             "tag" = $Version
         }     
     )
@@ -128,6 +147,10 @@ foreach ($entry in $replacements.Keys) {
                             {
                                 $processed += ($currentLine)   
                             }
+                            if ($currentLine.Contains("registry:") -and $null -eq $replacements[$entry].registry)
+                            {
+                                $processed += ($currentLine)   
+                            }
                         }
                         else 
                         {
@@ -135,7 +158,13 @@ foreach ($entry in $replacements.Keys) {
                             if ($null -ne $replacements[$entry].repository)
                             {
                                 $repo = "repository: $($replacements[$entry].repository)"
-                                $processed += [PSObject]($repo.PadLeft($repo.Length + $whitespaceCount + 2))                        
+                                $processed += [PSObject]($repo.PadLeft($repo.Length + $whitespaceCount + 2))
+                            }
+
+                            if ($null -ne $replacements[$entry].registry)
+                            {
+                                $repo = "registry: $($replacements[$entry].registry)"
+                                $processed += [PSObject]($repo.PadLeft($repo.Length + $whitespaceCount + 2))
                             }
 
                             # Set tag to version
@@ -166,15 +195,10 @@ foreach ($entry in $replacements.Keys) {
             $processed += ($currentLine)
         }
     }
-
+    
     Set-Content -Path "$($valuesYamlPath)" -Value ($processed)
     
     $overwrites = ""
-    if (![String]::IsNullOrWhiteSpace($Vpms3CommonLibraryVersion))
-    {
-        $overwrites += "hull.config.general.metadata.hullLibraryVersion$($AdditionalOverwritesSplitChar)$Vpms3CommonLibraryVersion$($AdditionalOverwritesSplitChar)$($AdditionalOverwritesSplitChar)"
-    }
-
     if (![String]::IsNullOrWhiteSpace($AdditionalOverwrites))
     {
         $overwrites += $AdditionalOverwrites
@@ -182,4 +206,32 @@ foreach ($entry in $replacements.Keys) {
     
     $cmd = "$([System.IO.Path]::Combine($PSScriptRoot, "SetYamlValues.ps1")) -YamlFilePath '$valuesYamlPath' -Overwrites '$overwrites' -OverwritesSplitChar '$AdditionalOverwritesSplitChar'"
     Invoke-Expression -Command $cmd
+}
+
+if (![String]::IsNullOrWhiteSpace($HullVersion))
+{
+    $processed = @()  
+    $valuesString = (Get-Content $valuesYamlPath)
+    for ($line = 0; $line -lt $valuesString.Length; $line++) {
+        $currentLine = $valuesString[$line]
+        if ($currentLine -match "^hull:\s*")
+        {
+            $processed += $currentLine
+
+            $nextLine = $valuesString[$line+1]
+            if ($nextLine -match "  version: " + $HullVersion)
+            {
+                
+            }
+            else
+            {
+                $processed += ("  version: " + $HullVersion)
+            }
+        }
+        else
+        {
+            $processed += $currentLine
+        }
+    }
+    Set-Content -Path "$($valuesYamlPath)" -Value ($processed)
 }
