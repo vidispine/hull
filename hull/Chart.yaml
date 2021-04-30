@@ -1,7 +1,7 @@
 apiVersion: v2
 name: hull
-version: 1.19.1
-kubeVersion: ">= 1.19.0"
+version: 1.21.2
+kubeVersion: ">= 1.21.0"
 description: HULL - Helm Uniform Layer Library
 type: library
 keywords:
@@ -12,4 +12,4 @@ dependencies: []
 maintainers:
 - name: georg weber
   email: georgmartin.weber@s4m.com
-appVersion: 1.19.8
+appVersion: 1.21.0
