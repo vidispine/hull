@@ -1,6 +1,6 @@
 apiVersion: v2
 name: hull
-version: 1.21.2
+version: 1.21.3
 kubeVersion: ">= 1.21.0"
 description: HULL - Helm Uniform Layer Library
 type: library
