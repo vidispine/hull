@@ -24,6 +24,7 @@ config:
           'app.kubernetes.io/instance':
           'app.kubernetes.io/component':
           'helm.sh/chart':
+          'vidispine.hull/version':
         custom: {}
       annotations: 
         hashes: false

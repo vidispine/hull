@@ -42,6 +42,7 @@ labels:
 */ -}}
 {{- define "hull.metadata.general.labels.object" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
+vidispine.hull/version: {{ default "" $parent.Values.hull.version }}
 helm.sh/chart: {{ template "hull.metadata.chartref" (dict "PARENT_CONTEXT" $parent) }}
 app.kubernetes.io/managed-by: {{ $parent.Release.Service | quote}}
 app.kubernetes.io/version: {{ default ($parent.Chart.AppVersion | quote) ((index $parent.Values.hull.config.general.metadata.labels.common "app.kubernetes.io/version") | quote ) }}
