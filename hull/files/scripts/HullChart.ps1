@@ -117,7 +117,7 @@ if ([String]::IsNullOrWhiteSpace($commonSourceDirectory))
 # Update dependencies FOR DEVELOPMENT ONLY of hull
 if ($UpdateDependencies)
 {
-    # Expects the hull library in file:///GIT/VPMS3/VPMS3HelmChartsCommonLibrary otherwise needs adaptation
+    # Expects the hull library in file:///GIT/HULL/hull otherwise needs adaptation
     # Execute "$HelmExecutablePath dep update --skip-refresh $HelmChartDirectoryPath"
 
     # Get the created hull-1.0.0.tgz file and the contained version
