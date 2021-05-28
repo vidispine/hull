@@ -13,10 +13,11 @@
 {{- $apiVersion := (index . "API_VERSION") -}}
 {{- $apiKind := (index . "API_KIND") -}}
 {{- $spec := (index . "SPEC") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{ $annotations := dict }}
 {{ $annotations = merge $annotations (include "hull.metadata.annotations.custom" . | fromYaml) }}
-{{ if (gt (len (keys (index $parent.Values.hull.config.general.metadata.annotations "custom"))) 0) }}
-{{ $annotations = merge $annotations $parent.Values.hull.config.general.metadata.annotations.custom }}
+{{ if (gt (len (keys (index (index $parent.Values $hullRootKey).config.general.metadata.annotations "custom"))) 0) }}
+{{ $annotations = merge $annotations (index $parent.Values $hullRootKey).config.general.metadata.annotations.custom }}
 {{- end -}}
 {{ if default false (index . "MERGE_TEMPLATE_METADATA") }}
 {{ $annotations = merge $annotations ((include "hull.metadata.annotations.custom" (merge (dict "ANNOTATIONS_METADATA" "templateAnnotations") . ) | fromYaml)) }}
@@ -63,6 +64,7 @@ annotations:
 {{- $apiVersion := (index . "API_VERSION") -}}
 {{- $apiKind := (index . "API_KIND") -}}
 {{- $spec := (index . "SPEC") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- if eq $apiKind "Deployment" -}}
 {{- $podSpec := include "hull.object.pod" . | fromYaml -}}
 {{- $hashAnnotations := include "hull.metadata.annotations.hash"  (dict "PARENT_CONTEXT" $parent "SPEC" $podSpec.spec) -}}
@@ -78,6 +80,7 @@ annotations:
 {{- $debug := false -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := (index . "SPEC") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- $allFiles := dict -}}
 {{- $volumeMount := (index . "VOLUME_MOUNT") -}}
 {{- $volume := (index . "VOLUME") -}}  
@@ -98,15 +101,15 @@ annotations:
           {{- end -}}          
           {{- range $sourceKey, $sourceValue := $sources -}}   
 {{- if $debug -}}{{- $allFiles = set $allFiles "source" $sourceKey -}}{{- end -}}
-            {{- range $originKey, $originValue := (index $parent.Values.hull.objects ($sourceKey | lower)) -}}  
+            {{- range $originKey, $originValue := (index (index $parent.Values $hullRootKey).objects ($sourceKey | lower)) -}}  
 {{- if $debug -}}{{- $allFiles = set $allFiles "originKey" $originKey -}}{{- end -}} 
 {{- if $debug -}}{{- $allFiles = set $allFiles "originValue" $originValue -}}{{- end -}} 
-              {{- $fullName := include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $originKey) -}}
+              {{- $fullName := include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $originKey "HULL_ROOT_KEY" $hullRootKey) -}}
               {{- $sourceSpecName := (index (index $volume $sourceKey) $sourceValue) -}}
 {{- if $debug -}}{{- $allFiles = set $allFiles "sourceSpecName" $sourceSpecName -}}{{- end -}}
               {{- $sourceFields := dict "data" dict "files" dict -}}
-              {{- $sourceFields := set $sourceFields "data" (default dict (index (index $parent.Values.hull.objects ($sourceKey | lower)) $originKey).data ) -}}
-              {{- range $hullDataKey, $hullDataValue := (default dict (index (index $parent.Values.hull.objects ($sourceKey | lower)) $originKey).data) -}}
+              {{- $sourceFields := set $sourceFields "data" (default dict (index (index (index $parent.Values $hullRootKey).objects ($sourceKey | lower)) $originKey).data ) -}}
+              {{- range $hullDataKey, $hullDataValue := (default dict (index (index (index $parent.Values $hullRootKey).objects ($sourceKey | lower)) $originKey).data) -}}
               {{- if hasKey $hullDataValue "inlines" -}}
               {{- $s := merge $sourceFields (dict "data" $hullDataValue.inlines) -}}
               {{- end -}}
