@@ -30,6 +30,8 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-no_templating"
 * Test Object has key "data§concrete_file_3_templated.yaml" with value "name: \"i am concrete_file_3.yaml\"\ntemplating: \"General Custom Label 1\""
 * Test Object has key "data§concrete_file_3_untemplated.yaml" with value "name: \"i am concrete_file_3.yaml\"\ntemplating: \"\{\{ .Values.hull.config.general.metadata.labels.custom.general_custom_label_1 \}\}\""
+* Test Object has key "data§inline_templated.txt" with value "This is an inline with a pointer to a transformation."
+* Test Object has key "data§inline_untemplated.txt" with value "This is an inline with a pointer to a \{\{ .Values.hull.config.specific.resolve_me \}\}."
 
 ## Transformation
 * Render
