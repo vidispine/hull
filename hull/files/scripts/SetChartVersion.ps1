@@ -22,14 +22,11 @@
     Key value pairs are seperated by AdditionalOverwritesSplitChar too. 
     If key or value can contain AdditionalOverwritesSplitChar, make sure to escape it before input like '\='.
     Specify like this:
-
     <key1>=<value1>=<key2>=<value2>
     
     In consequence an equal number of entries must be input. Change the AdditionalOverwritesSplitChar if needed.
 .PARAMETER AdditionalOverwritesSplitChar
     Specify the split character for the AdditionalOverwrites
-
-
 .EXAMPLE
     C:\PS> ./SetChartVersion.ps1 
         -Version "20.1.1-alpha" 
@@ -238,5 +235,4 @@ if (![String]::IsNullOrWhiteSpace($HullVersion))
     }
     Set-Content -Path "$($valuesYamlPath)" -Value ($processed)
 }
-
 
