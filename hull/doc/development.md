@@ -9,7 +9,7 @@
 - `_objects_base_pod.tpl`: objects that internally use a pod template 
 - `_objects_xyz.tpl`: any other more complex object with array structures that should be converted to dictionaries requires a custom template
 
-[PriorityClass](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#priorityclass-v1-scheduling-k8s-io) is a very simple structure so it can use `_objects_base_plain.tpl`
+[PriorityClass](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.19/#priorityclass-v1-scheduling-k8s-io) is a very simple structure so it can use `_objects_base_plain.tpl`
 
 ### Add to the handled objects in `hull.yaml`
 
@@ -181,7 +181,34 @@ Create a new matching JSON schema in the `kubernetes-json-schema` folder with th
 
 ### Adapt the JSON schema
 
-Copy the `_definition.json` from the newly created schema folder to `values.schema.json` in the `hull` charts root library overwriting the existing content. Compare the `values.schema.json` content with that of the previous release version branch and adapt as need (the complicated part). Consider copying the changes related to the objects that HULL deals with and leave other API changes alone.
+Copy the `_definition.json` from the newly created schema folder to `values.schema.json` in the `hull` charts root library overwriting the existing content. Compare the `values.schema.json` content with that of the previous release version branch and adapt as needed (the complicated part). Consider copying the changes related to the objects that HULL deals with and leave other API changes alone.
+Use a side-by-side tool such as BeyondCompare to do the comparison.
+
+General hints for doing this when starting comparing top to bottom:
+- any block that ends with `.Names` and before that matches one of the Kubernetes API schema elements (typically right below such a block) you copy the block over to the new JSON schema. These blocks are used in the HULL schema to create valid union between K8S properties and HULL properties. For example this block:
+
+  ```yaml
+  "io.k8s.api.apps.v1.StatefulSetSpec.Names": {
+      "enum": [
+        "podManagementPolicy",
+        "replicas",
+        "revisionHistoryLimit",
+        "updateStrategy",
+        "serviceName",
+        "volumeClaimTemplates"
+      ]
+    },
+  ```
+
+- `selector` and `template` elements for top level K8S objects need to be removed from the schema. HULL creates these elements automatically under the hood. If `selector` and `template` are listed under `required` elements remove them from the list as well
+- remove the `"additionalProperties": false` property from the top-level object schema
+- other properties which are part of the merged HULL JSON schema object need to be removed from the Kubernetes object schema, eg. `name`, `env`, `envFrom`, `volumeMounts` and `ports` from the `Container` spec
+- keep text-only changes to descriptions in the new schema
+- keep properties that are added to objects in the new schema which are not handled explicitly by HULL
+- if properties are added to an object which is handled by HULL and has a matching `.Names` block the new property name needs to be added to the `.Names` block
+- added `staticName` properties to objects need to be copied over to the new schema
+- if a top-level object migrates to a new version, you can create an incremented HULL schema object for the new version and reference it in the schema
+
 
 ### Adapt `Chart.yaml`
 
@@ -190,6 +217,18 @@ Set the versions in `Chart.yaml`:
 - `version: 1.x.1` where x is the Kubernetes major version
 - `appVersion: 1.x.y` where x is the Kubernetes major version and y the patch version of the schema
 - `kubeVersion: ">= 1.x.0"` where x is the Kubernetes major version
+
+### Adapt `hull.yaml`
+
+In case that API versions of objects have been updated with a new Kubernetes release it is necessary to update the respective `API_VERSION`s in the `hull.yaml` to reflect the update and keep up to date with the created objects.
+
+For example, when `cronjob` migrated from `v1beta1` to `v1` with Kubernetes 1.21 the line:
+
+`{{- $allObjects = merge $allObjects (dict "CronJob" (dict "API_VERSION" "batch/v1beta1")) }}`
+
+is changed to
+
+`{{- $allObjects = merge $allObjects (dict "CronJob" (dict "API_VERSION" "batch/v1")) }}`
 
 ### Adapt test chart
 Set the versions in `Chart.yaml` of the test chart at `hull/files/test/HULL/sources/charts/hull-test`:
@@ -251,3 +290,5 @@ Add or modify test cases so that the new changes are covered adequately.
 
 All tests need to run successfully to create a new release.
 
+---
+Back to [README.md](./../README.md)

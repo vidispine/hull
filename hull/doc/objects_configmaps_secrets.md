@@ -59,7 +59,7 @@ hull:
             path: files/file_1.json
           file_2_templated.yaml:
             path: files/file_2.yaml
-            noTemplating: true
+            noTemplating: false
           file_2.yaml:
             path: files/file_2.yaml
             noTemplating: true
