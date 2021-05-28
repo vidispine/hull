@@ -13,6 +13,7 @@
 {{- define "hull.metadata.name"}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $component := default "" (index . "COMPONENT") -}}
-{{- $base := default $parent.Chart.Name $parent.Values.hull.config.general.nameOverride -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $base := default $parent.Chart.Name (index $parent.Values $hullRootKey).config.general.nameOverride -}}
 {{- (printf "%s-%s" $base $component) | lower | trunc 54 | trimAll "-" -}}
 {{- end -}}

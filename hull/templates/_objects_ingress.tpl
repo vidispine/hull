@@ -14,13 +14,14 @@
 {{- define "hull.object.ingress" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- if not (default false (index . "NO_TRANSFORMATIONS")) }}
-{{ $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $spec) | fromYaml }}
+{{ $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $spec "HULL_ROOT_KEY" $hullRootKey) | fromYaml }}
 {{- end }}
 {{ template "hull.metadata.header" . }}
 spec:
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $parent.Values.hull.objects.ingress._HULL_OBJECT_TYPE_DEFAULT_.tls._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "tls" "OBJECT_TEMPLATE" "hull.object.ingress.tls") | indent 2 }}
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $parent.Values.hull.objects.ingress._HULL_OBJECT_TYPE_DEFAULT_.rules._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "rules" "OBJECT_TEMPLATE" "hull.object.ingress.rules") | indent 2 }}
+{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (index $parent.Values $hullRootKey).objects.ingress._HULL_OBJECT_TYPE_DEFAULT_.tls._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "tls" "OBJECT_TEMPLATE" "hull.object.ingress.tls" "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
+{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (index $parent.Values $hullRootKey).objects.ingress._HULL_OBJECT_TYPE_DEFAULT_.rules._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "rules" "OBJECT_TEMPLATE" "hull.object.ingress.rules" "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "rules" "tls")) | indent 2 }}
 {{ end }}
 
@@ -43,7 +44,8 @@ spec:
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $component := default "" (index . "COMPONENT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
-- secretName: {{ include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $spec.secretName "SPEC" $spec) }}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+- secretName: {{ include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $spec.secretName "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey) }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "secretName")) | indent 2 }}
 {{ end }}
 
@@ -63,10 +65,11 @@ spec:
 {{- define "hull.object.ingress.rules" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 - host: {{ $spec.host }}
   http:
     paths:
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $parent.Values.hull.objects.ingress._HULL_OBJECT_TYPE_DEFAULT_.rules._HULL_OBJECT_TYPE_DEFAULT_.http.paths._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec.http "KEY" "paths" "OBJECT_TEMPLATE" "hull.object.ingress.paths") | indent 4 }}
+{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (index $parent.Values $hullRootKey).objects.ingress._HULL_OBJECT_TYPE_DEFAULT_.rules._HULL_OBJECT_TYPE_DEFAULT_.http.paths._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec.http "KEY" "paths" "OBJECT_TEMPLATE" "hull.object.ingress.paths" "HULL_ROOT_KEY" $hullRootKey) | indent 4 }}
 {{ end }}
 
 
@@ -85,10 +88,11 @@ spec:
 {{- define "hull.object.ingress.paths" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 - backend:
 {{ if hasKey $spec.backend "service" }}
     service:
-      name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $spec.backend.service.name "SPEC" $spec.backend.service) }}
+      name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $spec.backend.service.name "SPEC" $spec.backend.service "HULL_ROOT_KEY" $hullRootKey) }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.backend.service "HULL_OBJECT_KEYS" (list "name")) | indent 6 }}
 {{ end }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "backend")) | indent 2 }}
@@ -110,9 +114,10 @@ spec:
 {{- define "hull.object.ingress.backend" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- if hasKey $spec "service" }}   
 service: 
-  name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $spec.service.name "SPEC" $spec.service) }}
+  name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $spec.service.name "SPEC" $spec.service "HULL_ROOT_KEY" $hullRootKey) }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.service "HULL_OBJECT_KEYS" (list "name")) | indent 2}}
 {{ end }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "service")) }}

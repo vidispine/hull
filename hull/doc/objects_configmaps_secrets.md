@@ -117,6 +117,6 @@ When processing, the transformation is applied to the contents of `values.yaml` 
 ```yaml
 data:
   resolved_transformation.txt: This is a text file with a pointer to a transformation.
-
+```
 ---
 Back to [README.md](./../README.md)
