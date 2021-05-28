@@ -264,7 +264,7 @@ On rendering the following happens:
   - When the `tpl`-ed string should result in a string array, use the 
 
     ```yaml
-    [ \"value1\",\"value2\"] 
+    [\"value1\",\"value2\"] 
     ```
 
     notation to produce the resulting string array. This overcomes typical indentation pitfalls with the 
@@ -361,3 +361,6 @@ Arguments:
 Produces:
 
 The processed result of executing `tpl` on the string. Depending on where this transformation is used this can be a dictionary, a string or an array of strings.
+
+---
+Back to [README.md](./../README.md)
