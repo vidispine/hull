@@ -15,7 +15,7 @@
             {{- if hasKey $value "_HULL_TRANSFORMATION_" -}}
                 {{- $params := $value._HULL_TRANSFORMATION_ -}}
                 {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key) $params -}}
-                {{- $valDict := fromYaml (include $value._HULL_TRANSFORMATION_._NAME_ $pass) -}}
+                {{- $valDict := fromYaml (include $value._HULL_TRANSFORMATION_.NAME $pass) -}}
                 {{- $source := unset $source $key -}}
                 {{- $source := merge $source $valDict -}}  
             {{- else -}}
