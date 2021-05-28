@@ -28,7 +28,9 @@ metadata:
 {{- /*
 ################################################# MAIN #####################################################
 */ -}}
-
+{{ define "hull.init" }}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $rootContext := (index . "ROOT_CONTEXT") -}}
 {{- /*
 ### Load all handled object types step by step for better visibility
 */ -}}
@@ -105,7 +107,7 @@ metadata:
 {{- if (hasKey $objectTypeSpec "API_VERSION") }}
 {{- $apiVersion = $objectTypeSpec.API_VERSION }}
 {{- end }}
-{{- $enabledDefault := (index $.Values.hull.objects $lowerObjectType)._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
+{{- $enabledDefault := (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType)._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- $hullTemplate := "" }}
 {{- if (hasKey $objectTypeSpec "HULL_TEMPLATE") }}
 {{- $hullTemplate = $objectTypeSpec.HULL_TEMPLATE }}
@@ -123,8 +125,8 @@ metadata:
 ### Get the default spec with key _HULL_OBJECT_TYPE_DEFAULT_ for the object to be merged with all instances
 */ -}}
 {{- $defaultSpec := dict }}
-{{- $defaultSpec = (index $.Values.hull.objects $lowerObjectType)._HULL_OBJECT_TYPE_DEFAULT_ }}
-{{- range $objectKey, $spec := (index $.Values.hull.objects $lowerObjectType) }}
+{{- $defaultSpec = (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType)._HULL_OBJECT_TYPE_DEFAULT_ }}
+{{- range $objectKey, $spec := (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType) }}
 {{- if ne $objectKey "_HULL_OBJECT_TYPE_DEFAULT_" -}}
 {{ if (gt (len (keys (default dict $spec))) 0) }}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
@@ -134,7 +136,7 @@ metadata:
 ### Now render the result object instance
 */ -}}
 {{- $objectSpec := dict }}
-{{- $objectSpec = include "hull.util.merge" (merge (dict "PARENT_CONTEXT" $ "PARENT_TEMPLATE" $parentTemplate "API_VERSION" (default $apiVersion $spec.apiVersion) "API_KIND" (default $apiKind $spec.apiKind) "COMPONENT" $objectKey "SPEC" $spec "DEFAULT_COMPONENT" $defaultSpec) (dict "LOCAL_TEMPLATE" (printf "%s" $hullTemplate))) | fromYaml }}
+{{- $objectSpec = include "hull.util.merge" (merge (dict "PARENT_CONTEXT" $rootContext "PARENT_TEMPLATE" $parentTemplate "API_VERSION" (default $apiVersion $spec.apiVersion) "API_KIND" (default $apiKind $spec.apiKind) "COMPONENT" $objectKey "SPEC" $spec "DEFAULT_COMPONENT" $defaultSpec "HULL_ROOT_KEY" $hullRootKey) (dict "LOCAL_TEMPLATE" (printf "%s" $hullTemplate))) | fromYaml }}
 {{ toYaml $objectSpec }}
 
 ---
@@ -143,3 +145,12 @@ metadata:
 {{- end -}}
 {{- end -}}
 {{- end -}}
+{{- end -}}
+
+
+
+{{- /*
+### Run it!
+*/ -}}
+
+{{- include "hull.init" (dict "HULL_ROOT_KEY" "hull" "ROOT_CONTEXT" $) }}
