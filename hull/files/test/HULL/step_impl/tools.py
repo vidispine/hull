@@ -176,19 +176,25 @@ def set_test_object_to(name):
     data_store.scenario.test_object = data_store.scenario["objects_" + data_store.scenario.kind][name]    
 
 @step("Test Object has key <key> with array value that has <count> items")
-def test_object_has_key_with_value(key, value):
+def test_object_has_key_with_array_value_that_has_items(key, value):
     assert data_store.scenario.test_object != None
     if isinstance(data_store.scenario.test_object[key], list): 
         assert_values_equal(len(data_store.scenario.test_object[key]), int(value), key)
     else:
         assert False
 
+@step("Test Object has key <key> with value <value>")
+def test_object_has_key_with_value(key, value):
+    assert "test_object" in data_store.scenario != None, "No Test Object set!"
+    assert data_store.scenario.test_object != None, "Test Object set to None!"
+    assert_values_equal(data_store.scenario.test_object[key], value, key)
+
 @step("Test Object has key <key> set to true")
 def test_object_has_key_set_to_true(key):
     test_object_has_key_with_value(key, True)
 
 @step("Test Object has key <key> set to false")
-def test_object_has_key_set_to_true(key):
+def test_object_has_key_set_to_false(key):
     test_object_has_key_with_value(key, False)
 
 
@@ -204,11 +210,7 @@ def test_object_does_not_have_key(key):
             return
     assert False
 
-@step("Test Object has key <key> with value <value>")
-def test_object_has_key_with_value(key, value):
-    assert "test_object" in data_store.scenario != None, "No Test Object set!"
-    assert data_store.scenario.test_object != None, "Test Object set to None!"
-    assert_values_equal(data_store.scenario.test_object[key], value, key)
+
 
 @step("Test Object has key <key> with integer value <value>")
 def test_object_has_key_with_integer_value(key, value):
