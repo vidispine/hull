@@ -59,6 +59,13 @@ hull:
           concrete_file_3_untemplated.yaml:
             path: files/concrete_file_3.yaml
             noTemplating: true
+          inline_templated.txt:
+            inline: |-
+              This is an inline with a pointer to a {{ .Values.hull.config.specific.resolve_me }}.
+          inline_untemplated.txt: 
+            inline: |-
+              This is an inline with a pointer to a {{ .Values.hull.config.specific.resolve_me }}.
+            noTemplating: true
           an_inline_secret.txt: # ... an inline specified content or ...
             inline: |- 
               Top secret contents
