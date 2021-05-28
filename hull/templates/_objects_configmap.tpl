@@ -51,7 +51,11 @@ data:
 {{ range $innerKey, $innerValue := $spec.data }}
 {{ if hasKey $innerValue "inline" }}
 {{ $innerKey | indent 2 }}: |-
+{{ if $innerValue.noTemplating -}}
 {{ default "" $innerValue.inline | indent 4 }}
+{{ else -}}
+{{ default "" (tpl $innerValue.inline $parent) | indent 4 }}
+{{ end }}
 {{ end }}
 {{ if hasKey $innerValue "path" }}
 {{ base $innerKey | indent 2 }}: |-
