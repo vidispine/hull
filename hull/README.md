@@ -62,7 +62,7 @@ Some important things to mention first before looking at the library in more det
 
 ⚠️ **At this time HULL releases are tested against all existing non-beta and non-alpha Helm 3 CLI versions. Note that Helm CLI versions `3.0.x` are not compatible with HULL, all other currently existing non-beta and non-alpha versions are compatible.** ⚠️
 
-⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases starting with Kubernetes version `1.21`. At this time Kubernetes versions `1.19` and `1.20` have a matching HULL release.** ⚠️
+⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases. At this time Kubernetes versions `1.19` and `1.20` and `1.21` have a matching HULL release.** ⚠️
 
 ## Creating and configuring a HULL based chart
 
@@ -72,7 +72,10 @@ So all that is needed to create a helm chart based on HULL is a standard scaffol
 
 But besides allowing to define more complex applications with HULL you could also use it to wrap simple Kubernetes Objects you would otherwise either deploy via kubectl (being out-of-line from the management perspective with helm releases) or have to write a significant amount of Helm boilerplate templates to achieve this. 
 
-The base structure of the `values.yaml` understood by HULL is given here in the next section. This essentially forms the single interface for producing and consuming HULL based charts. Any object is only created in case it is defined and enabled in the `values.yaml`, this means you might want to pre-configure objects for consumers that would just need to enable them if they want to use them. At the top level of the YAML structure, HULL distinguishes between `config` and `objects`. While the `config` sub-configuration is intended to deal with chart specific settings such as metadata and product settings, the concrete Kubernetes objects to be rendered are specified under the `objects` key.
+The base structure of the `values.yaml` understood by HULL is given here in the next section. This essentially forms the single interface for producing and consuming HULL based charts. Any object is only created in case it is defined and enabled in the `values.yaml`, this means you might want to pre-configure objects for consumers that would just need to enable them if they want to use them.
+
+At the top level of the YAML structure, HULL distinguishes between `config` and `objects`. While the `config` sub-configuration is intended to deal with chart specific settings such as metadata and product settings, the concrete Kubernetes objects to be rendered are specified under the `objects` key.
+An additional third top level key named `version` is allowed as well, when this is being set to the HULL charts version for example during the parent Helm Charts release pipeline it will automatically populate the label `vidispine.hull/version`on all objects indicating the HULL version that was used to render the objects.
 
 ### _The `config` section_
 
@@ -98,7 +101,7 @@ Within the `config` section you can configure general settings for your Helm cha
 | `config.general.metadata.labels.common.'app.kubernetes.io/component'` | Component metadata. | `<hullObjectKey>`
 | `config.general.metadata.labels.common.'helm.sh/chart'` | Helm metadata. | `{{ (printf "%s-%s" .Chart.Name .Chart.Version) | replace "+" "_" }}`
 | `config.general.metadata.labels.custom` | All specified custom labels are automatically added to all objects of this helm chart. | `{}`| 
-| `config.general.metadata.annotations` | All specified annotations are automatically added to all objects of this helm chart. | `{}`| 
+| `config.general.metadata.annotations` | Annotations that are added to all objects. The `custom` labels can be freely specified. <br><br>Has only the following sub-fields: <br><br>`custom`. | 
 | `config.general.metadata.annotations.custom` | All specified custom annotations are automatically added to all objects of this helm chart. | `{}`| 
 | `config.specific` | Free form field that holds configuration options that are specific to the specific product contained in the helm chart. Typically the values specified here ought to be used to populate the contents of configuration files that a particular applications read their configuration from at startup. Hence the `config.specific` fields are typically being consumed in ConfigMaps or Secrets. | `{}` | `maxDatepickerRange:`&#160;`50`<br>`defaultPoolColor:`&#160;`"#FB6350"`<br>`updateInterval:`&#160;`60000`
 
@@ -150,13 +153,100 @@ By having keys that identify instances you can:
 
 The values of object instance keys reflects the Kubernetes objects to create for the chart. To specify these objects efficiently, the available properties for configuration can be split into three groups:
 
-1. [Basic HULL object configuration](doc/object_base.md) whose properties are available for all object types and instances.
+1. Basic HULL object configuration with [hull.ObjectBase.v1](doc/object_base.md) whose properties are available for all object types and instances. These are `enabled`, `staticName`, `annotations` and `labels`. 
+
+    Given the example of a `deployment` named `nginx` you can add the following properties of [hull.ObjectBase.v1](doc/object_base.md) to the object instance:
+
+    ```yaml
+    hull:
+      objects:
+        deployment:
+          nginx: # unique key/identifier of the deployment to create
+            staticName: true # property of hull.ObjectBase.v1
+                             # forces the metadata.name to be just the <KEY> 'nginx' 
+                             # and not a dynamic name '<CHART>-<RELEASE>-<KEY>' which 
+                             # would be the better default behavior of creating 
+                             # unique object names for all objects.
+            enabled: true    # property of hull.ObjectBase.v1
+                             # this deployment will be rendered to a YAML object if enabled
+            labels:
+              demo_label: "demo" # property of hull.ObjectBase.v1
+                                 # add all labels here that shall be added 
+                                 # to the object instance metadata section
+            annotations:
+              demo_annotation: "demo" # property of hull.ObjectBase.v1
+                                      # add all annotations here that shall be added 
+                                      # to the object instance metadata section
+            pod: 
+              ... # Here would come the hull.PodTemplate.v1 definition
+                  # see below for details
+
+    ```
+
 2. Specialized HULL object properties for some object types. Below is a reference of which object type supports which special properties in addition to the basic object configuration. 
-3. Kubernetes object properties. For each object type it is possible to specify all existing Kubernetes properties. In case a HULL property overwrites a identically named Kubernetes property the HULL property has precedence. Some of the typical top-level Kubernetes object properties and fields don't require setting them with HULL based objects because they can be deducted automatically:
+
+    Again given the example of a `deployment` named `nginx` you would want to add properties of the HULL [**hull.PodTemplate.v1**](doc/objects_pod.md) to the instance. With them you set the `pod` property to define the pod template (initContainers, containers, volumes, ...) and can add `templateLabels` and `templateAnnotations` just to the pods created `metadata` and not the deployment objects `metadata` section:
+
+    ```yaml
+    hull:
+      objects:
+        deployment:
+          nginx: 
+            staticName: true 
+            enabled: true 
+            labels: 
+              demo_label: "demo" 
+            annotations: 
+              demo_annotation: "demo" 
+            templateLabels: # property of hull.PodTemplate.v1 to define 
+                            # labels only added to the pod
+              demo_pod_label: "demo pod" 
+            templateAnnotations: # property of hull.PodTemplate.v1 to define 
+                            # annotations only added to the pod
+              demo_pod_annotation: "demo pod"
+            pod: # property of hull.PodTemplate.v1 to define the pod template
+              containers:
+                nginx: # all containers of a pod template are also referenced by a 
+                      # unique key to make manipulating them easy.
+                  image:
+                    repository: nginx # specify repository and tag
+                                      # separately with HULL for easier composability
+                    tag: 1.14.2
+                  ... # further properties (volumeMounts, affinities, ...)
+
+    ```
+3. Kubernetes object properties. For each object type it is basically possible to specify all existing Kubernetes properties. In case a HULL property overwrites a identically named Kubernetes property the HULL property has precedence. Even if a HULL property overrides a Kubernetes property it is intended to provide the same complete configuration options, even if sometimes handled differently by HULL. 
+
+    Some of the typical top-level Kubernetes object properties and fields don't require setting them with HULL based objects because they can be deducted automatically:
     - the `apiVersion` and `kind` are determined by the HULL object type and Kubernetes API version and don't require to be explicitly set (except for objects of type `customresource`).
     - the top-level `metadata` dictionary on objects is handled by HULL via the `annotations` and `labels` fields and the naming rules explained above. So the `metadata` field does not require configuration and is hence not configurable for any object. 
 
-Some lower level structures are also converted from the Kubernetes API array form to a dictionary form or are modified to improve working with them. This also enables more sophisticated merging of layers since arrays don't merge well, they only can be overwritten completely. Overwriting arrays however can make it hard to forget about elements that are contained in the default form of the array (you would need to know that they existed in the first place). In short, for a layered configuration approach without an endless amount of elements the dictionary is preferable for representing data since it offers a much better merging support.
+    Some lower level structures are also converted from the Kubernetes API array form to a dictionary form or are modified to improve working with them. This also enables more sophisticated merging of layers since arrays don't merge well, they only can be overwritten completely. Overwriting arrays however can make it hard to forget about elements that are contained in the default form of the array (you would need to know that they existed in the first place). In short, for a layered configuration approach without an endless amount of elements the dictionary is preferable for representing data since it offers a much better merging support.
+
+    So again using the example of a `deployment` named `nginx` you can add the remaining available Kubernetes properties to the object instance which are not handled by HULL as shown below. For a `deployment` specifically you can add all the remaining properties defined in the `deploymentspec` API schema from [**deploymentspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#deploymentspec-v1-apps) which are `minReadySeconds`, `paused`, `progressDeadlineSeconds`, `replicas`, `revisionHistoryLimit` and `strategy`. If properties are marked as mandatory in the Kubernetes JSON schema you must provide them otherwise the rendering process will fail:
+
+    ```yaml
+    hull:
+      objects:
+        deployment:
+          nginx: 
+            staticName: true 
+            enabled: true 
+            labels: 
+              demo_label: "demo" 
+            annotations: 
+              demo_annotation: "demo" 
+            pod:
+              ... # Here would come the hull.PodTemplate.v1 definition
+                  # see above for details 
+            replicas: 3 # property from the Kubernetes API deploymentspec
+            strategy: # property from the Kubernetes API deploymentspec
+              type: Recreate
+            ... # further Kubernetes API deploymentspec options
+
+    ```
+
+#### _Composing objects with HULL_
 
 Here is an overview of which top level properties are available for which object type in HULL. The HULL properties are grouped by the respective HULL JSON schema group they belong to. A detailed description of these groups and their properties is found in the documentation of this helm chart and the respective linked documents.
 
@@ -443,7 +533,8 @@ hull:
                   # Applies a tpl transformation allowing to inject dynamic data based
                   # on values in this values.yaml into the resulting field (here the tag
                   # field of this container).
-                  # This example just references the value of the field which is specified # further above in the values.yaml and will produce 'image: nginx:1.14.2'
+                  # This example just references the value of the field which is specified 
+                  # further above in the values.yaml and will produce 'image: nginx:1.14.2'
                   # in the resulting deployment YAML but more complex conditional Go
                   # templating logic is applicable. There are some limitations to using 
                   # this approach though which are detailed in the transformation.md in 
@@ -453,11 +544,11 @@ hull:
                       # which are array in the K8S objects are converted to arrays
                       # on rendering the chart.
                   containerPort: 80
-    secret: # this is to highlight the secret/configmap inclusion feature
-      nginx_secret: # secret objects have keys too
+    configmap: # this is to highlight the secret/configmap inclusion feature
+      nginx_configmap: # configmap objects have keys too
         data: # specify for which contents a data entry shall be created
               # within only a few lines of configuration. Contents can come from ...
-          an_inline_secret.txt: # ... an inline specified content or ...
+          an_inline_configmap.txt: # ... an inline specified content or ...
             inline: |- 
               Top secret contents
               spread over 
@@ -630,7 +721,7 @@ spec:
 # Source: hull-test/templates/hull.yaml
 apiVersion: v1
 data:
-  an_inline_secret.txt: "Top secret contents\nspread over \nmultiple lines..."
+  an_inline_configmap.txt: "Top secret contents\nspread over \nmultiple lines..."
   contents_from_an_external_file.txt: "Whatever was in this file ..."  
 kind: ConfigMap
 metadata:
@@ -639,7 +730,7 @@ metadata:
     general_custom_annotation_2: General Custom Annotation 2 # if they are not overwritten for the object type's
     general_custom_annotation_3: General Custom Annotation 3 # default or specific instance
   labels:
-    app.kubernetes.io/component: nginx_secret
+    app.kubernetes.io/component: nginx_configmap
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
@@ -649,7 +740,7 @@ metadata:
     general_custom_label_2: General Custom Label 2 # if they are not overwritten for the object type's
     general_custom_label_3: General Custom Label 3 # default or specific instance
     helm.sh/chart: hull-test-1.20.1
-  name: release-name-hull-test-nginx_secret
+  name: release-name-hull-test-nginx_configmap
 ```
 
 Read the additional documentation in the [documentation folder](./doc) on how to utilize the features of the HULL library to the full effect.

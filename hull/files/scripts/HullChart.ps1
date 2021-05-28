@@ -19,14 +19,14 @@
     The release name of the chart (with Operation 'Install')
 .PARAMETER UpdateDependencies
     Whether to run helm dependency update before the operation - NOTE: Only needed when developing and testing the included hull chart
-.PARAMETER Vpms3CommonChartDirectory
-    Path to the Vpms3Chart Directory to update dependencies with
+.PARAMETER HullChartDirectoryPath
+    Path to the Hull Directory to update dependencies with
 
 .PARAMETER RenderOutputDirectoryPath
     Path to where test output should be rendered (with Operation 'Render')
 
 .EXAMPLE
-    C:\PS> ./Vpms3Chart.ps1 
+    C:\PS> ./HullChart.ps1 
         -HelmChartDirectoryPath "C:\helmcharts\scheduling\scheduling-ui\scheduling-ui" 
         -KubeConfigFilePath "C:\helmcharts\scheduling\scheduling-ui\roger-msc-prod.config" 
         -SystemValuesFilePath "C:\helmcharts\scheduling\scheduling-ui\systems\rogers-msc-prod.yaml" 
@@ -45,7 +45,7 @@ Param(
         [string]$SystemValuesFilePath,
         [string]$HelmExecutablePath = "helm",
         [bool]$UpdateDependencies = $false,
-        [string]$HullChartDirectory = "D:\\GIT\\HULL\\hull",
+        [string]$HullChartDirectoryPath = "D:\\GIT\\HULL\\hull",
         [string]$RenderOutputDirectoryPath
     )
 
@@ -117,7 +117,7 @@ if ([String]::IsNullOrWhiteSpace($commonSourceDirectory))
 # Update dependencies FOR DEVELOPMENT ONLY of hull
 if ($UpdateDependencies)
 {
-    # Expects the hull library in file:///GIT/VPMS3/VPMS3HelmChartsCommonLibrary otherwise needs adaptation
+    # Expects the hull library in file:///GIT/HULL/hull otherwise needs adaptation
     # Execute "$HelmExecutablePath dep update --skip-refresh $HelmChartDirectoryPath"
 
     # Get the created hull-1.0.0.tgz file and the contained version
@@ -132,7 +132,7 @@ if ($UpdateDependencies)
 
     Copy-Item -Path "$([System.IO.Path]::Combine("$($commonSourceDirectory)/*"))" -Destination "$([System.IO.Path]::Combine("$($HelmChartDirectoryPath)", "backup", "hull-1.0.0"))" -Force -Recurse -Exclude @('*.git')
     
-    Copy-Item -Path "$($HullChartDirectory)/*" -Destination "$([System.IO.Path]::Combine("$commonSourceDirectory"))" -Force -Recurse -Exclude @('*.git')
+    Copy-Item -Path "$($HullChartDirectoryPath)/*" -Destination "$([System.IO.Path]::Combine("$commonSourceDirectory"))" -Force -Recurse -Exclude @('*.git')
 
     
 }
