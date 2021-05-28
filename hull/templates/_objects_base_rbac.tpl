@@ -11,7 +11,8 @@
 */ -}}
 {{- define "hull.object.base.rbac" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
-{{- if $parent.Values.hull.config.general.rbac }}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- if (index $parent.Values $hullRootKey).config.general.rbac }}
 {{ include "hull.object.base.plain" . }}
 {{ end }}
 {{ end }}

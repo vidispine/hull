@@ -15,14 +15,15 @@
 {{- define "hull.object.container" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- $component := default "" (index . "COMPONENT") -}}
 {{- $defaultSpec := (index . "DEFAULT_SPEC") -}}
 - {{ dict "name" $component | toYaml }}
 {{ include "hull.object.container.image" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.image) | indent 2 }}
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.env._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "env" "OBJECT_TEMPLATE" "hull.object.container.env") | indent 2 }}
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.envFrom._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "envFrom" "OBJECT_TEMPLATE" "hull.object.container.envFrom") | indent 2 }}
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.ports._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "ports" "OBJECT_TEMPLATE" "hull.object.container.ports") | indent 2 }}
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.volumeMounts._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "volumeMounts" "OBJECT_TEMPLATE" "hull.object.container.volumeMounts") | indent 2 }}
+{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.env._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "env" "OBJECT_TEMPLATE" "hull.object.container.env" "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
+{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.envFrom._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "envFrom" "OBJECT_TEMPLATE" "hull.object.container.envFrom" "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
+{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.ports._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "ports" "OBJECT_TEMPLATE" "hull.object.container.ports" "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
+{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.volumeMounts._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "volumeMounts" "OBJECT_TEMPLATE" "hull.object.container.volumeMounts" "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "name" "image" "env" "envFrom" "ports" "volumeMounts")) | indent 2 }}
 {{ end }}
 
@@ -43,6 +44,7 @@
 {{- define "hull.object.container.image" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- $baseName := $spec.repository }}
 {{ if (and (hasKey $spec "registry") (ne (printf "%s" $spec.registry) "")) }}
 {{- $baseName = printf "%s/%s" $spec.registry $baseName }}
@@ -70,10 +72,11 @@ image: {{ $baseName }}
 {{- define "hull.object.container.env" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- $component := default nil (index . "COMPONENT") -}}
 - {{ dict "name" $component | toYaml }}
 {{ if hasKey $spec "valueFrom" }}
-{{ include "hull.object.container.env.valueFrom" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "SPEC" $spec.valueFrom) | indent 2 }}
+{{ include "hull.object.container.env.valueFrom" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "SPEC" $spec.valueFrom "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
 {{ end }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "name" "valueFrom")) | indent 2 }}
 {{- end -}}
@@ -95,11 +98,12 @@ image: {{ $baseName }}
 {{- define "hull.object.container.env.valueFrom" -}}
 {{ $parent := (index . "PARENT_CONTEXT") }}
 {{ $spec := (index . "SPEC") }}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 valueFrom:
 {{ range $refKey, $refValue := $spec }}
   {{ $refKey }}:
 {{ if $refValue.name }}
-    name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $refValue.name "SPEC" $refValue) }}    
+    name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $refValue.name "SPEC" $refValue "HULL_ROOT_KEY" $hullRootKey) }}    
 {{ end }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $refValue "HULL_OBJECT_KEYS" (list "name")) | indent 4 }}
 {{- end -}}
@@ -122,9 +126,10 @@ valueFrom:
 {{- define "hull.object.container.envFrom" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- $component := default nil (index . "COMPONENT") }}
 - {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "configMapRef" "secretRef")) | indent 2 }}
-{{ include "hull.object.container.envFrom.ref" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "SPEC" $spec) |indent 2}}
+{{ include "hull.object.container.envFrom.ref" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey) |indent 2}}
 {{ end }}
 
 
@@ -147,10 +152,11 @@ valueFrom:
 {{ $parent := (index . "PARENT_CONTEXT") }}
 {{ $spec := (index . "SPEC") }}
 {{ $component :=  (index . "COMPONENT") }}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{ range $refKey, $refValue := $spec }}
 {{ if (or (eq $refKey "configMapRef") (eq $refKey "secretRef")) }}
 {{ $refKey }}:
-  name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $refValue.name "SPEC" $refValue) }}    
+  name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $refValue.name "SPEC" $refValue "HULL_ROOT_KEY" $hullRootKey) }}    
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $refValue "HULL_OBJECT_KEYS" (list "name")) | indent 2 }}
 {{ end }}
 {{ end }}
@@ -170,6 +176,7 @@ valueFrom:
 {{- define "hull.object.container.volumeMounts" -}}
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 -{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list)) | indent 1 }}
 {{ end }}
 
@@ -190,6 +197,7 @@ valueFrom:
 {{- define "hull.object.container.ports" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- $component := default nil (index . "COMPONENT") -}}
 - {{ dict "name" $component | toYaml }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "name")) | indent 2 }}

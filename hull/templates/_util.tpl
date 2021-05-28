@@ -12,6 +12,7 @@
 {{- $component := (index . "COMPONENT") -}}
 {{- $spec := (index . "SPEC") -}}
 {{- $localTemplate := (index . "LOCAL_TEMPLATE") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- $overrides := fromYaml (include $template .) | default (dict ) -}}
 {{- $tpl := fromYaml (include $localTemplate .) | default (dict ) -}}
 {{- toYaml (merge $overrides $tpl) -}}
@@ -21,10 +22,11 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{ $defaults := dict }}
 {{ if and $objectType $spec }}
-{{ if (and ((hasKey $parent.Values "hull") (hasKey $parent.Values.hull "objects") (hasKey $parent.Values.hull.objects $objectType) (hasKey (index $parent.Values.hull.objects $objectType) "_HULL_OBJECT_TYPE_DEFAULT_"))) }}
-{{ $defaults = index (index $parent.Values.hull.objects $objectType) "_HULL_OBJECT_TYPE_DEFAULT_" }}
+{{ if (and ((hasKey $parent.Values "hull") (hasKey (index $parent.Values $hullRootKey) "objects") (hasKey (index $parent.Values $hullRootKey).objects $objectType) (hasKey (index (index $parent.Values $hullRootKey).objects $objectType) "_HULL_OBJECT_TYPE_DEFAULT_"))) }}
+{{ $defaults = index (index (index $parent.Values $hullRootKey).objects $objectType) "_HULL_OBJECT_TYPE_DEFAULT_" }}
 {{ end }}
 {{ end }}
 {{ $merged := dict }}
@@ -90,6 +92,7 @@
 {{- $objectTemplate := default dict (index . "OBJECT_TEMPLATE") }}
 {{- $objectKey := (index . "KEY") }}
 {{- $spec := default nil (index . "SPEC") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- $isDefined := false }}
 {{- range $key, $value := (index $spec (printf "%s" $objectKey)) }}
 {{ if ne $key "_HULL_OBJECT_TYPE_DEFAULT_" }}
@@ -103,7 +106,7 @@
 {{ if (gt (len (keys (default dict $value))) 0) }}
 {{ $merged := dict }}
 {{ $merged = merge $value $defaultObjectSpec }}  
-{{ include (printf "%s" $objectTemplate) (dict "PARENT_CONTEXT" $parent "SPEC" $merged "ORIGIN_SPEC" $spec "COMPONENT" $key) | indent 0 }}
+{{ include (printf "%s" $objectTemplate) (dict "PARENT_CONTEXT" $parent "SPEC" $merged "ORIGIN_SPEC" $spec "COMPONENT" $key "HULL_ROOT_KEY" $hullRootKey) | indent 0 }}
 {{ end }}
 {{ end }}
 {{ end }}
