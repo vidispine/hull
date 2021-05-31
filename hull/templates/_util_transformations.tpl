@@ -9,21 +9,22 @@
 {{- $source := (index . "SOURCE") -}}
 {{- $caller := default nil (index . "CALLER") -}}
 {{- $callerKey := default nil (index . "CALLER_KEY") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- if typeIs "map[string]interface {}" $source -}}
     {{- range $key,$value := $source -}}
         {{- if typeIs "map[string]interface {}" $value -}}
             {{- if hasKey $value "_HULL_TRANSFORMATION_" -}}
                 {{- $params := $value._HULL_TRANSFORMATION_ -}}
-                {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key) $params -}}
-                {{- $valDict := fromYaml (include $value._HULL_TRANSFORMATION_._NAME_ $pass) -}}
+                {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "HULL_ROOT_KEY" $hullRootKey) $params -}}
+                {{- $valDict := fromYaml (include $value._HULL_TRANSFORMATION_.NAME $pass) -}}
                 {{- $source := unset $source $key -}}
                 {{- $source := merge $source $valDict -}}  
             {{- else -}}
-                {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "CALLER" $source "CALLER_KEY" $key) -}}
+                {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey) -}}
             {{- end -}}
         {{- end -}}
         {{- if typeIs "[]interface {}" $value -}}
-            {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "CALLER" $source "CALLER_KEY" $key) -}}
+            {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey) -}}
         {{- end -}}
         {{- if typeIs "string" $value -}}
             {{- if (hasPrefix "_HULL_TRANSFORMATION_" $value) -}}
@@ -33,7 +34,7 @@
                 {{- range $p := $paramsSplitted -}}
                     {{- $params = set $params (trimPrefix "<<<" (first (regexSplit "=" $p -1))) (trimSuffix ">>>" (last (regexSplit "=" $p -1))) -}}                
                 {{- end -}}
-                {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key) $params -}}
+                {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "HULL_ROOT_KEY" $hullRootKey) $params -}}
                 {{- /* 
                 */ -}}
                 {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
@@ -53,20 +54,20 @@
             {{- range $p := $paramsSplitted -}}
                 {{- $params = set $params (trimPrefix "<<<" (first (regexSplit "=" $p -1))) (trimSuffix ">>>" (last (regexSplit "=" $p -1))) -}}                
             {{- end -}}
-            {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" "key") $params -}}
+            {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" "key" "HULL_ROOT_KEY" $hullRootKey) $params -}}
             {{- /* 
             */ -}}
             {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
             {{- $t2 := set $caller $callerKey (index $valDict "key") -}}
         {{- else -}}
             {{- range $listentry := $source -}}
-                {{- $newlistentry := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $listentry "CALLER" nil "CALLER_KEY" nil) -}}
+                {{- $newlistentry := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $listentry "CALLER" nil "CALLER_KEY" nil "HULL_ROOT_KEY" $hullRootKey) -}}
             {{- end -}}
             {{- $t2 := set $caller $callerKey $source -}}
         {{- end -}}
     {{- else -}}
         {{- range $listentry := $source -}}
-            {{- $newlistentry := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $listentry "CALLER" nil "CALLER_KEY" nil) -}}
+            {{- $newlistentry := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $listentry "CALLER" nil "CALLER_KEY" nil "HULL_ROOT_KEY" $hullRootKey) -}}
         {{- end -}}
         {{- $t2 := set $caller $callerKey $source -}}
     {{- end -}}

@@ -24,6 +24,7 @@ config:
           'app.kubernetes.io/instance':
           'app.kubernetes.io/component':
           'helm.sh/chart':
+          'vidispine.hull/version':
         custom: {}
       annotations: 
         hashes: false
@@ -49,7 +50,7 @@ objects:
     _HULL_OBJECT_TYPE_DEFAULT_:
       enabled: true
       annotations: {}
-      labels: {}     
+      labels: {}
 ###################################################
 
 # REGISTRIES

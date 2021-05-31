@@ -19,7 +19,7 @@
     The release name of the chart (with Operation 'Install')
 .PARAMETER UpdateDependencies
     Whether to run helm dependency update before the operation - NOTE: Only needed when developing and testing the included hull chart
-.PARAMETER HullChartDirectory
+.PARAMETER HullChartDirectoryPath
     Path to the Hull Directory to update dependencies with
 
 .PARAMETER RenderOutputDirectoryPath
@@ -45,7 +45,7 @@ Param(
         [string]$SystemValuesFilePath,
         [string]$HelmExecutablePath = "helm",
         [bool]$UpdateDependencies = $false,
-        [string]$HullChartDirectory = "D:\\GIT\\HULL\\hull",
+        [string]$HullChartDirectoryPath = "D:\\GIT\\HULL\\hull",
         [string]$RenderOutputDirectoryPath
     )
 
@@ -132,7 +132,7 @@ if ($UpdateDependencies)
 
     Copy-Item -Path "$([System.IO.Path]::Combine("$($commonSourceDirectory)/*"))" -Destination "$([System.IO.Path]::Combine("$($HelmChartDirectoryPath)", "backup", "hull-1.0.0"))" -Force -Recurse -Exclude @('*.git')
     
-    Copy-Item -Path "$($HullChartDirectory)/*" -Destination "$([System.IO.Path]::Combine("$commonSourceDirectory"))" -Force -Recurse -Exclude @('*.git')
+    Copy-Item -Path "$($HullChartDirectoryPath)/*" -Destination "$([System.IO.Path]::Combine("$commonSourceDirectory"))" -Force -Recurse -Exclude @('*.git')
 
     
 }

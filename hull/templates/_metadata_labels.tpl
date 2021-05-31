@@ -14,13 +14,14 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $template := (index . "PARENT_TEMPLATE") -}}
 {{- $component := (index . "COMPONENT") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{ $labels := dict }}
 {{ $labels = merge $labels (include "hull.metadata.labels.custom" . | fromYaml) }}
 {{ $labels = merge $labels ((include "hull.metadata.general.labels.object" .) | fromYaml) }}
-{{ if (gt (len (keys (index $parent.Values.hull.config.general.metadata.labels "custom"))) 0) }}
-{{ $labels = merge $labels $parent.Values.hull.config.general.metadata.labels.custom }}
+{{ if (gt (len (keys (index (index $parent.Values $hullRootKey).config.general.metadata.labels "custom"))) 0) }}
+{{ $labels = merge $labels (index $parent.Values $hullRootKey).config.general.metadata.labels.custom }}
 {{- end -}}
-{{ $labels = merge $labels ((include "hull.metadata.labels.selector" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component)) | fromYaml) }}
+{{ $labels = merge $labels ((include "hull.metadata.labels.selector" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "HULL_ROOT_KEY" $hullRootKey)) | fromYaml) }}
 {{ if default false (index . "MERGE_TEMPLATE_METADATA") }}
 {{ $labels = merge $labels ((include "hull.metadata.labels.custom" (merge (dict "LABELS_METADATA" "templateLabels") . ) | fromYaml)) }}
 {{- end -}}
@@ -42,10 +43,12 @@ labels:
 */ -}}
 {{- define "hull.metadata.general.labels.object" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+vidispine.hull/version: {{ default "" (index $parent.Values $hullRootKey).version }}
 helm.sh/chart: {{ template "hull.metadata.chartref" (dict "PARENT_CONTEXT" $parent) }}
 app.kubernetes.io/managed-by: {{ $parent.Release.Service | quote}}
-app.kubernetes.io/version: {{ default ($parent.Chart.AppVersion | quote) ((index $parent.Values.hull.config.general.metadata.labels.common "app.kubernetes.io/version") | quote ) }}
-app.kubernetes.io/part-of: {{ default "undefined" (index $parent.Values.hull.config.general.metadata.labels.common "app.kubernetes.io/part-of") }}
+app.kubernetes.io/version: {{ default ($parent.Chart.AppVersion | quote) ((index (index $parent.Values $hullRootKey).config.general.metadata.labels.common "app.kubernetes.io/version") | quote ) }}
+app.kubernetes.io/part-of: {{ default "undefined" (index (index $parent.Values $hullRootKey).config.general.metadata.labels.common "app.kubernetes.io/part-of") }}
 {{- end -}}
 
 
@@ -67,10 +70,11 @@ app.kubernetes.io/part-of: {{ default "undefined" (index $parent.Values.hull.con
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $component := (index . "COMPONENT") -}}
 {{- $spec := (index . "SPEC") -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- if $spec.selector -}}
 {{- toYaml $spec.selector -}}
 {{- else -}}
-app.kubernetes.io/name: {{ template "hull.metadata.name" (dict "PARENT_CONTEXT" $parent "NAMEPREFIX" "" "COMPONENT" "") }}
+app.kubernetes.io/name: {{ template "hull.metadata.name" (dict "PARENT_CONTEXT" $parent "NAMEPREFIX" "" "COMPONENT" "" "HULL_ROOT_KEY" $hullRootKey) }}
 app.kubernetes.io/instance:  {{ $parent.Release.Name | quote }}
 app.kubernetes.io/component: {{ default "undefined" $component }}
 {{- end -}}
