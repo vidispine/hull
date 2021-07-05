@@ -4556,7 +4556,8 @@
         "completions",
         "manualSelector",
         "parallelism",
-	"suspend",
+        "selector",
+	      "suspend",
         "ttlSecondsAfterFinished"
       ]
     },
@@ -4590,6 +4591,10 @@
           "description": "Specifies the maximum desired number of pods the job should run at any given time. The actual number of pods running in steady state will be less than this number when ((.spec.completions - .status.successful) < .spec.parallelism), i.e. when the work left to do is less than max parallelism. More info: https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/",
           "format": "int32",
           "type": "integer"
+        },    
+        "selector": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector",
+          "description": "A label query over pods that should match the pod count. Normally, the system sets this field for you. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors"
         },
         "suspend": {
           "description": "Suspend specifies whether the Job controller should create Pods or not. If a Job is created with suspend set to true, no Pods are created by the Job controller. If a Job is suspended after creation (i.e. the flag goes from false to true), the Job controller will delete all active Pods associated with this Job. Users must design their workload to gracefully handle this. Suspending a Job will reset the StartTime field of the Job, effectively resetting the ActiveDeadlineSeconds timer too. This is an alpha field and requires the SuspendJob feature gate to be enabled; otherwise this field may not be set to true. Defaults to false.",
@@ -10960,10 +10965,10 @@
         "externalName",
         "externalTrafficPolicy",
         "healthCheckNodePort",
-	"internalTrafficPolicy",
+        "internalTrafficPolicy",
         "ipFamilies",
         "ipFamilyPolicy",
-	"loadBalancerClass",
+        "loadBalancerClass",
         "loadBalancerIP",
         "loadBalancerSourceRanges",
         "publishNotReadyAddresses",
@@ -23777,56 +23782,56 @@
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/managed-by",
                               "title": "App.kubernetes.io/managed-by",
                               "description": "Managed by metadata.",
-                              "type": "null",
+                              "type": ["string","null"],
                               "default": null
                             },
                             "app.kubernetes.io/version": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/version",
                               "title": "App.kubernetes.io/version",
                               "description": "Version metadata.",
-                              "type": "null",
+                              "type": ["string","null"],
                               "default": null
                             },
                             "app.kubernetes.io/part-of": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/part-of",
                               "title": "App.kubernetes.io/part-of",
                               "description": "Part-of metadata.",
-                              "type": "null",
+                              "type": ["string","null"],
                               "default": null
                             },
                             "app.kubernetes.io/name": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/name",
                               "title": "App.kubernetes.io/name",
                               "description": "Name metadata.",
-                              "type": "null",
+                              "type": ["string","null"],
                               "default": null
                             },
                             "app.kubernetes.io/instance": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/instance",
                               "title": "App.kubernetes.io/instance",
                               "description": "Instance metadata.",
-                              "type": "null",
+                              "type": ["string","null"],
                               "default": null
                             },
                             "app.kubernetes.io/component": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/component",
                               "title": "App.kubernetes.io/component",
                               "description": "Component metadata.",
-                              "type": "null",
+                             "type": ["string","null"],
                               "default": null
                             },
                             "helm.sh/chart": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/helm.sh/chart",
                               "title": "Helm.sh/chart",
                               "description": "Helm metadata.",
-                              "type": "null",
+                              "type": ["string","null"],
                               "default": null
                             },
                             "vidispine.hull/version": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/vidispine.hull/version",
                               "title": "Hull/version",
                               "description": "HULL version.",
-                              "type": "null",
+                              "type": ["string","null"],
                               "default": null
                             }
                           }
