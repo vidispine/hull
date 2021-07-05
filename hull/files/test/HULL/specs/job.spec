@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "15" objects were rendered
+* Expected number of "17" objects were rendered
 * Validate
 
 ## Metadata
@@ -15,6 +15,15 @@ Test creation of objects and features.
 ## Pod
 * Render
 * Check pod functionality
+
+## Selector
+* Render
+* Set test object to "release-name-hull-test-no_selector_provided"
+* Test Object does not have key "spec§selector"
+
+* Set test object to "release-name-hull-test-selector_provided"
+* Test Object has key "spec§selector§matchLabels§test_label" with value "test_value"
+
 ___
 
 
