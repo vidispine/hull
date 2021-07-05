@@ -118,7 +118,13 @@
 {{- define "hull.util.selector" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
+{{ if hasKey $spec "selector" }}
+selector: {{ $spec.selector }}
+{{ else }}
+{{ if not (default false (index . "NO_SELECTOR")) }}
 selector:
   matchLabels:
 {{ include "hull.metadata.labels.selector" . | indent 4 }}
 {{ end }}
+{{ end }}
+{{ end }} 
