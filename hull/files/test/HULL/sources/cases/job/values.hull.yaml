@@ -274,4 +274,17 @@ hull:
               secret:
                 staticName: true
 
+      selector_provided:
+        completions: 5
+        selector:
+          matchLabels:
+            test_label: test_value
+        pod:
+          containers: {}
+         
+      no_selector_provided:
+        pod:
+          containers: {}
+          
+          
   ###################################################
