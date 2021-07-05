@@ -8,6 +8,8 @@ Below sections detail the properties for creating pods via HULL.
 
 For pod-based objects there is no need to create a `spec` property. The `spec.selector` property is automatically created under the hood to match the objects automatically created metadata. Any `spec.template.metadata` metadata is specified at top-level via `templateAnnotations` and `templateLabels` keys. 
 
+⚠️The `selector` property of pod-based objects will be automatically populated to match the exact combination of the auto-generated `hull.config.general.metadata.labels.common` fields `app.kubernetes.io/name`, `app.kubernetes.io/instance` and `app.kubernetes.io/component`. An exception is made for the objects of type `job` where no `selector` field is set because Kubernetes jobs deal with the `selector` implicitly. If need be it is possible to set `selector` manually for the particular `job` however.⚠️
+
 So for all HULL based objects, the pod specific information is wrapped like this:
 
 | Parameter | Description  | Default | Example 
