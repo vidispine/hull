@@ -23782,56 +23782,56 @@
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/managed-by",
                               "title": "App.kubernetes.io/managed-by",
                               "description": "Managed by metadata.",
-                              "type": "string",
+                              "type": ["string","null"],
                               "default": null
                             },
                             "app.kubernetes.io/version": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/version",
                               "title": "App.kubernetes.io/version",
                               "description": "Version metadata.",
-                              "type": "string",
+                              "type": ["string","null"],
                               "default": null
                             },
                             "app.kubernetes.io/part-of": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/part-of",
                               "title": "App.kubernetes.io/part-of",
                               "description": "Part-of metadata.",
-                              "type": "string",
+                              "type": ["string","null"],
                               "default": null
                             },
                             "app.kubernetes.io/name": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/name",
                               "title": "App.kubernetes.io/name",
                               "description": "Name metadata.",
-                              "type": "string",
+                              "type": ["string","null"],
                               "default": null
                             },
                             "app.kubernetes.io/instance": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/instance",
                               "title": "App.kubernetes.io/instance",
                               "description": "Instance metadata.",
-                              "type": "string",
+                              "type": ["string","null"],
                               "default": null
                             },
                             "app.kubernetes.io/component": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/component",
                               "title": "App.kubernetes.io/component",
                               "description": "Component metadata.",
-                              "type": "string",
+                             "type": ["string","null"],
                               "default": null
                             },
                             "helm.sh/chart": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/helm.sh/chart",
                               "title": "Helm.sh/chart",
                               "description": "Helm metadata.",
-                              "type": "string",
+                              "type": ["string","null"],
                               "default": null
                             },
                             "vidispine.hull/version": {
                               "$id": "#/definitions/root/config/general/metadata/labels/common/vidispine.hull/version",
                               "title": "Hull/version",
                               "description": "HULL version.",
-                              "type": "string",
+                              "type": ["string","null"],
                               "default": null
                             }
                           }
