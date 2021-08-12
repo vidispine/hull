@@ -36,7 +36,8 @@ hull:
             http:              
               paths:                  
                 standard:
-                  path: /standard                    
+                  path: /standard
+                  pathType: ImplementationSpecific
                   backend:
                     service:
                       name: service1_standard
@@ -44,6 +45,7 @@ hull:
                         number: 80
                 backup:
                   path: /backup
+                  pathType: ImplementationSpecific
                   backend:
                     service:
                       name: service1_backup
@@ -54,7 +56,8 @@ hull:
             http:              
               paths:                  
                 standard:
-                  path: /standard                    
+                  path: /standard
+                  pathType: ImplementationSpecific                    
                   backend:
                     service:
                       name: service1_standard
@@ -62,6 +65,7 @@ hull:
                         number: 80
                 backup:
                   path: /backup
+                  pathType: ImplementationSpecific
                   backend:
                     service:
                       name: service1_backup
@@ -81,6 +85,7 @@ hull:
               paths:                  
                 standard:
                   path: /external
+                  pathType: ImplementationSpecific
                   backend:
                     service:
                       name: external_service
@@ -92,7 +97,8 @@ hull:
             http:              
               paths:                  
                 standard:
-                  path: /standard                    
+                  path: /standard
+                  pathType: ImplementationSpecific                    
                   backend:
                     service:
                       name: service1_standard
@@ -103,7 +109,8 @@ hull:
             http:              
               paths:                  
                 standard:
-                  path: /transform                    
+                  path: /transform
+                  pathType: ImplementationSpecific
                   backend:
                     service:
                       name: _HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.makefullname>>><<<COMPONENT=full_name_transformed>>>

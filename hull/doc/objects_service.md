@@ -6,7 +6,7 @@ The HULL Service object is a thin wrapper around the Kubernetes Service providin
 
 ### The `hull.Service.v1` properties
 
-Properties can be set as they are defined in the [Kubernetes API's service spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#service-v1-core). 
+Properties can be set as they are defined in the [Kubernetes API's service spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#service-v1-core). 
 
 However the properties listed below are overwritten or added by HULL:
 
