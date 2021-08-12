@@ -6922,7 +6922,9 @@
     },
     "io.k8s.api.core.v1.Endpoints.Names":
     {
-      "subsets"
+      "enum": [
+        "subsets"
+      ]
     },
     "io.k8s.api.core.v1.Endpoints": {
       "description": "Endpoints is a collection of endpoints that implement the actual service. Example:\n  Name: \"mysvc\",\n  Subsets: [\n    {\n      Addresses: [{\"ip\": \"10.10.1.1\"}, {\"ip\": \"10.10.2.2\"}],\n      Ports: [{\"name\": \"a\", \"port\": 8675}, {\"name\": \"b\", \"port\": 309}]\n    },\n    {\n      Addresses: [{\"ip\": \"10.10.3.3\"}],\n      Ports: [{\"name\": \"a\", \"port\": 93}, {\"name\": \"b\", \"port\": 76}]\n    },\n ]",
@@ -23438,7 +23440,7 @@
           "$ref": "#/definitions/hull.ObjectBase.v1"
         },
         {
-          "$ref": "#/definitions/io.k8s.api.batch.v2alpha1.CronJobSpec"
+          "$ref": "#/definitions/io.k8s.api.batch.v1.CronJobSpec"
         },
         {
           "propertyNames": {
@@ -23447,7 +23449,7 @@
                 "$ref": "#/definitions/hull.ObjectBase.v1.Names"
               },
               {
-                "$ref": "#/definitions/io.k8s.api.batch.v2alpha1.CronJobSpec.Names"
+                "$ref": "#/definitions/io.k8s.api.batch.v1.CronJobSpec.Names"
               }
             ]
           }
