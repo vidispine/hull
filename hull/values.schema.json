@@ -21094,10 +21094,7 @@
               "description": "The tag of the image",
               "type": "string"
             }
-          },
-          "required": [
-            "repository"
-          ]
+          }
         },
         "ports": {
           "title": "HullPorts",
