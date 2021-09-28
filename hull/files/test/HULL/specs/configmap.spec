@@ -38,7 +38,7 @@ Test creation of objects and features.
 * Render
 * Set test object to "release-name-hull-test-transformation_resolved"
 * Test Object has key "data§concrete_file_4_resolved.txt" with value "This is a text file with a pointer to a transformation."
-
+* Test Object has key "data§equal_sign_preservation" with value "transformation = transformation"
 ___
 
 * Clean the test execution folder
