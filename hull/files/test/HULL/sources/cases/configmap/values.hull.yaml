@@ -80,4 +80,8 @@ hull:
         data:
           concrete_file_4_resolved.txt:
             path: files/concrete_file_4.txt
+          equal_sign_preservation:
+            inline: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+              transformation = {{ (index . \"PARENT\").Values.hull.config.specific.value_to_resolve_1 }}{{ (index . \"PARENT\").Values.hull.config.specific.value_to_resolve_2 }}
+              >>>"
 ###################################################
