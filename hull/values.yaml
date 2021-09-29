@@ -14,6 +14,8 @@ config:
     fullnameOverride: ""
     nameOverride: ""
     createImagePullSecretsFromRegistries: true
+    defaultImageRegistryServer: ""
+    defaultImageRegistryToFirstRegistrySecretServer: false
     metadata:
       labels:
         common:
