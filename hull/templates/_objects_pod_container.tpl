@@ -19,7 +19,7 @@
 {{- $component := default "" (index . "COMPONENT") -}}
 {{- $defaultSpec := (index . "DEFAULT_SPEC") -}}
 - {{ dict "name" $component | toYaml }}
-{{ include "hull.object.container.image" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.image) | indent 2 }}
+{{ include "hull.object.container.image" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.image "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
 {{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.env._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "env" "OBJECT_TEMPLATE" "hull.object.container.env" "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
 {{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.envFrom._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "envFrom" "OBJECT_TEMPLATE" "hull.object.container.envFrom" "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
 {{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.ports._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "ports" "OBJECT_TEMPLATE" "hull.object.container.ports" "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
@@ -48,7 +48,23 @@
 {{- $baseName := $spec.repository }}
 {{ if (and (hasKey $spec "registry") (ne (printf "%s" $spec.registry) "")) }}
 {{- $baseName = printf "%s/%s" $spec.registry $baseName }}
-{{ end }}
+{{- else }}
+{{ if (ne (index $parent.Values $hullRootKey).config.general.defaultImageRegistryServer "") }}
+{{- $baseName = printf "%s/%s" (index $parent.Values $hullRootKey).config.general.defaultImageRegistryServer $baseName }}
+{{- else -}}
+{{ if (index $parent.Values $hullRootKey).config.general.defaultImageRegistryToFirstRegistrySecretServer }}
+{{- $found := false }}
+{{ if (gt (len (keys (default dict (index $parent.Values $hullRootKey).objects.registry))) 1) }}
+{{- range $name, $specRegistry := (index $parent.Values $hullRootKey).objects.registry }}
+{{- if (and (ne $name "_HULL_OBJECT_TYPE_DEFAULT_") (not $found)) }}
+{{- $baseName = printf "%s/%s" (index (index $parent.Values $hullRootKey).objects.registry $name).server $baseName }}
+{{- $found = true }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
 {{ if (and (hasKey $spec "tag") (ne (printf "%s" $spec.tag) "")) }}
 {{- $baseName = printf "%s:%s" $baseName $spec.tag }}
 {{ end }}

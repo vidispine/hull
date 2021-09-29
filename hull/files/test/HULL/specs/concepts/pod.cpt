@@ -1,6 +1,6 @@
 # Check pod functionality
 
-* Prepare default test case for this kind including suites "pod,imagepullsecrets"
+* Prepare default test case for this kind including suites "pod,noimagepullsecrets"
 * Render
 
 * Set test object to "release-name-hull-test-service_account"
@@ -9,6 +9,30 @@
 
 * Set test object to "release-name-hull-test-imagepullsecrets_add_all"
 * Test Object does not have key "spec§template§spec§imagePullSecrets"
+
+
+
+* Prepare default test case for this kind including suites "pod,imagepullsecretsfromfirstregistry"
+* Render
+
+* Set test object to "release-name-hull-test-image_name_empty_registry"
+* Test Object has key "spec§template§spec§containers§0§image" with value "example.cr.io/my/image/repo"
+
+* Set test object to "release-name-hull-test-image_name_tag"
+* Test Object has key "spec§template§spec§containers§0§image" with value "example.cr.io/my/image/repo:99.9"
+
+
+
+* Prepare default test case for this kind including suites "pod,imagepullsecretsfromregistryname"
+* Render
+
+* Set test object to "release-name-hull-test-image_name_empty_registry"
+* Test Object has key "spec§template§spec§containers§0§image" with value "local.cr.io/my/image/repo"
+
+* Set test object to "release-name-hull-test-image_name_tag"
+* Test Object has key "spec§template§spec§containers§0§image" with value "local.cr.io/my/image/repo:99.9"
+
+
 
 * Prepare default test case for this kind including suites "pod"
 * Render
