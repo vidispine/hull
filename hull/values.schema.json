@@ -24751,6 +24751,27 @@
                   ],
                   "default": true
                 },
+                "defaultImageRegistryServer": {
+                  "$id": "#/definitions/root/config/general/defaultImageRegistryServer",
+                  "description": "If true, the registry field for all container images defaults to this value.",
+                  "type": "string",
+                  "title": "defaultImageRegistryServer",
+                  "examples": [
+                    "mycompany.docker-registry.io"
+                  ],
+                  "default": ""
+                },
+                "defaultImageRegistryToFirstRegistrySecretServer": {
+                  "$id": "#/definitions/root/config/general/defaultImageRegistryToFirstRegistrySecretServer",
+                  "description": "If true, the registry field for all container images defaults to the first registry objects server field if registry objects exist.",
+                  "type": "boolean",
+                  "title": "DefaultImageRegistryToFirstRegistrySecretServer",
+                  "examples": [
+                    true,
+                    false
+                  ],
+                  "default": false
+                },
                 "fullnameOverride": {
                   "$id": "#/definitions/root/config/general/fullnameOverride",
                   "description": "Global value to use as the fullname, overriding the dynamically created fullname.",
