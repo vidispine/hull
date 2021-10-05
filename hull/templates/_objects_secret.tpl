@@ -19,7 +19,7 @@
 {{- if not (default false (index . "NO_TRANSFORMATIONS")) }}
 {{- $hullValues := (index $parent.Values $hullRootKey) -}}
 {{ $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $spec "HULL_ROOT_KEY" $hullRootKey) | fromYaml }}
-{{ $renderedHullValues := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $hullValues) | fromYaml }}
+{{ $renderedHullValues := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $hullValues "HULL_ROOT_KEY" $hullRootKey) | fromYaml }}
 {{ $temp := dict "hull" $hullValues }}
 {{ $parentClone := deepCopy $parent }}
 {{ $parentClone = set $parentClone "Values" $temp }}
@@ -53,7 +53,11 @@ data:
 {{ range $innerKey, $innerValue := $spec.data }}
 {{ if hasKey $innerValue "inline" }}
 {{ $innerKey | indent 2 }}: |-
+{{ if $innerValue.noTemplating -}}
 {{ default "" $innerValue.inline | b64enc | indent 4 }}
+{{ else -}}
+{{ default "" (tpl (printf "%s" $innerValue.inline) $parent) | b64enc | indent 4 }}
+{{ end }}
 {{ end }}
 {{ if hasKey $innerValue "path" }}
 {{ base $innerKey | indent 2 }}: |-
