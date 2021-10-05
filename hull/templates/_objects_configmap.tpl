@@ -55,7 +55,7 @@ data:
 {{ if $innerValue.noTemplating -}}
 {{ default "" $innerValue.inline | indent 4 }}
 {{ else -}}
-{{ default "" (tpl $innerValue.inline $parent) | indent 4 }}
+{{ default "" (tpl (printf "%s" $innerValue.inline) $parent) | indent 4 }}
 {{ end }}
 {{ end }}
 {{ if hasKey $innerValue "path" }}
