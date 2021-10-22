@@ -33,5 +33,17 @@ hull:
         globalDefault: true
         preemptionPolicy: PreemptLowerPriority
         value: 50
+      
+      disabled_transform:
+        value: 100
+        
+      enabled_transform:
+        value: 100
+        
+      disabled_transform_dict:
+        value: 100
+        
+      enabled_transform_dict:
+        value: 100
 
 ###################################################

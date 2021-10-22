@@ -209,12 +209,11 @@ General hints for doing this when starting comparing top to bottom:
 - added `staticName` properties to objects need to be copied over to the new schema
 - if a top-level object migrates to a new version, you can create an incremented HULL schema object for the new version and reference it in the schema
 
-
 ### Adapt `Chart.yaml`
 
 Set the versions in `Chart.yaml`:
 
-- `version: 1.x.1` where x is the Kubernetes major version
+- `version: 1.x.0` where x is the Kubernetes major version
 - `appVersion: 1.x.y` where x is the Kubernetes major version and y the patch version of the schema
 - `kubeVersion: ">= 1.x.0"` where x is the Kubernetes major version
 
@@ -233,7 +232,7 @@ is changed to
 ### Adapt test chart
 Set the versions in `Chart.yaml` of the test chart at `hull/files/test/HULL/sources/charts/hull-test`:
 
-- `version: 1.x.1` where x is the Kubernetes major version
+- `version: 1.x.0` where x is the Kubernetes major version
 - `appVersion: 1.x.y` where x is the Kubernetes major version and y the patch version of the schema
 - `kubeVersion: ">= 1.x.0"` where x is the Kubernetes major version
 - ```yaml
@@ -257,6 +256,10 @@ in the `specs/concepts/metadata_basic.cpt` change the version that is tested aga
 ### Run tests
 
 All tests need to run successfully.
+
+### Update documentation
+
+Typically it should be enough to replace `/generated/kubernetes-api/v1.x` with `/generated/kubernetes-api/v1.y` where x is the preceding Kubernetes version and y the newly created release version. But also check other places where `1.y` is used if they need updating.
 
 ## Creating a new minor version
 

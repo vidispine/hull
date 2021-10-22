@@ -70,6 +70,44 @@ hull:
                 image:
                   repository: my/image/repo
                   tag: "99.9"
+
+      disabled_transform:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
         
-          
+      enabled_transform:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+        
+      disabled_transform_dict:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+        
+      enabled_transform_dict:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
   ###################################################
