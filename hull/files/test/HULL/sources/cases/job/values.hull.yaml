@@ -281,10 +281,10 @@ hull:
             test_label: test_value
         pod:
           containers: {}
-         
+
       no_selector_provided:
         pod:
           containers: {}
-          
-          
+
+
   ###################################################

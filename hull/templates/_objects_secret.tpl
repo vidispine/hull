@@ -51,6 +51,7 @@ type: Opaque
 {{- $spec := default nil (index . "SPEC") -}}
 data:
 {{ range $innerKey, $innerValue := $spec.data }}
+{{- if or (and (hasKey $innerValue "enabled") $innerValue.enabled) (not (hasKey $innerValue "enabled")) -}}
 {{ if hasKey $innerValue "inline" }}
 {{ $innerKey | indent 2 }}: |-
 {{ if $innerValue.noTemplating -}}
@@ -65,6 +66,7 @@ data:
 {{- ($parent.Files.Get (printf "%s" $innerValue.path) ) | b64enc | indent 4 -}}
 {{- else -}}
 {{- print (tpl ($parent.Files.Get (printf "%s" $innerValue.path) ) $parent) | b64enc | indent 4 }}
+{{ end }}
 {{ end }}
 {{ end }}
 {{ end }}

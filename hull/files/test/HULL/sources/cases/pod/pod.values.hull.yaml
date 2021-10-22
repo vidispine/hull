@@ -252,4 +252,271 @@ hull:
                   secretRef:
                     name: a_very_loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong_secret_name
                     staticName: true
-                
+
+      enabled_true_false:
+        pod:
+          containers:
+            test_disabled:
+              enabled: false
+              command:
+                - test_disabled
+            test_enabled:
+              enabled: true
+              command:
+                - test_enabled
+              envFrom:
+                test_disabled:
+                  enabled: false
+                  configMapRef:
+                    name: test_disabled
+                    optional: true
+                test_enabled:
+                  enabled: true
+                  configMapRef:
+                    name: test_enabled
+                    optional: true
+                test_disabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+                    >>>"
+                  configMapRef:
+                    name: test_disabled_transform
+                    optional: true
+                test_enabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+                    >>>"
+                  configMapRef:
+                    name: test_enabled_transform
+                    optional: true
+                test_enabled_missing:
+                  configMapRef:
+                    name: test_enabled_missing
+                    optional: true
+              env:
+                test_disabled:
+                  enabled: false
+                  value: test_disabled
+                test_enabled:
+                  enabled: true
+                  value: test_enabled
+                test_disabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+                    >>>"
+                  value: test_disabled_transform
+                test_enabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+                    >>>"
+                  value: test_enabled_transform
+                test_enabled_missing:
+                  value: test_enabled_missing
+              ports:
+                test_disabled:
+                  enabled: false
+                  protocol: tcp
+                  containerPort: 4345
+                test_enabled:
+                  enabled: true
+                  protocol: tcp
+                  containerPort: 4345
+                test_disabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+                    >>>"
+                  protocol: tcp
+                  containerPort: 4345
+                test_enabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+                    >>>"
+                  protocol: tcp
+                  containerPort: 4345
+                test_enabled_missing:
+                  protocol: tcp
+                  containerPort: 4345
+              volumeMounts:
+                test_disabled:
+                  enabled: false
+                  name: test_disabled
+                  mountPath: '/etc/init/configmap/all'
+                test_enabled:
+                  enabled: true
+                  name: test_enabled
+                  mountPath: '/etc/init/configmap/all'
+                test_disabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+                    >>>"
+                  name: test_disabled_transform
+                  mountPath: '/etc/init/configmap/all'
+                test_enabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+                    >>>"
+                  name: test_enabled_transform
+                  mountPath: '/etc/init/configmap/all'
+                test_enabled_missing:
+                  name: test_enabled_missing
+                  mountPath: '/etc/init/configmap/all'
+            test_enabled_transform:
+              enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+                >>>"
+              command:
+                - test_enabled_transform
+            test_disabled_transform:
+              enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+                >>>"
+              command:
+                - test_disabled_transform
+            test_enabled_missing:
+              command:
+                - test_enabled_missing
+          initContainers:
+            test_disabled:
+              enabled: false
+              command:
+                - test_disabled
+            test_enabled:
+              enabled: true
+              command:
+                - test_enabled
+              envFrom:
+                test_disabled:
+                  enabled: false
+                  configMapRef:
+                    name: test_disabled
+                    optional: true
+                test_enabled:
+                  enabled: true
+                  configMapRef:
+                    name: test_enabled
+                    optional: true
+                test_disabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+                    >>>"
+                  configMapRef:
+                    name: test_disabled_transform
+                    optional: true
+                test_enabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+                    >>>"
+                  configMapRef:
+                    name: test_enabled_transform
+                    optional: true
+                test_enabled_missing:
+                  configMapRef:
+                    name: test_enabled_missing
+                    optional: true
+              env:
+                test_disabled:
+                  enabled: false
+                  value: test_disabled
+                test_enabled:
+                  enabled: true
+                  value: test_enabled
+                test_disabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+                    >>>"
+                  value: test_disabled_transform
+                test_enabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+                    >>>"
+                  value: test_enabled_transform
+                test_enabled_missing:
+                  value: test_enabled_missing
+              ports:
+                test_disabled:
+                  enabled: false
+                  protocol: tcp
+                  containerPort: 4345
+                test_enabled:
+                  enabled: true
+                  protocol: tcp
+                  containerPort: 4345
+                test_disabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+                    >>>"
+                  protocol: tcp
+                  containerPort: 4345
+                test_enabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+                    >>>"
+                  protocol: tcp
+                  containerPort: 4345
+                test_enabled_missing:
+                  protocol: tcp
+                  containerPort: 4345
+              volumeMounts:
+                test_disabled:
+                  enabled: false
+                  name: test_disabled
+                  mountPath: '/etc/init/configmap/all'
+                test_enabled:
+                  enabled: true
+                  name: test_enabled
+                  mountPath: '/etc/init/configmap/all'
+                test_disabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+                    >>>"
+                  name: test_disabled_transform
+                  mountPath: '/etc/init/configmap/all'
+                test_enabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+                    >>>"
+                  name: test_enabled_transform
+                  mountPath: '/etc/init/configmap/all'
+                test_enabled_missing:
+                  name: test_enabled_missing
+                  mountPath: '/etc/init/configmap/all'
+            test_enabled_transform:
+              enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+                >>>"
+              command:
+                - test_enabled_transform
+            test_disabled_transform:
+              enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+                >>>"
+              command:
+                - test_disabled_transform
+            test_enabled_missing:
+              command:
+                - test_enabled_missing
+          volumes:
+            test_disabled:
+              enabled: false
+              secret:
+                secretName: test_disabled
+            test_enabled:
+              enabled: true
+              secret:
+                secretName: test_enabled
+            test_disabled_transform:
+              enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+                >>>"
+              secret:
+                secretName: test_disabled_transform
+            test_enabled_transform:
+              enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+                >>>"
+              secret:
+                secretName: test_enabled_transform
+            test_enabled_missing:
+              secret:
+                secretName: test_enabled_missing
+            

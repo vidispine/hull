@@ -111,3 +111,17 @@ Overwriting metadata must work properly
 * Test Object has key "metadata§annotations§general_custom_annotation_3" with value "Concrete Annotation 3"
 * Test Object has key "metadata§annotations§default_annotation_1" with value "Default Annotation 1"
 * Test Object has key "metadata§annotations§default_annotation_2" with value "Concrete Annotation 2"
+
+Enabling and Disabling
+
+* Test object "release-name-hull-test-disabled" does not exist
+* Test object "release-name-hull-test-disabled_transform" does not exist
+* Test object "release-name-hull-test-disabled_transform_dict" does not exist
+* Test object "release-name-hull-test-nulled" does not exist
+
+* Set test object to "release-name-hull-test-enabled_transform"
+* Test Object has key "metadata§annotations§annotation" with value "I am an Annotation"
+
+* Set test object to "release-name-hull-test-enabled_transform_dict"
+* Test Object has key "metadata§annotations§annotation" with value "I am an Annotation"
+

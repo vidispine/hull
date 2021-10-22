@@ -19,7 +19,13 @@ hull:
             general_custom_annotation_1: General Custom Annotation 1
             general_custom_annotation_2: General Custom Annotation 2
             general_custom_annotation_3: General Custom Annotation 3
-    specific: {}
+    specific: 
+      switch_enabled_off: false
+      switch_enabled_on: true
+      switch_enabled_dict_exists: 
+        a: b
+        c: d
+      switch_enabled_dict_not_exists: {}
   ###################################################
           
   ###################################################
@@ -42,6 +48,38 @@ hull:
       disabled:
         enabled: false
       
+      disabled_transform:
+        enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+          {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+          >>>"
+        annotations:
+          annotation: "I am an Annotation"
+      
+      enabled_transform:
+        enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+          {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+          >>>"
+        annotations:
+          annotation: "I am an Annotation"
+
+      disabled_transform_dict:
+        enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+          {{ if (index . \"PARENT\").Values.hull.config.specific.switch_enabled_dict_not_exists }}
+          true
+          {{ else }}
+          false
+          {{ end }}
+          >>>"
+        annotations:
+          annotation: "I am an Annotation"
+      
+      enabled_transform_dict:
+        enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+          {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_dict_exists }}
+          >>>"
+        annotations:
+          annotation: "I am an Annotation"
+
       nulled: null
         
       static_name:

@@ -175,6 +175,16 @@ def set_test_object_to_of_kind(name, kind):
 def set_test_object_to(name):
     data_store.scenario.test_object = data_store.scenario["objects_" + data_store.scenario.kind][name]    
 
+@step("Test object <name> does not exist")
+def test_object_does_not_exist(name):
+    try:
+        data_store.scenario["objects_" + data_store.scenario.kind][name]
+    except Exception as e:       
+        if e.__class__.__name__ == 'KeyError':
+            assert True
+            return
+    assert False
+
 @step("Test Object has key <key> with array value that has <count> items")
 def test_object_has_key_with_array_value_that_has_items(key, value):
     assert data_store.scenario.test_object != None

@@ -20,6 +20,11 @@ However the properties listed below are overwritten or added by HULL:
 
 Properties can be set as they are defined in the [Kubernetes API's mutatingwebhook spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#mutatingwebhook-v1-admissionregistration-k8s-io). 
 
+However the properties listed below are overwritten or added by HULL:
+
+| Parameter | Description  | Default | Example 
+| --------  | -------------| ------- | --------
+`enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` | 
 
 ### The `hull.ValidatingWebhook.v1` properties
 
@@ -36,6 +41,12 @@ However the properties listed below are overwritten or added by HULL:
 > The key-value pairs of value type `hull.ValidatingWebhook.Webhook.v1` are converted to an array on rendering
 
 Properties can be set as they are defined in the [Kubernetes API's validatingwebhook spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#validatingwebhook-v1-admissionregistration-k8s-io). 
+
+However the properties listed below are overwritten or added by HULL:
+
+| Parameter | Description  | Default | Example 
+| --------  | -------------| ------- | --------
+`enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` | 
 
 ---
 Back to [README.md](./../README.md)

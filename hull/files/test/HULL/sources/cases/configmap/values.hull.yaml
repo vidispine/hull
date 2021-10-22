@@ -84,4 +84,28 @@ hull:
             inline: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
               transformation = {{ (index . \"PARENT\").Values.hull.config.specific.value_to_resolve_1 }}{{ (index . \"PARENT\").Values.hull.config.specific.value_to_resolve_2 }}
               >>>"
+      
+      data_enabled_false_true:
+        enabled: true
+        staticName: false
+        data:
+          test_disabled:
+            enabled: false
+            inline: "This shall not appear in ConfigMap because it is disabled."
+          test_enabled:
+            enabled: true
+            inline: "This shall appear in ConfigMap because enabled property is true"
+          test_disabled_transform:
+            enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+              {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+              >>>"
+            inline: "This shall not appear in ConfigMap because enabled property is false via transformation"
+          test_enabled_transform:
+            enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+              {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+              >>>"
+            inline: "This shall appear in ConfigMap because enabled property is true via transformation"
+          test_enabled_missing:
+            inline: "This shall appear in ConfigMap because enabled property is missing"
+          
 ###################################################
