@@ -3,9 +3,6 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-pool:
-    vmImage: 'ubuntu-20.04'
-    
 parameters:
 - name: HelmVersions
   type: object
