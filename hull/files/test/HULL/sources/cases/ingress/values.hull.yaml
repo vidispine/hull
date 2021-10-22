@@ -128,4 +128,150 @@ hull:
             hosts:
               - "host.two.com"
 
-  ###################################################
+      tls_rules_enabled_false_true:
+        enabled: true
+        staticName: false
+        rules:
+          test_disabled:
+            enabled: false
+            host: test_disabled.one.com
+            http:
+              paths:
+                standard:
+                  path: /external
+                  pathType: ImplementationSpecific
+                  backend:
+                    service:
+                      name: external_service
+                      staticName: true
+                      port: 
+                        number: 80
+          test_enabled:
+            enabled: true
+            host: test_enabled.two.com
+            http:
+              paths:
+                test_enabled:
+                  enabled: true
+                  path: /test_enabled
+                  pathType: ImplementationSpecific
+                  backend:
+                    service:
+                      name: service1_standard
+                      port: 
+                        number: 80
+                test_disabled:
+                  enabled: false
+                  path: /test_disabled
+                  pathType: ImplementationSpecific
+                  backend:
+                    service:
+                      name: service1_standard
+                      port: 
+                        number: 80
+                test_enabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+                    >>>"
+                  path: /test_enabled_transform
+                  pathType: ImplementationSpecific
+                  backend:
+                    service:
+                      name: service1_standard
+                      port: 
+                        number: 80
+                test_disabled_transform:
+                  enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+                    {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+                    >>>"
+                  path: /test_disabled_transform
+                  pathType: ImplementationSpecific
+                  backend:
+                    service:
+                      name: service1_standard
+                      port: 
+                        number: 80
+                test_enabled_missing:
+                  path: /test_enabled_missing
+                  pathType: ImplementationSpecific
+                  backend:
+                    service:
+                      name: service1_standard
+                      port: 
+                        number: 80
+          test_disabled_transform:
+            enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+              {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+              >>>"
+            host: test_disabled_transform.one.com
+            http:
+              paths:
+                standard:
+                  path: /external
+                  pathType: ImplementationSpecific
+                  backend:
+                    service:
+                      name: external_service
+                      staticName: true
+                      port: 
+                        number: 80
+          test_enabled_transform:
+            enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+            {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+            >>>"
+            host: test_enabled_transform.two.com
+            http:
+              paths:
+                standard:
+                  path: /standard
+                  pathType: ImplementationSpecific
+                  backend:
+                    service:
+                      name: service1_standard
+                      port: 
+                        number: 80
+          test_enabled_mssing:
+            host: test_enabled_missing.two.com
+            http:
+              paths:
+                standard:
+                  path: /standard
+                  pathType: ImplementationSpecific
+                  backend:
+                    service:
+                      name: service1_standard
+                      port: 
+                        number: 80
+        tls:          
+          test_disabled:
+            enabled: false
+            secretName: test_disabled
+            staticName: true
+            hosts:
+              - "host.one.com"
+          test_enabled:
+            enabled: true
+            secretName: test_enabled
+            hosts:
+              - "host.two.com"
+          test_disabled_transform:
+            enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+              {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+              >>>"
+            secretName: test_disabled_transform
+            staticName: true
+            hosts:
+              - "host.one.com"
+          test_enabled_transform:
+            enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+              {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+              >>>"
+            secretName: test_enabled_transform
+            hosts:
+              - "host.two.com"
+          test_enabled_missing:
+            secretName: test_enabled_missing
+            hosts:
+              - "host.two.com"
+
+###################################################

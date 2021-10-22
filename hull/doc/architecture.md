@@ -1,6 +1,7 @@
 # Architecture
 
 Before discussing the architecture behind HULL it is useful to take a look at the motivation that spurred the creation of it.
+
 ## Motivation
 
 In the context of Kubernetes and Helm there are basically two groups of people that work with Helm charts:
@@ -57,6 +58,7 @@ Moreover, depending on the requirements and preferences of the chart maintainer 
     ```
 
 This is not helpful to the user to have an intuition of what he needs to do. The HULL library can step in to solve these issues to a large degree.
+
 ### Conclusion
 
 There are various groups of people that work with Helm. There might be a group of people concerned with maintaining and installing a single specific chart to the best of their effort. In this case the regular Helm workflow might be suited for them well enough.

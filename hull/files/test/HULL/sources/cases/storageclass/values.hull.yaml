@@ -31,6 +31,18 @@ hull:
         - "xfs" 
         - "automount"
         provisioner: "local-volume"
+      
+      disabled_transform:
+        provisioner: "local-volume"
+        
+      enabled_transform:
+        provisioner: "local-volume"
+        
+      disabled_transform_dict:
+        provisioner: "local-volume"
+        
+      enabled_transform_dict:
+        provisioner: "local-volume"
 
 
 ###################################################

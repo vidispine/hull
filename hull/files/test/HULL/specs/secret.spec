@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "7" objects were rendered
+* Expected number of "10" objects were rendered
 * Validate
 
 ## Metadata
@@ -40,6 +40,16 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-transformation_resolved"
 * Test Object has key "data§concrete_file_4_resolved.txt" with Base64 encoded value of "This is a text file with a pointer to a transformation."
 * Test Object has key "data§equal_sign_preservation" with Base64 encoded value of "transformation = transformation"
+
+## Enable Data 
+* Render
+* Set test object to "release-name-hull-test-data_enabled_false_true"
+* Test Object does not have key "data§test_disabled"
+* Test Object has key "data§test_enabled" with Base64 encoded value of "This shall appear in Secret because enabled property is true"
+* Test Object does not have key "data§test_disabled_transform"
+* Test Object has key "data§test_enabled_transform" with Base64 encoded value of "This shall appear in Secret because enabled property is true via transformation"
+* Test Object has key "data§test_enabled_missing" with Base64 encoded value of "This shall appear in Secret because enabled property is missing"
+
 ___
 
 * Clean the test execution folder
