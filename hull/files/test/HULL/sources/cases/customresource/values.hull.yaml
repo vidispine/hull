@@ -43,3 +43,23 @@ hull:
         kind: "MailReceiver"
         spec:
           incomingAddress: "othermailaddress@mail.com"
+      
+      disabled_transform:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+        
+      enabled_transform:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+        
+      disabled_transform_dict:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+        
+      enabled_transform_dict:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}

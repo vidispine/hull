@@ -144,3 +144,46 @@
 * Test Object has key "spec§template§spec§containers§0§envFrom§3§secretRef§optional" set to true
 * Test Object has key "spec§template§spec§containers§0§envFrom§4§secretRef§name" with value "envfrom_secret_name_static"
 * Test Object has key "spec§template§spec§containers§0§envFrom§5§secretRef§name" with value "a_very_loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong_secret_name"
+
+* Set test object to "release-name-hull-test-enabled_true_false"
+
+* Test Object has key "spec§template§spec§containers" with array value that has "3" items
+* Test Object has key "spec§template§spec§containers§0§env" with array value that has "3" items
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "test_enabled"
+* Test Object has key "spec§template§spec§containers§0§env§1§value" with value "test_enabled_missing"
+* Test Object has key "spec§template§spec§containers§0§env§2§value" with value "test_enabled_transform"
+* Test Object has key "spec§template§spec§containers§0§envFrom" with array value that has "3" items
+* Test Object has key "spec§template§spec§containers§0§envFrom§0§configMapRef§name" with value "release-name-hull-test-test_enabled"
+* Test Object has key "spec§template§spec§containers§0§envFrom§1§configMapRef§name" with value "release-name-hull-test-test_enabled_missing"
+* Test Object has key "spec§template§spec§containers§0§envFrom§2§configMapRef§name" with value "release-name-hull-test-test_enabled_transform"
+* Test Object has key "spec§template§spec§containers§0§ports" with array value that has "3" items
+* Test Object has key "spec§template§spec§containers§0§ports§0§name" with value "test_enabled"
+* Test Object has key "spec§template§spec§containers§0§ports§1§name" with value "test_enabled_missing"
+* Test Object has key "spec§template§spec§containers§0§ports§2§name" with value "test_enabled_transform"
+* Test Object has key "spec§template§spec§containers§0§volumeMounts" with array value that has "3" items
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§0§name" with value "test_enabled"
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§1§name" with value "test_enabled_missing"
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§2§name" with value "test_enabled_transform"
+
+* Test Object has key "spec§template§spec§initContainers" with array value that has "3" items
+* Test Object has key "spec§template§spec§initContainers§0§env" with array value that has "3" items
+* Test Object has key "spec§template§spec§initContainers§0§env§0§value" with value "test_enabled"
+* Test Object has key "spec§template§spec§initContainers§0§env§1§value" with value "test_enabled_missing"
+* Test Object has key "spec§template§spec§initContainers§0§env§2§value" with value "test_enabled_transform"
+* Test Object has key "spec§template§spec§initContainers§0§envFrom" with array value that has "3" items
+* Test Object has key "spec§template§spec§initContainers§0§envFrom§0§configMapRef§name" with value "release-name-hull-test-test_enabled"
+* Test Object has key "spec§template§spec§initContainers§0§envFrom§1§configMapRef§name" with value "release-name-hull-test-test_enabled_missing"
+* Test Object has key "spec§template§spec§initContainers§0§envFrom§2§configMapRef§name" with value "release-name-hull-test-test_enabled_transform"
+* Test Object has key "spec§template§spec§initContainers§0§ports" with array value that has "3" items
+* Test Object has key "spec§template§spec§initContainers§0§ports§0§name" with value "test_enabled"
+* Test Object has key "spec§template§spec§initContainers§0§ports§1§name" with value "test_enabled_missing"
+* Test Object has key "spec§template§spec§initContainers§0§ports§2§name" with value "test_enabled_transform"
+* Test Object has key "spec§template§spec§initContainers§0§volumeMounts" with array value that has "3" items
+* Test Object has key "spec§template§spec§initContainers§0§volumeMounts§0§name" with value "test_enabled"
+* Test Object has key "spec§template§spec§initContainers§0§volumeMounts§1§name" with value "test_enabled_missing"
+* Test Object has key "spec§template§spec§initContainers§0§volumeMounts§2§name" with value "test_enabled_transform"
+
+* Test Object has key "spec§template§spec§volumes" with array value that has "3" items
+* Test Object has key "spec§template§spec§volumes§0§secret§secretName" with value "release-name-hull-test-test_enabled"
+* Test Object has key "spec§template§spec§volumes§1§secret§secretName" with value "release-name-hull-test-test_enabled_missing"
+* Test Object has key "spec§template§spec§volumes§2§secret§secretName" with value "release-name-hull-test-test_enabled_transform"

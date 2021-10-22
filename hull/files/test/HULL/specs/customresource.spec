@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "3" objects of kind "Dummy" were rendered
+* Expected number of "5" objects of kind "Dummy" were rendered
 * Expected number of "1" objects of kind "MailSender" were rendered
 * Expected number of "1" objects of kind "MailReceiver" were rendered
 

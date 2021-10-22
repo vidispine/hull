@@ -36,7 +36,27 @@ hull:
         podSelector: 
           matchLabels:
             key: value
-
+      
+      disabled_transform:
+        podSelector: 
+          matchLabels:
+            key: value
+        
+      enabled_transform:
+        podSelector: 
+          matchLabels:
+            key: value
+        
+      disabled_transform_dict:
+        podSelector: 
+          matchLabels:
+            key: value
+        
+      enabled_transform_dict:
+        podSelector: 
+          matchLabels:
+            key: value
+        
       standard:
         egress:
         - ports:

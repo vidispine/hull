@@ -55,8 +55,28 @@ hull:
         pod:
           containers: {}
       
+      disabled_transform:
+        serviceName: disabled_transform        
+        pod:
+          containers: {}
+        
+      enabled_transform:
+        serviceName: enabled_transform        
+        pod:
+          containers: {}
+        
+      disabled_transform_dict:
+        serviceName: disabled_transform_dict        
+        pod:
+          containers: {}
+        
+      enabled_transform_dict:
+        serviceName: enabled_transform_dict        
+        pod:
+          containers: {}
+        
       imagepullsecrets_custom:
-        serviceName: image_name_empty_registry        
+        serviceName: image_name_empty_registry
         pod:
           containers: {}
 
@@ -110,6 +130,9 @@ hull:
         pod:
           containers: {}
 
+      enabled_true_false:
+        serviceName: enabled_true_false
+                
       full_example_deployment:
         serviceName: disabled
         annotations:

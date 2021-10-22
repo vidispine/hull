@@ -7,7 +7,7 @@ Test creation of objects and features.
 ## Render and Validate
 
 * Render
-* Expected number of "10" objects of kind "ServiceMonitor" were rendered
+* Expected number of "12" objects of kind "ServiceMonitor" were rendered
 
 ## Metadata
 

@@ -61,5 +61,21 @@ hull:
             app: example-app
         endpoints:
         - port: web
+      
+      disabled_transform:
+        selector: {}
+        endpoints: []
+        
+      enabled_transform:
+        selector: {}
+        endpoints: []
+        
+      disabled_transform_dict:
+        selector: {}
+        endpoints: []
+        
+      enabled_transform_dict:
+        selector: {}
+        endpoints: []
 
 ###################################################
