@@ -70,6 +70,11 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------
+However the properties listed below are overwritten or added by HULL:
+
+| Parameter | Description  | Default | Example 
+| --------  | -------------| ------- | --------
+`enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` |
 | `valueFrom.configMapKeyRef.staticName` | Specifies whether the `name` key of this `valueFrom.configMapKeyRef` refers to a fixed name of a ConfigMap in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `valueFrom.configMapKeyRef` references a key defined in this helm chart. | `false` | `true`
 | `valueFrom.secretKeyRef.staticName` | Specifies whether the `name` key of this `valueFrom.secretKeyRef` refers to a fixed name of a Secret in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `valueFrom.secretKeyRef` references a key defined in this helm chart. | `false` | `true`
 
@@ -83,6 +88,11 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------
+However the properties listed below are overwritten or added by HULL:
+
+| Parameter | Description  | Default | Example 
+| --------  | -------------| ------- | --------
+`enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` | 
 | `configMapRef.staticName` | Specifies whether the `name` key of this `configMapRef` refers to a fixed name of a ConfigMap in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `configMapRef` references a key defined in this helm chart. | `false` | `true`
 | `secretRef.staticName` | Specifies whether the `name` key of this `secretRef` refers to a fixed name of a Secret in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `secretRef` references a key defined in this helm chart. | `false` | `true`
 
@@ -94,11 +104,23 @@ However the properties listed below are overwritten or added by HULL:
 
 Properties can be set as they are defined in the [Kubernetes API's containerport spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#containerport-v1-core). 
 
+However the properties listed below are overwritten or added by HULL:
+
+| Parameter | Description  | Default | Example 
+| --------  | -------------| ------- | --------
+`enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` |  
+
 ### The `hull.VolumeMount.v1` properties
 
 > The key-value pairs of value type `hull.VolumeMount.v1` are converted to an array on rendering 
 
 Properties can be set as they are defined in the [Kubernetes API's volumemount spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#volumemount-v1-core). 
+
+However the properties listed below are overwritten or added by HULL:
+
+| Parameter | Description  | Default | Example 
+| --------  | -------------| ------- | --------
+`enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` |  
 
 ### The `hull.Volume.v1` properties
 
@@ -112,6 +134,11 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------
+However the properties listed below are overwritten or added by HULL:
+
+| Parameter | Description  | Default | Example 
+| --------  | -------------| ------- | --------
+`enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` | 
 | `configMap.staticName` | Specifies whether the `name` key of this `configMap` refers to a fixed name of a ConfigMap in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `configMap` references a key defined in this helm chart. | `false` | `true`
 | `persistentVolumeClaim.staticName` | Specifies whether the `name` key of this `persistentVolumeClaim` refers to a fixed name of a Secret in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `persistentVolumeClaim` references a key defined in this helm chart. | `false` | `true`
 | `secret.staticName` | Specifies whether the `name` key of this `secret` refers to a fixed name of a Secret in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `secret` references a key defined in this helm chart. | `false` | `true`
