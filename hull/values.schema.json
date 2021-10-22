@@ -3,6 +3,7 @@
     "io.k8s.api.admissionregistration.v1.MutatingWebhook.Names":
     {
       "enum": [
+        "enabled",
         "admissionReviewVersions",
         "clientConfig",
         "failurePolicy",
@@ -69,6 +70,13 @@
           "description": "TimeoutSeconds specifies the timeout for this webhook. After the timeout passes, the webhook call will be ignored or the API call will fail based on the failure policy. The timeout value must be between 1 and 30 seconds. Default to 10 seconds.",
           "format": "int32",
           "type": "integer"
+        },
+        "enabled": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "title": "Enabled"
         }
       },
       "required": [
@@ -217,9 +225,10 @@
       "type": "object",
       "additionalProperties": false
     },
-        "io.k8s.api.admissionregistration.v1.ValidatingWebhook.Names":
+    "io.k8s.api.admissionregistration.v1.ValidatingWebhook.Names":
     {
       "enum": [
+        "enabled",
         "admissionReviewVersions",
         "clientConfig",
         "failurePolicy",
@@ -281,6 +290,13 @@
           "description": "TimeoutSeconds specifies the timeout for this webhook. After the timeout passes, the webhook call will be ignored or the API call will fail based on the failure policy. The timeout value must be between 1 and 30 seconds. Default to 10 seconds.",
           "format": "int32",
           "type": "integer"
+        },
+        "enabled": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "title": "Enabled"
         }
       },
       "required": [
@@ -6209,6 +6225,7 @@
     },
     "io.k8s.api.core.v1.ContainerPort.Names": {
       "enum": [
+        "enabled",
         "containerPort",
         "hostIP",
         "hostPort",
@@ -6239,6 +6256,13 @@
         "protocol": {
           "description": "Protocol for port. Must be UDP, TCP, or SCTP. Defaults to \"TCP\".",
           "type": "string"
+        },
+        "enabled": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "title": "Enabled"
         }
       },
       "required": [
@@ -6617,6 +6641,7 @@
     },
     "io.k8s.api.core.v1.EnvFromSource.Names": {
       "enum": [
+        "enabled",
         "configMapRef",
         "prefix",
         "secretRef"
@@ -6636,6 +6661,13 @@
         "secretRef": {
           "$ref": "#/definitions/io.k8s.api.core.v1.SecretEnvSource",
           "description": "The Secret to select from"
+        },
+        "enabled": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "title": "Enabled"
         }
       },
       "type": "object",
@@ -6643,6 +6675,7 @@
     },
     "io.k8s.api.core.v1.EnvVar.Names": {
       "enum": [
+        "enabled",
         "value",
         "valueFrom"
       ]
@@ -6657,6 +6690,13 @@
         "valueFrom": {
           "$ref": "#/definitions/io.k8s.api.core.v1.EnvVarSource",
           "description": "Source for the environment variable's value. Cannot be used if value is not empty."
+        },
+        "enabled": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "title": "Enabled"
         }
       },
       "required": [],
@@ -10702,7 +10742,8 @@
         "nodePort",
         "port",
         "protocol",
-        "targetPort"
+        "targetPort",
+        "enabled"
       ]
     },
     "io.k8s.api.core.v1.ServicePort": {
@@ -10733,6 +10774,13 @@
         "targetPort": {
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.util.intstr.IntOrString",
           "description": "Number or name of the port to access on the pods targeted by the service. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME. If this is a string, it will be looked up as a named port in the target Pod's container ports. If this is not specified, the value of the 'port' field is used (an identity map). This field is ignored for services with clusterIP=None, and should be omitted or set equal to the 'port' field. More info: https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service"
+        },
+        "enabled": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "title": "Enabled"
         }
       },
       "required": [
@@ -11127,6 +11175,7 @@
     },
     "io.k8s.api.core.v1.Volume.Names": {
       "enum": [
+        "enabled",
         "awsElasticBlockStore",
         "azureDisk",
         "azureFile",
@@ -11276,6 +11325,13 @@
         "vsphereVolume": {
           "$ref": "#/definitions/io.k8s.api.core.v1.VsphereVirtualDiskVolumeSource",
           "description": "VsphereVolume represents a vSphere volume attached and mounted on kubelets host machine"
+        },
+        "enabled": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "title": "Enabled"
         }
       },
       "required": [],
@@ -11305,6 +11361,7 @@
     },
     "io.k8s.api.core.v1.VolumeMount.Names": {
       "enum": [
+        "enabled",
         "mountPath",
         "mountPropagation",
         "name",
@@ -11339,6 +11396,13 @@
         "subPathExpr": {
           "description": "Expanded path within the volume from which the container's volume should be mounted. Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container's environment. Defaults to \"\" (volume's root). SubPathExpr and SubPath are mutually exclusive.",
           "type": "string"
+        },
+        "enabled": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "title": "Enabled"
         }
       },
       "required": [
@@ -13229,6 +13293,7 @@
     },
     "io.k8s.api.networking.v1.HTTPIngressPath.Names": {
       "enum": [
+        "enabled",
         "path",
         "pathType",
         "backend"
@@ -13248,6 +13313,13 @@
         "pathType": {
           "description": "PathType determines the interpretation of the Path matching. PathType can be one of the following values: * Exact: Matches the URL path exactly. * Prefix: Matches based on a URL path prefix split by '/'. Matching is\n  done on a path element by element basis. A path element refers is the\n  list of labels in the path split by the '/' separator. A request is a\n  match for path p if every p is an element-wise prefix of p of the\n  request path. Note that if the last element of the path is a substring\n  of the last element in request path, it is not a match (e.g. /foo/bar\n  matches /foo/bar/baz, but does not match /foo/barbaz).\n* ImplementationSpecific: Interpretation of the Path matching is up to\n  the IngressClass. Implementations can treat this as a separate PathType\n  or treat it identically to Prefix or Exact path types.\nImplementations are required to support all path types.",
           "type": "string"
+        },
+        "enabled": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "title": "Enabled"
         }
       },
       "required": [
@@ -13527,7 +13599,8 @@
       "enum": [
         "hosts",
         "secretName",
-        "staticName"
+        "staticName",
+        "enabled"
       ]
     },
     "io.k8s.api.networking.v1.IngressTLS": {
@@ -13548,6 +13621,13 @@
         "staticName": {
           "title": "StaticName",
           "type": "boolean"
+        },
+        "enabled": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "title": "Enabled"
         }
       },
       "type": "object",
@@ -20623,7 +20703,10 @@
       "type": "object",
       "properties": {
         "enabled": {
-          "type": "boolean",
+          "type": [
+            "boolean",
+            "string"
+          ],
           "title": "Enabled"
         },
         "annotations": {
@@ -20647,6 +20730,7 @@
     },
     "hull.VirtualFolderData.v1.Names": {
       "enum": [
+          "enabled",
           "inline",
           "path",
           "noTemplating"
@@ -20655,6 +20739,13 @@
     "hull.VirtualFolderData.v1": {
       "type": "object",
       "properties": {
+        "enabled": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "title": "HullVirtualFolderEnabled"
+        },
         "inline": {
           "title": "HullVirtualFolderInline",
           "type": [
@@ -20755,6 +20846,7 @@
     },
     "hull.Container.v1.Names": {
       "enum": [
+        "enabled",
         "image",
         "ports",
         "env",
@@ -20765,6 +20857,13 @@
     "hull.Container.v1": {
       "type": "object",
       "properties": {
+        "enabled": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "title": "HullContainerEnabled"
+        },
         "image": {
           "description": "Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets.",
           "type": "object",
@@ -21223,12 +21322,20 @@
     },
     "hull.Ingress.Rule.v1.Names": {
       "enum": [
+        "enabled",
         "http"
       ]
     },
     "hull.Ingress.Rule.v1": {
       "type": "object",
       "properties": {
+        "enabled": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "title": "HullIngressRuleEnabled"
+        },
         "http": {
           "$ref": "#/definitions/hull.Ingress.Rule.Path.v1"
         }

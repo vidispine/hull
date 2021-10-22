@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "5" objects were rendered
+* Expected number of "8" objects were rendered
 * Validate
 
 ## Metadata
@@ -23,6 +23,25 @@ Test creation of objects and features.
 * Test Object has key "spec§rules§2§http§paths§0§backend§service§name" with value "release-name-hull-test-full_name_transformed"
 * Test Object has key "spec§tls§0§secretName" with value "external_secret"
 * Test Object has key "spec§tls§1§secretName" with value "release-name-hull-test-local_secret"
+
+## Enable Disable Tls Rules 
+* Render
+* Set test object to "release-name-hull-test-tls_rules_enabled_false_true"
+* Test Object has key "spec§tls" with array value that has "3" items
+* Test Object has key "spec§rules" with array value that has "3" items
+
+* Test Object has key "spec§rules§0§host" with value "test_enabled.two.com"
+* Test Object has key "spec§rules§1§host" with value "test_enabled_missing.two.com"
+* Test Object has key "spec§rules§2§host" with value "test_enabled_transform.two.com"
+
+* Test Object has key "spec§tls§0§secretName" with value "release-name-hull-test-test_enabled"
+* Test Object has key "spec§tls§1§secretName" with value "release-name-hull-test-test_enabled_missing"
+* Test Object has key "spec§tls§2§secretName" with value "release-name-hull-test-test_enabled_transform"
+
+* Test Object has key "spec§rules§0§http§paths" with array value that has "3" items
+* Test Object has key "spec§rules§0§http§paths§0§path" with value "/test_enabled"
+* Test Object has key "spec§rules§0§http§paths§1§path" with value "/test_enabled_missing"
+* Test Object has key "spec§rules§0§http§paths§2§path" with value "/test_enabled_transform"
 
 ___
 

@@ -108,7 +108,7 @@ foreach ($image in $images) {
 foreach ($entry in $replacements.Keys) {
 
     # Gets values yaml as string array
-    Write-Host "Currently processing '$entry'..."
+    Write-Host "Currently processing '$entry' ..."
     $valuesString = (Get-Content $valuesYamlPath)
     
     # Get all keys from dot notation
@@ -127,6 +127,7 @@ foreach ($entry in $replacements.Keys) {
         # When current key is found set next key to be matched
         if ($currentLine -match "^\s*$($currentKey):\s*")
         {
+            Write-Host "Current line '$($currentLine)' matched pattern '^\s*$($currentKey):\s*'"
             # Matched all keys                 
             if (($keysCount - 1) -eq $keysCounter)
             {
@@ -148,10 +149,12 @@ foreach ($entry in $replacements.Keys) {
                             # If not overwritten keep repository tag 
                             if ($currentLine.Contains("repository:") -and $null -eq $replacements[$entry].repository)
                             {
+                                Write-Host "Keeping current line's '$($currentLine)' repository, it is not overwritten"
                                 $processed += ($currentLine)   
                             }
                             if ($currentLine.Contains("registry:") -and $null -eq $replacements[$entry].registry)
                             {
+                                Write-Host "Keeping current line's '$($currentLine)' registry, it is not overwritten"
                                 $processed += ($currentLine)   
                             }
                         }
@@ -161,21 +164,25 @@ foreach ($entry in $replacements.Keys) {
                             if ($null -ne $replacements[$entry].repository)
                             {
                                 $repo = "repository: $($replacements[$entry].repository)"
+                                Write-Host "Overwriting repository: with '$($repo)'"
                                 $processed += [PSObject]($repo.PadLeft($repo.Length + $whitespaceCount + 2))
                             }
 
                             if ($null -ne $replacements[$entry].registry)
                             {
                                 $repo = "registry: $($replacements[$entry].registry)"
+                                Write-Host "Overwriting registry: with '$($repo)'"
                                 $processed += [PSObject]($repo.PadLeft($repo.Length + $whitespaceCount + 2))
                             }
 
                             # Set tag to version
                             $tag = "tag: $($replacements[$entry].tag)"
+                            Write-Host "Setting tag: to '$($tag)'"
                             $processed += [PSObject]($tag.PadLeft($tag.Length + $whitespaceCount + 2))
 
                             # Emit buffered line
-                            $processed += ($currentLine)  
+                            $processed += ($currentLine)
+                            
                             break;
                         }
                     }                    
@@ -199,6 +206,7 @@ foreach ($entry in $replacements.Keys) {
         }
     }
     
+    Write-Host "Done processing '$entry' ..."
     Set-Content -Path "$($valuesYamlPath)" -Value ($processed)
     
     $overwrites = ""
@@ -219,15 +227,17 @@ if (![String]::IsNullOrWhiteSpace($HullVersion))
         $currentLine = $valuesString[$line]
         if ($currentLine -match "^hull:\s*")
         {
+            Write-Host "Found hull: '$($entry)' ..."
             $processed += $currentLine
 
             $nextLine = $valuesString[$line+1]
             if ($nextLine -match "  version: " + $HullVersion)
             {
-                
+                Write-Host "Hull version already set to 'version: + $($HullVersion)'"
             }
             else
             {
+                Write-Host "Setting Hull version to 'version: + $($HullVersion)'"
                 $processed += ("  version: " + $HullVersion)
             }
         }
