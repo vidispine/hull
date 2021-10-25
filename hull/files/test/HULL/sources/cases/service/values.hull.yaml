@@ -36,3 +36,35 @@ hull:
         type: ClusterIP
         selector:
           app.kubernetes.io/component: some_other_component
+          
+      port_enabled_false_true:
+        type: NodePort
+        ports:
+          test_disabled:
+            enabled: false
+            port: 10
+            targetPort: 1010
+            nodePort: 101010
+          test_enabled:
+            enabled: true
+            port: 20
+            targetPort: 2020
+            nodePort: 202020
+          test_disabled_transform:
+            enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+              {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+              >>>"
+            port: 30
+            targetPort: 3030
+            nodePort: 303030
+          test_enabled_transform:
+            enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+              {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+              >>>"
+            port: 40
+            targetPort: 4040
+            nodePort: 404040
+          test_enabled_missing:
+            port: 50
+            targetPort: 5050
+            nodePort: 505050

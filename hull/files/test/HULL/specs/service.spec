@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "7" objects were rendered
+* Expected number of "10" objects were rendered
 * Validate
 
 ## Metadata
@@ -34,6 +34,14 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-selector"
 * Test Object has key "spec§selector§app.kubernetes.io/component" with value "some_other_component"
 
+## Enable Disable Port
+* Render
+* Set test object to "release-name-hull-test-port_enabled_false_true"
+* Test Object has key "spec§ports" with array value that has "3" items
+
+* Test Object has key "spec§ports§0§name" with value "test_enabled"
+* Test Object has key "spec§ports§1§name" with value "test_enabled_missing"
+* Test Object has key "spec§ports§2§name" with value "test_enabled_transform"
 ___
 
 * Clean the test execution folder

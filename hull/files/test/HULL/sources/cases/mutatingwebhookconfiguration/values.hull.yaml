@@ -37,4 +37,54 @@ hull:
             admissionReviewVersions:
             - second_draft
 
+      webhook_enabled_false_true:
+        webhooks:
+          test_disabled:
+            enabled: false
+            failurePolicy: Fail
+            name: test_disabled
+            clientConfig:
+              url: http://some_url
+            sideEffects: NoneOnDryRun 
+            admissionReviewVersions:
+            - second_draft
+          test_enabled:
+            enabled: true
+            failurePolicy: Fail
+            name: test_enabled
+            clientConfig:
+              url: http://some_url
+            sideEffects: NoneOnDryRun 
+            admissionReviewVersions:
+            - second_draft
+          test_disabled_transform:
+            enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+              {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
+              >>>"
+            failurePolicy: Fail
+            name: test_disabled_transform
+            clientConfig:
+              url: http://some_url
+            sideEffects: NoneOnDryRun 
+            admissionReviewVersions:
+            - second_draft
+          test_enabled_transform:
+            enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+              {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+              >>>"
+            failurePolicy: Fail
+            name: test_enabled_transform
+            clientConfig:
+              url: http://some_url
+            sideEffects: NoneOnDryRun 
+            admissionReviewVersions:
+            - second_draft
+          test_enabled_missing:
+            failurePolicy: Fail
+            name: test_enabled_missing
+            clientConfig:
+              url: http://some_url
+            sideEffects: NoneOnDryRun 
+            admissionReviewVersions:
+            - second_draft
 ###################################################

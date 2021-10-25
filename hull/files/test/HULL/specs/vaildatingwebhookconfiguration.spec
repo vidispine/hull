@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "4" objects were rendered
+* Expected number of "7" objects were rendered
 * Validate
 
 ## Metadata
@@ -30,3 +30,12 @@ Test creation of objects and features.
 * Test Object has key "webhooks§1§clientConfig§url" with value "http://some_url"
 * Test Object has key "webhooks§1§sideEffects" with value "NoneOnDryRun"
 * Test Object has key "webhooks§1§admissionReviewVersions§0" with value "second_draft"
+
+## Enable Disable Webhook
+* Render
+* Set test object to "release-name-hull-test-webhook_enabled_false_true"
+* Test Object has key "webhooks" with array value that has "3" items
+
+* Test Object has key "webhooks§0§name" with value "test_enabled"
+* Test Object has key "webhooks§1§name" with value "test_enabled_missing"
+* Test Object has key "webhooks§2§name" with value "test_enabled_transform"
