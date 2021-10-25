@@ -50,6 +50,16 @@ Test creation of objects and features.
 * Test Object has key "data§test_enabled_transform" with Base64 encoded value of "This shall appear in Secret because enabled property is true via transformation"
 * Test Object has key "data§test_enabled_missing" with Base64 encoded value of "This shall appear in Secret because enabled property is missing"
 
+## Ordering
+* Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_order_test.hull.yaml"
+* Render values file "values_order_test.hull.yaml"
+
+* Test object "release-name-hull-test-aaddheaders" does not exist
+* Test object "release-name-hull-test-baddheaders" does not exist
+* Set test object to "release-name-hull-test-caddheaders"
+* Test Object has key "data§here" with Base64 encoded value of "some data"
+* Test object "release-name-hull-test-daddheaders" does not exist
+
 ___
 
 * Clean the test execution folder
