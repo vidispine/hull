@@ -81,6 +81,8 @@ objects:
       enabled: true
       annotations: {}
       labels: {}
+      rules:
+        _HULL_OBJECT_TYPE_DEFAULT_: {}
     default:
       enabled: true
       rules: []
@@ -109,6 +111,8 @@ objects:
       enabled: true
       annotations: {}
       labels: {}
+      rules:
+        _HULL_OBJECT_TYPE_DEFAULT_: {}
 ###################################################
 
 # CLUSTERROLEBINDINGS
@@ -183,6 +187,16 @@ objects:
           http:
             paths:
               _HULL_OBJECT_TYPE_DEFAULT_: {}
+
+###################################################
+
+# INGRESSCLASSES 
+  ingressclass:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+
 ###################################################
 
 # DEPLOYMENTS 
