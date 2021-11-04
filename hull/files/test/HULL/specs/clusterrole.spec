@@ -2,11 +2,11 @@
 
 Test creation of objects and features.
 
-* Prepare default test case for kind "Role"
+* Prepare default test case for kind "ClusterRole"
 
 ## Render and Validate
 * Render
-* Expected number of "8" objects were rendered
+* Expected number of "7" objects were rendered
 * Validate
 
 ## Metadata
