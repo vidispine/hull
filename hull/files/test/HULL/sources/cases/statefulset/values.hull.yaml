@@ -46,32 +46,32 @@ hull:
         
 
       metadata_merge:
-        serviceName: metadata_merge        
+        serviceName: metadata_merge
         pod:
           containers: {}
         
       metadata_overwrite:
-        serviceName: metadata_overwrite        
+        serviceName: metadata_overwrite
         pod:
           containers: {}
       
       disabled_transform:
-        serviceName: disabled_transform        
+        serviceName: disabled_transform
         pod:
           containers: {}
         
       enabled_transform:
-        serviceName: enabled_transform        
+        serviceName: enabled_transform
         pod:
           containers: {}
         
       disabled_transform_dict:
-        serviceName: disabled_transform_dict        
+        serviceName: disabled_transform_dict
         pod:
           containers: {}
         
       enabled_transform_dict:
-        serviceName: enabled_transform_dict        
+        serviceName: enabled_transform_dict
         pod:
           containers: {}
         
@@ -81,12 +81,12 @@ hull:
           containers: {}
 
       imagepullsecrets_add_all:
-        serviceName: image_name_empty_registry        
+        serviceName: image_name_empty_registry
         pod:
           containers: {}
           
       image_name_empty_registry:
-        serviceName: image_name_empty_registry        
+        serviceName: image_name_empty_registry
         pod:
           containers: {}
         
@@ -186,7 +186,7 @@ hull:
                     secretKeyRef:
                       name: some-external-secret-in-cluster
                       key: secret-data-key
-                      staticName: true                            
+                      staticName: true
                 ENV_VAR_4:
                   valueFrom:
                     secretKeyRef:
@@ -225,7 +225,7 @@ hull:
               - "container"
               - "add"
               - "some"
-              - "arguments"                            
+              - "arguments"
               livenessProbe: 
                 initialDelaySeconds: 30
                 periodSeconds: 10
@@ -242,18 +242,18 @@ hull:
                   memory: 3.5Gi
                 requests:
                   cpu: "0.5"
-                  memory: 1.7Gi           
+                  memory: 1.7Gi
               volumeMounts:
                 full_example_configmap_mount:
                   name: full_example_configmap
-                  mountPath: '/etc/init/configmap/all'                
+                  mountPath: '/etc/init/configmap/all'
                 full_example_configmap_mount_sub_path:
                   name: full_example_configmap
                   mountPath: '/etc/init/configmap.json'
                   subPath: 'volume_sub_path.json' 
                 full_example_secret_mount:
                   name: full_example_secret
-                  mountPath: '/tmp/init/secret/all'                
+                  mountPath: '/tmp/init/secret/all'
                 full_example_secret_mount_sub_path:
                   name: full_example_secret
                   mountPath: '/tmp/init/secret.json'
@@ -281,19 +281,19 @@ hull:
                     secretKeyRef:
                       name: some-external-secret-in-cluster
                       key: secret-data-key
-                      staticName: true                            
+                      staticName: true
                 ENV_VAR_4:
                   valueFrom:
                     secretKeyRef:
                       name: full_example_secret
-                      key: env_var        
+                      key: env_var
               command: 
               - "./startscript.sh"
               args:
               - "container"
               - "add"
               - "some"
-              - "arguments"               
+              - "arguments"
               livenessProbe: 
                 initialDelaySeconds: 11
                 periodSeconds: 22
@@ -310,7 +310,7 @@ hull:
                   memory: 4.4Gi
                 requests:
                   cpu: "5.5"
-                  memory: 9.9Gi           
+                  memory: 9.9Gi
             
           volumes:
             full_example_configmap_volume:

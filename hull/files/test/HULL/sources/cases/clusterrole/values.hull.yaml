@@ -11,7 +11,7 @@ hull:
   objects:
 
   # CONFIGMAPS
-    role:
+    clusterrole:
 
       simple:
         enabled: true

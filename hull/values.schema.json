@@ -4825,7 +4825,7 @@
         "manualSelector",
         "parallelism",
         "selector",
-	      "suspend",
+        "suspend",
         "ttlSecondsAfterFinished"
       ]
     },
@@ -13865,6 +13865,12 @@
       "type": "object",
       "additionalProperties": false
     },
+    "io.k8s.api.networking.v1.IngressClassSpec.Names": {
+      "enum": [
+        "controller",
+        "parameters"
+      ]
+    },
     "io.k8s.api.networking.v1.IngressClassSpec": {
       "description": "IngressClassSpec provides information about the class of an Ingress.",
       "properties": {
@@ -13877,8 +13883,7 @@
           "description": "Parameters is a link to a custom resource containing additional configuration for the controller. This is optional if the controller does not require extra parameters."
         }
       },
-      "type": "object",
-      "additionalProperties": false
+      "type": "object"
     },
     "io.k8s.api.networking.v1.IngressList": {
       "description": "IngressList is a collection of Ingress.",
@@ -15382,8 +15387,7 @@
           "x-kubernetes-patch-strategy": "replace"
         }
       },
-      "type": "object",
-      "additionalProperties": false
+      "type": "object"
     },
     "io.k8s.api.policy.v1beta1.PodDisruptionBudgetStatus": {
       "description": "PodDisruptionBudgetStatus represents information about the status of a PodDisruptionBudget. Status may trail the actual state of a system.",
@@ -15840,7 +15844,7 @@
           "items": {
             "$ref": "#/definitions/io.k8s.api.rbac.v1.PolicyRule"
           },
-          "type": "array"
+          "type": ["array","object"]
         }
       },
       "type": "object",
@@ -15987,6 +15991,15 @@
       ],
       "additionalProperties": false
     },
+    "io.k8s.api.rbac.v1.PolicyRule.Names": {
+      "enum": [
+        "apiGroups",
+        "nonResourceURLs",
+        "resourceNames",
+        "resources",
+        "verbs"
+      ]
+    },
     "io.k8s.api.rbac.v1.PolicyRule": {
       "description": "PolicyRule holds information that describes a policy rule, but does not contain information about who the rule applies to or which namespace the rule applies to.",
       "properties": {
@@ -16063,7 +16076,7 @@
           "items": {
             "$ref": "#/definitions/io.k8s.api.rbac.v1.PolicyRule"
           },
-          "type": "array"
+          "type": ["array","object"]
         }
       },
       "type": "object",
@@ -23314,7 +23327,54 @@
           }
         }
       }
-    },    
+    },
+    "hull.Role.v1.Names": {
+      "enum": [
+        "rules"
+      ]
+    },
+    "hull.Role.v1": {
+      "type": "object",
+      "properties": {
+        "rules": {
+          "title": "Rules",
+          "type": ["object","array"],
+          "required": [],
+          "patternProperties": {
+            "^[^_].*$": {
+              "type": [
+                "null",
+                "object"
+              ],
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/io.k8s.api.rbac.v1.PolicyRule"
+                    },
+                    {
+                      "propertyNames": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/definitions/io.k8s.api.rbac.v1.PolicyRule.Names"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        
+      ]
+    },
     "configmap.v1": {
       "$id": "#/definitions/configmap.v1",
       "title": "Configmap",
@@ -23629,6 +23689,9 @@
           "$ref": "#/definitions/hull.ObjectBase.v1"
         },
         {
+          "$ref": "#/definitions/hull.Role.v1"
+        },
+        {
           "$ref": "#/definitions/io.k8s.api.rbac.v1.Role"
         },
         {
@@ -23636,6 +23699,9 @@
             "anyOf": [
               {
                 "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.Role.v1.Names"
               },
               {
                 "$ref": "#/definitions/io.k8s.api.rbac.v1.Role.Names"
@@ -23679,6 +23745,9 @@
           "$ref": "#/definitions/hull.ObjectBase.v1"
         },
         {
+          "$ref": "#/definitions/hull.Role.v1"
+        },
+        {
           "$ref": "#/definitions/io.k8s.api.rbac.v1.ClusterRole"
         },
         {
@@ -23686,6 +23755,9 @@
             "anyOf": [
               {
                 "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.Role.v1.Names"
               },
               {
                 "$ref": "#/definitions/io.k8s.api.rbac.v1.ClusterRole.Names"
@@ -23876,6 +23948,31 @@
               },
               {
                 "$ref": "#/definitions/hull.Ingress.v1.Names"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "ingressclass.v1": {
+      "$id": "#/definitions/ingressclass.v1",
+      "title": "IngressClass",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.networking.v1.IngressClassSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.networking.v1.IngressClassSpec.Names"
               }
             ]
           }
@@ -24603,6 +24700,29 @@
                 }
               }
             },
+            "ingressclass": {
+              "$id": "#/definitions/root/objects/ingressclass",
+              "title": "IngressClass",
+              "type": "object",
+              "required": [],
+              "patternProperties": {
+                "^[^_].*$": {
+                  "type": [
+                    "null",
+                    "object"
+                  ],
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "$ref": "#/definitions/ingressclass.v1"
+                    }
+                  ],
+                  "properties": {}
+                }
+              }
+            },
             "servicemonitor": {
               "$id": "#/definitions/root/objects/servicemonitors",
               "title": "Servicemonitors",
@@ -24961,7 +25081,7 @@
                               "$id": "#/definitions/root/config/general/metadata/labels/common/app.kubernetes.io/component",
                               "title": "App.kubernetes.io/component",
                               "description": "Component metadata.",
-                             "type": ["string","null"],
+                              "type": ["string","null"],
                               "default": null
                             },
                             "helm.sh/chart": {
