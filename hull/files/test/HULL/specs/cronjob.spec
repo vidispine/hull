@@ -20,6 +20,7 @@ Test creation of objects and features.
 * Test Object has key "spec§schedule" with value "0 0 * * *"
 * Test Object has key "spec§jobTemplate§spec§template§spec§containers§0§image" with value "docker.io/alpine/git:v2.26.2"
 * Test Object has key "spec§jobTemplate§spec§template§spec§containers§0§env§0§value" with value "the_repo"
+* Test Object does not have key "spec§jobTemplate§spec§template§spec§selector"
 
 ## Secrets and ConfigMaps and CronJobs - ConfigMap
 * Prepare default test case for this kind with test chart "hull-test" and values file "values_cronjob_secret_configmap.hull.yaml" including suites "basic"
