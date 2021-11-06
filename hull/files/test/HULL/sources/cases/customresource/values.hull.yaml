@@ -63,3 +63,13 @@ hull:
         apiVersion: "dummyApi/v1"
         kind: "Dummy"
         spec: {}
+
+      disabled_transform_tpl_if:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+        
+      enabled_transform_tpl_if:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}

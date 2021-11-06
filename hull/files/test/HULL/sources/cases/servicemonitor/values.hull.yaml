@@ -78,4 +78,12 @@ hull:
         selector: {}
         endpoints: []
 
+      disabled_transform_tpl_if:
+        selector: {}
+        endpoints: []
+        
+      enabled_transform_tpl_if:
+        selector: {}
+        endpoints: []
+      
 ###################################################

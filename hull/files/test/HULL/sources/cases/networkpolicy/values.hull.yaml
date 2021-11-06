@@ -56,7 +56,17 @@ hull:
         podSelector: 
           matchLabels:
             key: value
-        
+      
+      disabled_transform_tpl_if:
+        podSelector: 
+          matchLabels:
+            key: value
+      
+      enabled_transform_tpl_if:
+        podSelector: 
+          matchLabels:
+            key: value
+
       standard:
         egress:
         - ports:

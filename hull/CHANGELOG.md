@@ -1,4 +1,12 @@
 ------------------
+[1.21.15]
+------------------
+
+CHANGES:
+- add hull.util.transformation.bool transformation
+- BREAKING! change fields for registry population to overwrite any explicit registry fields 
+
+------------------
 [1.21.14]
 ------------------
 
@@ -15,6 +23,6 @@ FIXES:
 ------------------
 [1.21.13]
 ------------------
-FEATURES: 
+CHANGES: 
 - allow enabled property on all key-value pair HULL objects
 - allow to use string as input for enabled property in order to use HULL transformations on enabled properties
