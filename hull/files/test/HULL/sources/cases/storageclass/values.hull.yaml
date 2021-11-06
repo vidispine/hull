@@ -44,5 +44,11 @@ hull:
       enabled_transform_dict:
         provisioner: "local-volume"
 
+      disabled_transform_tpl_if:
+        provisioner: "local-volume"
+        
+      enabled_transform_tpl_if:
+        provisioner: "local-volume"
+        
 
 ###################################################

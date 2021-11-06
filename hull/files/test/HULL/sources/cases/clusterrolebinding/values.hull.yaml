@@ -81,4 +81,16 @@ hull:
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
+          
+      disabled_transform_tpl_if:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+          
+      enabled_transform_tpl_if:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
 ###################################################

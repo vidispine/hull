@@ -15,44 +15,59 @@
 * Prepare default test case for this kind including suites "pod,imagepullsecretsfromfirstregistry"
 * Render
 
+* Set test object to "release-name-hull-test-service_account"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
+
+* Set test object to "release-name-hull-test-imagepullsecrets_custom"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
+
+* Set test object to "release-name-hull-test-imagepullsecrets_add_all"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
+
 * Set test object to "release-name-hull-test-image_name_empty_registry"
-* Test Object has key "spec§template§spec§containers§0§image" with value "example.cr.io/my/image/repo"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
+
+* Set test object to "release-name-hull-test-image_name_registry"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
 
 * Set test object to "release-name-hull-test-image_name_tag"
-* Test Object has key "spec§template§spec§containers§0§image" with value "example.cr.io/my/image/repo:99.9"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
+
+* Set test object to "release-name-hull-test-custom_args"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
+
+* Set test object to "release-name-hull-test-removal_test"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
+
 
 
 
 * Prepare default test case for this kind including suites "pod,imagepullsecretsfromregistryname"
 * Render
 
-* Set test object to "release-name-hull-test-image_name_empty_registry"
-* Test Object has key "spec§template§spec§containers§0§image" with value "local.cr.io/my/image/repo"
+* Set test object to "release-name-hull-test-service_account"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-image_name_tag"
-* Test Object has key "spec§template§spec§containers§0§image" with value "local.cr.io/my/image/repo:99.9"
+* Set test object to "release-name-hull-test-imagepullsecrets_custom"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
-
-
-* Prepare default test case for this kind including suites "pod,imagepullsecretsfromfirstregistry"
-* Render
+* Set test object to "release-name-hull-test-imagepullsecrets_add_all"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
 * Set test object to "release-name-hull-test-image_name_empty_registry"
-* Test Object has key "spec§template§spec§containers§0§image" with value "example.cr.io/my/image/repo"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
+
+* Set test object to "release-name-hull-test-image_name_registry"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
 * Set test object to "release-name-hull-test-image_name_tag"
-* Test Object has key "spec§template§spec§containers§0§image" with value "example.cr.io/my/image/repo:99.9"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
+* Set test object to "release-name-hull-test-custom_args"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
-
-* Prepare default test case for this kind including suites "pod,imagepullsecretsfromregistryname"
-* Render
-
-* Set test object to "release-name-hull-test-image_name_empty_registry"
-* Test Object has key "spec§template§spec§containers§0§image" with value "local.cr.io/my/image/repo"
-
-* Set test object to "release-name-hull-test-image_name_tag"
-* Test Object has key "spec§template§spec§containers§0§image" with value "local.cr.io/my/image/repo:99.9"
+* Set test object to "release-name-hull-test-removal_test"
+* Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
 
 

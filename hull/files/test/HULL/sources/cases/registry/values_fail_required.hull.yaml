@@ -25,6 +25,12 @@ hull:
         
       enabled_transform_dict:
         server: enabled_transform_dict.cr.io
+      
+      disabled_transform_tpl_if:
+        server: enabled_transform_tpl_if.cr.io
+        
+      enabled_transform_tpl_if:
+        server: enabled_transform_tpl_if.cr.io
         
       failing:
         enabled: true

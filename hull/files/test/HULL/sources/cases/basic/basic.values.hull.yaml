@@ -26,6 +26,10 @@ hull:
         a: b
         c: d
       switch_enabled_dict_not_exists: {}
+      switch_condition_a_true: true
+      switch_condition_b_false: false
+      switch_condition_c_true: true
+      
   ###################################################
           
   ###################################################
@@ -61,7 +65,19 @@ hull:
           >>>"
         annotations:
           annotation: "I am an Annotation"
+      
+      disabled_transform_tpl_if:
+        enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.bool>>><<<CONDITION=
+          (and (index . \"PARENT\").Values.hull.config.specific.switch_condition_a_true (index . \"PARENT\").Values.hull.config.specific.switch_condition_b_false)>>>"
+        annotations:
+          annotation: "I am an Annotation"
 
+      enabled_transform_tpl_if:
+        enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.bool>>><<<CONDITION=
+          (and (index . \"PARENT\").Values.hull.config.specific.switch_condition_a_true (index . \"PARENT\").Values.hull.config.specific.switch_condition_c_true)>>>"
+        annotations:
+          annotation: "I am an Annotation"
+          
       disabled_transform_dict:
         enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
           {{ if (index . \"PARENT\").Values.hull.config.specific.switch_enabled_dict_not_exists }}
