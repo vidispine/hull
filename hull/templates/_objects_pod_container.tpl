@@ -49,13 +49,10 @@
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- $baseName := $spec.repository }}
-{{ if (and (hasKey $spec "registry") (ne (printf "%s" $spec.registry) "")) }}
-{{- $baseName = printf "%s/%s" $spec.registry $baseName }}
-{{- else }}
-{{ if (ne (index $parent.Values $hullRootKey).config.general.defaultImageRegistryServer "") }}
-{{- $baseName = printf "%s/%s" (index $parent.Values $hullRootKey).config.general.defaultImageRegistryServer $baseName }}
+{{ if (ne (default "" (index $parent.Values $hullRootKey).config.general.globalImageRegistryServer) "") }}
+{{- $baseName = printf "%s/%s" (index $parent.Values $hullRootKey).config.general.globalImageRegistryServer $baseName }}
 {{- else -}}
-{{ if (index $parent.Values $hullRootKey).config.general.defaultImageRegistryToFirstRegistrySecretServer }}
+{{ if default false (index $parent.Values $hullRootKey).config.general.globalImageRegistryToFirstRegistrySecretServer }}
 {{- $found := false }}
 {{ if (gt (len (keys (default dict (index $parent.Values $hullRootKey).objects.registry))) 1) }}
 {{- range $name, $specRegistry := (index $parent.Values $hullRootKey).objects.registry }}
@@ -65,7 +62,9 @@
 {{- end }}
 {{- end }}
 {{- end }}
-{{- end }}
+{{- else }}
+{{ if (and (hasKey $spec "registry") (ne (printf "%s" $spec.registry) "")) }}
+{{- $baseName = printf "%s/%s" $spec.registry $baseName }}{{- end }}
 {{- end }}
 {{- end }}
 {{ if (and (hasKey $spec "tag") (ne (printf "%s" $spec.tag) "")) }}

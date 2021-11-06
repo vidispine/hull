@@ -24978,21 +24978,21 @@
                   ],
                   "default": true
                 },
-                "defaultImageRegistryServer": {
-                  "$id": "#/definitions/root/config/general/defaultImageRegistryServer",
+                "globalImageRegistryServer": {
+                  "$id": "#/definitions/root/config/general/globalImageRegistryServer",
                   "description": "If true, the registry field for all container images defaults to this value.",
                   "type": "string",
-                  "title": "defaultImageRegistryServer",
+                  "title": "globalImageRegistryServer",
                   "examples": [
                     "mycompany.docker-registry.io"
                   ],
                   "default": ""
                 },
-                "defaultImageRegistryToFirstRegistrySecretServer": {
-                  "$id": "#/definitions/root/config/general/defaultImageRegistryToFirstRegistrySecretServer",
+                "globalImageRegistryToFirstRegistrySecretServer": {
+                  "$id": "#/definitions/root/config/general/globalImageRegistryToFirstRegistrySecretServer",
                   "description": "If true, the registry field for all container images defaults to the first registry objects server field if registry objects exist.",
                   "type": "boolean",
-                  "title": "DefaultImageRegistryToFirstRegistrySecretServer",
+                  "title": "globalImageRegistryToFirstRegistrySecretServer",
                   "examples": [
                     true,
                     false

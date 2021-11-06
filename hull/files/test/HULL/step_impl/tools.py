@@ -7,6 +7,7 @@ import subprocess
 import sys
 import jsonschema
 import yaml
+import re
 
 from dotty_dict import Dotty
 from getgauge.python import Messages, before_scenario, before_step, data_store, step
@@ -199,6 +200,14 @@ def test_object_has_key_with_value(key, value):
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert_values_equal(data_store.scenario.test_object[key], value, key)
 
+@step("Test Object has key <key> with value matching regex <regex>")
+def test_object_has_key_with_value_matching_regex(key, regex):
+    assert "test_object" in data_store.scenario != None, "No Test Object set!"    
+    assert data_store.scenario.test_object != None, "Test Object set to None!"
+    assert regex != None, "Regex cannot be empty!"
+    compiled = re.compile(regex)
+    assert compiled.match(data_store.scenario.test_object[key]), "The value '" + data_store.scenario.test_object[key] + "' was not matched by regex '" + regex + "'!"
+
 @step("Test Object has key <key> set to true")
 def test_object_has_key_set_to_true(key):
     test_object_has_key_with_value(key, True)
@@ -245,8 +254,15 @@ def all_test_objects_have_key_with_value(key, value):
     test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
     for i in test_objects:
         set_test_object_to(i)
-        test_object_has_key_with_value(key, value)        
+        test_object_has_key_with_value(key, value)
 
+@step("All test objects have key <key> with value matching regex <regex>")
+def all_test_objects_have_key_with_value_matching_regex(key, regex):
+    test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
+    for i in test_objects:
+        set_test_object_to(i)
+        test_object_has_key_with_value_matching_regex(key, regex)
+        
 @step("All test objects have key <key> with value of key <scenario_key> from scenario data_store")
 def all_test_objects_have_key_with_value_of_key_from_data_store(key, scenario_key):
     test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
