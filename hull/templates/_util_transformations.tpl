@@ -116,3 +116,10 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{ $key }}: {{ tpl  $content (merge (dict "Template" $parent.Template "PARENT" $parent) .) }}
 {{- end -}}
+
+{{- define "hull.util.transformation.bool" -}}
+{{- $key := (index . "KEY") -}}
+{{ $content := (index . "CONDITION") }}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{ $key }}: {{ tpl  (printf "{{ if %s }}true{{ else }}false{{ end }}" $content) (merge (dict "Template" $parent.Template "PARENT" $parent) .) }}
+{{- end -}}

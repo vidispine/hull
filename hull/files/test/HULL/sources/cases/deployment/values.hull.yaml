@@ -58,7 +58,6 @@ hull:
           containers:
             main:
               image:
-                
                 repository: my/image/repo
 
       image_name_tag:
