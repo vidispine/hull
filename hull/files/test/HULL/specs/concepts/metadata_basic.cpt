@@ -125,3 +125,10 @@ Enabling and Disabling
 * Set test object to "release-name-hull-test-enabled_transform_dict"
 * Test Object has key "metadata§annotations§annotation" with value "I am an Annotation"
 
+Transformation checks
+
+* Test object "release-name-hull-test-disabled_transform_tpl_if" does not exist
+
+* Set test object to "release-name-hull-test-enabled_transform_tpl_if"
+* Test Object has key "metadata§annotations§annotation" with value "I am an Annotation"
+

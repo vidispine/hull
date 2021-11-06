@@ -344,6 +344,10 @@ Produces:
 
 The value of the referenced key within `values.yaml`
 
+Description:
+
+Provides an easy to use shortcut to simply get the value of a field in `values.yaml`.
+
 ### Create dynamic fullname (_hull.util.transformation.makefullname_)
 
 Arguments: 
@@ -354,6 +358,10 @@ Produces:
 
 The processed fullname, typically `<CHART_NAME>_<RELEASE_NAME>_<COMPONENT>`
 
+Description:
+
+Resembles the typically used helper function to create a unique object name per type by inlcuding chart and instance names.
+
 ### Render a string with `tpl` (_hull.util.transformation.tpl_)
 
 Arguments: 
@@ -363,6 +371,26 @@ Arguments:
 Produces:
 
 The processed result of executing `tpl` on the string. Depending on where this transformation is used this can be a dictionary, a string or an array of strings.
+
+Description:
+
+The most powerful transformation that allows to freely specify the Go templating expression(s) to be evaluated. Care needs to be taken so that the returned string can be converted to the desired return type if it is not string.
+
+### Evaluate a condition to a boolean with `tpl` (_hull.util.transformation.bool_)
+
+Arguments: 
+
+- CONDITION: The string that contains the literal condition to be checked against
+
+Produces:
+
+A boolean return value that can be used to populate a boolean field
+
+Description:
+
+Typical use of this function is to set the `enabled` field on objects depending on a particular condition. Internally it uses `tpl` to produce a boolean result from the evaluation of the literal CONDITION.
+
+The `enabled` fields explicitly allow string as an input which makes them subjectable to this transformation returning the boolean result.
 
 ---
 Back to [README.md](./../README.md)

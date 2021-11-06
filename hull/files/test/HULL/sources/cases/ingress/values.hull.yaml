@@ -36,7 +36,7 @@ hull:
             http:              
               paths:                  
                 standard:
-                  path: /standard                    
+                  path: /standard
                   backend:
                     service:
                       name: service1_standard
@@ -54,7 +54,7 @@ hull:
             http:              
               paths:                  
                 standard:
-                  path: /standard                    
+                  path: /standard
                   backend:
                     service:
                       name: service1_standard
@@ -92,7 +92,7 @@ hull:
             http:              
               paths:                  
                 standard:
-                  path: /standard                    
+                  path: /standard
                   backend:
                     service:
                       name: service1_standard
@@ -103,7 +103,7 @@ hull:
             http:              
               paths:                  
                 standard:
-                  path: /transform                    
+                  path: /transform
                   backend:
                     service:
                       name: _HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.makefullname>>><<<COMPONENT=full_name_transformed>>>
