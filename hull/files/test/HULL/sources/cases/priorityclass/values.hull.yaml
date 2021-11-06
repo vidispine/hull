@@ -45,5 +45,11 @@ hull:
         
       enabled_transform_dict:
         value: 100
+      
+      disabled_transform_tpl_if:
+        value: 100
+        
+      enabled_transform_tpl_if:
+        value: 100
 
 ###################################################

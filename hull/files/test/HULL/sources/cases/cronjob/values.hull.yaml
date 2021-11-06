@@ -110,4 +110,25 @@ hull:
                 image:
                   repository: my/image/repo
                   tag: "99.9"
+                  
+      disabled_transform_tpl_if:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      
+      enabled_transform_tpl_if:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
   ###################################################

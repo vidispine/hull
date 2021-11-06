@@ -74,7 +74,18 @@ hull:
         serviceName: enabled_transform_dict
         pod:
           containers: {}
-        
+      
+      disabled_transform_tpl_if:
+        serviceName: enabled_transform_dict
+        pod:
+          containers: {}
+
+      
+      enabled_transform_tpl_if:
+        serviceName: enabled_transform_dict
+        pod:
+          containers: {}
+
       imagepullsecrets_custom:
         serviceName: image_name_empty_registry
         pod:
