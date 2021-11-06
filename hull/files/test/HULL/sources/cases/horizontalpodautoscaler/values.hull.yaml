@@ -60,7 +60,19 @@ hull:
           name: metadata_overwrite
           kind: "Deployment"
         maxReplicas: 3
+
+      disabled_transform_tpl_if:
+        scaleTargetRef:
+          name: metadata_overwrite
+          kind: "Deployment"
+        maxReplicas: 3
         
+      enabled_transform_tpl_if:
+        scaleTargetRef:
+          name: metadata_overwrite
+          kind: "Deployment"
+        maxReplicas: 3
+
       internal:
         minReplicas: 1
         maxReplicas: 2
