@@ -1,4 +1,11 @@
 ------------------
+[1.20.14]
+------------------
+CHANGES:
+- fix enabled properties allowed on policyrules in roles, envfrom and tls in ingresses
+- allow shorter form of (index . "$") to access parent context
+
+------------------
 [1.20.13]
 ------------------
 
