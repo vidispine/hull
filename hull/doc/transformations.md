@@ -230,12 +230,12 @@ hull:
               args: 
               - "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
 [
-{{ if (index . \"PARENT\").Values.hull.config.specific.if_this_arg_is_defined }}
-\"{{ (index . \"PARENT\").Values.hull.config.specific.if_this_arg_is_defined }}\",
-\"{{ (index . \"PARENT\").Values.hull.config.specific.then_add_this_arg }}\",
+{{ if (index . \"$\").Values.hull.config.specific.if_this_arg_is_defined }}
+\"{{ (index . \"$\").Values.hull.config.specific.if_this_arg_is_defined }}\",
+\"{{ (index . \"$\").Values.hull.config.specific.then_add_this_arg }}\",
 {{ end }}
-{{ if not (index . \"PARENT\").Values.hull.config.specific.if_this_arg_is_not_defined }}
-\"{{ (index . \"PARENT\").Values.hull.config.specific.then_use_this_arg }}\"
+{{ if not (index . \"$\").Values.hull.config.specific.if_this_arg_is_not_defined }}
+\"{{ (index . \"$\").Values.hull.config.specific.then_use_this_arg }}\"
 {{ end }}
 ]
 >>>"
@@ -258,10 +258,12 @@ On rendering the following happens:
   - when referring to the `.Values` in `values.yaml` you need to refer to 
 
     ```yaml
-    (index . \"PARENT\").Values
+    (index . \"$\").Values
     ```
 
-    instead. This is because the parent charts context is being passed into the `tpl` function as a dictionary parameter `PARENT`. Nevertheless full access to all fields of the `values.yaml` is possible.
+    instead. This is because the parent charts context is being passed into the `tpl` function as a dictionary parameter `$`. Nevertheless full access to all fields of the `values.yaml` is possible.
+    
+    ⚠️ **Instead of `(index . \"$\")` you can alternatively use `(index . \"PARENT\")` which is slight longer to write but does the same.** ⚠️
 
   - When the `tpl`-ed string should result in a string array, use the 
 

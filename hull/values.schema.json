@@ -6844,8 +6844,7 @@
           "title": "Enabled"
         }
       },
-      "type": "object",
-      "additionalProperties": false
+      "type": "object"
     },
     "io.k8s.api.core.v1.EnvVar.Names": {
       "enum": [
@@ -13564,8 +13563,7 @@
           "title": "Enabled"
         }
       },
-      "type": "object",
-      "additionalProperties": false
+      "type": "object"
     },
     "io.k8s.api.networking.v1.NetworkPolicy": {
       "description": "NetworkPolicy describes what network traffic is allowed for a set of Pods",
@@ -15393,7 +15391,8 @@
         "nonResourceURLs",
         "resourceNames",
         "resources",
-        "verbs"
+        "verbs",
+        "enabled"
       ]
     },
     "io.k8s.api.rbac.v1.PolicyRule": {
@@ -15433,13 +15432,19 @@
             "type": "string"
           },
           "type": "array"
+        },
+        "enabled": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "title": "Enabled"
         }
       },
       "required": [
         "verbs"
       ],
-      "type": "object",
-      "additionalProperties": false
+      "type": "object"
     },
     "io.k8s.api.rbac.v1.Role.Names": {
       "enum": [
