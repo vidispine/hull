@@ -110,16 +110,38 @@
 {{ $key }}: {{ $current }}
 {{- end -}}
 
+{{- /*
+| Purpose:  
+|   
+|   Gets the value from a tpl expression run against the CONTENT string.
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   CONTENT: The string that describes the code which is subject to tpl
+|
+*/ -}}
 {{- define "hull.util.transformation.tpl" -}}
 {{- $key := (index . "KEY") -}}
 {{ $content := (index . "CONTENT") }}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
-{{ $key }}: {{ tpl  $content (merge (dict "Template" $parent.Template "PARENT" $parent) .) }}
+{{ $key }}: {{ tpl  $content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent) .) }}
 {{- end -}}
 
+{{- /*
+| Purpose:  
+|   
+|   Gets the boolean value from a CONDITION via tpl.
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   CONDITION: The condition to be checked against
+|
+*/ -}}
 {{- define "hull.util.transformation.bool" -}}
 {{- $key := (index . "KEY") -}}
 {{ $content := (index . "CONDITION") }}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
-{{ $key }}: {{ tpl  (printf "{{ if %s }}true{{ else }}false{{ end }}" $content) (merge (dict "Template" $parent.Template "PARENT" $parent) .) }}
+{{ $key }}: {{ tpl  (printf "{{ if %s }}true{{ else }}false{{ end }}" $content) (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent) .) }}
 {{- end -}}

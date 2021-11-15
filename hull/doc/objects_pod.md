@@ -70,10 +70,6 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------
-However the properties listed below are overwritten or added by HULL:
-
-| Parameter | Description  | Default | Example 
-| --------  | -------------| ------- | --------
 `enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` |
 | `valueFrom.configMapKeyRef.staticName` | Specifies whether the `name` key of this `valueFrom.configMapKeyRef` refers to a fixed name of a ConfigMap in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `valueFrom.configMapKeyRef` references a key defined in this helm chart. | `false` | `true`
 | `valueFrom.secretKeyRef.staticName` | Specifies whether the `name` key of this `valueFrom.secretKeyRef` refers to a fixed name of a Secret in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `valueFrom.secretKeyRef` references a key defined in this helm chart. | `false` | `true`

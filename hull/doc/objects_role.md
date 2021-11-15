@@ -14,17 +14,30 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------
-| `rules` | Dictionary with [**`io.k8s.api.rbac.v1.PolicyRule`**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#policyrule-v1-rbac-authorization-k8s-io) values to add to the roles `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`io.k8s.api.rbac.v1.PolicyRule`**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#policyrule-v1-rbac-authorization-k8s-io) properties of the rule. | `{}` |
+| `rules` | Dictionary with PolicyRules to add to the ClusterRole's `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.PolicyRules.v1`** properties. See below for reference. | `{}` || `{}` 
+
 
 ### The `hull.ClusterRole.v1` properties
 
-Properties can be set as they are defined in the [Kubernetes API's clusterroles spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#clusterrole-v1-rbac-authorization-k8s-io). 
+Properties can be set as they are defined in the [Kubernetes API's clusterroles spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#clusterrole-v1-rbac-authorization-k8s-io). 
 
 However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------
-| `rules` | Dictionary with [**`io.k8s.api.rbac.v1.PolicyRule`**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#policyrule-v1-rbac-authorization-k8s-io) values to add to the roles `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`io.k8s.api.rbac.v1.PolicyRule`**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#policyrule-v1-rbac-authorization-k8s-io) properties of the rule. | `{}` |
+| `rules` | Dictionary with PolicyRules to add to the ClusterRole's `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.PolicyRules.v1`** properties. See below for reference. | `{}` || `{}` 
+
+### The `hull.PolicyRules.v1` properties
+
+> The key-value pairs of value type `hull.PolicyRules.v1` are converted to an array on rendering 
+
+Properties can be set as they are defined in the [Kubernetes API's policyrules spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#policyrule-v1-rbac-authorization-k8s-io). 
+
+However the properties listed below are overwritten or added by HULL:
+
+| Parameter | Description  | Default | Example 
+| --------  | -------------| ------- | --------
+`enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` |
 
 ---
 Back to [README.md](./../README.md)
