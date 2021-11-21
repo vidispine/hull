@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "11" objects were rendered
+* Expected number of "12" objects were rendered
 * Validate
 
 ## Metadata
@@ -42,6 +42,17 @@ Test creation of objects and features.
 * Test Object has key "spec§ports§0§name" with value "test_enabled"
 * Test Object has key "spec§ports§1§name" with value "test_enabled_missing"
 * Test Object has key "spec§ports§2§name" with value "test_enabled_transform"
+
+## Mixed Key Transformation
+* Render
+* Set test object to "release-name-hull-test-mixed_key_transformation"
+* Test Object has key "spec§ports" with array value that has "4" items
+* Test Object has key "spec§ports§0§name" with value "dynamic_one"
+* Test Object has key "spec§ports§1§name" with value "dynamic_two"
+* Test Object has key "spec§ports§2§name" with value "static_one"
+* Test Object has key "spec§ports§3§name" with value "static_two"
+
+
 ___
 
 * Clean the test execution folder

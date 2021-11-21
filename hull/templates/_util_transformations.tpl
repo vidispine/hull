@@ -13,12 +13,14 @@
 {{- if typeIs "map[string]interface {}" $source -}}
     {{- range $key,$value := $source -}}
         {{- if typeIs "map[string]interface {}" $value -}}
-            {{- if hasKey $value "_HULL_TRANSFORMATION_" -}}
+            {{- if hasKey $value "_HULL_TRANSFORMATION_" -}}                
                 {{- $params := $value._HULL_TRANSFORMATION_ -}}
                 {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "HULL_ROOT_KEY" $hullRootKey) $params -}}
+                {{- $others := omit $value "_HULL_TRANSFORMATION_" "_HULL_OBJECT_TYPE_DEFAULT_" }}
                 {{- $valDict := fromYaml (include $value._HULL_TRANSFORMATION_.NAME $pass) -}}
+                {{- $combined := dict $key (merge $others (index $valDict $key)) }}
                 {{- $source := unset $source $key -}}
-                {{- $source := merge $source $valDict -}}  
+                {{- $source := merge $source $combined -}}
             {{- else -}}
                 {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey) -}}
             {{- end -}}

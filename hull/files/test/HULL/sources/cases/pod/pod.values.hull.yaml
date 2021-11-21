@@ -210,8 +210,8 @@ hull:
                 ENV_VAR_FIELD:
                   valueFrom:
                     fieldRef:
-                      fieldPath: "metadata.field"                      
-                      apiVersion: "v1"                    
+                      fieldPath: "metadata.field"
+                      apiVersion: "v1"
                 ENV_VAR_RESOURCE:
                   valueFrom:
                     resourceFieldRef:
