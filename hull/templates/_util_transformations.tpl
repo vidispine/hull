@@ -10,10 +10,11 @@
 {{- $caller := default nil (index . "CALLER") -}}
 {{- $callerKey := default nil (index . "CALLER_KEY") -}}
 {{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
-{{- $shortForms := dict "_HT?" (list "hull.util.transformation.bool" "CONDITION") 
-                        "_HT*" (list "hull.util.transformation.get" "REFERENCE")
-                        "_HT!" (list "hull.util.transformation.tpl" "CONTENT")
-                        "_HT^" (list "hull.util.transformation.makefullname" "COMPONENT")}}
+{{- $shortForms := dict -}}
+{{- $shortForms = set $shortForms "_HT?" (list "hull.util.transformation.bool" "CONDITION") -}}
+{{- $shortForms = set $shortForms "_HT*" (list "hull.util.transformation.get" "REFERENCE") -}}
+{{- $shortForms = set $shortForms "_HT!" (list "hull.util.transformation.tpl" "CONTENT") -}}
+{{- $shortForms = set $shortForms "_HT^" (list "hull.util.transformation.makefullname" "COMPONENT") -}}
 {{- if typeIs "map[string]interface {}" $source -}}
     {{- range $key,$value := $source -}}
         {{- if typeIs "map[string]interface {}" $value -}}
