@@ -84,7 +84,7 @@ Within the `config` section you can configure general settings for your Helm cha
 | Parameter                       | Description                                                     | Default                      |                  Example |
 | ------------------------------- | ----------------------------------------------------------------| -----------------------------| -----------------------------------------|
 | `config` | Specification of configuration options for this chart. <br><br>Has only the following sub-fields: <br><br>`specific`<br>`general` | |
-| `config.general` | In this section you might define everything that is not particular to a unique product but to a range of products you want to deploy via helm. See the subfields descriptions for their intended usage. <br><br>Has only the following sub-fields: <br><br>`rbac`<br>`data`<br>`metadata` | |
+| `config.general` | In this section you might define everything that is not particular to a unique product but to a range of products you want to deploy via helm. See the subfields descriptions for their intended usage. <br><br>Has only the following sub-fields: <br><br>`nameOverride`<br>`fullnameOverride`<br>`createImagePullSecretsFromRegistries`<br>`globalImageRegistryServer`<br>`globalImageRegistryToFirstRegistrySecretServer`<br>`rbac`<br>`data`<br>`metadata` | |
 | `config.general.nameOverride` | The name override is applied to values of metadata label `app.kubernetes.io/name`. If set this effectively replaces the chart name here.
 | `config.general.fullnameOverride` | If set, the fullname override is applied to all object names and replaces the `<release>-<chart>` pattern in object names.
 | `config.general.createImagePullSecretsFromRegistries` | If true, image pull secrets are created from all registries defined in this Helm chart and are added to all pods. | `true` | `false` |
@@ -531,17 +531,18 @@ hull:
                    # unique key to make manipulating them easy.
               image:
                 repository: nginx
-                tag: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>>
-<<<CONTENT=\"{{ (index . \"PARENT\").Values.hull.config.specific.nginx_tag }}\">>>"
+                tag: _HT!{{ (index . "$").Values.hull.config.specific.nginx_tag }}
                   # Applies a tpl transformation allowing to inject dynamic data based
                   # on values in this values.yaml into the resulting field (here the tag
                   # field of this container).
-                  # This example just references the value of the field which is specified 
-                  # further above in the values.yaml and will produce 'image: nginx:1.14.2'
-                  # in the resulting deployment YAML but more complex conditional Go
-                  # templating logic is applicable. There are some limitations to using 
-                  # this approach though which are detailed in the transformation.md in 
-                  # the doc section.
+                  # _HT! is the short form of the transformation that applies tpl to
+                  # a given value. This example just references the value of the field 
+                  # which is specified further above in the values.yaml and will 
+                  # produce 'image: nginx:1.14.2' when rendered in the resulting 
+                  # deployment YAML but complex conditional Go templating logic is 
+                  # applicable too. 
+                  # There are some limitations to using this approach which are 
+                  # detailed in the transformation.md in the doc section.
               ports:
                 http: # unique key per container here too. All key-value structures
                       # which are array in the K8S objects are converted to arrays
