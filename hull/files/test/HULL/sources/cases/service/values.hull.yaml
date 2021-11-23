@@ -68,3 +68,24 @@ hull:
             port: 50
             targetPort: 5050
             nodePort: 505050
+        
+      mixed_key_transformation:
+        type: NodePort
+        ports:
+          static_one:
+            enabled: true
+            port: 10
+            targetPort: 1010
+            nodePort: 101010
+          static_two:
+            enabled: true
+            port: 20
+            targetPort: 2020
+            nodePort: 202020
+          _HULL_TRANSFORMATION_:
+            NAME: hull.util.transformation.tpl
+            CONTENT: |-
+              {
+              dynamic_one: {enabled: true, port: 30, targetPort: 3030, nodePort: 303030 },
+              dynamic_two: {enabled: true, port: 40, targetPort: 4040, nodePort: 404040 }
+              }
