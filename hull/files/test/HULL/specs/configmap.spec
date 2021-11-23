@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "11" objects were rendered
+* Expected number of "12" objects were rendered
 * Validate
 
 ## Metadata
@@ -37,6 +37,11 @@ Test creation of objects and features.
 ## Transformation
 * Render
 * Set test object to "release-name-hull-test-transformation_resolved"
+* Test Object has key "data§concrete_file_4_resolved.txt" with value "This is a text file with a pointer to a transformation."
+* Test Object has key "data§equal_sign_preservation" with value "transformation = transformation"
+
+* Render
+* Set test object to "release-name-hull-test-transformation_resolved_short"
 * Test Object has key "data§concrete_file_4_resolved.txt" with value "This is a text file with a pointer to a transformation."
 * Test Object has key "data§equal_sign_preservation" with value "transformation = transformation"
 
