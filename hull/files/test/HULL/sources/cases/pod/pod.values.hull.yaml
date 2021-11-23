@@ -5,16 +5,6 @@
 ###################################################
 ### CONFIG
 hull:
-  config:
-    specific: # Here you can put all that is particular configuration for your app
-      globalRegistry: local.registry
-      
-      if_this_arg_is_defined: --this-is-defined # Whenever this is not empty ...
-      then_add_this_arg: --hence-is-this # also add this argument
-      
-      if_this_arg_is_not_defined:  # Whenever this is not empty ...
-      then_use_this_arg: --and-this-because-other-is-not-defined # also add this argument
-
   objects:
     registry:
 
@@ -210,8 +200,8 @@ hull:
                 ENV_VAR_FIELD:
                   valueFrom:
                     fieldRef:
-                      fieldPath: "metadata.field"                      
-                      apiVersion: "v1"                    
+                      fieldPath: "metadata.field"
+                      apiVersion: "v1"
                 ENV_VAR_RESOURCE:
                   valueFrom:
                     resourceFieldRef:
@@ -519,3 +509,153 @@ hull:
             test_enabled_missing:
               secret:
                 secretName: test_enabled_missing
+
+      transformation_shortforms:
+        pod:
+          containers:
+            test_disabled:
+              enabled: false
+              command:
+                - test_disabled
+            test_enabled:
+              enabled: true
+              command:
+                - _HT![ 'test_enabled' ]
+              env:
+                test_disabled:
+                  enabled: false
+                  value: test_disabled
+                test_enabled:
+                  enabled: true
+                  value: _HT*hull.config.specific.name_test_enabled
+                test_disabled_transform:
+                  enabled: _HT?(index . "$").Values.hull.config.specific.switch_enabled_off
+                  value: test_disabled_transform
+                test_enabled_transform:
+                  enabled: _HT?(index . "$").Values.hull.config.specific.switch_enabled_on
+                  value: _HT!{{ (index . "$").Values.hull.config.specific.name_test_enabled }}_transform
+                test_enabled_missing:
+                  value: _HT!{{ (index . "$").Values.hull.config.specific.name_test_enabled }}_missing
+              envFrom:
+                test_disabled:
+                  enabled: false
+                  configMapRef:
+                    name: test_disabled
+                    optional: true
+                test_enabled:
+                  enabled: true
+                  configMapRef:
+                    name: _HT*hull.config.specific.name_test_enabled
+                    optional: true
+                test_disabled_transform:
+                  enabled: _HT?(index . "$").Values.hull.config.specific.switch_enabled_off
+                  configMapRef:                  
+                    name: test_disabled_transform
+                    optional: true
+                test_enabled_transform:
+                  enabled: _HT?(index . "$").Values.hull.config.specific.switch_enabled_on
+                  configMapRef:
+                    name: _HT!{{ (index . "$").Values.hull.config.specific.name_test_enabled }}_transform
+                    optional: true
+                test_enabled_missing:
+                  configMapRef:
+                    name: _HT!{{ (index . "$").Values.hull.config.specific.name_test_enabled }}_missing
+                    optional: true
+              ports:
+                _HT!:
+                  "_": |-
+                    {
+                      test_one: { containerPort: 10254, protocol: TCP },
+                      test_two: { containerPort: 10255, protocol: UDP }
+                    }
+                test_three:
+                  containerPort: 10256
+                  protocol: TCP
+            test_enabled_transform:
+              enabled: _HT?(index . "$").Values.hull.config.specific.switch_enabled_on
+              command:
+              - _HT![ {{ (printf "%s_%s" "test_enabled" "transform") }} ]
+            test_disabled_transform:
+              enabled: _HT?(index . "$").Values.hull.config.specific.switch_enabled_off
+              command:
+              - test_disabled_transform
+            test_enabled_missing:
+              command:
+              - _HT! [ {{ (printf "%s_%s" "test_enabled" "missing") }} ]
+              
+      transformation_doc_examples:
+        pod:
+          containers:
+            
+            array_form:
+              command:
+              - _HT!
+                  [ 
+                    {{ (index . "$").Values.hull.config.specific.some_referenced_value }}, 
+                    "another_value",
+                    "and_another_value"
+                  ]
+            
+            bool_variants:
+              env:
+                bool_field:
+                  enabled: _HT?and (index . "$").Values.hull.config.specific.switch_one_enabled (index . "$").Values.hull.config.specific.switch_two_enabled
+            
+            external:
+              image:
+                repository: quay.io/external_app
+                tag: "latest"
+
+            full_example:
+              args: 
+              - _HT!
+                  [
+                    {{ if (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}
+                    "{{ (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}",
+                    "{{ (index . "$").Values.hull.config.specific.then_add_this_arg }}",
+                    {{ end }}
+                    {{ if not (index . "$").Values.hull.config.specific.if_this_arg_is_not_defined }}
+                    "{{ (index . "$").Values.hull.config.specific.then_use_this_arg }}"
+                    {{ end }}
+                  ]
+
+            get_variants:
+              env:
+                get_string:
+                  enabled: true
+                  value: _HT*hull.config.specific.string_value_to_get                
+              
+            internal_one:
+              image:
+                registry: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.get>>><<<REFERENCE=hull.config.specific.globalRegistry>>>" # here it is used
+                repository: internal_app1
+                tag: "latest"
+
+            internal_two:
+              image: 
+                registry: _HT*hull.config.specific.globalRegistry # and here
+                repository: internal_app2
+                tag: "latest"
+
+            makefullname_variants:
+              env:
+                fullname:
+                  value: _HT^component-name                
+
+            tpl_variants:
+              env:
+                tpl_string:
+                  value: _HT!{{ printf "%s-%s" (index . "$").Values.hull.config.specific.port_one (index . "$").Values.hull.config.specific.port_two }}
+              command:
+              - _HT!
+                  [ 
+                    {{ (index . "$").Values.hull.config.specific.command_one }}, 
+                    {{ (index . "$").Values.hull.config.specific.command_two }}
+                  ]
+              ports:
+                _HT!:
+                  "_": |-
+                    {
+                      first: { containerPort: {{ (index . "$").Values.hull.config.specific.port_one }} },
+                      second: { containerPort: {{ (index . "$").Values.hull.config.specific.port_two }} }
+                    }

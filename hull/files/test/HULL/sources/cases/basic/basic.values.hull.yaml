@@ -20,6 +20,7 @@ hull:
             general_custom_annotation_2: General Custom Annotation 2
             general_custom_annotation_3: General Custom Annotation 3
     specific: 
+      globalRegistry: local.registry
       switch_enabled_off: false
       switch_enabled_on: true
       switch_enabled_dict_exists: 
@@ -29,7 +30,26 @@ hull:
       switch_condition_a_true: true
       switch_condition_b_false: false
       switch_condition_c_true: true
-      
+      switch_one_enabled: true
+      switch_two_enabled: true
+      name_test_enabled: test_enabled
+      some_referenced_value: some_value
+      if_this_arg_is_defined: --this-is-defined # Whenever this is not empty ...
+      then_add_this_arg: --hence-is-this # also add this argument
+      if_this_arg_is_not_defined:  # Whenever this is empty ...
+      then_use_this_arg: --and-this-because-other-is-not-defined # also add this argument
+      string_value_to_get: get me
+      array_value_to_get: 
+      - get
+      - me
+      dict_value_to_get:
+        ports:
+          containerPort: 123
+          protocol: UDP
+      port_one: "1"
+      port_two: "2"
+      command_one: command-one
+      command_two: command-two
   ###################################################
           
   ###################################################
