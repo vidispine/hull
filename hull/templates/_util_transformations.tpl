@@ -10,14 +10,23 @@
 {{- $caller := default nil (index . "CALLER") -}}
 {{- $callerKey := default nil (index . "CALLER_KEY") -}}
 {{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $shortForms := dict "_HT?" (list "hull.util.transformation.bool" "CONDITION") 
+                        "_HT*" (list "hull.util.transformation.get" "REFERENCE")
+                        "_HT!" (list "hull.util.transformation.tpl" "CONTENT")
+                        "_HT^" (list "hull.util.transformation.makefullname" "COMPONENT")}}
 {{- if typeIs "map[string]interface {}" $source -}}
     {{- range $key,$value := $source -}}
         {{- if typeIs "map[string]interface {}" $value -}}
-            {{- if hasKey $value "_HULL_TRANSFORMATION_" -}}                
-                {{- $params := $value._HULL_TRANSFORMATION_ -}}
+            {{- $params := default nil $value._HULL_TRANSFORMATION_ -}}
+            {{- range $sfKey, $sfValue := $shortForms -}}
+                {{- if (hasKey $value $sfKey) -}}}}
+                    {{- $params = dict "NAME" (first $sfValue) (last $sfValue) (first (values (index $value $sfKey))) -}}
+                {{- end -}} 
+            {{- end -}} 
+            {{- if $params -}} 
                 {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "HULL_ROOT_KEY" $hullRootKey) $params -}}
-                {{- $others := omit $value "_HULL_TRANSFORMATION_" "_HULL_OBJECT_TYPE_DEFAULT_" }}
-                {{- $valDict := fromYaml (include $value._HULL_TRANSFORMATION_.NAME $pass) -}}
+                {{- $others := omit $value "_HULL_TRANSFORMATION_" "_HULL_OBJECT_TYPE_DEFAULT_" "_HT?" "_HT*" "_HT!" "_HT^"}}
+                {{- $valDict := fromYaml (include $params.NAME $pass) -}}
                 {{- $combined := dict $key (merge $others (index $valDict $key)) }}
                 {{- $source := unset $source $key -}}
                 {{- $source := merge $source $combined -}}
@@ -29,16 +38,24 @@
             {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey) -}}
         {{- end -}}
         {{- if typeIs "string" $value -}}
-            {{- if (hasPrefix "_HULL_TRANSFORMATION_" $value) -}}
-                {{- $paramsString := trimPrefix "_HULL_TRANSFORMATION_" $value -}}
-                {{- $paramsSplitted := regexFindAll "(<<<[A-Z]+=.+?>>>)" $paramsString -1 -}}
-                {{- $params := dict -}}
-                {{- range $p := $paramsSplitted -}}
-                    {{- $params = set $params (trimPrefix "<<<" (first (regexSplit "=" $p -1))) (trimSuffix ">>>" (trimPrefix (printf "%s=" (first (regexSplit "=" $p -1))) $p)) -}}
+            {{- $params := default nil nil -}}
+            {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $value) (hasPrefix "_HT?" $value) (hasPrefix "_HT*" $value) (hasPrefix "_HT!" $value) (hasPrefix "_HT^" $value)) -}}
+                {{- range $sfKey, $sfValue := $shortForms -}}
+                    {{- if (hasPrefix $sfKey $value) -}}}}
+                        {{- $params = dict "NAME" (first $sfValue) (last $sfValue) (trimPrefix $sfKey $value) -}}
+                    {{- end -}} 
+                {{- end -}} 
+                {{- if (hasPrefix "_HULL_TRANSFORMATION_" $value) -}}
+                    {{- $paramsString := trimPrefix "_HULL_TRANSFORMATION_" $value -}}
+                    {{- $paramsSplitted := regexFindAll "(<<<[A-Z]+=.+?>>>)" $paramsString -1 -}}
+                    {{- $params = dict -}}
+                    {{- range $p := $paramsSplitted -}}
+                        {{- $params = set $params (trimPrefix "<<<" (first (regexSplit "=" $p -1))) (trimSuffix ">>>" (trimPrefix (printf "%s=" (first (regexSplit "=" $p -1))) $p)) -}}
+                    {{- end -}}
                 {{- end -}}
+            {{- end -}}             
+            {{- if $params }}
                 {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "HULL_ROOT_KEY" $hullRootKey) $params -}}
-                {{- /* 
-                */ -}}
                 {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
                 {{- $source := unset $source $key -}}
                 {{- $source := set $source $key (index $valDict $key) -}}  
@@ -49,16 +66,24 @@
 {{- if typeIs "[]interface {}" $source -}}
     {{- if (and (typeIs "string" (first $source)) ) -}}
         {{- $listentry := first $source -}}
-        {{- if (hasPrefix "_HULL_TRANSFORMATION_" ($listentry)) }}
-            {{- $paramsString := trimPrefix "_HULL_TRANSFORMATION_" $listentry -}}
-            {{- $paramsSplitted := regexFindAll "(<<<[A-Z]+=.+?>>>)" $paramsString -1 -}}
-            {{- $params := dict -}}
-            {{- range $p := $paramsSplitted -}}
-                {{- $params = set $params (trimPrefix "<<<" (first (regexSplit "=" $p -1))) (trimSuffix ">>>" (trimPrefix (printf "%s=" (first (regexSplit "=" $p -1))) $p)) -}}
+        {{- $params := default nil nil -}}
+        {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $listentry) (hasPrefix "_HT?" $listentry) (hasPrefix "_HT*" $listentry) (hasPrefix "_HT!" $listentry) (hasPrefix "_HT^" $listentry)) -}}
+            {{- range $sfKey, $sfValue := $shortForms -}}
+                {{- if (hasPrefix $sfKey $listentry) -}}}}
+                    {{- $params = dict "NAME" (first $sfValue) (last $sfValue)  (trimPrefix $sfKey $listentry) -}}
+                {{- end -}} 
+            {{- end -}} 
+            {{- if (hasPrefix "_HULL_TRANSFORMATION_" $listentry) -}}
+                {{- $paramsString := trimPrefix "_HULL_TRANSFORMATION_" $listentry -}}
+                {{- $paramsSplitted := regexFindAll "(<<<[A-Z]+=.+?>>>)" $paramsString -1 -}}
+                {{- $params = dict -}}
+                {{- range $p := $paramsSplitted -}}
+                    {{- $params = set $params (trimPrefix "<<<" (first (regexSplit "=" $p -1))) (trimSuffix ">>>" (trimPrefix (printf "%s=" (first (regexSplit "=" $p -1))) $p)) -}}
+                {{- end -}}
             {{- end -}}
+        {{- end -}}
+        {{- if $params }}
             {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" "key" "HULL_ROOT_KEY" $hullRootKey) $params -}}
-            {{- /* 
-            */ -}}
             {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
             {{- $t2 := set $caller $callerKey (index $valDict "key") -}}
         {{- else -}}

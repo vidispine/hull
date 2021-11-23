@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "20" objects were rendered
+* Expected number of "22" objects were rendered
 * Validate
 
 ## Metadata

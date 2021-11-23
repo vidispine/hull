@@ -202,3 +202,57 @@
 * Test Object has key "spec§template§spec§volumes§0§secret§secretName" with value "release-name-hull-test-test_enabled"
 * Test Object has key "spec§template§spec§volumes§1§secret§secretName" with value "release-name-hull-test-test_enabled_missing"
 * Test Object has key "spec§template§spec§volumes§2§secret§secretName" with value "release-name-hull-test-test_enabled_transform"
+
+* Set test object to "release-name-hull-test-transformation_shortforms"
+
+* Test Object has key "spec§template§spec§containers" with array value that has "3" items
+* Test Object has key "spec§template§spec§containers§0§env" with array value that has "3" items
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "test_enabled"
+* Test Object has key "spec§template§spec§containers§0§env§1§value" with value "test_enabled_missing"
+* Test Object has key "spec§template§spec§containers§0§env§2§value" with value "test_enabled_transform"
+* Test Object has key "spec§template§spec§containers§0§envFrom" with array value that has "3" items
+* Test Object has key "spec§template§spec§containers§0§envFrom§0§configMapRef§name" with value "release-name-hull-test-test_enabled"
+* Test Object has key "spec§template§spec§containers§0§envFrom§1§configMapRef§name" with value "release-name-hull-test-test_enabled_missing"
+* Test Object has key "spec§template§spec§containers§0§envFrom§2§configMapRef§name" with value "release-name-hull-test-test_enabled_transform"
+* Test Object has key "spec§template§spec§containers§0§ports" with array value that has "3" items
+* Test Object has key "spec§template§spec§containers§0§ports§0§containerPort" with integer value "10254"
+* Test Object has key "spec§template§spec§containers§0§ports§0§protocol" with value "TCP"
+* Test Object has key "spec§template§spec§containers§0§ports§1§containerPort" with integer value "10256"
+* Test Object has key "spec§template§spec§containers§0§ports§1§protocol" with value "TCP"
+* Test Object has key "spec§template§spec§containers§0§ports§2§containerPort" with integer value "10255"
+* Test Object has key "spec§template§spec§containers§0§ports§2§protocol" with value "UDP"
+* Test Object has key "spec§template§spec§containers§1§command" with array value that has "1" items
+* Test Object has key "spec§template§spec§containers§1§command§0" with value "test_enabled_missing"
+* Test Object has key "spec§template§spec§containers§2§command" with array value that has "1" items
+* Test Object has key "spec§template§spec§containers§2§command§0" with value "test_enabled_transform"
+
+* Set test object to "release-name-hull-test-transformation_doc_examples"
+
+* Test Object has key "spec§template§spec§containers" with array value that has "9" items
+* Test Object has key "spec§template§spec§containers§0§command" with array value that has "3" items
+* Test Object has key "spec§template§spec§containers§0§command§0" with value "some_value"
+* Test Object has key "spec§template§spec§containers§0§command§1" with value "another_value"
+* Test Object has key "spec§template§spec§containers§0§command§2" with value "and_another_value"
+* Test Object has key "spec§template§spec§containers§1§env§0§name" with value "bool_field"
+* Test Object has key "spec§template§spec§containers§2§image" with value "quay.io/external_app:latest"
+* Test Object has key "spec§template§spec§containers§3§args" with array value that has "3" items
+* Test Object has key "spec§template§spec§containers§3§args§0" with value "--this-is-defined"
+* Test Object has key "spec§template§spec§containers§3§args§1" with value "--hence-is-this"
+* Test Object has key "spec§template§spec§containers§3§args§2" with value "--and-this-because-other-is-not-defined"
+* Test Object has key "spec§template§spec§containers§4§env§0§name" with value "get_string"
+* Test Object has key "spec§template§spec§containers§4§env§0§value" with value "get me"
+* Test Object has key "spec§template§spec§containers§5§image" with value "local.registry/internal_app1:latest"
+* Test Object has key "spec§template§spec§containers§6§image" with value "local.registry/internal_app2:latest"
+* Test Object has key "spec§template§spec§containers§7§env§0§name" with value "fullname"
+* Test Object has key "spec§template§spec§containers§7§env§0§value" with value "release-name-hull-test-component-name"
+* Test Object has key "spec§template§spec§containers§8§env§0§name" with value "tpl_string"
+* Test Object has key "spec§template§spec§containers§8§env§0§value" with value "1-2"
+* Test Object has key "spec§template§spec§containers§8§command" with array value that has "2" items
+* Test Object has key "spec§template§spec§containers§8§command§0" with value "command-one"
+* Test Object has key "spec§template§spec§containers§8§command§1" with value "command-two"
+* Test Object has key "spec§template§spec§containers§8§ports§0§name" with value "first"
+* Test Object has key "spec§template§spec§containers§8§ports§0§containerPort" with integer value "1"
+* Test Object has key "spec§template§spec§containers§8§ports§1§name" with value "second"
+* Test Object has key "spec§template§spec§containers§8§ports§1§containerPort" with integer value "2"
+
+

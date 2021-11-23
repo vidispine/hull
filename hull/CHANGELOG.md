@@ -1,4 +1,11 @@
 ------------------
+[1.22.10]
+------------------
+CHANGES:
+- added short forms for transformations
+- documentation improved
+
+------------------
 [1.22.9]
 ------------------
 CHANGES:

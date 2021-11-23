@@ -79,8 +79,17 @@ hull:
         serviceName: enabled_transform_dict
         pod:
           containers: {}
-
       
+      transformation_shortforms:
+        serviceName: transformation_shortforms
+        pod:
+          containers: {}
+
+      transformation_doc_examples:
+        serviceName: transformation_doc_examples
+        pod:
+          containers: {}
+          
       enabled_transform_tpl_if:
         serviceName: enabled_transform_dict
         pod:
