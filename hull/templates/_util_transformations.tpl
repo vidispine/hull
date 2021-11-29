@@ -135,7 +135,11 @@
 {{- range $pathElement := $path -}}
 {{- $current = (index $current $pathElement) }}
 {{- end -}}
+{{- if and (typeIs "string" $current) (not $current) }}
+{{ $key }}: ""
+{{- else -}}
 {{ $key }}: {{ $current }}
+{{- end -}}
 {{- end -}}
 
 {{- /*
