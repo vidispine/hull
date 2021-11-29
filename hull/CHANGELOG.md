@@ -1,4 +1,16 @@
 ------------------
+[1.20.16]
+------------------
+CHANGES:
+- added tests for get transformation results
+- make every object field subjectable to string transformations 
+irrelevant of input type by large scale extension of JSON schema
+
+FIXES:
+- using a get transformation to poulate Configmap/Secret contents produced bad 
+character sequences
+
+------------------
 [1.20.15]
 ------------------
 CHANGES:
