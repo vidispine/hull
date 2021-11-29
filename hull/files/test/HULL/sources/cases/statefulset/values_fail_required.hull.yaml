@@ -1,0 +1,165 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+#  config:
+#    general:  
+#      data: {} 
+#      metadata:
+#        labels:         
+#          custom: 
+#            general_custom_label_1: General Custom Label 1
+#            general_custom_label_2: General Custom Label 2
+#            general_custom_label_3: General Custom Label 3
+#        annotations: 
+#          custom:
+#            general_custom_annotation_1: General Custom Annotation 1
+#            general_custom_annotation_2: General Custom Annotation 2
+#            general_custom_annotation_3: General Custom Annotation 3
+#    specific: {}
+  ###################################################
+          
+  ###################################################
+  ### OBJECTS
+  objects:
+    
+  # CONFIGMAPS
+    statefulset:      
+
+      service_account:
+        serviceName: service_account
+        pod:
+          containers: {}
+    
+      disabled:
+        serviceName: disabled
+        pod:
+          containers: {}
+        
+      static_name:
+        serviceName: static_name
+        pod:
+          containers: {}
+        
+
+      metadata_merge:
+        serviceName: metadata_merge
+        pod:
+          containers: {}
+        
+      metadata_overwrite:
+        serviceName: metadata_overwrite
+        pod:
+          containers: {}
+      
+      disabled_transform:
+        serviceName: disabled_transform
+        pod:
+          containers: {}
+        
+      enabled_transform:
+        serviceName: enabled_transform
+        pod:
+          containers: {}
+        
+      disabled_transform_dict:
+        serviceName: disabled_transform_dict
+        pod:
+          containers: {}
+        
+      enabled_transform_dict:
+        serviceName: enabled_transform_dict
+        pod:
+          containers: {}
+      
+      disabled_transform_tpl_if:
+        serviceName: enabled_transform_dict
+        pod:
+          containers: {}
+      
+      transformation_shortforms:
+        serviceName: transformation_shortforms
+        pod:
+          containers: {}
+
+      transformation_doc_examples:
+        serviceName: transformation_doc_examples
+        pod:
+          containers: {}
+
+      enabled_transform_tpl_if:
+        serviceName: transformation_doc_examples
+        pod:
+          containers: {}
+
+      failing:
+        enabled: true
+
+      imagepullsecrets_custom:
+        serviceName: image_name_empty_registry
+        pod:
+          containers: {}
+
+      imagepullsecrets_add_all:
+        serviceName: image_name_empty_registry
+        pod:
+          containers: {}
+          
+      image_name_empty_registry:
+        serviceName: image_name_empty_registry
+        pod:
+          containers: {}
+        
+      image_name_registry:
+        serviceName: image_name_registry
+        pod:
+          containers: {}
+        
+      image_name_tag:
+        serviceName: image_name_tag
+        pod:
+          containers: {}
+
+      custom_args:
+        serviceName: custom_args
+        pod:
+          containers: {}
+
+      int_bool_dict_array_ht:
+        serviceName: custom_args_as_string
+        pod:
+          containers: {}
+
+      removal_test:
+        serviceName: removal_test
+        pod:
+          containers:
+            remove: null
+            keep:
+              ports:
+                remove: null
+                
+      volume_test:
+        serviceName: volume_test
+        pod:
+          volumes:
+            to_be_removed: null
+      
+      env_test:
+        serviceName: env_test
+        pod:
+          containers: {}
+
+      envfrom_test:
+        serviceName: envfrom_test
+        pod:
+          containers: {}
+
+      enabled_true_false:
+        serviceName: enabled_true_false
+                
+      full_example_deployment:
+        serviceName: disabled

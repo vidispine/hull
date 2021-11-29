@@ -1,4 +1,16 @@
 ------------------
+[1.22.11]
+------------------
+CHANGES:
+- added tests for get transformation results
+- BREAKING! make every object field usable for string transformations by 
+irrelevant of input type by large scale extension of JSON schema
+
+FIXES:
+- using a get transformation to poulate Configmap/Secret contents produced bad 
+character sequences
+
+------------------
 [1.22.10]
 ------------------
 CHANGES:
@@ -18,6 +30,7 @@ CHANGES:
 
 CHANGES:
 - add hull.util.transformation.bool transformation
+
 - BREAKING! change fields for registry population to overwrite any explicit registry fields 
 
 ------------------
