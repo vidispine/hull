@@ -91,6 +91,19 @@
 * Test Object has key "spec§template§spec§containers§0§args§1" with value "--hence-is-this"
 * Test Object has key "spec§template§spec§containers§0§args§2" with value "--and-this-because-other-is-not-defined"
 
+* Set test object to "release-name-hull-test-int_bool_dict_array_ht"
+* Test Object has key "spec§template§spec§containers§0§args" with array value that has "3" items
+* Test Object has key "spec§template§spec§containers§0§args§0" with value "--this-is-defined"
+* Test Object has key "spec§template§spec§containers§0§args§1" with value "--hence-is-this"
+* Test Object has key "spec§template§spec§containers§0§args§2" with value "--and-this-because-other-is-not-defined"
+* Test Object has key "spec§template§spec§containers§0§livenessProbe§initialDelaySeconds" with integer value "12"
+* Test Object has key "spec§template§spec§containers§0§readinessProbe§initialDelaySeconds" with integer value "55"
+* Test Object has key "spec§template§spec§containers§0§readinessProbe§periodSeconds" with integer value "66"
+* Test Object has key "spec§template§spec§containers§0§readinessProbe§failureThreshold" with integer value "77"
+* Test Object has key "spec§template§spec§containers§0§readinessProbe§timeoutSeconds" with integer value "88"
+* Test Object has key "spec§template§spec§containers§0§envFrom§0§configMapRef§optional" set to true
+
+
 * Set test object to "release-name-hull-test-image_name_tag"
 * Test Object has key "spec§template§spec§containers§0§image" with value "my/image/repo:99.9"
 
@@ -239,8 +252,18 @@
 * Test Object has key "spec§template§spec§containers§3§args§0" with value "--this-is-defined"
 * Test Object has key "spec§template§spec§containers§3§args§1" with value "--hence-is-this"
 * Test Object has key "spec§template§spec§containers§3§args§2" with value "--and-this-because-other-is-not-defined"
-* Test Object has key "spec§template§spec§containers§4§env§0§name" with value "get_string"
-* Test Object has key "spec§template§spec§containers§4§env§0§value" with value "get me"
+* Test Object has key "spec§template§spec§containers§4§env§0§name" with value "string_defined"
+* Test Object has key "spec§template§spec§containers§4§env§0§value" with value "i_am_string"
+* Test Object has key "spec§template§spec§containers§4§env§1§name" with value "string_empty"
+* Test Object has key "spec§template§spec§containers§4§env§1§value" with value ""
+* Test Object has key "spec§template§spec§containers§4§env§2§name" with value "string_undefined"
+* Test Object has key "spec§template§spec§containers§4§env§2§value" with null value
+* Test Object has key "spec§template§spec§containers§4§envFrom§0§configMapRef§name" with value "bool_defined_false"
+* Test Object has key "spec§template§spec§containers§4§envFrom§0§configMapRef§optional" set to false
+* Test Object has key "spec§template§spec§containers§4§envFrom§1§configMapRef§name" with value "bool_defined_true"
+* Test Object has key "spec§template§spec§containers§4§envFrom§1§configMapRef§optional" set to true
+* Test Object has key "spec§template§spec§containers§4§ports§0§name" with value "number_defined"
+* Test Object has key "spec§template§spec§containers§4§ports§0§containerPort" with integer value "999"
 * Test Object has key "spec§template§spec§containers§5§image" with value "local.registry/internal_app1:latest"
 * Test Object has key "spec§template§spec§containers§6§image" with value "local.registry/internal_app2:latest"
 * Test Object has key "spec§template§spec§containers§7§env§0§name" with value "fullname"

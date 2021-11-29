@@ -118,5 +118,25 @@ hull:
             inline: "This shall appear in ConfigMap because enabled property is true via transformation"
           test_enabled_missing:
             inline: "This shall appear in ConfigMap because enabled property is missing"
+
+      test_get_variants:
+        data:
+          bool_defined_true:
+            inline: _HT*hull.config.specific.bool_defined_true
+            noTemplating: true
+          bool_defined_false:
+            inline: _HT*hull.config.specific.bool_defined_false
+          bool_undefined:
+            inline: _HT*hull.config.specific.bool_undefined
+          string_defined:
+            inline: _HT*hull.config.specific.string_defined
+          string_empty:
+            inline: _HT*hull.config.specific.string_empty
+          string_undefined:
+            inline: _HT*hull.config.specific.string_undefined
+          number_defined:
+            inline: _HT*hull.config.specific.number_defined
+          number_undefined:
+            inline: _HT*hull.config.specific.number_undefined
           
 ###################################################
