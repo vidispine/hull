@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "22" objects were rendered
+* Expected number of "23" objects were rendered
 * Validate
 
 ## Metadata
@@ -16,6 +16,20 @@ Test creation of objects and features.
 ## Pod
 * Render
 * Check pod functionality
+
+## Fail
+* Fail to render the templates for values file "values_fail_bool.trans1.hull.yaml" to test execution folder because error contains "Does not match pattern"
+* Render values file "values_fail_bool.trans2.hull.yaml"
+* Fail to Validate because error contains "'true' is not of type 'boolean', 'null'"
+* Fail to render the templates for values file "values_fail_integer.trans1.hull.yaml" to test execution folder because error contains "Does not match pattern"
+* Fail to render the templates for values file "values_fail_integer.trans2.hull.yaml" to test execution folder because error contains "Does not match pattern"
+* Render values file "values_fail_integer.trans3.hull.yaml"
+* Fail to Validate because error contains "True is not of type 'integer', 'null'"
+* Render values file "values_fail_integer.trans4.hull.yaml"
+* Fail to Validate because error contains "'300' is not of type 'integer', 'null'"
+* Render values file "values_ok_integer.trans1.hull.yaml"
+* Set test object to "release-name-hull-test-ok"
+* Test Object has key "spec§minReadySeconds" with integer value "300"
 ___
 
 * Clean the test execution folder

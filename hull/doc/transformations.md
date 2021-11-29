@@ -10,16 +10,18 @@ The HULL library provides mechanism to work around this and provide this possibi
 
 Technically the objects defined in the `values.yaml` are preprocessed before they are converted to Kubernetes objects. In the first internal step, Helm merges all fields of all `values.yaml`'s involved into a single YAML structure. This YAML tree is then processed key-by-key by HULL and at this stage it becomes possible to modify the YAML to the desired result by adding special keys and values to the YAML sections. When a transformation is detected during the `values.yaml` preprocessing by HULL an associated Go Templating function is called and the result replaces the transformation instruction in the resulting YAML.
 
-⚠️ It is important to consider the fact that when a dictionary is traversed in Go Templating it is done in an alphanumeric fashion. So in order to reference an itself transformed value succesfully it must be have a lower alphanumeric key in the dictionary hierarchy. However, since typically you would want to resolve a global value for configuration of your `hull.objects` properties in multiple places you should put your referenced value in the `hull.config.specific` section and then you can access it anytime when creating the objects. When you keep the alphanumeric processing order in mind it is furthermore no problem to use transformations on `hull.config.specific` properties too and later have the transformation result referenced by a transformation in the `hull.objects` section.⚠️
+⚠️ It is important to consider the fact that when a dictionary is traversed in Go Templating it is done in an alphanumeric fashion. So in order to reference the resolved value of an transformation succesfully it must be have a lower alphanumeric key in the dictionary hierarchy, meaning it must have been processed first. However, since typically you would want to resolve a global value for configuration of your `hull.objects` properties in multiple places you should put your referenced value in the `hull.config.specific` section and then you can access it anytime when creating the objects. When you keep the alphanumeric processing order in mind it is furthermore no problem to use transformations on `hull.config.specific` properties too and later have the transformation result referenced by a transformation in the `hull.objects` section.⚠️
 
 Some transformations are part of the HULL library and can be used out of the box. It is also possible to create your own Go Templating function/transformation and use them where possible. For this you need only add a `tpl` file to your chart and define a transformation that adheres to the structural rules highlighted next.
 
-## Limitations
+## Object Support
 
-Currently transformations are supported for limited scenarios. You can use transformations to modify:
+Currently transformations are supported for basically any input type. You can use transformations to modify all:
 
-- values which are dictionaries
 - values which are of string type
+- values which are of integer type
+- values which are of boolean type
+- values which are dictionaries
 - values which are arrays
 
 ⚠️ **Triggering transformations is based on the detection of a starting prefix __\_HULL_TRANSFORMATION\___ or __\_HT__ for built-in transformation short forms in key names (for dictionary values) or string values so it is not 100% guaranteed that a chart does not use this expression as a key or value but otherwise it is highly unlikely.** ⚠️
@@ -86,11 +88,11 @@ The general syntax for any string transformation is:
 
   This argument is specific to the `hull.util.transformation.get` transformation. Here it references the key from which we want to get the value from in dot-notation.
 
-⚠️ **Note that the arguments themselves cannot contain the start-of and end-of argument signifiers `<<<` and `>>>`! These are important for string-splitting the arguments to the transformation.** ⚠️
+⚠️ **Note that the arguments themselves cannot contain the start-of and end-of argument signifiers `<<<` and `>>>` when using the long form syntax for transformations! These are important for string-splitting the arguments to the transformation.** ⚠️
 
 #### Transformation short forms
 
-As HULL comes with a predefined set of transformations and always typing down the regular transformation interface structure described above is inconvenient there exist so-called __short forms__ to these four built-in and useful transformations. The short forms take advantage of the fact that all four built-in transformations only demand a single argument so the transformation call can be done with much less typing.
+As HULL comes with a predefined set of handy transformations and always typing down the regular transformation interface structure described above is inconvenient, there exist so-called __short forms__ to these four built-in transformations. The short forms take advantage of the fact that all four built-in transformations only demand a single argument so the transformation call can be done with much less typing.
 
 In the above example we used the short form for the `hull.util.transformation.get` transformation like this: 
 
@@ -115,7 +117,7 @@ See the overview on the transformations that HULL delivers out-of-the-box for de
 
 #### Example definition of a transformation
 
-Now we can take a look at the [transformation definition](./../templates/_util_transformations.tpl) itself:
+Now we can take a look at the [transformation definition] for `hull.util.transformation.get` (./../templates/_util_transformations.tpl) itself:
 
 ```yaml
 {{- /*
@@ -138,7 +140,11 @@ Now we can take a look at the [transformation definition](./../templates/_util_t
 {{- range $pathElement := $path -}}
 {{- $current = (index $current $pathElement) }}
 {{- end -}}
+{{- if and (typeIs "string" $current) (not $current) }}
+{{ $key }}: ""
+{{- else -}}
 {{ $key }}: {{ $current }}
+{{- end -}}
 {{- end -}}
 ```
 
@@ -148,7 +154,9 @@ In the code above the value of the dot-notated key is retrieved via iteration ov
 {{ $key }}: "<RESULT OF TRANSFORMATION>"
 ```
 
-In the source YAML the dictionary value of key `$key` is now replaced by the transformations result before rendering. Note that the type of the result field does not have to be a string but it must validate against the Kubernetes API objects JSON schema. In most scenarios the input and output types are identical so you would use a string transformation to produce a string as result.
+In the source YAML the dictionary value of key `$key` is now replaced by the transformations result before rendering. Note that the type of the result field does not have to be a string but it must validate against the Kubernetes API objects JSON schema. 
+
+⚠️⚠️⚠️ **In many scenarios the input and output types are identical so you would use a string transformation to produce a string as result. However (by now) HULL has full support to supply a string transformation instead of a boolean, integer, array or dictionary input value in `values.yaml` properties - even if the original Kubernetes schema demands the input value to be boolean, integer, array or object respectively. In this case it is the responsibility of the configurator to make sure that the transformation returns an object of the correct input type and structure. Technically the ability to use HULL string transformations everywhere is achieved by extension of the Kubernetes JSON schema to always allow a regex conforming 'transformation' string input besides the original type of the value. Currently the regex of allowed string input is `^\s*(_HT[\*|\?|\^|!]|_HULL_TRANSFORMATION_<<<).*`. By having this ability the dictionary and array form of the HULL transformations become deprecated even though they are still usable** ⚠️⚠️⚠️
 
 The final rendered output has the transformations successfully applied:
 
@@ -205,7 +213,9 @@ spec:
         volumeMounts: []
 ```
 
-### Example of a dictionary transformation
+### Example of a dictionary transformation (⚠️ deprecated ⚠️)
+
+**It is not required anymore to use a dictionary transformation to process a dictionary in HULL with a transformation. By now HULL string transformations are available for objects of all input types. Hence this feature is deprecated as of now even though still functional.** 
 
 Input type validation might demand an `object` as a values object type. Similar to the string transformation presented above you can then also trigger a transformation by providing a dictionary as input. In this case provide the following dictionary value to the key you wish to process:
 
@@ -228,7 +238,9 @@ some_object_key_with_a_dictionary_value:
     "_": <CONTENT of the tpl transformation>
 ```
 
-### Example of an array transformation
+### Example of an array transformation (⚠️ deprecated ⚠️)
+
+**It is not required anymore to use an array transformation to process a dictionary in HULL with a transformation. By now HULL string transformations are available for objects of all input types. Hence this feature is deprecated as of now even though still functional.** 
 
 Arrays can be transformed via HULL too. A transformation is triggered by providing a single element to the array which is a string transformation:
 
@@ -276,17 +288,15 @@ hull:
               image:
                 repository: my/image/repo
                 tag: "99.9"
-              args: 
-              - _HT!
-                  [
-                    {{ if (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}
-                      "{{ (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}",
-                      "{{ (index . "$").Values.hull.config.specific.then_add_this_arg }}",
-                    {{ end }}
-                    {{ if not (index . "$").Values.hull.config.specific.if_this_arg_is_not_defined }}
-                      "{{ (index . "$").Values.hull.config.specific.then_use_this_arg }}"
-                    {{ end }}
-                  ]
+              args: _HT![
+                {{ if (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}
+                  "{{ (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}",
+                  "{{ (index . "$").Values.hull.config.specific.then_add_this_arg }}",
+                {{ end }}
+                {{ if not (index . "$").Values.hull.config.specific.if_this_arg_is_not_defined }}
+                  "{{ (index . "$").Values.hull.config.specific.then_use_this_arg }}"
+                {{ end }}
+              ]
 ```
 
 The intention of the above configuration is to demonstrate some conditional population of the `args` array. It should result in three elements:
@@ -298,8 +308,10 @@ The intention of the above configuration is to demonstrate some conditional popu
 ```
 On rendering the following happens:
 
-- for `args` the transformation `hull.util.transformation.tpl` is executed on the string array via its short form `_HT!`. 
-- the `CONTENT` argument is subjected to the `tpl` Go Templating function. This renders string input with potential placeholders. Note that the `"`s need to be escaped with `\"` if the CONTENT value is surrounded with `"`'s.  
+- for `args` the transformation `hull.util.transformation.tpl` is executed on the string array via its short form `_HT!` and string transformation notation. 
+- the `CONTENT` argument is subjected to the `tpl` Go Templating function. This renders string input with potential placeholders. 
+
+  > Note that the `"`s need to be escaped with `\"` if the CONTENT value is surrounded with `"`'s.  
 
   Following additional rules apply to the usage of templating expressions in this manner:
 
@@ -393,7 +405,7 @@ The following basic transformations are provided by HULL. Extending this with cu
 - concatenation of referenced fields
 - ...
 
-The `tpl` transformation basically offers full flexibility and can be used for all allowed transformation scenarios but this comes at the price of complex specification requirement.
+The `tpl` transformation basically offers full flexibility and can be used for all allowed transformation scenarios but this comes at the price of more complex specification of the logical requirements.
 
 ### Get a value (_hull.util.transformation.get_)
 
@@ -403,11 +415,11 @@ The `tpl` transformation basically offers full flexibility and can be used for a
 
 #### __Produces__
 
-The value of the referenced key within `values.yaml`
+The value of the referenced key within `values.yaml`. 
 
 #### __Description__
 
-Provides an easy to use shortcut to simply get the string value of a field in `values.yaml`. For more complex get operations use the `hull.util.transformation.tpl` transformation to format the result.
+Provides an easy to use shortcut to simply get the string value of a field in `values.yaml`. This is supported for referenced values of string, integer or boolean type. Getting array and dictionary values is not supported as of now. For more complex get operations use the `hull.util.transformation.tpl` transformation to format the result.
 
 #### __Short Form Examples__
 
@@ -452,16 +464,19 @@ The most powerful transformation that allows to freely specify the Go templating
 #### __Short Form Examples__
 
 ```yaml
-string: _HT!{{ printf "%s-%s" (index . "$").Values.hull.config.specific.prefix_value_to_get (index . "$").Values.hull.config.specific.suffix_value_to_get }}
+string: _HT!{{ printf "%s-%s" (index . "$").Values.hull.config.specific.
+  prefix_value_to_get (index . "$").Values.hull.config.specific.
+  suffix_value_to_get }}
 
-array:
+
+array: # (⚠️ deprecated array transformation ⚠️)
 - _HT!
     [ 
       {{ (index . "$").Values.hull.config.specific.prefix_value_to_get }}, 
       {{ (index . "$").Values.hull.config.specific.suffix_value_to_get }}
     ]
 
-ports: 
+ports: # (⚠️ deprecated dictionary transformation ⚠️)
   _HT!:
     "_": |-
       {
@@ -478,7 +493,7 @@ ports:
 
 #### __Produces__
 
-A boolean return value that can be used to populate a boolean field
+A boolean return value that can be used to populate a boolean field. There is no need to supply outer `{{` and `}}` templating signs because the CONDITITION is already assumed to be within these curly braces to save typing.
 
 #### __Description__
 
@@ -489,7 +504,9 @@ The `enabled` fields explicitly allow string as an input which makes them subjec
 #### __Short Form Examples__
 
 ```yaml
-bool_field: _HT?and (index . "$").Values.hull.config.specific.switch_one_enabled (index . "$").Values.hull.config.specific.switch_two_enabled
+bool_field: _HT?and 
+  (index . "$").Values.hull.config.specific.switch_one_enabled (index .
+  "$").Values.hull.config.specific.switch_two_enabled
 ```
 
 ---

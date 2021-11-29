@@ -93,7 +93,37 @@ hull:
 ]
 >>>"
 
-      
+      int_bool_dict_array_ht:
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              args: _HT![
+                {{ if (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}
+                "{{ (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}",
+                "{{ (index . "$").Values.hull.config.specific.then_add_this_arg }}",
+                {{ end }}
+                {{ if not (index . "$").Values.hull.config.specific.if_this_arg_is_not_defined }}
+                "{{ (index . "$").Values.hull.config.specific.then_use_this_arg }}"
+                {{ end }}
+                ]
+              livenessProbe: 
+                initialDelaySeconds: _HT!12
+              readinessProbe: |-
+                _HT!{
+                  initialDelaySeconds: 55,
+                  periodSeconds: 66,
+                  failureThreshold: 77,
+                  timeoutSeconds: 88,
+                }
+              envFrom:
+                a_configmap:
+                  prefix: sourced_envs_prefix
+                  configMapRef:
+                    name: full_example_configmap
+                    optional: _HT!true
       removal_test:
         pod:
           containers:
@@ -588,13 +618,11 @@ hull:
           containers:
             
             array_form:
-              command:
-              - _HT!
-                  [ 
-                    {{ (index . "$").Values.hull.config.specific.some_referenced_value }}, 
-                    "another_value",
-                    "and_another_value"
-                  ]
+              command: _HT![ 
+                  {{ (index . "$").Values.hull.config.specific.some_referenced_value }}, 
+                  "another_value",
+                  "and_another_value"
+                ]
             
             bool_variants:
               env:
@@ -607,24 +635,49 @@ hull:
                 tag: "latest"
 
             full_example:
-              args: 
-              - _HT!
-                  [
-                    {{ if (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}
-                    "{{ (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}",
-                    "{{ (index . "$").Values.hull.config.specific.then_add_this_arg }}",
-                    {{ end }}
-                    {{ if not (index . "$").Values.hull.config.specific.if_this_arg_is_not_defined }}
-                    "{{ (index . "$").Values.hull.config.specific.then_use_this_arg }}"
-                    {{ end }}
-                  ]
+              args: _HT![
+                  {{ if (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}
+                  "{{ (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}",
+                  "{{ (index . "$").Values.hull.config.specific.then_add_this_arg }}",
+                  {{ end }}
+                  {{ if not (index . "$").Values.hull.config.specific.if_this_arg_is_not_defined }}
+                  "{{ (index . "$").Values.hull.config.specific.then_use_this_arg }}"
+                  {{ end }}
+                ]
 
             get_variants:
               env:
-                get_string:
+                string_defined:
                   enabled: true
-                  value: _HT*hull.config.specific.string_value_to_get                
-              
+                  value: _HT*hull.config.specific.string_defined
+                string_empty:
+                  enabled: true
+                  value: _HT*hull.config.specific.string_empty
+                string_undefined:
+                  enabled: true
+                  value: _HT*hull.config.specific.string_undefined
+              envFrom:
+                bool_defined_false:
+                  configMapRef:
+                    name: bool_defined_false
+                    staticName: true
+                    optional: _HT*hull.config.specific.bool_defined_false
+                bool_defined_true:
+                  configMapRef:
+                    name: bool_defined_true
+                    staticName: true
+                    optional: _HT*hull.config.specific.bool_defined_true
+                #bool_undefined:
+                #  configMapRef:
+                #    name: bool_undefined
+                #    staticName: true
+                #    optional: _HT*hull.config.specific.bool_undefined
+              ports:
+                number_defined: 
+                  containerPort: _HT*hull.config.specific.number_defined
+                #number_undefined: 
+                #  containerPort: _HT*hull.config.specific.number_undefined
+
             internal_one:
               image:
                 registry: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.get>>><<<REFERENCE=hull.config.specific.globalRegistry>>>" # here it is used
@@ -640,7 +693,7 @@ hull:
             makefullname_variants:
               env:
                 fullname:
-                  value: _HT^component-name                
+                  value: _HT^component-name
 
             tpl_variants:
               env:
