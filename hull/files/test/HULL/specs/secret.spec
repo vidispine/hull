@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "11" objects were rendered
+* Expected number of "12" objects were rendered
 * Validate
 
 ## Metadata
@@ -60,6 +60,17 @@ Test creation of objects and features.
 * Test Object has key "data§here" with Base64 encoded value of "some data"
 * Test object "release-name-hull-test-daddheaders" does not exist
 
+## Get Transformations
+* Render
+* Set test object to "release-name-hull-test-test_get_variants"
+* Test Object has key "data§bool_defined_true" with Base64 encoded value of "true"
+* Test Object has key "data§bool_defined_false" with Base64 encoded value of "false"
+* Test Object has key "data§bool_undefined" with Base64 encoded value of ""
+* Test Object has key "data§string_defined" with Base64 encoded value of "i_am_string"
+* Test Object has key "data§string_empty" with Base64 encoded value of ""
+* Test Object has key "data§string_undefined" with Base64 encoded value of ""
+* Test Object has key "data§number_defined" with Base64 encoded value of "999"
+* Test Object has key "data§number_undefined" with Base64 encoded value of ""
 ___
 
 * Clean the test execution folder

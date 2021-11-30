@@ -237,6 +237,11 @@ def test_object_has_key_with_integer_value(key, value):
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert_values_equal(data_store.scenario.test_object[key], int(value), key)
 
+@step("Test Object has key <key> with null value")
+def test_object_has_key_with_null_value(key):
+    assert "test_object" in data_store.scenario != None, "No Test Object set!"
+    assert data_store.scenario.test_object != None, "Test Object set to None!"
+    assert_values_equal(data_store.scenario.test_object[key], None, key)
 @step("Test Object has key <key> with Base64 encoded value of <value>")
 def test_object_has_key_with_base64_encoded_value(key, value):
     assert data_store.scenario.test_object != None
@@ -282,6 +287,18 @@ def validate():
     test_objects = data_store.scenario.objects
     for i in test_objects:
         validate_test_object_against_json_schema(i)
+
+@step("Fail to Validate because error contains <expected_error>")
+def fail_to_validate(expected_error):
+    try:
+        validate()
+    except Exception as e:
+        if expected_error in str(e.__str__):
+            print(f'Found expected message:\n\'{expected_error}\'\nin  exception message:\n\'{str(e.__str__)}\'')
+            assert True
+            return
+        else:
+            assert False, "Expected error " + expected_error + " not found in Exception message: " + str(e.__str__)
 
 @step("Validate test object against JSON Schema")
 def validate_test_object_against_json_schema(test_object):

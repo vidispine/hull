@@ -92,7 +92,7 @@ hull:
           example: "Some label applied to the template section of this deployments full_example_deployment"
         strategy:
           type: Recreate
-        minReadySeconds: 300
+        minReadySeconds: _HT!300
         revisionHistoryLimit: 1000
         pod:
           serviceAccountName: full_example_serviceaccount
@@ -158,7 +158,7 @@ hull:
                   prefix: sourced_envs_prefix
                   configMapRef:
                     name: full_example_configmap
-                    optional: false
+                    optional: _HT!false
                 another_configmap:
                   prefix: sourced_envs_prefix
                   configMapRef:

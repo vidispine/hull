@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "21" objects were rendered
+* Expected number of "22" objects were rendered
 * Validate
 
 ## Metadata
@@ -15,6 +15,10 @@ Test creation of objects and features.
 ## Pod
 * Render
 * Check pod functionality
+
+## Violate schema
+* Fail to render the templates for values file "values_fail_required.hull.yaml" to test execution folder because error contains "objects.statefulset.failing: serviceName is required"
+
 ___
 
 * Clean the test execution folder
