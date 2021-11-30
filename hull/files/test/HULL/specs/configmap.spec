@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "12" objects were rendered
+* Expected number of "13" objects were rendered
 * Validate
 
 ## Metadata
@@ -63,6 +63,20 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-caddheaders"
 * Test Object has key "data§here" with value "some data"
 * Test object "release-name-hull-test-daddheaders" does not exist
+
+## Get Transformations
+* Render
+* Set test object to "release-name-hull-test-test_get_variants"
+* Test Object has key "data§bool_defined_true" with value "true"
+* Test Object has key "data§bool_defined_false" with value "false"
+* Test Object has key "data§bool_undefined" with value ""
+* Test Object has key "data§string_defined" with value "i_am_string"
+* Test Object has key "data§string_empty" with value ""
+* Test Object has key "data§string_undefined" with value ""
+* Test Object has key "data§number_defined" with value "999"
+* Test Object has key "data§number_undefined" with value ""
+
+
 ___
 
 * Clean the test execution folder

@@ -61,17 +61,17 @@ data:
 {{ if hasKey $innerValue "inline" }}
 {{ $innerKey | indent 2 }}: |-
 {{ if $innerValue.noTemplating -}}
-{{ default "" $innerValue.inline | b64enc | indent 4 }}
+{{ default "" (toString $innerValue.inline) | b64enc | indent 4 }}
 {{ else -}}
-{{ default "" (tpl (printf "%s" $innerValue.inline) $parent) | b64enc | indent 4 }}
+{{ default "" (tpl (printf "%s" (toString $innerValue.inline)) $parent) | b64enc | indent 4 }}
 {{ end }}
 {{ end }}
 {{ if hasKey $innerValue "path" }}
 {{ base $innerKey | indent 2 }}: |-
 {{ if $innerValue.noTemplating }}
-{{- ($parent.Files.Get (printf "%s" $innerValue.path) ) | b64enc | indent 4 -}}
+{{- toString ($parent.Files.Get (printf "%s" $innerValue.path) ) | b64enc | indent 4 -}}
 {{- else -}}
-{{- print (tpl ($parent.Files.Get (printf "%s" $innerValue.path) ) $parent) | b64enc | indent 4 }}
+{{- print (tpl (toString ($parent.Files.Get (printf "%s" $innerValue.path) ) ) $parent) | b64enc | indent 4 }}
 {{ end }}
 {{ end }}
 {{ end }}
