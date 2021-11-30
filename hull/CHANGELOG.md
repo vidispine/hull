@@ -1,4 +1,11 @@
 ------------------
+[1.22.12]
+------------------
+FIXES:
+- allow mixed transform only when dictionary is returned from 
+transformation and other keys exist besides transformation trigger
+
+------------------
 [1.22.11]
 ------------------
 CHANGES:
