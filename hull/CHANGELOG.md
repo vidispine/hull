@@ -1,6 +1,10 @@
 ------------------
 [1.20.16]
 ------------------
+FIXES:
+- allow mixed transform only when dictionary is returned from 
+transformation and other keys exist besides transformation trigger[1.20.16]
+------------------
 CHANGES:
 - added tests for get transformation results
 - make every object field subjectable to string transformations 
