@@ -91,7 +91,7 @@ hull:
           containers: {}
           
       enabled_transform_tpl_if:
-        serviceName: enabled_transform_dict
+        serviceName: enabled_transform_tpl_if
         pod:
           containers: {}
 
@@ -122,6 +122,10 @@ hull:
 
       custom_args:
         serviceName: custom_args
+        pod:
+          containers: {}
+      int_bool_dict_array_ht:
+        serviceName: custom_args_as_string
         pod:
           containers: {}
 
