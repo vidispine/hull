@@ -295,6 +295,7 @@ def fail_to_validate(expected_error):
         validate()
     except Exception as e:
         if expected_error in str(e.__str__):
+            print(f'Found expected message:\n\'{expected_error}\'\nin  exception message:\n\'{str(e.__str__)}\'')
             assert True
             return
         else:
