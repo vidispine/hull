@@ -3,7 +3,7 @@
 ------------------
 CHANGES:
 - added tests for get transformation results
-- BREAKING! make every object field usable for string transformations by 
+- make every object field subjectable to string transformations 
 irrelevant of input type by large scale extension of JSON schema
 
 FIXES:
