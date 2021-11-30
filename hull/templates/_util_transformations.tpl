@@ -28,7 +28,10 @@
                 {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "HULL_ROOT_KEY" $hullRootKey) $params -}}
                 {{- $others := omit $value "_HULL_TRANSFORMATION_" "_HULL_OBJECT_TYPE_DEFAULT_" "_HT?" "_HT*" "_HT!" "_HT^"}}
                 {{- $valDict := fromYaml (include $params.NAME $pass) -}}
-                {{- $combined := dict $key (merge $others (index $valDict $key)) }}
+                {{- $combined := $valDict }}
+                {{- if (and (typeIs "map[string]interface {}" (index $valDict $key)) (gt (len (keys $others)) 0)) -}}
+                {{- $combined = dict $key (merge $others (index $valDict $key)) }}
+                {{- end -}}
                 {{- $source := unset $source $key -}}
                 {{- $source := merge $source $combined -}}
             {{- else -}}
