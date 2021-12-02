@@ -243,13 +243,17 @@ hull:
               - "container"
               - "add"
               - "some"
-              - "arguments"               
+              - "arguments"
               livenessProbe: 
+                httpGet:
+                  port: _HT!http
                 initialDelaySeconds: 11
                 periodSeconds: 22
                 failureThreshold: 33
                 timeoutSeconds: 44
               readinessProbe: 
+                httpGet:
+                  port: _HT!99
                 initialDelaySeconds: 55
                 periodSeconds: 66
                 failureThreshold: 77
@@ -260,7 +264,7 @@ hull:
                   memory: 4.4Gi
                 requests:
                   cpu: "5.5"
-                  memory: 9.9Gi           
+                  memory: 9.9Gi
       nginx:
         replicas: 3
         pod:         
