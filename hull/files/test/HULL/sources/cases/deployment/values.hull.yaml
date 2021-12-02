@@ -245,11 +245,15 @@ hull:
               - "some"
               - "arguments"               
               livenessProbe: 
+                httpGet:
+                  port: _HT!http
                 initialDelaySeconds: 11
                 periodSeconds: 22
                 failureThreshold: 33
                 timeoutSeconds: 44
               readinessProbe: 
+                httpGet:
+                  port: _HT!99
                 initialDelaySeconds: 55
                 periodSeconds: 66
                 failureThreshold: 77
