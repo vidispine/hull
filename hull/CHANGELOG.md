@@ -1,18 +1,21 @@
 ------------------
-[1.21.19]
------------------
+[1.21.20]
+------------------
 FIXES:
-- allow mixed transform only when dictionary is returned from 
-transformation and other keys exist besides transformation trigger
+- changed probe port schema to anyOf to avoid clash when using oneOf transformation or string
 
 ------------------
+[1.21.19]
+------------------
+FIXES:
+- allow mixed transform only when dictionary is returned from transformation and other keys exist besides transformation trigger
 
+------------------
 [1.21.18]
 ------------------
 CHANGES:
 - added tests for get transformation results
-- make every object field subjectable to string transformations 
-irrelevant of input type by large scale extension of JSON schema
+- make every object field subjectable to string transformations irrelevant of input type by large scale extension of JSON schema
 
 FIXES:
 - using a get transformation to poulate Configmap/Secret contents produced bad 

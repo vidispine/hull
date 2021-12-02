@@ -19328,7 +19328,7 @@
       "additionalProperties": false
     },
     "io.k8s.apimachinery.pkg.api.resource.Quantity": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "string"
         },
@@ -20567,7 +20567,7 @@
       "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object"}]
     },
     "io.k8s.apimachinery.pkg.util.intstr.IntOrString": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "string"
         },

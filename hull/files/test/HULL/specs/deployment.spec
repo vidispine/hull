@@ -30,6 +30,12 @@ Test creation of objects and features.
 * Render values file "values_ok_integer.trans1.hull.yaml"
 * Set test object to "release-name-hull-test-ok"
 * Test Object has key "spec§minReadySeconds" with integer value "300"
+
+## Probe Port 
+* Render
+* Set test object to "release-name-hull-test-full_example_deployment"
+* Test Object has key "spec§template§spec§containers§0§livenessProbe§httpGet§port" with value "http"
+* Test Object has key "spec§template§spec§containers§0§readinessProbe§httpGet§port" with integer value "99"
 ___
 
 * Clean the test execution folder
