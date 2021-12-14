@@ -39,6 +39,13 @@ config:
 ### OBJECTS
 objects:
 
+# POD
+  _pod:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+      
 # CONFIGMAPS
   configmap:
     _HULL_OBJECT_TYPE_DEFAULT_:
