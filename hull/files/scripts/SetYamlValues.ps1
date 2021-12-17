@@ -68,6 +68,7 @@ else
 # Iterate image tag paths
 foreach ($replacementKey in $replacements.Keys) {
 
+    Write-Host "SetYamlValues: Currently processing '$replacementKey' ..."
     $entry = $replacements[$replacementKey].parentKey
     # Gets values yaml as string array
     $valuesString = (Get-Content $YamlFilePath)
@@ -96,6 +97,7 @@ foreach ($replacementKey in $replacements.Keys) {
                 $key = $replacements[$replacementKey].key
                 $value = $replacements[$replacementKey].value
                 $exchanged = "$($key): $($value)"
+                Write-Host "SetYamlValues: Exchanged this: '$exchanged' ..."
                 $processed += [PSObject]($exchanged.PadLeft($exchanged.Length + $whitespaceCount + $padding))
                 $found = $true
             }
@@ -154,6 +156,7 @@ foreach ($replacementKey in $replacements.Keys) {
                                 $key = $replacements[$replacementKey].key
                                 $value = $replacements[$replacementKey].value
                                 $exchanged = "$($key): $($value)"
+                                Write-Host "SetYamlValues: Exchanged this: '$exchanged' ..."                
                                 $processed += [PSObject]($exchanged.PadLeft($exchanged.Length + $whitespaceCount + $padding))
 
                                 # Emit buffered line
@@ -187,7 +190,3 @@ foreach ($replacementKey in $replacements.Keys) {
 
     Set-Content -Path "$($YamlFilePath)" -Value ($processed)
 }
-
-
-
-    

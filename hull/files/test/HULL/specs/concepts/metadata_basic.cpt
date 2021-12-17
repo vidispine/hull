@@ -10,6 +10,7 @@ General label section must be populated with overriden names
 * All test objects have key "metadata§labels§app.kubernetes.io/name" with value "a-shorter-name"
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
 * All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.23.0"
+* All test objects have key "metadata§annotations§resolve_from_transformation" with value "i_am_string"
 
 Static names can be created
 

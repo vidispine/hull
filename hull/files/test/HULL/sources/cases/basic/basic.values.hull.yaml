@@ -72,6 +72,7 @@ hull:
           default_annotation_1:  Default Annotation 1
           default_annotation_2:  Default Annotation 2
           general_custom_annotation_3: Default Annotation 3
+          resolve_from_transformation: _HT*hull.config.specific.string_defined
         labels:
           default_label_1:  Default Label 1
           default_label_2:  Default Label 2

@@ -5,7 +5,7 @@
 ###################################################
 ### CONFIG
 hull:
-#  config:
+  config:
 #    general:  
 #      data: {} 
 #      metadata:
@@ -19,69 +19,34 @@ hull:
 #            general_custom_annotation_1: General Custom Annotation 1
 #            general_custom_annotation_2: General Custom Annotation 2
 #            general_custom_annotation_3: General Custom Annotation 3
-#    specific: {}
+    specific: 
+      pod:
+        container: {}
   ###################################################
           
   ###################################################
   ### OBJECTS
   objects:
     
+    statefulset:
+      template1:
+        serviceName: name
+        pod: |- 
+             _HT!
+               {
+                 containers: { name: { image: { tag: "a" } } }   
+                 
+               } 
+               
+        #pod: 
+        #  containers: 
+        #    one:
+        #      image:
+        #        tag: _HT!{{ printf "'%s'" ((index . "$").Values.hull.config.specific.pod) }}
+        
   # POD
-    _pod:
-      
-      disabled:
-        pod:
-          containers: {}
-        
-      static_name:
-        pod:
-          containers: {}
-        
-      metadata_merge:
-        pod:
-          containers: {}
-        
-      metadata_overwrite:
-        pod:
-          containers: {}
-        
-      image_name_empty_registry:
-        pod:
-          containers:
-            main:
-              image:
-                registry: ""
-                repository: my/image/repo
-
-      image_name_registry:
-        pod:
-          containers:
-            main:
-              image:
-                repository: my/image/repo
-
-      image_name_tag:
-        pod:
-          containers:
-            main:
-              image:
-                repository: my/image/repo
-                tag: "99.9"
-
-      removal_test:
-        pod:
-          containers:
-            remove: null
-            keep:
-              ports:
-                remove: null
-                
-      volume_test:
-        pod:
-          volumes:
-            to_be_removed: null
-            
-      full_example_deployment:
+    pod:
+      template1:
         annotations:
           example: "Some annotation applied to this deployment full_example_deployment"
         labels:
@@ -98,7 +63,7 @@ hull:
               preferredDuringSchedulingIgnoredDuringExecution:
               - weight: 100
                 podAffinityTerm:
-                  labelSelector:                  
+                  labelSelector:
                     matchExpressions:
                     - key: "app"
                       operator: In

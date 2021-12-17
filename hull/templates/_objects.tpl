@@ -43,8 +43,13 @@ metadata:
 {{- /*
 ### Load pod based objects
 */ -}}
+{{- $template = "hull.object.pod.template" }}
+{{- $allObjects = merge $allObjects (dict "Pod" (dict "HULL_TEMPLATE" $template "NO_RENDER" true)) }}
+
+{{- /*
+### Load pod based objects
+*/ -}}
 {{- $template = "hull.object.base.pod" }}
-{{- $allObjects = merge $allObjects (dict "_Pod" (dict "HULL_TEMPLATE" $template "API_KIND" "Pod")) }}
 {{- $allObjects = merge $allObjects (dict "Deployment" (dict "HULL_TEMPLATE" $template "API_VERSION" "apps/v1")) }}
 {{- $allObjects = merge $allObjects (dict "DaemonSet" (dict "HULL_TEMPLATE" $template "API_VERSION" "apps/v1")) }}
 {{- $allObjects = merge $allObjects (dict "Job" (dict "HULL_TEMPLATE" $template "API_VERSION" "batch/v1" "NO_SELECTOR" true)) }}
@@ -150,9 +155,11 @@ metadata:
 {{- $objectSpec := dict }}
 {{- $objectSpec = include "hull.util.merge" (merge (dict "PARENT_CONTEXT" $rootContext "PARENT_TEMPLATE" $parentTemplate "API_VERSION" (default $apiVersion $spec.apiVersion) "API_KIND" (default $apiKind $spec.apiKind) "COMPONENT" $objectKey "SPEC" $spec "DEFAULT_COMPONENT" $defaultSpec "HULL_ROOT_KEY" $hullRootKey "NO_SELECTOR" $noSelector "OBJECT_TYPE" $objectType) (dict "LOCAL_TEMPLATE" (printf "%s" $hullTemplate))) | fromYaml }}
 {{- if (gt (len (keys (default dict $objectSpec))) 0) -}}
+{{- if (or (not (hasKey $objectTypeSpec "NO_RENDER")) (not $objectTypeSpec.NO_RENDER)) }}
 {{ toYaml $objectSpec }}
 
 ---
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

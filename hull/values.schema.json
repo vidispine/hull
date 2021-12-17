@@ -20507,38 +20507,6 @@
         
       ]
     },
-    "pod.v1": {
-      "$id": "#/definitions/pod",
-      "title": "Pod",
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "#/definitions/hull.ObjectBase.v1"
-        },
-        {
-          "$ref": "#/definitions/io.k8s.api.core.v1.PodSpec"
-        },
-        {
-          "$ref": "#/definitions/hull.PodTemplate.v1"
-        },
-        {
-          "propertyNames": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-              },
-              {
-                "$ref": "#/definitions/io.k8s.api.core.v1.PodSpec.Names"
-              },
-              {
-                "$ref": "#/definitions/hull.PodTemplate.v1.Names"
-              }
-            ]
-          }
-        }
-      ],
-      "properties": {}
-    },
     "configmap.v1": {
       "$id": "#/definitions/configmap.v1",
       "title": "Configmap",
@@ -20625,6 +20593,32 @@
           }
         }
       ]
+    },
+    "pod.v1": {
+      "$id": "#/definitions/pod",
+      "title": "Pod",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/hull.PodTemplate.v1"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.PodTemplate.v1.Names"
+              }
+            ]
+          }
+        }
+      ],
+      "properties": {}
     },
     "deployment.v1": {
       "$id": "#/definitions/deployment",
@@ -21449,7 +21443,7 @@
           "required": [],
           "additionalProperties": false,
           "properties": {
-            "_pod": {
+            "pod": {
               "$id": "#/definitions/root/objects/_pod",
               "title": "Pod",
               "type": "object",

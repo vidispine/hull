@@ -39,13 +39,6 @@ config:
 ### OBJECTS
 objects:
 
-# POD
-  _pod:
-    _HULL_OBJECT_TYPE_DEFAULT_:
-      enabled: true
-      annotations: {}
-      labels: {}
-      
 # CONFIGMAPS
   configmap:
     _HULL_OBJECT_TYPE_DEFAULT_:
@@ -178,7 +171,6 @@ objects:
       labels: {}
       ports:
         _HULL_OBJECT_TYPE_DEFAULT_: {}
-
 ###################################################
 
 # INGRESSES 
@@ -194,7 +186,6 @@ objects:
           http:
             paths:
               _HULL_OBJECT_TYPE_DEFAULT_: {}
-
 ###################################################
 
 # INGRESSCLASSES 
@@ -203,7 +194,33 @@ objects:
       enabled: true
       annotations: {}
       labels: {}
+###################################################
 
+# POD
+  pod:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+      pod:
+        initContainers: 
+          _HULL_OBJECT_TYPE_DEFAULT_:
+            env: 
+              _HULL_OBJECT_TYPE_DEFAULT_: {}
+            envFrom:
+              _HULL_OBJECT_TYPE_DEFAULT_: {}
+            volumeMounts:
+              _HULL_OBJECT_TYPE_DEFAULT_: {}
+        containers: 
+          _HULL_OBJECT_TYPE_DEFAULT_:
+            env: 
+              _HULL_OBJECT_TYPE_DEFAULT_: {}
+            envFrom:
+              _HULL_OBJECT_TYPE_DEFAULT_: {}
+            volumeMounts:
+              _HULL_OBJECT_TYPE_DEFAULT_: {}
+        volumes: 
+          _HULL_OBJECT_TYPE_DEFAULT_: {}
 ###################################################
 
 # DEPLOYMENTS 
