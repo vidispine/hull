@@ -121,7 +121,7 @@ hull:
               imagePullPolicy: IfNotPresent
               ports:
                 http:
-                  protocol: tcp
+                  protocol: TCP
                   containerPort: 4345
               env:
                 ENV_VAR_1:
@@ -216,7 +216,7 @@ hull:
               imagePullPolicy: Always
               ports:
                 http:
-                  protocol: tcp
+                  protocol: TCP
                   containerPort: 80
               env:
                 ENV_VAR_1:                  

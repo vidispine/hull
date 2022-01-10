@@ -1,7 +1,7 @@
 apiVersion: v2
 name: hull
-version: 1.22.13
-kubeVersion: ">= 1.22.0"
+version: 1.23.0
+kubeVersion: ">= 1.23.0"
 description: HULL - Helm Uniform Layer Library
 type: library
 keywords:
@@ -11,5 +11,5 @@ home: https://github.com/vidispine/hull
 dependencies: []
 maintainers:
 - name: georg weber
-  email: georgmartin.weber@s4m.com
-appVersion: 1.22.0
+  email: georgmartin.weber@bertelsmann.de
+appVersion: 1.23.0

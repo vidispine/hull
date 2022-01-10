@@ -38,6 +38,7 @@
             "authorization.k8s.io/v1",
             "authorization.k8s.io/v1beta1",
             "autoscaling/v1",
+            "autoscaling/v2",
             "autoscaling/v2beta1",
             "autoscaling/v2beta2",
             "batch/v1",
@@ -53,6 +54,7 @@
             "extensions/v1beta1",
             "flowcontrol.apiserver.k8s.io/v1alpha1",
             "flowcontrol.apiserver.k8s.io/v1beta1",
+            "flowcontrol.apiserver.k8s.io/v1beta2",
             "imagepolicy.k8s.io/v1alpha1",
             "internal.apiserver.k8s.io/v1alpha1",
             "networking.k8s.io/v1",
@@ -236,6 +238,11 @@
         {
           "group": "autoscaling",
           "kind": "DeleteOptions",
+          "version": "v2"
+        },
+        {
+          "group": "autoscaling",
+          "kind": "DeleteOptions",
           "version": "v2beta1"
         },
         {
@@ -307,6 +314,11 @@
           "group": "flowcontrol.apiserver.k8s.io",
           "kind": "DeleteOptions",
           "version": "v1beta1"
+        },
+        {
+          "group": "flowcontrol.apiserver.k8s.io",
+          "kind": "DeleteOptions",
+          "version": "v1beta2"
         },
         {
           "group": "imagepolicy.k8s.io",

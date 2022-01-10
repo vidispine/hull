@@ -1,5 +1,5 @@
 {
-  "description": "An EphemeralContainer is a container that may be added temporarily to an existing pod for user-initiated activities such as debugging. Ephemeral containers have no resource or scheduling guarantees, and they will not be restarted when they exit or when a pod is removed or restarted. If an ephemeral container causes a pod to exceed its resource allocation, the pod may be evicted. Ephemeral containers may not be added by directly updating the pod spec. They must be added via the pod's ephemeralcontainers subresource, and they will appear in the pod spec once added. This is an alpha feature enabled by the EphemeralContainers feature flag.",
+  "description": "An EphemeralContainer is a temporary container that you may add to an existing Pod for user-initiated activities such as debugging. Ephemeral containers have no resource or scheduling guarantees, and they will not be restarted when they exit or when a Pod is removed or restarted. The kubelet may evict a Pod if an ephemeral container causes the Pod to exceed its resource allocation.\n\nTo add an ephemeral container, use the ephemeralcontainers subresource of an existing Pod. Ephemeral containers may not be removed or restarted.\n\nThis is a beta feature available on clusters that haven't disabled the EphemeralContainers feature gate.",
   "properties": {
     "args": {
       "description": "Arguments to the entrypoint. The docker image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
@@ -280,7 +280,12 @@
       ]
     },
     "imagePullPolicy": {
-      "description": "Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images",
+      "description": "Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images\n\nPossible enum values:\n - `\"Always\"` means that kubelet always attempts to pull the latest image. Container will fail If the pull fails.\n - `\"IfNotPresent\"` means that kubelet pulls if the image isn't present on disk. Container will fail if the image isn't present and the pull fails.\n - `\"Never\"` means that kubelet never pulls an image, but only uses a local image. Container will fail if the image isn't present",
+      "enum": [
+        "Always",
+        "IfNotPresent",
+        "Never"
+      ],
       "type": [
         "string",
         "null"
@@ -290,7 +295,7 @@
       "description": "Lifecycle describes actions that the management system should take in response to container lifecycle events. For the PostStart and PreStop lifecycle handlers, management of the container blocks until the action is complete, unless the container process fails, in which case the handler is aborted.",
       "properties": {
         "postStart": {
-          "description": "Handler defines a specific action that should be taken",
+          "description": "LifecycleHandler defines a specific action that should be taken in a lifecycle hook. One and only one of the fields, except TCPSocket must be specified.",
           "properties": {
             "exec": {
               "description": "ExecAction describes a \"run in container\" action.",
@@ -378,7 +383,11 @@
                   ]
                 },
                 "scheme": {
-                  "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
+                  "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\nPossible enum values:\n - `\"HTTP\"` means that the scheme used will be http://\n - `\"HTTPS\"` means that the scheme used will be https://",
+                  "enum": [
+                    "HTTP",
+                    "HTTPS"
+                  ],
                   "type": [
                     "string",
                     "null"
@@ -438,7 +447,7 @@
           "additionalProperties": false
         },
         "preStop": {
-          "description": "Handler defines a specific action that should be taken",
+          "description": "LifecycleHandler defines a specific action that should be taken in a lifecycle hook. One and only one of the fields, except TCPSocket must be specified.",
           "properties": {
             "exec": {
               "description": "ExecAction describes a \"run in container\" action.",
@@ -526,7 +535,11 @@
                   ]
                 },
                 "scheme": {
-                  "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
+                  "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\nPossible enum values:\n - `\"HTTP\"` means that the scheme used will be http://\n - `\"HTTPS\"` means that the scheme used will be https://",
+                  "enum": [
+                    "HTTP",
+                    "HTTPS"
+                  ],
                   "type": [
                     "string",
                     "null"
@@ -626,6 +639,30 @@
             "null"
           ]
         },
+        "grpc": {
+          "properties": {
+            "port": {
+              "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
+              "format": "int32",
+              "type": "integer"
+            },
+            "service": {
+              "description": "Service is the name of the service to place in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).\n\nIf this is not specified, the default behavior is defined by gRPC.",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "port"
+          ],
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false
+        },
         "httpGet": {
           "description": "HTTPGetAction describes an action based on HTTP Get requests.",
           "properties": {
@@ -689,7 +726,11 @@
               ]
             },
             "scheme": {
-              "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
+              "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\nPossible enum values:\n - `\"HTTP\"` means that the scheme used will be http://\n - `\"HTTPS\"` means that the scheme used will be https://",
+              "enum": [
+                "HTTP",
+                "HTTPS"
+              ],
               "type": [
                 "string",
                 "null"
@@ -828,7 +869,12 @@
             ]
           },
           "protocol": {
-            "description": "Protocol for port. Must be UDP, TCP, or SCTP. Defaults to \"TCP\".",
+            "description": "Protocol for port. Must be UDP, TCP, or SCTP. Defaults to \"TCP\".\n\nPossible enum values:\n - `\"SCTP\"` is the SCTP protocol.\n - `\"TCP\"` is the TCP protocol.\n - `\"UDP\"` is the UDP protocol.",
+            "enum": [
+              "SCTP",
+              "TCP",
+              "UDP"
+            ],
             "type": [
               "string",
               "null"
@@ -847,7 +893,14 @@
       "type": [
         "array",
         "null"
-      ]
+      ],
+      "x-kubernetes-list-map-keys": [
+        "containerPort",
+        "protocol"
+      ],
+      "x-kubernetes-list-type": "map",
+      "x-kubernetes-patch-merge-key": "containerPort",
+      "x-kubernetes-patch-strategy": "merge"
     },
     "readinessProbe": {
       "description": "Probe describes a health check to be performed against a container to determine whether it is alive or ready to receive traffic.",
@@ -882,6 +935,30 @@
             "integer",
             "null"
           ]
+        },
+        "grpc": {
+          "properties": {
+            "port": {
+              "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
+              "format": "int32",
+              "type": "integer"
+            },
+            "service": {
+              "description": "Service is the name of the service to place in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).\n\nIf this is not specified, the default behavior is defined by gRPC.",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "port"
+          ],
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false
         },
         "httpGet": {
           "description": "HTTPGetAction describes an action based on HTTP Get requests.",
@@ -946,7 +1023,11 @@
               ]
             },
             "scheme": {
-              "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
+              "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\nPossible enum values:\n - `\"HTTP\"` means that the scheme used will be http://\n - `\"HTTPS\"` means that the scheme used will be https://",
+              "enum": [
+                "HTTP",
+                "HTTPS"
+              ],
               "type": [
                 "string",
                 "null"
@@ -1105,7 +1186,7 @@
       "description": "SecurityContext holds security configuration that will be applied to a container. Some fields are present in both SecurityContext and PodSecurityContext.  When both are set, the values in SecurityContext take precedence.",
       "properties": {
         "allowPrivilegeEscalation": {
-          "description": "AllowPrivilegeEscalation controls whether a process can gain more privileges than its parent process. This bool directly controls if the no_new_privs flag will be set on the container process. AllowPrivilegeEscalation is true always when the container is: 1) run as Privileged 2) has CAP_SYS_ADMIN",
+          "description": "AllowPrivilegeEscalation controls whether a process can gain more privileges than its parent process. This bool directly controls if the no_new_privs flag will be set on the container process. AllowPrivilegeEscalation is true always when the container is: 1) run as Privileged 2) has CAP_SYS_ADMIN Note that this field cannot be set when spec.os.name is windows.",
           "type": [
             "boolean",
             "null"
@@ -1148,28 +1229,28 @@
           "additionalProperties": false
         },
         "privileged": {
-          "description": "Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false.",
+          "description": "Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false. Note that this field cannot be set when spec.os.name is windows.",
           "type": [
             "boolean",
             "null"
           ]
         },
         "procMount": {
-          "description": "procMount denotes the type of proc mount to use for the containers. The default is DefaultProcMount which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled.",
+          "description": "procMount denotes the type of proc mount to use for the containers. The default is DefaultProcMount which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows.",
           "type": [
             "string",
             "null"
           ]
         },
         "readOnlyRootFilesystem": {
-          "description": "Whether this container has a read-only root filesystem. Default is false.",
+          "description": "Whether this container has a read-only root filesystem. Default is false. Note that this field cannot be set when spec.os.name is windows.",
           "type": [
             "boolean",
             "null"
           ]
         },
         "runAsGroup": {
-          "description": "The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in PodSecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.",
+          "description": "The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in PodSecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows.",
           "format": "int64",
           "type": [
             "integer",
@@ -1184,7 +1265,7 @@
           ]
         },
         "runAsUser": {
-          "description": "The UID to run the entrypoint of the container process. Defaults to user specified in image metadata if unspecified. May also be set in PodSecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.",
+          "description": "The UID to run the entrypoint of the container process. Defaults to user specified in image metadata if unspecified. May also be set in PodSecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows.",
           "format": "int64",
           "type": [
             "integer",
@@ -1240,7 +1321,12 @@
               ]
             },
             "type": {
-              "description": "type indicates which kind of seccomp profile will be applied. Valid options are:\n\nLocalhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.",
+              "description": "type indicates which kind of seccomp profile will be applied. Valid options are:\n\nLocalhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.\n\nPossible enum values:\n - `\"Localhost\"` indicates a profile defined in a file on the node should be used. The file's location relative to <kubelet-root-dir>/seccomp.\n - `\"RuntimeDefault\"` represents the default container runtime seccomp profile.\n - `\"Unconfined\"` indicates no seccomp profile is applied (A.K.A. unconfined).",
+              "enum": [
+                "Localhost",
+                "RuntimeDefault",
+                "Unconfined"
+              ],
               "type": "string"
             }
           },
@@ -1340,6 +1426,30 @@
             "null"
           ]
         },
+        "grpc": {
+          "properties": {
+            "port": {
+              "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
+              "format": "int32",
+              "type": "integer"
+            },
+            "service": {
+              "description": "Service is the name of the service to place in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).\n\nIf this is not specified, the default behavior is defined by gRPC.",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "port"
+          ],
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false
+        },
         "httpGet": {
           "description": "HTTPGetAction describes an action based on HTTP Get requests.",
           "properties": {
@@ -1403,7 +1513,11 @@
               ]
             },
             "scheme": {
-              "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
+              "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\nPossible enum values:\n - `\"HTTP\"` means that the scheme used will be http://\n - `\"HTTPS\"` means that the scheme used will be https://",
+              "enum": [
+                "HTTP",
+                "HTTPS"
+              ],
               "type": [
                 "string",
                 "null"
@@ -1517,7 +1631,7 @@
       ]
     },
     "targetContainerName": {
-      "description": "If set, the name of the container from PodSpec that this ephemeral container targets. The ephemeral container will be run in the namespaces (IPC, PID, etc) of this container. If not set then the ephemeral container is run in whatever namespaces are shared for the pod. Note that the container runtime must support this feature.",
+      "description": "If set, the name of the container from PodSpec that this ephemeral container targets. The ephemeral container will be run in the namespaces (IPC, PID, etc) of this container. If not set then the ephemeral container uses the namespaces configured in the Pod spec.\n\nThe container runtime must implement support for this feature. If the runtime does not support namespace targeting then the result of setting this field is undefined.",
       "type": [
         "string",
         "null"
@@ -1531,7 +1645,11 @@
       ]
     },
     "terminationMessagePolicy": {
-      "description": "Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated.",
+      "description": "Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated.\n\nPossible enum values:\n - `\"FallbackToLogsOnError\"` will read the most recent contents of the container logs for the container status message when the container exits with an error and the terminationMessagePath has no contents.\n - `\"File\"` is the default behavior and will set the container status message to the contents of the container's terminationMessagePath when the container exits.",
+      "enum": [
+        "FallbackToLogsOnError",
+        "File"
+      ],
       "type": [
         "string",
         "null"
@@ -1576,7 +1694,7 @@
       "x-kubernetes-patch-strategy": "merge"
     },
     "volumeMounts": {
-      "description": "Pod volumes to mount into the container's filesystem. Cannot be updated.",
+      "description": "Pod volumes to mount into the container's filesystem. Subpath mounts are not allowed for ephemeral containers. Cannot be updated.",
       "items": {
         "description": "VolumeMount describes a mounting of a Volume within a container.",
         "properties": {

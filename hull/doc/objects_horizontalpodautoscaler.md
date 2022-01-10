@@ -6,7 +6,7 @@ The HULL HorizontalPodAutoscaler object allows to reference a chart internal wor
 
 ### The `hull.HorizontalPodAutoscaler.v1` properties
 
-Properties can be set as they are defined in the [Kubernetes API's horizontalpodautoscalerspec spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#horizontalpodautoscalerspec-v1-autoscaling). 
+Properties can be set as they are defined in the [Kubernetes API's horizontalpodautoscalerspec spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#horizontalpodautoscalerspec-v2-autoscaling). 
 
 However the properties listed below are overwritten or added by HULL:
 
