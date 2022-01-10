@@ -44,7 +44,6 @@ metadata:
 ### Load pod based objects
 */ -}}
 {{- $template = "hull.object.base.pod" }}
-{{- $allObjects = merge $allObjects (dict "_Pod" (dict "HULL_TEMPLATE" $template "API_KIND" "Pod")) }}
 {{- $allObjects = merge $allObjects (dict "Deployment" (dict "HULL_TEMPLATE" $template "API_VERSION" "apps/v1")) }}
 {{- $allObjects = merge $allObjects (dict "DaemonSet" (dict "HULL_TEMPLATE" $template "API_VERSION" "apps/v1")) }}
 {{- $allObjects = merge $allObjects (dict "Job" (dict "HULL_TEMPLATE" $template "API_VERSION" "batch/v1" "NO_SELECTOR" true)) }}

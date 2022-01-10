@@ -21449,25 +21449,6 @@
           "required": [],
           "additionalProperties": false,
           "properties": {
-            "_pod": {
-              "$id": "#/definitions/root/objects/_pod",
-              "title": "Pod",
-              "type": "object",
-              "required": [],
-              "patternProperties": {
-                "^[^_].*$": {
-                  "type": ["null", "object"],
-                  "anyOf": [
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "$ref": "#/definitions/pod.v1"
-                    }
-                  ]
-                }
-              }
-            },
             "configmap": {
               "$id": "#/definitions/root/objects/configmap",
               "title": "Configmap",
