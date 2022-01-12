@@ -181,6 +181,11 @@
         {
           "group": "autoscaling",
           "kind": "DeleteOptions",
+          "version": "v2"
+        },
+        {
+          "group": "autoscaling",
+          "kind": "DeleteOptions",
           "version": "v2beta1"
         },
         {
@@ -252,6 +257,11 @@
           "group": "flowcontrol.apiserver.k8s.io",
           "kind": "DeleteOptions",
           "version": "v1beta1"
+        },
+        {
+          "group": "flowcontrol.apiserver.k8s.io",
+          "kind": "DeleteOptions",
+          "version": "v1beta2"
         },
         {
           "group": "imagepolicy.k8s.io",
