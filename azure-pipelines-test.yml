@@ -40,6 +40,7 @@ steps:
       ls
       cd hull/files/test/HULL
       ls
-      gauge run -p -l debug specs
-    displayName: 'gauge test against helm v${{ version.version }}'
+      gauge run --env single_file -p -l debug specs
+      gauge run --env multi_file -p -l debug specs
+    displayName: 'gauge test against helm v${{ version.version }} with style single_file'
     condition: and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','true'))

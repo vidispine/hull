@@ -1,0 +1,5 @@
+{{ $template := "hull.object.base.ingress" }}
+{{ $type := "Ingress" }}
+{{ $objects := dict "API_VERSION" "networking.k8s.io/v1" }}
+
+{{ include "hull.objects.render" (dict "HULL_ROOT_KEY" "hull" "ROOT_CONTEXT" $ "HULL_OBJECTS" (dict $type $objects)) }}

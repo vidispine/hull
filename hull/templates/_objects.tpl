@@ -16,8 +16,6 @@ metadata:
   namespace: ""
 {{- end -}}
 
-
-
 {{- /*
 ################################################# PREPARE ALL #####################################################
 */ -}}
@@ -70,7 +68,7 @@ metadata:
 {{- $allObjects = merge $allObjects (dict "ClusterRoleBinding" (dict "HULL_TEMPLATE" $template "API_VERSION" "rbac.authorization.k8s.io/v1" "PARENT_TEMPLATE" "this.emptynamespace")) }}
 
 {{- /*
-### Load webhook objects
+### Load role objects
 */ -}}
 {{- $template = "hull.object.base.role" }}
 {{- $allObjects = merge $allObjects (dict "Role" (dict "HULL_TEMPLATE" $template "API_VERSION" "rbac.authorization.k8s.io/v1")) }}
@@ -104,6 +102,7 @@ metadata:
 {{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- $rootContext := (index . "ROOT_CONTEXT") -}}
 {{- $allObjects := (index . "HULL_OBJECTS") -}}
+
 {{- range $objectType, $objectTypeSpec := $allObjects }}
 {{- $lowerObjectType := $objectType | lower }}
 {{- $apiKind := $objectType }}
@@ -137,6 +136,7 @@ metadata:
 */ -}}
 {{- $defaultSpec := dict }}
 {{- $defaultSpec = (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType)._HULL_OBJECT_TYPE_DEFAULT_ }}
+
 {{- range $objectKey, $spec := (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType) }}
 {{- if ne $objectKey "_HULL_OBJECT_TYPE_DEFAULT_" -}}
 {{ if (gt (len (keys (default dict $spec))) 0) }}
