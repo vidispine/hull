@@ -1,0 +1,5 @@
+{{ $template := "hull.object.base.registry" }}
+{{ $type := "Registry" }}
+{{ $objects := dict "API_KIND" "Secret" }}
+
+{{ include "hull.objects.render" (dict "HULL_ROOT_KEY" "hull" "ROOT_CONTEXT" $ "HULL_OBJECTS" (dict $type $objects)) }}
