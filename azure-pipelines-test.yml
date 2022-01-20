@@ -42,5 +42,5 @@ steps:
       ls
       gauge run --env single_file -p -l debug specs
       gauge run --env multi_file -p -l debug specs
-    displayName: 'gauge test against helm v${{ version.version }} with style single_file'
+    displayName: 'gauge test against helm v${{ version.version }}'
     condition: and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','true'))
