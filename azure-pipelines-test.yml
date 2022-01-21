@@ -30,9 +30,9 @@ steps:
     echo installing helm
     wget https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
     sudo chmod +x ./get-helm-3
-    sudo ./get-helm-3 --version v${{ version.version }}
+    sudo ./get-helm-3 --version v${{ parameters.version }}
     helm version
-  displayName: 'install helm v${{ version.version }}'
+  displayName: 'install helm v${{ parameters.version }}'
   condition: and(ne(${{ parameters.HelmVersion }},''),eq('${{ parameters.RunTests }}','true'))
   
 - script: |
