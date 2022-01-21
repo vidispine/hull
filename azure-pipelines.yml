@@ -74,7 +74,8 @@ jobs:
         HelmVersion: "3.7.1"
       Helm_3_7_2: 
         HelmVersion: "3.7.2"
-        
+  
+  steps:
   - template: azure-pipelines-test.yml  # Template reference
     parameters:
       RunTests: ${{ parameters.RunTests }}
