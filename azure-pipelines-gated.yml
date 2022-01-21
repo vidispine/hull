@@ -37,3 +37,5 @@ jobs:
       
   steps:
   - template: azure-pipelines-test.yml  # Template reference
+    parameters:
+      RunTests: ${{ parameters.RunTests }}
