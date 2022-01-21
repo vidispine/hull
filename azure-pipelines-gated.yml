@@ -17,11 +17,18 @@ pool:
     vmImage: 'ubuntu-20.04'
 jobs:
 - job: RunTests
+  strategy: parallel
+    matrix:
+      Helm_3_0_0:
+        HelmVersions:
+        - version: "3.0.0"
+      Helm_3_1_0:
+        HelmVersions:
+        - version: "3.1.0"
   steps:
-
   - template: azure-pipelines-test.yml  # Template reference
-    parameters:
-      HelmVersions:
+#    parameters:
+#      HelmVersions:
       #- version: "3.0.0"
       #- version: "3.0.1"
       #- version: "3.0.2"
@@ -29,22 +36,22 @@ jobs:
       #- version: "3.1.0"
       #- version: "3.1.1"
       #- version: "3.1.2"
-      - version: "3.1.3"
+#      - version: "3.1.3"
       #- version: "3.2.0"
       #- version: "3.2.1"
       #- version: "3.2.2"
       #- version: "3.2.3"
-      - version: "3.2.4"
+#      - version: "3.2.4"
       #- version: "3.3.0"
       #- version: "3.3.1"
       #- version: "3.3.2"
       #- version: "3.3.3"
-      - version: "3.3.4"
+#      - version: "3.3.4"
       #- version: "3.4.0"
       #- version: "3.4.1"
-      - version: "3.4.2"
+#      - version: "3.4.2"
       #- version: "3.5.0"
       #- version: "3.5.1"
-      - version: "3.5.4"
-      - version: "3.6.3"
-      - version: "3.7.2"
+#      - version: "3.5.4"
+#      - version: "3.6.3"
+#      - version: "3.7.2"
