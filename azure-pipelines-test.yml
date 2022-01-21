@@ -23,7 +23,7 @@ steps:
       sudo pip install -r requirements.txt
       gauge
   displayName: 'install gauge'
-  condition: or(and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','true')),and(ne(${{ parameters.HelmVersion }},''),eq('${{ parameters.RunTests }}','true')))
+  condition: or(and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','true')),and(ne('${{ parameters.HelmVersion }}',''),eq('${{ parameters.RunTests }}','true')))
 
 - script: |
     set -euo pipefail
