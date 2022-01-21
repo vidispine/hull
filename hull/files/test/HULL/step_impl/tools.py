@@ -124,7 +124,10 @@ def copy_the_hull_chart_files_to_test_object_in_chart(case, chart):
         copyfile(hull_path, "README.md", dst_path)
         copyfile(hull_path, "values.schema.json", dst_path)
         copyfile(hull_path, "values.yaml", dst_path)
-        copyfile(hull_path, "hull.yaml", os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart, "templates"))
+        if os.environ.get("style") == 'single_file' or os.environ.get("default"):
+            copyfile(hull_path, "hull.yaml", os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart, "templates"))
+        if os.environ.get("style") == 'multi_file':
+            copytree(os.path.join(hull_path, "files/templates"), os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart, "templates"))
         copytree(os.path.join(hull_path, "templates"), os.path.join(dst_path, "templates"))
     except Exception as e:
         print("Oops!", e.__str__, "occurred.")
@@ -367,33 +370,29 @@ def copyfile(src_dir, src_filename, dst_dir):
 
 def get_objects(case, chart):
     dir_path = os.path.dirname(os.path.realpath(__file__))
+    rendered_files_folder = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered', chart, 'templates')
     rendered_file_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered', chart, 'templates',  'hull.yaml')
 
-    assert os.path.isfile(rendered_file_path)
-    
     items = []
-    with open(rendered_file_path) as file_in:
+    for file in os.listdir(rendered_files_folder):
+        with open(os.path.join(rendered_files_folder, file)) as file_in:
+            
+            item = None
+            itemIndex = -1
+            for line in file_in:
+                if line.startswith("---"):
+                    items.append([])
+                items[itemIndex].append(line)
         
-        item = None
-        itemIndex = -1
-        for line in file_in:
-            if line.startswith("---"):                
-                items.append([])
-            items[itemIndex].append(line)
-    
-    data_store.scenario.objects = []
-    for key in list(data_store.scenario.keys()):
-        if key.startswith("objects_"):
-            data_store.scenario[key] = dict()
-        
-    for i in items:
-        
-        item = Dotty(yaml.safe_load("".join(i)), separator='§')
-        data_store.scenario.objects.append(item)
-        if not ("objects_" + item['kind']) in data_store.scenario:
-            data_store.scenario["objects_" + item['kind']] = dict()
-        data_store.scenario["objects_" + item['kind']][item['metadata§name']] = item
-
-    #with open(os.path.join(dir_path, "./k8s_api_strict.json")) as json_file:
-    #    schema = json.load(json_file)
-    #    data_store.scenario["schema"] = schema
+        data_store.scenario.objects = []
+        for key in list(data_store.scenario.keys()):
+            if key.startswith("objects_"):
+                data_store.scenario[key] = dict()
+            
+        for i in items:
+            
+            item = Dotty(yaml.safe_load("".join(i)), separator='§')
+            data_store.scenario.objects.append(item)
+            if not ("objects_" + item['kind']) in data_store.scenario:
+                data_store.scenario["objects_" + item['kind']] = dict()
+            data_store.scenario["objects_" + item['kind']][item['metadata§name']] = item
