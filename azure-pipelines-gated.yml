@@ -21,11 +21,9 @@ jobs:
     maxParallel: 100
     matrix:
       Helm_3_0_0:
-        HelmVersions:
-        - version: "3.0.0"
-      Helm_3_1_0:
-        HelmVersions:
-        - version: "3.1.0"
+        HelmVersion: "3.0.0"
+      Helm_3_1_0: 
+        HelmVersion: "3.1.0"
   steps:
   - template: azure-pipelines-test.yml  # Template reference
 #    parameters:

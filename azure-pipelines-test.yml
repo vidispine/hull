@@ -7,6 +7,9 @@ parameters:
 - name: HelmVersions
   type: object
   default: []
+- name: HelmVersion
+  type: string
+  default: ""
 - name: RunTests
   type: boolean
   default: true
@@ -20,8 +23,29 @@ steps:
       sudo pip install -r requirements.txt
       gauge
   displayName: 'install gauge'
-  condition: and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','true'))
+  condition: or(and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','true')),and(ne(${{ parameters.HelmVersion }},''),eq('${{ parameters.RunTests }}','true')))
 
+- script: |
+    set -euo pipefail
+    echo installing helm
+    wget https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+    sudo chmod +x ./get-helm-3
+    sudo ./get-helm-3 --version v${{ version.version }}
+    helm version
+  displayName: 'install helm v${{ version.version }}'
+  condition: and(ne(${{ parameters.HelmVersion }},''),eq('${{ parameters.RunTests }}','true'))
+  
+- script: |
+    set -euo pipefail
+    echo starting gauge test against helm version `helm version`
+    ls
+    cd hull/files/test/HULL
+    ls
+    gauge run --env single_file -p -l debug specs
+    gauge run --env multi_file -p -l debug specs
+  displayName: 'gauge test against helm v${{ version.version }}'
+  condition: and(ne(${{ parameters.HelmVersion }},''),eq('${{ parameters.RunTests }}','true'))
+    
 - ${{ each version in parameters.HelmVersions }}: # Each Helm Version
   
   - script: |
