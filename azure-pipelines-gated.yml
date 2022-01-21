@@ -17,7 +17,8 @@ pool:
     vmImage: 'ubuntu-20.04'
 jobs:
 - job: RunTests
-  strategy: parallel
+  strategy: 
+    maxParallel: 100
     matrix:
       Helm_3_0_0:
         HelmVersions:
