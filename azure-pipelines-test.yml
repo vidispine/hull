@@ -30,9 +30,9 @@ steps:
     echo installing helm
     wget https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
     sudo chmod +x ./get-helm-3
-    sudo ./get-helm-3 --version v${{ parameters.version }}
+    sudo ./get-helm-3 --version v${{ parameters.HelmVersion }}
     helm version
-  displayName: 'install helm v${{ parameters.version }}'
+  displayName: 'install helm v${{ parameters.HelmVersion }}'
   condition: and(ne(${{ parameters.HelmVersion }},''),eq('${{ parameters.RunTests }}','true'))
   
 - script: |
@@ -43,7 +43,7 @@ steps:
     ls
     gauge run --env single_file -p -l debug specs
     gauge run --env multi_file -p -l debug specs
-  displayName: 'gauge test against helm v${{ version.version }}'
+  displayName: 'gauge test against helm v${{ parameters.HelmVersion }}'
   condition: and(ne(${{ parameters.HelmVersion }},''),eq('${{ parameters.RunTests }}','true'))
     
 - ${{ each version in parameters.HelmVersions }}: # Each Helm Version
