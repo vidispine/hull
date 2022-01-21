@@ -33,7 +33,7 @@ steps:
     sudo ./get-helm-3 --version v${{ parameters.HelmVersion }}
     helm version
   displayName: 'install helm v${{ parameters.HelmVersion }}'
-  condition: and(ne(${{ parameters.HelmVersion }},''),eq('${{ parameters.RunTests }}','true'))
+  condition: and(ne('${{ parameters.HelmVersion }}',''),eq('${{ parameters.RunTests }}','true'))
   
 - script: |
     set -euo pipefail
@@ -44,7 +44,7 @@ steps:
     gauge run --env single_file -p -l debug specs
     gauge run --env multi_file -p -l debug specs
   displayName: 'gauge test against helm v${{ parameters.HelmVersion }}'
-  condition: and(ne(${{ parameters.HelmVersion }},''),eq('${{ parameters.RunTests }}','true'))
+  condition: and(ne('${{ parameters.HelmVersion }}',''),eq('${{ parameters.RunTests }}','true'))
     
 - ${{ each version in parameters.HelmVersions }}: # Each Helm Version
   
