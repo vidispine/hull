@@ -229,9 +229,9 @@
 * Test Object has key "spec§template§spec§containers§0§envFrom§2§configMapRef§name" with value "release-name-hull-test-test_enabled_transform"
 * Test Object has key "spec§template§spec§containers§0§ports" with array value that has "3" items
 * Test Object has key "spec§template§spec§containers§0§ports§0§containerPort" with integer value "10254"
-* Test Object has key "spec§template§spec§containers§0§ports§0§protocol" with value "TCP"
+* Test Object has key "spec§template§spec§containers§0§ports§0§protocol" with value "SCTP"
 * Test Object has key "spec§template§spec§containers§0§ports§1§containerPort" with integer value "10256"
-* Test Object has key "spec§template§spec§containers§0§ports§1§protocol" with value "TCP"
+* Test Object has key "spec§template§spec§containers§0§ports§1§protocol" with value "SCTP"
 * Test Object has key "spec§template§spec§containers§0§ports§2§containerPort" with integer value "10255"
 * Test Object has key "spec§template§spec§containers§0§ports§2§protocol" with value "UDP"
 * Test Object has key "spec§template§spec§containers§1§command" with array value that has "1" items

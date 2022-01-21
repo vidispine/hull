@@ -335,26 +335,26 @@ hull:
               ports:
                 test_disabled:
                   enabled: false
-                  protocol: tcp
+                  protocol: TCP
                   containerPort: 4345
                 test_enabled:
                   enabled: true
-                  protocol: tcp
+                  protocol: TCP
                   containerPort: 4345
                 test_disabled_transform:
                   enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
                     {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
                     >>>"
-                  protocol: tcp
+                  protocol: TCP
                   containerPort: 4345
                 test_enabled_transform:
                   enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
                     {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
                     >>>"
-                  protocol: tcp
+                  protocol: TCP
                   containerPort: 4345
                 test_enabled_missing:
-                  protocol: tcp
+                  protocol: TCP
                   containerPort: 4345
               volumeMounts:
                 test_disabled:
@@ -455,26 +455,26 @@ hull:
               ports:
                 test_disabled:
                   enabled: false
-                  protocol: tcp
+                  protocol: TCP
                   containerPort: 4345
                 test_enabled:
                   enabled: true
-                  protocol: tcp
+                  protocol: TCP
                   containerPort: 4345
                 test_disabled_transform:
                   enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
                     {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
                     >>>"
-                  protocol: tcp
+                  protocol: TCP
                   containerPort: 4345
                 test_enabled_transform:
                   enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
                     {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
                     >>>"
-                  protocol: tcp
+                  protocol: TCP
                   containerPort: 4345
                 test_enabled_missing:
-                  protocol: tcp
+                  protocol: TCP
                   containerPort: 4345
               volumeMounts:
                 test_disabled:
@@ -595,12 +595,12 @@ hull:
                 _HT!:
                   "_": |-
                     {
-                      test_one: { containerPort: 10254, protocol: TCP },
+                      test_one: { containerPort: 10254, protocol: SCTP },
                       test_two: { containerPort: 10255, protocol: UDP }
                     }
                 test_three:
                   containerPort: 10256
-                  protocol: TCP
+                  protocol: SCTP
             test_enabled_transform:
               enabled: _HT?(index . "$").Values.hull.config.specific.switch_enabled_on
               command:

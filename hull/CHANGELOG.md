@@ -1,4 +1,15 @@
 ------------------
+[1.22.14]
+------------------
+CHANGES:
+- allow to choose between rendering to single file or multiple files per object type to potentially eliminate performance penalty due to having one file only
+- add test environments for both single and multi file usage
+- add two example values.yamls
+
+FIXES:
+- allow using 63 instead of 54 chars for a fullname and name override
+- remove dots end of labels and names
+
 [1.22.13]
 ------------------
 FIXES:
