@@ -15,7 +15,7 @@ pool:
 
 jobs:
 - job: RunTests
-  strategy: parallel
+  strategy: 
     maxParallel: 100
     matrix:
       Helm_3_1_1:
