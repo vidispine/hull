@@ -36,6 +36,7 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-full_example_deployment"
 * Test Object has key "spec§template§spec§containers§0§livenessProbe§httpGet§port" with value "http"
 * Test Object has key "spec§template§spec§containers§0§readinessProbe§httpGet§port" with integer value "99"
+
 ___
 
 * Clean the test execution folder

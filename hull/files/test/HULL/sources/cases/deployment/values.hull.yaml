@@ -121,7 +121,7 @@ hull:
               imagePullPolicy: IfNotPresent
               ports:
                 http:
-                  protocol: tcp
+                  protocol: TCP
                   containerPort: 4345
               env:
                 ENV_VAR_1:
@@ -216,7 +216,7 @@ hull:
               imagePullPolicy: Always
               ports:
                 http:
-                  protocol: tcp
+                  protocol: TCP
                   containerPort: 80
               env:
                 ENV_VAR_1:                  
@@ -243,7 +243,7 @@ hull:
               - "container"
               - "add"
               - "some"
-              - "arguments"               
+              - "arguments"
               livenessProbe: 
                 httpGet:
                   port: _HT!http
@@ -264,7 +264,7 @@ hull:
                   memory: 4.4Gi
                 requests:
                   cpu: "5.5"
-                  memory: 9.9Gi           
+                  memory: 9.9Gi
       nginx:
         replicas: 3
         pod:         

@@ -177,14 +177,46 @@ Branch must be named `release-1.x` where x is the minor version of the Kubernete
 
 ### Create JSON schema 
 
-Create a new matching JSON schema in the `kubernetes-json-schema` folder with the instructions given in the [README.md](./../../kubernetes-json-schema/README.md) there. Patch version can be the highest available. It is expected no object properties are changed between patch versions.
+Create new matching JSON schema files in the `kubernetes-json-schema` folder with the instructions given in the [README.md](./../../kubernetes-json-schema/README.md) there. Patch version can be the highest available. It is expected no object properties are changed between patch versions.
 
 ### Adapt the JSON schema
 
-Copy the `_definition.json` from the newly created schema folder to `values.schema.json` in the `hull` charts root library overwriting the existing content. Compare the `values.schema.json` content with that of the previous release version branch and adapt as needed (the complicated part). Consider copying the changes related to the objects that HULL deals with and leave other API changes alone.
-Use a side-by-side tool such as BeyondCompare to do the comparison.
+Copy the `_definition.json` from the newly created schema folder to `values.schema.json` in the `hull` charts root library overwriting the existing content. Compare the `values.schema.json` content with that of the previous release version branch and adapt as needed (the complicated part). Consider copying the changes related to the objects that HULL deals with and leave other API changes alone. Use a side-by-side tool such as BeyondCompare to do the comparison.
 
 General hints for doing this when starting comparing top to bottom:
+- before going through the new `values.schema.json` line by line you should do some global replacements in the new file to adapt the types of objects to the HULL types:
+  - ```
+    "type": "object" 
+    --> 
+    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]
+    ```
+  - ```
+    "type": "array" 
+    --> 
+    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+    ```
+  - ```
+    "type": "integer" 
+    --> 
+    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "integer" } ]
+    ```
+  - ```
+    "type": "number" 
+    --> 
+    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "number" } ]
+    ```
+  - ```
+    "type": "boolean" 
+    --> 
+    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "boolean" } ]
+    ```
+  
+  This should eliminate more than 80% of the differences between current `values.schema.json` and the next one you compare with. The remaining differences are typically the following:
+  - description changes
+  - added `x-kubernetes` attributes on the Kubernetes side
+  - deprecated APIs are removed
+  - new APIs are added (see below, this may require updating the HULL structures if the new API is handled by HULL)
+  
 - any block that ends with `.Names` and before that matches one of the Kubernetes API schema elements (typically right below such a block) you copy the block over to the new JSON schema. These blocks are used in the HULL schema to create valid union between K8S properties and HULL properties. For example this block:
 
   ```yaml
@@ -230,6 +262,7 @@ is changed to
 `{{- $allObjects = merge $allObjects (dict "CronJob" (dict "API_VERSION" "batch/v1")) }}`
 
 ### Adapt test chart
+
 Set the versions in `Chart.yaml` of the test chart at `hull/files/test/HULL/sources/charts/hull-test`:
 
 - `version: 1.x.0` where x is the Kubernetes major version

@@ -52,7 +52,12 @@ Test creation of objects and features.
 * Test Object has key "spec§ports§2§name" with value "static_one"
 * Test Object has key "spec§ports§3§name" with value "static_two"
 
-
+## Full Transformation
+* Render
+* Set test object to "release-name-hull-test-full_transformation"
+* Test Object has key "spec§ports" with array value that has "2" items
+* Test Object has key "spec§ports§0§name" with value "dynamic_one"
+* Test Object has key "spec§ports§1§name" with value "dynamic_two"
 ___
 
 * Clean the test execution folder

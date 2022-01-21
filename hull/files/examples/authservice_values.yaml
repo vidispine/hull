@@ -1,0 +1,391 @@
+# Default values for AuthService.
+# This is a YAML-formatted file.
+# - declares variables to be passed into your templates
+# - provides default values where applicable
+
+# Configuration of chart should be done via the hull subchart
+hull:
+  config:
+    general:
+      data:
+        endpoints:
+          # define some globally relevant system endpoints here and refer to them
+          vidicore:
+            uri:
+              api: ""
+          authservice:
+            uri:
+              api: ''
+
+    # define important or shared values that can be referenced to from multiple places
+    specific:
+      ingress:
+        # connect ingress to controller via IngressClass
+        controllerClass: haproxy-ingress.github.io/controller
+      pathBase:
+        authservice: _HT!{{ (urlParse (index . "$").Values.hull.config.general.data.endpoints.authservice.uri.api).path }}
+      ssl:
+        # true if my own endpoint is configured to an https scheme
+        enabled: _HT?(eq (urlParse (index . "$").Values.hull.config.general.data.endpoints.authservice.uri.api).scheme "https")
+        # mount custom ca certificates if any are given
+        custom_ca_certs: {}
+      # setup database
+      database:
+        host: ""
+        # mssql or postgres
+        port: _HT!
+          {{- if (eq (index . "$").Values.hull.config.specific.database.type "mssql") -}}
+          1433
+          {{- else -}}
+          5432
+          {{- end -}}
+        type: "mssql"
+        name: "authservice"
+        username: "authservice"
+        password: ""
+        usernamesPostfix: ""
+        adminUsername: 
+        adminPassword: 
+        # build connection string based on other input: mssql/postgres
+        connectionString: _HT!
+          {{- if (eq (index . "$").Values.hull.config.specific.database.type "mssql") -}}
+          Data Source=
+          {{- (index . "$").Values.hull.config.specific.database.host -}},
+          {{- if (eq (index . "$").Values.hull.config.specific.database.type "mssql") -}}
+          1433
+          {{- else -}}
+          5432
+          {{- end -}}
+          ;Initial Catalog=
+          {{- (index . "$").Values.hull.config.specific.database.name -}}
+          ;MultipleActiveResultSets=true;Connect Timeout=60
+          {{- else -}}
+          Server=
+          {{- (index . "$").Values.hull.config.specific.database.host -}}
+          ;Port=
+          {{- (index . "$").Values.hull.config.specific.database.port -}}
+          ;Database=
+          {{- (index . "$").Values.hull.config.specific.database.name -}}
+          {{- end -}}
+          ;User ID=
+          {{- (index . "$").Values.hull.config.specific.database.username -}}
+          ;Password=
+          {{- (index . "$").Values.hull.config.specific.database.password -}};
+      endpoint:
+        # get host without port
+        host: |- 
+          _HT!{{ $url := (urlParse (index . "$").Values.hull.config.general.data.endpoints.authservice.uri.api) }}
+            {{ if (contains ":" $url.host) }}
+            {{ (splitList ":" $url.host) | first }}
+            {{ else }}
+            {{ $url.host }}
+            {{ end }}
+        # get port
+        port: |- 
+          _HT!{{ $url := (urlParse (index . "$").Values.hull.config.general.data.endpoints.authservice.uri.api) }}
+            {{ if (contains ":" $url.host) }}
+            {{ (splitList ":" $url.host) | last }}
+            {{ else }}
+            {{ if (eq $url.scheme "https") }}
+            443
+            {{ else }}
+            80
+            {{ end }}
+            {{ end }}
+      # appsettings
+      loglevel:
+        Default: Information
+        System: Error
+        Microsoft: Error
+        Microsoft.AspNetCore.Authentication: Warning
+      vidicore:
+        enableAuthServiceLdap: true
+
+  objects:
+
+    # define all services to be created
+    service:
+      # this apps service
+      authservice:
+        type: ClusterIP
+        ports:
+          http:
+            port: 8745
+            targetPort: 8745
+            #nodePort: 31745
+
+    # configure authservice
+    deployment:
+      authservice:
+        replicas: 1
+        pod:
+          containers:
+            authservice:
+              image:
+                repository: auth/authservice
+                tag: 1.0.0 # Overwritten on build
+              ports:
+                http:
+                  containerPort: 8745
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: 250m
+                  memory: 512Mi
+                requests:
+                  cpu: 100m
+                  memory: 256Mi
+              livenessProbe:
+                failureThreshold: 5
+                httpGet:
+                  path: /_health
+                  port: http
+                  scheme: HTTP
+                initialDelaySeconds: 60
+                periodSeconds: 30
+                successThreshold: 1
+                timeoutSeconds: 20
+              readinessProbe:
+                failureThreshold: 5
+                httpGet:
+                  path: /_health
+                  port: http
+                  scheme: HTTP
+                initialDelaySeconds: 60
+                periodSeconds: 30
+                successThreshold: 1
+                timeoutSeconds: 20
+              command:
+                - "tini"
+              args:
+                - "/bin/bash"
+                - "/app/entrypoint.sh"
+              volumeMounts:
+                settings_config:
+                  name: settings
+                  mountPath: '/app/config'
+                settings_entrypoint:
+                  name: settings
+                  mountPath: '/app/entrypoint.sh'
+                  subPath: 'entrypoint.sh'
+                certs:
+                  # only render if custom certs are defined
+                  enabled: _HT?(index . "$").Values.hull.config.specific.ssl.custom_ca_certs
+                  name: certs
+                  mountPath: '/usr/local/share/ca-certificates/'
+                etcssl:
+                  # only render if custom certs are defined
+                  enabled: _HT?(index . "$").Values.hull.config.specific.ssl.custom_ca_certs
+                  name: etcssl
+                  mountPath: '/etc/ssl/certs'
+          volumes:
+            settings: # references a configmap/secret key
+              configMap:
+                name: "settings"
+                defaultMode: 0744
+            certs:
+              # only render if custom certs are defined
+              enabled: _HT?(index . "$").Values.hull.config.specific.ssl.custom_ca_certs
+              secret:
+                secretName: "custom-ca-certificates"
+            etcssl:
+              emptyDir: {}
+    
+    # Configure authservice ingress
+    ingressclass:
+      authservice:
+        controller: _HT*hull.config.specific.ingress.controllerClass
+    
+    ingress:
+      authservice:
+        enabled: true
+        # generate a unique 'fully qualified' name for the IngressClass as <Release>-<Chart>-authservice
+        ingressClassName: _HT^authservice
+        rules:
+          authservice:
+            # reference this apps hosted hostname
+            host: _HT*hull.config.specific.endpoint.host
+            http:
+              paths:
+                application:
+                  # subpath on host
+                  path: _HT*hull.config.specific.pathBase.authservice
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: 'authservice'
+                      port:
+                        number: 8745
+
+    # configure Configmaps
+    configmap:
+      settings:
+        data:
+          # entrypoint script to update any mounted certificates
+          "entrypoint.sh":
+            inline: |-
+              #!/bin/bash
+              set -euo pipefail
+
+              echo "Updating certificates ..."
+              update-ca-certificates
+              echo "---- ---- ---- ---- ---- ---- "
+              echo "Starting Vidispine AuthService as user '$(whoami)' ..."
+              dotnet /app/VPMS3.Auth.Console.dll
+          "appsettings.json":
+            path: "files/appsettings.json"
+      dbsettings:
+        annotations:
+          "helm.sh/hook": pre-install,pre-upgrade
+          "helm.sh/hook-weight": "-80"
+          "helm.sh/hook-delete-policy": before-hook-creation
+        data:
+          "setupdb.sh":
+            path: "files/setupdb.sh"
+
+    secret:
+      # create this secret with custom ca certificates when there are any
+      'custom-ca-certificates':
+        enabled: _HT?(index . "$").Values.hull.config.specific.ssl.custom_ca_certs
+        # use full templating capabilities to create the data required
+        data: |-
+          _HT!{
+            {{ range $key,$value :=  (index . "$").Values.hull.config.specific.ssl.custom_ca_certs }}
+            {{ $key }}: { inline: {{ $value | quote }} },
+            {{ end }}
+          }
+        
+      database:
+        annotations:
+          "helm.sh/hook": pre-install,pre-upgrade
+          "helm.sh/hook-weight": "-80"
+          "helm.sh/hook-delete-policy": before-hook-creation
+        data:
+          dbConnectionString:
+            inline: _HT*hull.config.specific.database.connectionString
+          dbUserPostfix: # postfix to be added to all DBUsernames when connecting to DB
+            inline: _HT*hull.config.specific.database.usernamesPostfix
+          dbAdminUserWithPostfix: # admin User with Postfix combined
+            inline: _HT!
+              {{ printf "%s%s" (index . "$").Values.hull.config.specific.database.adminUsername (index . "$").Values.hull.config.specific.database.usernamesPostfix }}
+          dbAdminUsername:
+            inline: _HT*hull.config.specific.database.adminUsername
+          dbAdminPassword:
+            inline: _HT*hull.config.specific.database.adminPassword
+          dbUsername:
+            inline: _HT*hull.config.specific.database.username
+          dbPassword:
+            inline: _HT*hull.config.specific.database.password
+
+    job:
+      # Installation job
+      create-db:
+        enabled: true
+        annotations:
+          "helm.sh/hook": pre-install,pre-upgrade
+          "helm.sh/hook-delete-policy": before-hook-creation
+          "helm.sh/hook-weight": "-10"
+        pod:
+          restartPolicy: OnFailure
+          initContainers:
+            check-database-ready:
+              image:
+                repository: docker.io/busybox
+                tag: 1.27.2
+              command:
+              - sh
+              - -c
+              - until nc $(DATABASE_HOST) $(DATABASE_PORT); do echo waiting for database at $(DATABASE_HOST):$(DATABASE_PORT); sleep 5; done; echo database at $(DATABASE_HOST):$(DATABASE_PORT) found;
+              env:
+                'DATABASE_HOST':
+                  value: _HT*hull.config.specific.database.host
+                'DATABASE_PORT':
+                  value: _HT!"{{ (index . "$").Values.hull.config.specific.database.port | toString }}"
+          containers:
+            create-database:
+              image:
+                repository: vpms/dbtools
+                tag: "1.2"
+              command:
+              - sh
+              - -c
+              - /scripts/create-database.sh && /scripts/setupdb.sh
+              env:
+                'DBUSERPOSTFIX':
+                  valueFrom:
+                    secretKeyRef:
+                      name: database
+                      key: dbUserPostfix
+                'DBADMINUSER':
+                  valueFrom:
+                    secretKeyRef:
+                      name: database
+                      key: dbAdminUsername
+                'DBADMINPASSWORD':
+                  valueFrom:
+                    secretKeyRef:
+                      name: database
+                      key: dbAdminPassword
+                'DBUSER':
+                  valueFrom:
+                    secretKeyRef:
+                      name: database
+                      key: dbUsername
+                'DBPASSWORD':
+                  valueFrom:
+                    secretKeyRef:
+                      name: database
+                      key: dbPassword
+                'DBNAME':
+                  value: _HT*hull.config.specific.database.name
+                'DBTYPE':
+                  value: _HT*hull.config.specific.database.type
+                'DBHOST':
+                  value: _HT*hull.config.specific.database.host
+                'DBPORT':
+                  value: _HT!"{{ (index . "$").Values.hull.config.specific.database.port | toString }}"
+              volumeMounts:
+                dbsettings:
+                  name: dbsettings
+                  mountPath: '/scripts/setupdb.sh'
+                  subPath: 'setupdb.sh'
+          volumes:
+            dbsettings:
+              configMap:
+                name: "dbsettings"
+                defaultMode: 0744
+      reset-db:
+        enabled: false
+        annotations:
+          "helm.sh/hook": pre-install,pre-upgrade
+          "helm.sh/hook-delete-policy": before-hook-creation
+          "helm.sh/hook-weight": "-20"
+        pod:
+          restartPolicy: OnFailure
+          containers:
+            reset-db:
+              image:
+                repository: vpms/dbtools
+                tag: "1.0"
+              command:
+              - sh
+              - /scripts/reset-database.sh
+              env:
+                'DBADMINUSER':
+                  valueFrom:
+                    secretKeyRef:
+                      name: database
+                      key: dbAdminUsername
+                'DBADMINPASSWORD':
+                  valueFrom:
+                    secretKeyRef:
+                      name: database
+                      key: dbAdminPassword
+                'DBNAME':
+                  value: _HT*hull.config.specific.database.name
+                'DBTYPE':
+                  value: _HT*hull.config.specific.database.type
+                'DBHOST':
+                  value: _HT*hull.config.specific.database.host
+                'DBPORT':
+                  value: _HT!"{{ (index . "$").Values.hull.config.specific.database.port | toString }}"
