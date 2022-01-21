@@ -6,4 +6,4 @@ The chart itself and all documentation related to it can be found in the [`hull`
 
 The Kubernetes API JSON Schemas are stored in the [`kubernetes-json-schema`](kubernetes-json-schema) folder. 
 
-[![Build Status](https://dev.azure.com/arvato-systems-dmm/VPMS3%20CrossCutting/_apis/build/status/HULL/vidispine.hull.release?branchName=release-1.22)](https://dev.azure.com/arvato-systems-dmm/VPMS3%20CrossCutting/_build/latest?definitionId=589&branchName=release-1.22)
+[![Build Status](https://dev.azure.com/arvato-systems-dmm/VPMS3%20CrossCutting/_apis/build/status/HULL/vidispine.hull.release?branchName=release-1.23)](https://dev.azure.com/arvato-systems-dmm/VPMS3%20CrossCutting/_build/latest?definitionId=589&branchName=release-1.23)

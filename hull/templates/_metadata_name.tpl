@@ -15,5 +15,5 @@
 {{- $component := default "" (index . "COMPONENT") -}}
 {{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
 {{- $base := default $parent.Chart.Name (index $parent.Values $hullRootKey).config.general.nameOverride -}}
-{{- (printf "%s-%s" $base $component) | lower | trunc 54 | trimAll "-" -}}
+{{- (printf "%s-%s" $base $component) | lower | trunc 63 | trimAll "-" | trimSuffix "." -}}
 {{- end -}}

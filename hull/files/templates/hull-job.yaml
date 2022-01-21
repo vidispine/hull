@@ -1,0 +1,5 @@
+{{ $template := "hull.object.base.pod" }}
+{{ $type := "Job" }}
+{{ $objects := dict "HULL_TEMPLATE" $template "API_VERSION" "batch/v1" "NO_SELECTOR" true }}
+
+{{ include "hull.objects.render" (dict "HULL_ROOT_KEY" "hull" "ROOT_CONTEXT" $ "HULL_OBJECTS" (dict $type $objects)) }}
