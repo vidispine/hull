@@ -16,7 +16,7 @@
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $apiKind := default "" (index . "API_KIND") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- $defaultWebhookBasePath := (index (index $parent.Values $hullRootKey).objects ($apiKind | lower))._HULL_OBJECT_TYPE_DEFAULT_.webhooks._HULL_OBJECT_TYPE_DEFAULT_ }}
 {{- if not (default false (index . "NO_TRANSFORMATIONS")) }}
