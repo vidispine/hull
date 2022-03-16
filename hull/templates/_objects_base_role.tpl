@@ -17,7 +17,7 @@
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $apiKind := default "" (index . "API_KIND") -}}
 {{- $component := default "" (index . "COMPONENT") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- $defaultRulesBasePath := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.rules._HULL_OBJECT_TYPE_DEFAULT_ }}
 {{- if not (default false (index . "NO_TRANSFORMATIONS")) }}

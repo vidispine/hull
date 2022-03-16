@@ -9,7 +9,7 @@ hull:
     general:  
       data: {} 
       metadata:
-        labels:         
+        labels:
           custom: 
             general_custom_label_1: General Custom Label 1
             general_custom_label_2: General Custom Label 2
@@ -58,6 +58,60 @@ hull:
       bool_defined_true: true
       bool_defined_false: false
       bool_undefined: 
+      annotations_dict:
+        a: first
+        b: second
+        c: third
+      args_array:
+      - just
+      - some
+      - args
+      liveness_probe:
+        initialDelaySeconds: 111
+        periodSeconds: 222
+        failureThreshold: 333
+        timeoutSeconds: 444
+        httpGet:
+          path: /root
+          scheme: HTTPS
+          port: 543
+      deferred_container:
+        args:
+        - command
+        - line
+        - options
+        image:
+          repository: myreg
+          tag: oldest
+        livenessProbe:
+          initialDelaySeconds: 55
+          periodSeconds: 66
+          failureThreshold: 77
+          timeoutSeconds: 88
+          httpGet:
+            path: /
+            scheme: HTTP
+            port: 765
+      pod_spec:
+        initContainers:
+          init:
+            args:
+            - or
+            - use
+            - this
+            image:
+              repository: extreg
+              tag: youngest
+            livenessProbe:
+              initialDelaySeconds: 21
+              periodSeconds: 22
+              failureThreshold: 23
+              timeoutSeconds: 24
+              httpGet:
+                path: /route
+                scheme: HTTP
+                port: 876
+
   ###################################################
           
   ###################################################
@@ -121,8 +175,10 @@ hull:
         enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
           {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_dict_exists }}
           >>>"
-        annotations:
-          annotation: "I am an Annotation"
+        annotations: |-
+          _HT!{ 
+            annotation: "I am an Annotation"
+          }
 
       nulled: null
         
