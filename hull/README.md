@@ -2,7 +2,7 @@
 
 ## Introduction
 
-One major design aspect of [Helm](https://helm.sh) is the need to create YAML templates in a [Helm charts](https://helm.sh/docs/topics/charts/) `/templates` folder. These files,  containing boilerplate Kubernetes YAML code blocks on the one hand and custom configuration mappings utilizing Go Templating expressions on the other hand, provide the glue between the configuration of the application via the central `values.yaml` configuration file and the desired Kubernetes YAML output. Arguably this approach is suited well to create tailormade configuration packages for even the most specialized applications but comes at a cost of having a large overhead for simpler, recurring and off-the-shelf application packaging use cases. Creating, maintaining and (often) understanding template files with custom configuration value mappings - especially when facing a high number of individual Helm charts from various sources - can become tedious and challenging. 
+One major design aspect of [Helm](https://helm.sh) is the need to create YAML templates in a [Helm charts](https://helm.sh/docs/topics/charts/) `/templates` folder. These files,  containing boilerplate Kubernetes YAML code blocks on the one hand and custom configuration mappings utilizing Go Templating expressions on the other hand, provide the glue between the configuration of the application via the central `values.yaml` configuration file and the desired Kubernetes YAML output. Arguably this approach is suited well to create tailormade configuration packages for even the most specialized applications but comes at a cost of having a large overhead for simpler, recurring and off-the-shelf application packaging use cases. Creating, maintaining and (often) understanding template files with custom configuration value mappings - especially when facing a high number of individual Helm charts from various sources - can become tedious and challenging.
 
 The primary feature of the HULL library is the ability to remove customized YAML template files entirely from Helm chart workflows. Using the HULL library chart, Kubernetes objects including all their properties can be completely specified in the `values.yaml`. The HULL library chart itself provides a uniform layer to streamline specification, configuration and rendering of Helm charts to achieve this. You can also think of it as a thin layer on top of the Kubernetes API to avoid the middleman between Helm Chart and Kubernetes API object configuration, yet providing flexibility when it is required to customize individual configuration options instead of requiring you to add each configuration switch manually to the templates. JSON schema validation based on the [Helm JSON validation feature](https://helm.sh/docs/topics/charts/#schema-files) (via `values.schema.json`) aids in writing Kubernetes API conforming objects right from the beginning when [using an IDE that supports live JSON schema validation](./doc/json_schema_validation.md). Additional benefits (uniform inheritable object metadata, simplified inclusion of ConfigMaps/Secrets, cross-referencing values within the `values.yaml`, ...) are available with HULL which you can read about below in the **Key Features Overview**. But maybe most importantly, the HULL library can be added as a dependency to any existing Helm chart and be used side-by-side without breaking any existing Helm charts functionalities, see [adding the HULL library chart to a Helm chart](./doc/setup.md) for more information. And lastly, by being a library chart itself, everything works 100% within the functionality that plain Helm offers - no additional tooling is introduced or involved.
 
@@ -404,7 +404,7 @@ metadata:
   annotations: {}
   labels: # standard Kubernetes metadata is created always automatically.
     app.kubernetes.io/component: nginx 
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
@@ -418,14 +418,14 @@ spec:
             # found also in the in the object's metadata labels.
     matchLabels:
       app.kubernetes.io/component: nginx
-      app.kubernetes.io/instance: RELEASE-NAME
+      app.kubernetes.io/instance: release-name
       app.kubernetes.io/name: hull-test
   template:
     metadata:
       annotations: {}
       labels: # auto-created metadata is added to pod template 
         app.kubernetes.io/component: nginx
-        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
@@ -576,7 +576,7 @@ metadata:
     general_custom_annotation_3: General Custom Annotation 3 # default or specific instance
   labels:
     app.kubernetes.io/component: default
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
@@ -601,7 +601,7 @@ metadata:
     general_custom_annotation_3: General Custom Annotation 3
   labels:
     app.kubernetes.io/component: default
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
@@ -623,7 +623,7 @@ metadata:
     general_custom_annotation_3: General Custom Annotation 3
   labels:
     app.kubernetes.io/component: default
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
@@ -659,7 +659,7 @@ metadata:
     specific_annotation_1: Specific Object Annotation 1 # added annotation for instance metadata only
   labels:
     app.kubernetes.io/component: nginx
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
@@ -678,7 +678,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: nginx
-      app.kubernetes.io/instance: RELEASE-NAME
+      app.kubernetes.io/instance: release-name
       app.kubernetes.io/name: hull-test
   template:
     metadata:
@@ -693,7 +693,7 @@ spec:
                                                               # for the pod template's metadata
       labels:
         app.kubernetes.io/component: nginx
-        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
@@ -735,7 +735,7 @@ metadata:
     general_custom_annotation_3: General Custom Annotation 3 # default or specific instance
   labels:
     app.kubernetes.io/component: nginx_configmap
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined

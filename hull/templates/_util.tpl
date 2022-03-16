@@ -12,7 +12,7 @@
 {{- $component := (index . "COMPONENT") -}}
 {{- $spec := (index . "SPEC") -}}
 {{- $localTemplate := (index . "LOCAL_TEMPLATE") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $overrides := fromYaml (include $template .) | default (dict ) -}}
 {{- $tpl := fromYaml (include $localTemplate .) | default (dict ) -}}
 {{- if (gt (len (keys $tpl)) 0) }}
@@ -24,7 +24,7 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{ $defaults := dict }}
 {{ if and $objectType $spec }}
 {{ if (and ((hasKey $parent.Values "hull") (hasKey (index $parent.Values $hullRootKey) "objects") (hasKey (index $parent.Values $hullRootKey).objects $objectType) (hasKey (index (index $parent.Values $hullRootKey).objects $objectType) "_HULL_OBJECT_TYPE_DEFAULT_"))) }}
@@ -94,7 +94,7 @@
 {{- $objectTemplate := default dict (index . "OBJECT_TEMPLATE") }}
 {{- $objectKey := (index . "KEY") }}
 {{- $spec := default nil (index . "SPEC") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $isDefined := false }}
 {{- range $key, $value := (index $spec (printf "%s" $objectKey)) }}
