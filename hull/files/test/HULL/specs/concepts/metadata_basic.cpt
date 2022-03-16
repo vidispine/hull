@@ -5,7 +5,7 @@
 
 General label section must be populated with overriden names
 
-* All test objects have key "metadata§labels§app.kubernetes.io/instance" with value "RELEASE-NAME"
+* All test objects have key "metadata§labels§app.kubernetes.io/instance" with value "release-name"
 * All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
 * All test objects have key "metadata§labels§app.kubernetes.io/name" with value "a-shorter-name"
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
@@ -62,7 +62,7 @@ Run non-name override tests
 
 General label section must be populated
 
-* All test objects have key "metadata§labels§app.kubernetes.io/instance" with value "RELEASE-NAME"
+* All test objects have key "metadata§labels§app.kubernetes.io/instance" with value "release-name"
 * All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
 * All test objects have key "metadata§labels§app.kubernetes.io/name" with value of key "chart" from scenario data_store
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"

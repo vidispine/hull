@@ -3,7 +3,10 @@
 ------------------
 CHANGES:
 - get transformation can now return complex dictionaries and array types
-- introduce selector transformation and _HT° shortcut
+- introduce selector transformation and _HT& shortcut
+
+FIXES:
+- use fixed name template lower-case 'release-name' for helm template command compatibility with Helm 3.8. Previous versions created upper case 'RELEASE-NAME' by default for Release.Name which is changed to lowercase 'release-name' with Helm 3.8
 
 ------------------
 [1.22.14]
