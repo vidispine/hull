@@ -33,12 +33,12 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-selectors"
 * Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/name" with value "hull-test"
 * Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/component" with value "selectors"
-* Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/instance" with value "RELEASE-NAME"
+* Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/instance" with value "release-name"
 
 * Set test object to "release-name-hull-test-selectors_short"
 * Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/name" with value "hull-test"
 * Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/component" with value "selectors_short"
-* Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/instance" with value "RELEASE-NAME"
+* Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/instance" with value "release-name"
 
 ___
 

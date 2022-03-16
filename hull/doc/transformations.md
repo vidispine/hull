@@ -171,7 +171,7 @@ metadata:
   annotations: {}
   labels:
     app.kubernetes.io/component: external_app
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
@@ -182,14 +182,14 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: external_app
-      app.kubernetes.io/instance: RELEASE-NAME
+      app.kubernetes.io/instance: release-name
       app.kubernetes.io/name: hull-test
   template:
     metadata:
       annotations: {}
       labels:
         app.kubernetes.io/component: external_app
-        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
@@ -362,7 +362,7 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: custom_args
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
@@ -373,13 +373,13 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: custom_args
-      app.kubernetes.io/instance: RELEASE-NAME
+      app.kubernetes.io/instance: release-name
       app.kubernetes.io/name: hull-test
   template:
     metadata:
       labels:
         app.kubernetes.io/component: custom_args
-        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined

@@ -404,7 +404,7 @@ metadata:
   annotations: {}
   labels: # standard Kubernetes metadata is created always automatically.
     app.kubernetes.io/component: nginx 
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
@@ -418,14 +418,14 @@ spec:
             # found also in the in the object's metadata labels.
     matchLabels:
       app.kubernetes.io/component: nginx
-      app.kubernetes.io/instance: RELEASE-NAME
+      app.kubernetes.io/instance: release-name
       app.kubernetes.io/name: hull-test
   template:
     metadata:
       annotations: {}
       labels: # auto-created metadata is added to pod template 
         app.kubernetes.io/component: nginx
-        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
@@ -576,7 +576,7 @@ metadata:
     general_custom_annotation_3: General Custom Annotation 3 # default or specific instance
   labels:
     app.kubernetes.io/component: default
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
@@ -601,7 +601,7 @@ metadata:
     general_custom_annotation_3: General Custom Annotation 3
   labels:
     app.kubernetes.io/component: default
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
@@ -623,7 +623,7 @@ metadata:
     general_custom_annotation_3: General Custom Annotation 3
   labels:
     app.kubernetes.io/component: default
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
@@ -659,7 +659,7 @@ metadata:
     specific_annotation_1: Specific Object Annotation 1 # added annotation for instance metadata only
   labels:
     app.kubernetes.io/component: nginx
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
@@ -678,7 +678,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: nginx
-      app.kubernetes.io/instance: RELEASE-NAME
+      app.kubernetes.io/instance: release-name
       app.kubernetes.io/name: hull-test
   template:
     metadata:
@@ -693,7 +693,7 @@ spec:
                                                               # for the pod template's metadata
       labels:
         app.kubernetes.io/component: nginx
-        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
@@ -735,7 +735,7 @@ metadata:
     general_custom_annotation_3: General Custom Annotation 3 # default or specific instance
   labels:
     app.kubernetes.io/component: nginx_configmap
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
