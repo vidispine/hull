@@ -1,4 +1,11 @@
 ------------------
+[1.22.15]
+------------------
+CHANGES:
+- get transformation can now return complex dictionaries and array types
+- introduce selector transformation and _HT° shortcut
+
+------------------
 [1.22.14]
 ------------------
 CHANGES:

@@ -9,12 +9,13 @@
 {{- $source := (index . "SOURCE") -}}
 {{- $caller := default nil (index . "CALLER") -}}
 {{- $callerKey := default nil (index . "CALLER_KEY") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $shortForms := dict -}}
 {{- $shortForms = set $shortForms "_HT?" (list "hull.util.transformation.bool" "CONDITION") -}}
 {{- $shortForms = set $shortForms "_HT*" (list "hull.util.transformation.get" "REFERENCE") -}}
 {{- $shortForms = set $shortForms "_HT!" (list "hull.util.transformation.tpl" "CONTENT") -}}
 {{- $shortForms = set $shortForms "_HT^" (list "hull.util.transformation.makefullname" "COMPONENT") -}}
+{{- $shortForms = set $shortForms "_HT&" (list "hull.util.transformation.selector" "COMPONENT") -}}
 {{- if typeIs "map[string]interface {}" $source -}}
     {{- range $key,$value := $source -}}
         {{- if typeIs "map[string]interface {}" $value -}}
@@ -26,7 +27,7 @@
             {{- end -}} 
             {{- if $params -}} 
                 {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "HULL_ROOT_KEY" $hullRootKey) $params -}}
-                {{- $others := omit $value "_HULL_TRANSFORMATION_" "_HULL_OBJECT_TYPE_DEFAULT_" "_HT?" "_HT*" "_HT!" "_HT^"}}
+                {{- $others := omit $value "_HULL_TRANSFORMATION_" "_HULL_OBJECT_TYPE_DEFAULT_" "_HT?" "_HT*" "_HT!" "_HT^" "_HT&"}}
                 {{- $valDict := fromYaml (include $params.NAME $pass) -}}
                 {{- $combined := $valDict }}
                 {{- if (and (typeIs "map[string]interface {}" (index $valDict $key)) (gt (len (keys $others)) 0)) -}}
@@ -43,7 +44,7 @@
         {{- end -}}
         {{- if typeIs "string" $value -}}
             {{- $params := default nil nil -}}
-            {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $value) (hasPrefix "_HT?" $value) (hasPrefix "_HT*" $value) (hasPrefix "_HT!" $value) (hasPrefix "_HT^" $value)) -}}
+            {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $value) (hasPrefix "_HT?" $value) (hasPrefix "_HT*" $value) (hasPrefix "_HT!" $value) (hasPrefix "_HT^" $value) (hasPrefix "_HT&" $value)) -}}
                 {{- range $sfKey, $sfValue := $shortForms -}}
                     {{- if (hasPrefix $sfKey $value) -}}}}
                         {{- $params = dict "NAME" (first $sfValue) (last $sfValue) (trimPrefix $sfKey $value) -}}
@@ -71,7 +72,7 @@
     {{- if (and (typeIs "string" (first $source)) ) -}}
         {{- $listentry := first $source -}}
         {{- $params := default nil nil -}}
-        {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $listentry) (hasPrefix "_HT?" $listentry) (hasPrefix "_HT*" $listentry) (hasPrefix "_HT!" $listentry) (hasPrefix "_HT^" $listentry)) -}}
+        {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $listentry) (hasPrefix "_HT?" $listentry) (hasPrefix "_HT*" $listentry) (hasPrefix "_HT!" $listentry) (hasPrefix "_HT^" $listentry) (hasPrefix "_HT&" $listentry)) -}}
             {{- range $sfKey, $sfValue := $shortForms -}}
                 {{- if (hasPrefix $sfKey $listentry) -}}}}
                     {{- $params = dict "NAME" (first $sfValue) (last $sfValue)  (trimPrefix $sfKey $listentry) -}}
@@ -141,7 +142,27 @@
 {{- if and (typeIs "string" $current) (not $current) }}
 {{ $key }}: ""
 {{- else -}}
-{{ $key }}: {{ $current }}
+{{ $key }}: {{ (include "hull.util.transformation.convert" (dict "SOURCE" $current "KEY" $key)) }}
+{{- end -}}
+{{- end -}}
+{{- define "hull.util.transformation.convert" -}}
+{{- $source := (index . "SOURCE") -}}
+{{- if typeIs "map[string]interface {}" $source -}}
+{ 
+  {{- range $k,$value := $source -}}
+  {{ $k }}: {{ include "hull.util.transformation.convert" (dict "SOURCE" $value) -}},
+  {{- end -}}
+}
+{{- else -}}
+{{- if typeIs "[]interface {}" $source -}}
+[
+  {{- range $value := $source -}}
+  {{- include "hull.util.transformation.convert" (dict "SOURCE" $value) -}},
+  {{- end -}}
+]
+{{- else -}}
+{{ $source }}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 
@@ -179,4 +200,24 @@
 {{ $content := (index . "CONDITION") }}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{ $key }}: {{ tpl  (printf "{{ if %s }}true{{ else }}false{{ end }}" $content) (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent) .) }}
+{{- end -}}
+{{- /*
+| Purpose:  
+|   
+|   Gets the selector block for a component.
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   COMPONENT: The component used in naming
+|
+*/ -}}
+{{- define "hull.util.transformation.selector" -}}
+{{- $key := (index . "KEY") -}}
+{{ $component := (index . "COMPONENT") }}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $name := include "hull.metadata.name" (dict "PARENT_CONTEXT" $parent "NAMEPREFIX" "" "COMPONENT" "") }}
+{{- $instance := $parent.Release.Name | quote }}
+{{- $component := default "undefined" $component }}
+{{ $key }}: { "app.kubernetes.io/name": {{ $name }}, "app.kubernetes.io/instance": {{ $instance }}, "app.kubernetes.io/component": {{ $component}} }
 {{- end -}}
