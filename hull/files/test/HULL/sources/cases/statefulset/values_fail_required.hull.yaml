@@ -95,6 +95,13 @@ hull:
         pod:
           containers: {}
 
+      complex_gets:
+        serviceName: complex_gets
+        pod:
+          containers: {}
+
+      pod_get:
+        serviceName: pod_get
       failing:
         enabled: true
 

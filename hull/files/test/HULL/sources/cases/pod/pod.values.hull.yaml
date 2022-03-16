@@ -712,3 +712,13 @@ hull:
                       first: { containerPort: {{ (index . "$").Values.hull.config.specific.port_one }} },
                       second: { containerPort: {{ (index . "$").Values.hull.config.specific.port_two }} }
                     }
+      complex_gets:
+        annotations: _HT*hull.config.specific.annotations_dict
+        pod:
+          containers:
+            main:
+              livenessProbe: _HT*hull.config.specific.liveness_probe
+              args: _HT*hull.config.specific.args_array
+            deferred: _HT*hull.config.specific.deferred_container
+      pod_get:
+        pod: _HT*hull.config.specific.pod_spec

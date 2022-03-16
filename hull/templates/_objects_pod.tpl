@@ -33,7 +33,7 @@ template:
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $apiKind := default "" (index . "API_KIND") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $defaultPodBasePath := (index (index $parent.Values $hullRootKey).objects ($apiKind | lower))._HULL_OBJECT_TYPE_DEFAULT_.pod }}
 {{- if hasKey . "DEFAULT_POD_BASE_PATH" }}
 {{- $defaultPodBasePath = index . "DEFAULT_POD_BASE_PATH" }}
@@ -68,7 +68,7 @@ spec:
 {{- define "hull.object.pod.imagePullSecrets" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{ if hasKey $spec.pod "imagePullSecrets" }}
 imagePullSecrets: 
 {{ $spec.pod.imagePullSecrets | toYaml }}
@@ -106,7 +106,7 @@ imagePullSecrets: []
 {{- define "hull.object.pod.serviceAccountName" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{ if hasKey $spec.pod "serviceAccountName" }}
 serviceAccountName: {{ $spec.pod.serviceAccountName }}
 {{ else }}

@@ -20939,7 +20939,7 @@
           "items": {
             "type": "string"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array"}]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
         }
       },
       "required": [
@@ -21742,7 +21742,7 @@
         "groupPriorityMinimum": {
           "description": "GroupPriorityMininum is the priority this group should have at least. Higher priority means that the group is preferred by clients over lower priority ones. Note that other versions of this group might specify even higher GroupPriorityMininum values such that the whole group gets a higher priority. The primary sort is based on GroupPriorityMinimum, ordered highest number to lowest (20 before 10). The secondary sort is based on the alphabetical comparison of the name of the object.  (v1.bar before v1.foo) We'd recommend something like: *.k8s.io (except extensions) at 18000 and PaaSes (OpenShift, Deis) are recommended to be in the 2000s",
           "format": "int32",
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "integer"}]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "integer" } ]
         },
         "insecureSkipTLSVerify": {
           "description": "InsecureSkipTLSVerify disables TLS certificate verification when communicating with this server. This is strongly discouraged.  You should use the CABundle instead.",
@@ -22090,6 +22090,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/hull.VirtualFolderData.v1"
@@ -22185,6 +22188,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/io.k8s.api.core.v1.ContainerPort"
@@ -22213,6 +22219,9 @@
               "anyOf": [
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
                 },
                 {
                   "allOf": [
@@ -22245,6 +22254,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/io.k8s.api.core.v1.EnvFromSource"
@@ -22273,6 +22285,9 @@
               "anyOf": [
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
                 },
                 {
                   "allOf": [
@@ -22319,6 +22334,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/hull.Container.v1"
@@ -22355,6 +22373,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/hull.Container.v1"
@@ -22389,6 +22410,9 @@
               "anyOf": [
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
                 },
                 {
                   "allOf": [
@@ -22511,6 +22535,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/io.k8s.api.core.v1.ServicePort"
@@ -22550,6 +22577,9 @@
               "anyOf": [
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
                 },
                 {
                   "allOf": [
@@ -22615,6 +22645,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/io.k8s.api.networking.v1.IngressRule"
@@ -22649,6 +22682,9 @@
               "anyOf": [
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
                 },
                 {
                   "allOf": [
@@ -23163,6 +23199,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.MutatingWebhook"
@@ -23196,6 +23235,9 @@
               "anyOf": [
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
                 },
                 {
                   "allOf": [
@@ -23236,6 +23278,9 @@
               "anyOf": [
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
                 },
                 {
                   "allOf": [
@@ -24988,7 +25033,8 @@
       ]
     },
     "hull.Transformation.Pattern": {
-      "pattern": "^\\s*(_HT[\\*|\\?|\\^|!]|_HULL_TRANSFORMATION_<<<).*"
+      "pattern": "^\\s*(_HT[\\*|\\?|\\^|!|&]|_HULL_TRANSFORMATION_<<<).*",
+      "type": "string"
     }
   },
   "$schema": "http://json-schema.org/draft-07/schema#",

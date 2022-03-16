@@ -13,7 +13,7 @@
 {{- $apiVersion := (index . "API_VERSION") -}}
 {{- $apiKind := (index . "API_KIND") -}}
 {{- $spec := (index . "SPEC") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{ $annotations := dict }}
 {{ $annotations = merge $annotations (include "hull.metadata.annotations.custom" . | fromYaml) }}
 {{ if (gt (len (keys (index (index $parent.Values $hullRootKey).config.general.metadata.annotations "custom"))) 0) }}
@@ -64,7 +64,7 @@ annotations:
 {{- $apiVersion := (index . "API_VERSION") -}}
 {{- $apiKind := (index . "API_KIND") -}}
 {{- $spec := (index . "SPEC") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- if eq $apiKind "Deployment" -}}
 {{- $podSpec := include "hull.object.pod" . | fromYaml -}}
 {{- $hashAnnotations := include "hull.metadata.annotations.hash"  (dict "PARENT_CONTEXT" $parent "SPEC" $podSpec.spec) -}}
@@ -80,7 +80,7 @@ annotations:
 {{- $debug := false -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := (index . "SPEC") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $allFiles := dict -}}
 {{- $volumeMount := (index . "VOLUME_MOUNT") -}}
 {{- $volume := (index . "VOLUME") -}}  
