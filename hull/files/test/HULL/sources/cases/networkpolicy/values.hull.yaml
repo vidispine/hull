@@ -92,4 +92,10 @@ hull:
         podSelector: 
           matchLabels:
             key: value
+      selectors:
+        podSelector:
+          matchLabels: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.selector>>><<<COMPONENT=selectors>>>"
+      selectors_short:
+        podSelector:
+          matchLabels: _HT&selectors_short
 ###################################################

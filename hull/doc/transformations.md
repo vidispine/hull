@@ -106,12 +106,13 @@ which is equivalent to writing:
 registry: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.get>>><<<REFERENCE=hull.config.specific.globalRegistry>>>"
 ```
 
-but much shorter. The full transformation call is reduced to a short prefix (`_HT`), a character indicating the specific transformation to use (`*` for `hull.util.transformation.get`) and the single arguments (`REFERENCE`) value without the need to specify the arguments name. The other possible characters for short forms are `?`, `!` and `^`  the following transformation short forms are available for use:
+but much shorter. The full transformation call is reduced to a short prefix (`_HT`), a character indicating the specific transformation to use (`*` for `hull.util.transformation.get`) and the single arguments (`REFERENCE`) value without the need to specify the arguments name. The other possible characters for short forms are `?`, `!`,`^` and `&`  the following transformation short forms are available for use:
 
 - `_HT*`: `hull.util.transformation.get`
 - `_HT?`: `hull.util.transformation.bool`
 - `_HT!`: `hull.util.transformation.tpl`
 - `_HT^`: `hull.util.transformation.makefullname`
+- `_HT&`: `hull.util.transformation.selector`
 
 See the overview on the transformations that HULL delivers out-of-the-box for details on short form transformation syntax.
 
@@ -143,12 +144,13 @@ Now we can take a look at the [transformation definition] for `hull.util.transfo
 {{- if and (typeIs "string" $current) (not $current) }}
 {{ $key }}: ""
 {{- else -}}
-{{ $key }}: {{ $current }}
+{{ $key }}: {{ (include "hull.util.transformation.convert" (dict "SOURCE" $current "KEY" $key)) }}
 {{- end -}}
 {{- end -}}
 ```
 
-In the code above the value of the dot-notated key is retrieved via iteration over the path's elements. It is mandatory for all transformations to return result data as a yaml block containing the passed in `$key` variable as key:
+In the code above the value of the dot-notated key is retrieved via iteration over the path's elements. Then it is either returned as an empty string (if non existent) or further processed with the `hull.util.transformation.convert` function which creates the return value based on `$current` type. It is capable of returning simple types (string, bool and integer values) but also complex types including nested dictionaries and arrays.
+It is mandatory for all transformations to return result data as a yaml block containing the passed in `$key` variable as key:
 
 ```yaml
 {{ $key }}: "<RESULT OF TRANSFORMATION>"
@@ -156,7 +158,7 @@ In the code above the value of the dot-notated key is retrieved via iteration ov
 
 In the source YAML the dictionary value of key `$key` is now replaced by the transformations result before rendering. Note that the type of the result field does not have to be a string but it must validate against the Kubernetes API objects JSON schema. 
 
-⚠️⚠️⚠️ **In many scenarios the input and output types are identical so you would use a string transformation to produce a string as result. However (by now) HULL has full support to supply a string transformation instead of a boolean, integer, array or dictionary input value in `values.yaml` properties - even if the original Kubernetes schema demands the input value to be boolean, integer, array or object respectively. In this case it is the responsibility of the configurator to make sure that the transformation returns an object of the correct input type and structure. Technically the ability to use HULL string transformations everywhere is achieved by extension of the Kubernetes JSON schema to always allow a regex conforming 'transformation' string input besides the original type of the value. Currently the regex of allowed string input is `^\s*(_HT[\*|\?|\^|!]|_HULL_TRANSFORMATION_<<<).*`. By having this ability the dictionary and array form of the HULL transformations become deprecated even though they are still usable** ⚠️⚠️⚠️
+⚠️⚠️⚠️ **In many scenarios the input and output types are identical so you would use a string transformation to produce a string as result. However (by now) HULL has full support to supply a string transformation instead of a boolean, integer, array or dictionary input value in `values.yaml` properties - even if the original Kubernetes schema demands the input value to be boolean, integer, array or object respectively. In this case it is the responsibility of the configurator to make sure that the transformation returns an object of the correct input type and structure otherwise Kubernetes will not accept invalid objects upon deployment time. Technically the ability to use HULL string transformations everywhere is achieved by extension of the Kubernetes JSON schema to always allow a regex conforming 'transformation' string input besides the original type of the value. Currently the regex of allowed string input is `^\s*(_HT[\*|\?|\^|!|&]|_HULL_TRANSFORMATION_<<<).*`. By having this ability the dictionary and array form of the HULL transformations become deprecated even though they are still usable** ⚠️⚠️⚠️
 
 The final rendered output has the transformations successfully applied:
 
@@ -167,7 +169,7 @@ metadata:
   annotations: {}
   labels:
     app.kubernetes.io/component: external_app
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
@@ -178,14 +180,14 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: external_app
-      app.kubernetes.io/instance: RELEASE-NAME
+      app.kubernetes.io/instance: release-name
       app.kubernetes.io/name: hull-test
   template:
     metadata:
       annotations: {}
       labels:
         app.kubernetes.io/component: external_app
-        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
@@ -230,7 +232,7 @@ some_object_key_with_a_dictionary_value:
 
 The presence of the single `_HULL_TRANSFORMATION_` key as the value of the input object triggers the transformation. Instead of string-splitting arguments they are derived by the keys in the `_HULL_TRANSFORMATION_` dictionary.
 
-If you use an available short form for a transformation you specify `_HT` plus the single transformation specific character (`*`, `?`, `!` or `^`) as the key. A single key is expected in the dictionary whose name can be chosen freely (suggestion is `_`) and the actual argument value for that keys value is the argument. For example, the structure presented above would look like this for the short form of the `hull.util.transformation.tpl` transformation:
+If you use an available short form for a transformation you specify `_HT` plus the single transformation specific character (`*`, `?`, `!`,`^` or `&`) as the key. A single key is expected in the dictionary whose name can be chosen freely (suggestion is `_`) and the actual argument value for that keys value is the argument. For example, the structure presented above would look like this for the short form of the `hull.util.transformation.tpl` transformation:
 
 ```yaml
 some_object_key_with_a_dictionary_value: 
@@ -358,7 +360,7 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: custom_args
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
@@ -369,13 +371,13 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: custom_args
-      app.kubernetes.io/instance: RELEASE-NAME
+      app.kubernetes.io/instance: release-name
       app.kubernetes.io/name: hull-test
   template:
     metadata:
       labels:
         app.kubernetes.io/component: custom_args
-        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
@@ -419,7 +421,7 @@ The value of the referenced key within `values.yaml`.
 
 #### __Description__
 
-Provides an easy to use shortcut to simply get the string value of a field in `values.yaml`. This is supported for referenced values of string, integer or boolean type. Getting array and dictionary values is not supported as of now. For more complex get operations use the `hull.util.transformation.tpl` transformation to format the result.
+Provides an easy to use shortcut to simply get the value of a field in `values.yaml`. This is supported for referenced values of simple types (string, integer or boolean). Getting array and dictionary values as they are is also supported as of now, however there can't be any further transformations embedded in the referenced structure. For more complex get operations use the `hull.util.transformation.tpl` transformation to format or process the result before returning it.
 
 #### __Short Form Examples__
 
@@ -509,5 +511,17 @@ bool_field: _HT?and
   "$").Values.hull.config.specific.switch_two_enabled
 ```
 
+### Create a dictionary with `selector` labels for a given name (_hull.util.transformation.selector_)
+#### __Arguments__
+- COMPONENT: The string that contains the name of the component to create selector dictionary for
+#### __Produces__
+A dictionary return value that can be used to populate a `selector` field.
+#### __Description__
+Typical use of this function is to set the `matchLabels` field on a `networkpolicy`'s `podSelector`. By using this transformation the `matchLabels` will automatically be inline with the default HULL `selector` labels.
+#### __Short Form Examples__
+```yaml
+podSelector:
+  matchLabels: _HT&mycomponentname
+```
 ---
 Back to [README.md](./../README.md)

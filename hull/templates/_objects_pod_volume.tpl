@@ -15,7 +15,7 @@
 {{- $component := default "" (index . "COMPONENT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 - {{ dict "name" $component | toYaml }}
@@ -51,7 +51,7 @@
 {{- define "hull.object.volume.configmap" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 configMap:
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "name")) | indent 2 }}
   name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $spec.name "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey) }}
@@ -73,7 +73,7 @@ configMap:
 {{- define "hull.object.volume.secret" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 secret:
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "secretName")) | indent 2 }}
   secretName: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $spec.secretName "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey) }}
@@ -95,7 +95,7 @@ secret:
 {{- define "hull.object.volume.persistentVolumeClaim" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 persistentVolumeClaim: 
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "claimName")) | indent 2 }}
   claimName: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $spec.claimName "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey) }}

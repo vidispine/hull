@@ -344,8 +344,8 @@ def render_chart(case, chart, values_file):
     for suite in data_store.scenario.suites:
         suites += ("-f", os.path.join(chart_path, suite + ".values.hull.yaml"))
     
-    args = ("helm", "template", chart_path, "--debug", "--output-dir", render_path) + suites + ("-f",  os.path.join(chart_path, values_file))
-    
+    args = ("helm", "template", chart_path, "--name-template", "release-name", "--debug", "--output-dir", render_path) + suites + ("-f",  os.path.join(chart_path, values_file))
+     
     popen = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     print('STDOUT:\n', popen.stdout.decode("utf-8").replace("\n",os.linesep))
     print('STDERR:\n', popen.stderr.decode("utf-8").replace("\n",os.linesep) if popen.stderr is not None else "")

@@ -21,7 +21,7 @@ metadata:
 */ -}}
 
 {{ define "hull.objects.prepare.all" }}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $rootContext := (index . "ROOT_CONTEXT") -}}
 {{- /*
 ### Load all handled object types step by step for better visibility
@@ -99,7 +99,7 @@ metadata:
 ################################################# RENDER #####################################################
 */ -}}
 {{- define "hull.objects.render" -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $rootContext := (index . "ROOT_CONTEXT") -}}
 {{- $allObjects := (index . "HULL_OBJECTS") -}}
 
