@@ -906,7 +906,7 @@
             "OnDelete",
             "RollingUpdate"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ],
@@ -1139,7 +1139,7 @@
             "Recreate",
             "RollingUpdate"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ],
@@ -1530,7 +1530,7 @@
             "OrderedReady",
             "Parallel"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "replicas": {
           "description": "replicas is the desired number of replicas of the given Template. These are replicas in the sense that they are instantiations of the same Template, but individual replicas also have a consistent identity. If unspecified, defaults to 1.",
@@ -1639,7 +1639,7 @@
             "OnDelete",
             "RollingUpdate"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ],
@@ -4452,7 +4452,7 @@
             "Forbid",
             "Replace"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "failedJobsHistoryLimit": {
           "description": "The number of failed finished jobs to retain. Value must be non-negative integer. Defaults to 1.",
@@ -4576,7 +4576,7 @@
             "Failed",
             "Suspended"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "required": [
@@ -5014,7 +5014,7 @@
             "Denied",
             "Failed"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "required": [
@@ -6063,7 +6063,7 @@
             "IfNotPresent",
             "Never"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "lifecycle": {
           "$ref": "#/definitions/io.k8s.api.core.v1.Lifecycle",
@@ -6111,7 +6111,7 @@
             "FallbackToLogsOnError",
             "File"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "tty": {
           "description": "Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false.",
@@ -6190,7 +6190,7 @@
             "TCP",
             "UDP"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "enabled": {
           "title": "Enabled",
@@ -6478,7 +6478,7 @@
             "TCP",
             "UDP"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "required": [
@@ -6707,7 +6707,7 @@
             "IfNotPresent",
             "Never"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "lifecycle": {
           "$ref": "#/definitions/io.k8s.api.core.v1.Lifecycle",
@@ -6773,7 +6773,7 @@
             "FallbackToLogsOnError",
             "File"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "tty": {
           "description": "Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false.",
@@ -7259,7 +7259,7 @@
             "HTTP",
             "HTTPS"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "required": [
@@ -7582,7 +7582,7 @@
             "PersistentVolumeClaim",
             "Pod"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "required": [
@@ -7805,7 +7805,7 @@
             "NamespaceDeletionGroupVersionParsingFailure",
             "NamespaceFinalizersRemaining"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "required": [
@@ -7889,7 +7889,7 @@
             "Active",
             "Terminating"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ],
@@ -7951,7 +7951,7 @@
             "InternalDNS",
             "InternalIP"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "required": [
@@ -8011,7 +8011,7 @@
             "PIDPressure",
             "Ready"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "required": [
@@ -8143,7 +8143,7 @@
             "Lt",
             "NotIn"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "values": {
           "description": "An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch.",
@@ -8285,7 +8285,7 @@
             "Running",
             "Terminated"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "volumesAttached": {
           "description": "List of volumes that are attached to the node.",
@@ -8527,7 +8527,7 @@
             "FileSystemResizePending",
             "Resizing"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "required": [
@@ -8672,7 +8672,7 @@
             "Lost",
             "Pending"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "resizeStatus": {
           "description": "ResizeStatus stores status of resize operation. ResizeStatus is not set by default but when expansion is complete resizeStatus is set to empty string by resize controller or kubelet. This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.",
@@ -8897,7 +8897,7 @@
             "Recycle",
             "Retain"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "photonPersistentDisk": {
           "$ref": "#/definitions/io.k8s.api.core.v1.PhotonPersistentDiskVolumeSource",
@@ -8954,7 +8954,7 @@
             "Pending",
             "Released"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "reason": {
           "description": "Reason is a brief CamelCase string that describes any failure and is meant for machine parsing and tidy display in the CLI.",
@@ -9124,7 +9124,7 @@
             "PodScheduled",
             "Ready"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "required": [
@@ -9254,7 +9254,7 @@
             "PodScheduled",
             "Ready"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "required": [
@@ -9385,7 +9385,7 @@
             "Default",
             "None"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "enableServiceLinks": {
           "description": "EnableServiceLinks indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links. Optional: Defaults to true.",
@@ -9484,7 +9484,7 @@
             "Never",
             "OnFailure"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "runtimeClassName": {
           "description": "RuntimeClassName refers to a RuntimeClass object in the node.k8s.io group, which should be used to run this pod.  If no RuntimeClass resource matches the named class, the pod will not be run. If unset or empty, the \"legacy\" RuntimeClass will be used, which is an implicit class with an empty definition that uses the default runtime handler. More info: https://git.k8s.io/enhancements/keps/sig-node/585-runtime-class This is a beta feature as of Kubernetes v1.14.",
@@ -9602,7 +9602,7 @@
             "Succeeded",
             "Unknown"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "podIP": {
           "description": "IP address allocated to the pod. Routable at least within the cluster. Empty if not yet allocated.",
@@ -9624,7 +9624,7 @@
             "Burstable",
             "Guaranteed"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "reason": {
           "description": "A brief CamelCase message indicating details about why the pod is in this state. e.g. 'Evicted'",
@@ -9749,7 +9749,7 @@
             "TCP",
             "UDP"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "required": [
@@ -10518,7 +10518,7 @@
             "In",
             "NotIn"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "scopeName": {
           "description": "The name of the scope that the selector applies to.\n\nPossible enum values:\n - `\"BestEffort\"` Match all pod objects that have best effort quality of service\n - `\"CrossNamespacePodAffinity\"` Match all pod objects that have cross-namespace pod (anti)affinity mentioned. This is a beta feature enabled by the PodAffinityNamespaceSelector feature flag.\n - `\"NotBestEffort\"` Match all pod objects that do not have best effort quality of service\n - `\"NotTerminating\"` Match all pod objects where spec.activeDeadlineSeconds is nil\n - `\"PriorityClass\"` Match all pod objects that have priority class mentioned\n - `\"Terminating\"` Match all pod objects where spec.activeDeadlineSeconds >=0",
@@ -10530,7 +10530,7 @@
             "PriorityClass",
             "Terminating"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "values": {
           "description": "An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.",
@@ -10561,7 +10561,7 @@
             "RuntimeDefault",
             "Unconfined"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "required": [
@@ -11082,7 +11082,7 @@
             "TCP",
             "UDP"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "targetPort": {
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.util.intstr.IntOrString",
@@ -11156,7 +11156,7 @@
             "Cluster",
             "Local"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "healthCheckNodePort": {
           "description": "healthCheckNodePort specifies the healthcheck nodePort for the service. This only applies when type is set to LoadBalancer and externalTrafficPolicy is set to Local. If a value is specified, is in-range, and is not in use, it will be used.  If not specified, a value will be automatically allocated.  External systems (e.g. load-balancers) can use this port to determine if a given node holds endpoints for this service or not.  If this field is specified when creating a Service which does not need it, creation will fail. This field will be wiped when updating a Service to no longer need it (e.g. changing type).",
@@ -11212,7 +11212,7 @@
             "ClientIP",
             "None"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "sessionAffinityConfig": {
           "$ref": "#/definitions/io.k8s.api.core.v1.SessionAffinityConfig",
@@ -11226,7 +11226,7 @@
             "LoadBalancer",
             "NodePort"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object"}]
@@ -11367,7 +11367,7 @@
             "NoSchedule",
             "PreferNoSchedule"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "key": {
           "description": "Required. The taint key to be applied to a node.",
@@ -11399,7 +11399,7 @@
             "NoSchedule",
             "PreferNoSchedule"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "key": {
           "description": "Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys.",
@@ -11411,7 +11411,7 @@
             "Equal",
             "Exists"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "tolerationSeconds": {
           "description": "TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system.",
@@ -11485,7 +11485,7 @@
             "DoNotSchedule",
             "ScheduleAnyway"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         }
       },
       "required": [
@@ -11970,7 +11970,7 @@
             "IPv4",
             "IPv6"
           ],
-          "type": "string"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "string" } ]
         },
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -19335,6 +19335,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/hull.VirtualFolderData.v1"
@@ -19352,7 +19355,7 @@
                 }
               ]
             }
-          }          
+          }
         }
       },
       "required": []
@@ -19430,6 +19433,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/io.k8s.api.core.v1.ContainerPort"
@@ -19458,6 +19464,9 @@
               "anyOf": [
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
                 },
                 {
                   "allOf": [
@@ -19490,6 +19499,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/io.k8s.api.core.v1.EnvFromSource"
@@ -19518,6 +19530,9 @@
               "anyOf": [
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
                 },
                 {
                   "allOf": [
@@ -19564,6 +19579,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/hull.Container.v1"
@@ -19600,6 +19618,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/hull.Container.v1"
@@ -19634,6 +19655,9 @@
               "anyOf": [
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
                 },
                 {
                   "allOf": [
@@ -19756,6 +19780,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/io.k8s.api.core.v1.ServicePort"
@@ -19795,6 +19822,9 @@
               "anyOf": [
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
                 },
                 {
                   "allOf": [
@@ -19860,6 +19890,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/io.k8s.api.networking.v1.IngressRule"
@@ -19894,6 +19927,9 @@
               "anyOf": [
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
                 },
                 {
                   "allOf": [
@@ -20408,6 +20444,9 @@
                   "type": "null"
                 },
                 {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
                   "allOf": [
                     {
                       "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.MutatingWebhook"
@@ -20441,6 +20480,9 @@
               "anyOf": [
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
                 },
                 {
                   "allOf": [
@@ -20481,6 +20523,9 @@
               "anyOf": [
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
                 },
                 {
                   "allOf": [
@@ -22290,7 +22335,8 @@
       ]
     },
     "hull.Transformation.Pattern": {
-      "pattern": "^\\s*(_HT[\\*|\\?|\\^|!]|_HULL_TRANSFORMATION_<<<).*"
+      "pattern": "^\\s*(_HT[\\*|\\?|\\^|!|&]|_HULL_TRANSFORMATION_<<<).*",
+      "type": "string"
     }
   },
   "$schema": "http://json-schema.org/draft-07/schema#",

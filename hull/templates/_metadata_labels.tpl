@@ -14,7 +14,7 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $template := (index . "PARENT_TEMPLATE") -}}
 {{- $component := (index . "COMPONENT") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{ $labels := dict }}
 {{ $labels = merge $labels (include "hull.metadata.labels.custom" . | fromYaml) }}
 {{ $labels = merge $labels ((include "hull.metadata.general.labels.object" .) | fromYaml) }}
@@ -43,7 +43,7 @@ labels:
 */ -}}
 {{- define "hull.metadata.general.labels.object" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 vidispine.hull/version: {{ default "" (index $parent.Values $hullRootKey).version }}
 helm.sh/chart: {{ template "hull.metadata.chartref" (dict "PARENT_CONTEXT" $parent) }}
 app.kubernetes.io/managed-by: {{ $parent.Release.Service | quote}}
@@ -69,8 +69,8 @@ app.kubernetes.io/part-of: {{ default "undefined" (index (index $parent.Values $
 {{- define "hull.metadata.labels.selector" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $component := (index . "COMPONENT") -}}
-{{- $spec := (index . "SPEC") -}}
-{{- $hullRootKey := (index . "HULL_ROOT_KEY") -}}
+{{- $spec := default dict (index . "SPEC") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- if $spec.selector -}}
 {{- toYaml $spec.selector -}}
 {{- else -}}

@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "8" objects were rendered
+* Expected number of "10" objects were rendered
 * Validate
 
 ## Metadata
@@ -30,6 +30,15 @@ Test creation of objects and features.
 * Test Object has key "spec§policyTypes§0" with value "Ingress"
 * Test Object has key "spec§policyTypes§1" with value "Egress"
 
+* Set test object to "release-name-hull-test-selectors"
+* Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/name" with value "hull-test"
+* Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/component" with value "selectors"
+* Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/instance" with value "RELEASE-NAME"
+
+* Set test object to "release-name-hull-test-selectors_short"
+* Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/name" with value "hull-test"
+* Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/component" with value "selectors_short"
+* Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/instance" with value "RELEASE-NAME"
 
 ___
 
