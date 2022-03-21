@@ -1,4 +1,11 @@
 ------------------
+[1.22.16]
+------------------
+CHANGES:
+- added transformation pattern to array fields from ServiceMonitor definition
+- update documentation
+FIXES:
+- HULL rules must be dictionary for roles in values.yaml
 [1.22.15]
 ------------------
 CHANGES:
