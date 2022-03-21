@@ -21825,7 +21825,7 @@
                       "items": {
                         "type": "string"
                       },
-                      "type": "array"
+                      "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
                     },
                     "targetLabel": {
                       "description": "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available.",
@@ -21834,14 +21834,14 @@
                   },
                   "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object"}]
                 },
-                "type": "array"
+                "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
               },
               "params": {
                 "additionalProperties": {
                   "items": {
                     "type": "string"
                   },
-                  "type": "array"
+                  "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
                 },
                 "description": "Optional HTTP URL parameters",
                 "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object"}]
@@ -21889,7 +21889,7 @@
                       "items": {
                         "type": "string"
                       },
-                      "type": "array"
+                      "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
                     },
                     "targetLabel": {
                       "description": "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available.",
@@ -21898,7 +21898,7 @@
                   },
                   "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object"}]
                 },
-                "type": "array"
+                "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
               },
               "scheme": {
                 "description": "HTTP scheme to use for scraping.",
@@ -22066,7 +22066,7 @@
             },
             "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object"}]
           },
-          "type": "array"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
         },
         "jobLabel": {
           "description": "The label to use to retrieve the job name from.",
@@ -22084,7 +22084,7 @@
               "items": {
                 "type": "string"
               },
-              "type": "array"
+              "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
             }
           },
           "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object"}]
@@ -22094,7 +22094,7 @@
           "items": {
             "type": "string"
           },
-          "type": "array"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
         },
         "sampleLimit": {
           "description": "SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.",
@@ -22122,7 +22122,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "type": "array"
+                    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
                   }
                 },
                 "required": [
@@ -22131,7 +22131,7 @@
                 ],
                 "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object"}]
               },
-              "type": "array"
+              "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
             },
             "matchLabels": {
               "additionalProperties": {
@@ -22148,7 +22148,7 @@
           "items": {
             "type": "string"
           },
-          "type": "array"
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
         },
         "targetLimit": {
           "description": "TargetLimit defines a limit on the number of scraped targets that will be accepted.",
