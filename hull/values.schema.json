@@ -8049,6 +8049,12 @@
       ],
       "additionalProperties": false
     },
+    "io.k8s.api.core.v1.LimitRangeSpec.Names":
+    {
+      "enum": [
+        "limits"
+      ]
+    },
     "io.k8s.api.core.v1.LimitRangeSpec": {
       "description": "LimitRangeSpec defines a min/max usage limit for resources that match on kind.",
       "properties": {
@@ -8063,8 +8069,7 @@
       "required": [
         "limits"
       ],
-      "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object"}],
-      "additionalProperties": false
+      "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]
     },
     "io.k8s.api.core.v1.LoadBalancerIngress": {
       "description": "LoadBalancerIngress represents the status of a load-balancer ingress point: traffic intended for the service should be sent to an ingress point.",
@@ -8155,6 +8160,12 @@
       "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object"}],
       "additionalProperties": false
     },
+    "io.k8s.api.core.v1.Namespace.Names": {
+      "enum": [
+        "spec",
+        "status"
+      ]
+    },
     "io.k8s.api.core.v1.Namespace": {
       "description": "Namespace provides a scope for Names. Use of multiple namespaces is optional.",
       "properties": {
@@ -8192,8 +8203,7 @@
           "kind": "Namespace",
           "version": "v1"
         }
-      ],
-      "additionalProperties": false
+      ]
     },
     "io.k8s.api.core.v1.NamespaceCondition": {
       "description": "NamespaceCondition contains details about state of namespace.",
@@ -12170,6 +12180,14 @@
       "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object"}],
       "additionalProperties": false
     },
+    "io.k8s.api.discovery.v1.EndpointSlice.Names":
+    {
+      "enum": [
+        "addressType",
+        "endpoints",
+        "ports"
+      ]
+    },
     "io.k8s.api.discovery.v1.EndpointSlice": {
       "description": "EndpointSlice represents a subset of the endpoints that implement a service. For a given service there may be multiple EndpointSlice objects, selected by labels, which must be joined to produce the full set of endpoints.",
       "properties": {
@@ -12223,8 +12241,7 @@
           "kind": "EndpointSlice",
           "version": "v1"
         }
-      ],
-      "additionalProperties": false
+      ]
     },
     "io.k8s.api.discovery.v1.EndpointSliceList": {
       "description": "EndpointSliceList represents a list of endpoint slices",
@@ -23307,6 +23324,31 @@
         
       ]
     },
+    "namespace.v1": {
+      "$id": "#/definitions/namespace.v1",
+      "title": "Namespace",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.core.v1.Namespace"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.core.v1.Namespace.Names"
+              }
+            ]
+          }
+        }
+      ]
+    },
     "configmap.v1": {
       "$id": "#/definitions/configmap.v1",
       "title": "Configmap",
@@ -24054,6 +24096,56 @@
         }        
       ]
     },
+    "endpointslice.v1": {
+      "$id": "#/definitions/endpointslice.v1",
+      "title": "EndpointSlice",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.discovery.v1.EndpointSlice"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.discovery.v1.EndpointSlice.Names"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "limitrange.v1": {
+      "$id": "#/definitions/limitrange.v1",
+      "title": "LimitRange",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.core.v1.LimitRangeSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.core.v1.LimitRangeSpec.Names"
+              }
+            ]
+          }
+        }
+      ]
+    },
     "mutatingwebhookconfiguration.v1": {
       "$id": "#/definitions/mutatingwebhookconfiguration.v1",
       "title": "MutatingWebhookConfiguration",
@@ -24192,6 +24284,26 @@
           "required": [],
           "additionalProperties": false,
           "properties": {
+            "namespace": {
+              "$id": "#/definitions/root/objects/namespace",
+              "title": "Namespace",
+              "type": "object",
+              "required": [],
+              "patternProperties": {
+                "^[^_].*$": {
+                  "type": ["null", "object"],
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "$ref": "#/definitions/namespace.v1"
+                    }
+                  ],
+                  "properties": {}
+                }
+              }
+            },
             "configmap": {
               "$id": "#/definitions/root/objects/configmap",
               "title": "Configmap",
@@ -24682,6 +24794,46 @@
                     },
                     {
                       "$ref": "#/definitions/endpoints.v1"
+                    }
+                  ],
+                  "properties": {}
+                }
+              }
+            },
+            "endpointslice": {
+              "$id": "#/definitions/root/objects/endpointslice",
+              "title": "EndPointSlice",
+              "type": "object",
+              "required": [],
+              "patternProperties": {
+                "^[^_].*$": {
+                  "type": ["null", "object"],
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "$ref": "#/definitions/endpointslice.v1"
+                    }
+                  ],
+                  "properties": {}
+                }
+              }
+            },
+            "limitrange": {
+              "$id": "#/definitions/root/objects/limitrange",
+              "title": "LimitRange",
+              "type": "object",
+              "required": [],
+              "patternProperties": {
+                "^[^_].*$": {
+                  "type": ["null", "object"],
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "$ref": "#/definitions/limitrange.v1"
                     }
                   ],
                   "properties": {}

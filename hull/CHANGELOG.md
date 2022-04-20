@@ -1,4 +1,15 @@
 ------------------
+[1.22.17]
+------------------
+CHANGES:
+- added new objects Namespace, EndpointSlice and LimitRange
+
+- update documentation
+
+FIXES:
+- disabling RBAC did not prevent rendering of Roles and ClusterRoles
+
+------------------
 [1.22.16]
 ------------------
 CHANGES:
@@ -6,6 +17,8 @@ CHANGES:
 - update documentation
 FIXES:
 - HULL rules must be dictionary for roles in values.yaml
+
+------------------
 [1.22.15]
 ------------------
 CHANGES:
@@ -27,6 +40,7 @@ FIXES:
 - allow using 63 instead of 54 chars for a fullname and name override
 - remove dots end of labels and names
 
+------------------
 [1.22.13]
 ------------------
 FIXES:

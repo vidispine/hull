@@ -1,0 +1,69 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # LIMITRANGE
+    limitrange:
+
+      disabled:
+        limits: []
+
+      static_name:
+        limits: []
+
+      metadata_merge:
+        limits: []
+
+      metadata_overwrite:
+        limits: []
+
+      disabled_transform:
+        limits: []
+
+      enabled_transform:
+        limits: []
+
+      disabled_transform_dict:
+        limits: []
+
+      enabled_transform_dict:
+        limits: []
+
+      disabled_transform_tpl_if:
+        limits: []
+
+      enabled_transform_tpl_if:
+        limits: []
+
+      cpu:
+        limits:
+        - max:
+            cpu: "800m"
+          min:
+            cpu: "200m"
+          type: Container
+
+      memory:
+        limits:
+        - default:
+            memory: 512Mi
+          defaultRequest:
+            memory: 256Mi
+          type: Container
+
+      storage:
+        limits:
+        - type: PersistentVolumeClaim
+          max:
+            storage: 2Gi
+          min:
+            storage: 1Gi
+###################################################
