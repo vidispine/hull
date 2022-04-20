@@ -32,11 +32,13 @@ metadata:
 ### Load plain objects
 */ -}}
 {{- $template := "hull.object.base.plain" }}
+{{- $allObjects = merge $allObjects (dict "Namespace" (dict "HULL_TEMPLATE" $template)) }}
 {{- $allObjects = merge $allObjects (dict "ServiceAccount" (dict "HULL_TEMPLATE" $template)) }}
 {{- $allObjects = merge $allObjects (dict "StorageClass" (dict "HULL_TEMPLATE" $template "API_VERSION" "storage.k8s.io/v1")) }}
 {{- $allObjects = merge $allObjects (dict "CustomResource" (dict "HULL_TEMPLATE" $template)) }}
 {{- $allObjects = merge $allObjects (dict "PriorityClass" (dict "HULL_TEMPLATE" $template "API_VERSION" "scheduling.k8s.io/v1")) }}
 {{- $allObjects = merge $allObjects (dict "Endpoints" (dict "HULL_TEMPLATE" $template)) }}
+{{- $allObjects = merge $allObjects (dict "EndpointSlice" (dict "HULL_TEMPLATE" $template "API_VERSION" "discovery.k8s.io/v1")) }}
 
 {{- /*
 ### Load pod based objects
@@ -59,6 +61,7 @@ metadata:
 {{- $allObjects = merge $allObjects (dict "ResourceQuota" (dict "HULL_TEMPLATE" $template)) }}
 {{- $allObjects = merge $allObjects (dict "NetworkPolicy" (dict "HULL_TEMPLATE" $template "API_VERSION" "networking.k8s.io/v1")) }}
 {{- $allObjects = merge $allObjects (dict "IngressClass" (dict "HULL_TEMPLATE" $template "API_VERSION" "networking.k8s.io/v1")) }}
+{{- $allObjects = merge $allObjects (dict "LimitRange" (dict "HULL_TEMPLATE" $template)) }}
 
 {{- /*
 ### Load rbac'ed objects
@@ -139,7 +142,7 @@ metadata:
 
 {{- range $objectKey, $spec := (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType) }}
 {{- if ne $objectKey "_HULL_OBJECT_TYPE_DEFAULT_" -}}
-{{ if (gt (len (keys (default dict $spec))) 0) }}
+{{ if (or (gt (len (keys (default dict $spec))) 0) (not (kindIs "invalid" $spec))) }}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 {{ $spec = merge $spec $defaultSpec }}
 

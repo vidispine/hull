@@ -39,6 +39,15 @@ config:
 ### OBJECTS
 objects:
 
+# NAMESPACE
+  namespace:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      staticName: true
+      annotations: {}
+      labels: {}
+###################################################
+
 # CONFIGMAPS
   configmap:
     _HULL_OBJECT_TYPE_DEFAULT_:
@@ -379,6 +388,22 @@ objects:
 
 # ENDPOINTS
   endpoints:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+###################################################
+
+# ENDPOINTSLICE
+  endpointslice:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+###################################################
+
+# LIMITRANGE
+  limitrange:
     _HULL_OBJECT_TYPE_DEFAULT_:
       enabled: true
       annotations: {}
