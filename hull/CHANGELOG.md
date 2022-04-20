@@ -1,4 +1,15 @@
 ------------------
+[1.23.4]
+------------------
+CHANGES:
+- added new objects Namespace, EndpointSlice and LimitRange
+
+- update documentation
+
+FIXES:
+- disabling RBAC did not prevent rendering of Roles and ClusterRoles
+
+------------------
 [1.23.3]
 ------------------
 CHANGES:
