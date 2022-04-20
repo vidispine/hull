@@ -9,7 +9,7 @@ hull:
     general:  
       data: {} 
       metadata:
-        labels:         
+        labels:
           custom: 
             general_custom_label_1: General Custom Label 1
             general_custom_label_2: General Custom Label 2
@@ -111,6 +111,7 @@ hull:
                 path: /route
                 scheme: HTTP
                 port: 876
+
   ###################################################
           
   ###################################################
@@ -176,7 +177,7 @@ hull:
           >>>"
         annotations: |-
           _HT!{ 
-          annotation: "I am an Annotation"
+            annotation: "I am an Annotation"
           }
 
       nulled: null
