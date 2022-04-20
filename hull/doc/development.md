@@ -33,7 +33,7 @@
 
 # PODDISRUPTIONBUDGET
 poddisruptionbudget :
-    _HULL_OBJECT_TYPE_DEFAULT_:
+  _HULL_OBJECT_TYPE_DEFAULT_:
     enabled: true
     annotations: {}
     labels: {}
@@ -41,7 +41,7 @@ poddisruptionbudget :
 
 # PRIORITYCLASS
 priorityclass :
-    _HULL_OBJECT_TYPE_DEFAULT_:
+  _HULL_OBJECT_TYPE_DEFAULT_:
     enabled: true
     annotations: {}
     labels: {}
