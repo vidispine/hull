@@ -1,4 +1,4 @@
-# Role
+# ClusterRole
 
 Test creation of objects and features.
 
