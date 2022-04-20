@@ -18,6 +18,7 @@
 {{- $apiKind := default "" (index . "API_KIND") -}}
 {{- $component := default "" (index . "COMPONENT") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- if (index $parent.Values $hullRootKey).config.general.rbac }}
 {{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- $defaultRulesBasePath := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.rules._HULL_OBJECT_TYPE_DEFAULT_ }}
 {{- if not (default false (index . "NO_TRANSFORMATIONS")) }}
@@ -33,14 +34,15 @@
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "")) | indent 0 }}
 {{- end -}}
 {{- end -}}
-{{ end }}
+{{- end -}}
+{{- end -}}
 
 
 
 {{- /*
 | Purpose:  
 |   
-|   Create the webhooks: section for a webhook
+|   Create the rules: section for a role
 |
 | Interface:
 |

@@ -1,0 +1,118 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # endpoints
+    endpointslice:
+      disabled:
+        addressType: FQDN
+        endpoints: []
+      
+      static_name:
+        addressType: FQDN
+        endpoints: []
+      
+      metadata_merge:
+        addressType: FQDN
+        endpoints: []
+      
+      metadata_overwrite:
+        addressType: FQDN
+        endpoints: []
+      
+      minimal:
+        addressType: FQDN
+        endpoints: []
+      
+      full:
+        addressType: FQDN
+        endpoints: []
+      
+      disabled_transform:
+        addressType: FQDN
+        endpoints: []
+      
+      enabled_transform:
+        addressType: FQDN
+        endpoints: []
+      
+      disabled_transform_dict:
+        addressType: FQDN
+        endpoints: []
+      
+      enabled_transform_dict:
+        addressType: FQDN
+        endpoints: []
+      
+      disabled_transform_tpl_if:
+        addressType: FQDN
+        endpoints: []
+      
+      enabled_transform_tpl_if:
+        addressType: FQDN
+        endpoints: []
+      
+      test_one:
+        addressType: FQDN
+        endpoints:
+        - addresses:
+          - a.b.com
+          - b.b.com
+          - c.b.com
+          conditions:
+            ready: true
+            serving: true
+            terminating: true
+          hints:
+            forZones:
+            - name: zone1
+            - name: zone2
+            - name: zone3
+          hostname: some_host
+          nodeName: some_node
+          targetRef:
+            kind: Service
+            apiVersion: v1
+            name: a_service
+            namespace: some_namespace
+          zone: some_zone
+        - addresses:
+          - a.c.com
+          - b.c.com
+          - c.c.com
+          conditions:
+            ready: false
+            serving: false
+            terminating: false
+          hints:
+            forZones:
+            - name: zone4
+            - name: zone5
+            - name: zone6
+          hostname: other_host
+          nodeName: other_node
+          targetRef:
+            kind: Service
+            apiVersion: v1
+            name: b_service
+            namespace: other_namespace
+          zone: other_zone
+        ports:
+        - appProtocol: HTTP
+          name: test_tcp
+          port: 87
+          protocol: TCP
+        - appProtocol: HTTP2
+          name: test_udp
+          port: 88
+          protocol: UDP
+
+###################################################
