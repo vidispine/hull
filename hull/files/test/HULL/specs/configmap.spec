@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "13" objects were rendered
+* Expected number of "16" objects were rendered
 * Validate
 
 ## Metadata
@@ -76,6 +76,17 @@ Test creation of objects and features.
 * Test Object has key "data§number_defined" with value "999"
 * Test Object has key "data§number_undefined" with value ""
 
+## Binary Data
+* Render
+* Set test object to "release-name-hull-test-binary_data_hull"
+* Test Object has key "binaryData§binary_from_file" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+
+* Set test object to "release-name-hull-test-binary_data"
+* Test Object has key "binaryData§binary" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+
+* Set test object to "release-name-hull-test-binary_data_mixed"
+* Test Object has key "binaryData§binary" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+* Test Object has key "binaryData§binary_from_file" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
 
 ___
 
