@@ -9,7 +9,15 @@ ConfigMaps and Secrets can be created very efficient using the HULL library. The
 
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------
+`binaryData:`&#160; | Dictionary with Key-Value pairs. Can be used to specify binary data sourced from external files.<br><br>Key: <br>Unique related to parent element and not matching any key in `data`.<br><br>Value: <br>The **`hull.BinaryData.v1`** properties. See below for reference. | `{}` | `binaryfile.bin:`<br>&#160;&#160;`path:`&#160;`'files/binaryfile.bin'`
 `data:`&#160; | Dictionary with Key-Value pairs. Can be used to specify ConfigMap or Secret data sourced from inline specification or external files.<br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.VirtualFolderData.v1`** properties. See below for reference. | `{}` | `settings.json:`<br>&#160;&#160;`path:`&#160;`'files/settings.json'`<br>`application.config:`<br>&#160;&#160;`path:`&#160;`'files/appconfig.yaml'`<br>&#160;&#160;`noTemplating: true`<br>`readme.txt:`<br>&#160;&#160;`inline:`&#160;`'Just`&#160;`a`&#160;`text'`
+
+### The `hull.BinaryData.v1` properties
+
+| Parameter | Description  | Default | Example 
+| --------  | -------------| ------- | --------
+`enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair defined as `path` will be rendered for deployment. If resolved to false, it will be omitted. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` | `true`<br>`false`<br><br>`"_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=`<br>&#160;&#160;`{{`&#160;`(index`&#160;`.`&#160;`\"PARENT\").Values.hull.config.specific.enable_addon`&#160;`}}>>>"`
+| `path` | An external file path to read binary contents from. Path must be relative to the charts root path.| | `'files/binaryfile.bin'`
 
 ### The `hull.VirtualFolderData.v1` properties
 
