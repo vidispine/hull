@@ -1,4 +1,10 @@
 ------------------
+[1.22.18]
+------------------
+CHANGES:
+- added option to include ConfigMap binaryData from external path
+
+------------------
 [1.22.17]
 ------------------
 CHANGES:
