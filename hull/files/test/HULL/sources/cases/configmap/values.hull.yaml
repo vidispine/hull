@@ -138,5 +138,19 @@ hull:
             inline: _HT*hull.config.specific.number_defined
           number_undefined:
             inline: _HT*hull.config.specific.number_undefined
-          
+
+      binary_data_hull:
+        binaryData:
+          binary_from_file:
+            path: files/binary
+
+      binary_data:
+        binaryData:
+          binary: "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+
+      binary_data_mixed:
+        binaryData:
+          binary_from_file:
+            path: files/binary
+          binary: "QÖÚ¼ˆ”¬µÖó¼ñƒ"
 ###################################################
