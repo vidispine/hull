@@ -4,8 +4,24 @@
     "rollingUpdate": {
       "description": "RollingUpdateStatefulSetStrategy is used to communicate parameter for RollingUpdateStatefulSetStrategyType.",
       "properties": {
+        "maxUnavailable": {
+          "oneOf": [
+            {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          ]
+        },
         "partition": {
-          "description": "Partition indicates the ordinal at which the StatefulSet should be partitioned. Default value is 0.",
+          "description": "Partition indicates the ordinal at which the StatefulSet should be partitioned for updates. During a rolling update, all pods from ordinal Replicas-1 to Partition are updated. All pods from ordinal Partition-1 to 0 remain untouched. This is helpful in being able to do a canary based deployment. The default value is 0.",
           "format": "int32",
           "type": [
             "integer",
@@ -20,11 +36,7 @@
       "additionalProperties": false
     },
     "type": {
-      "description": "Type indicates the type of the StatefulSetUpdateStrategy. Default is RollingUpdate.\n\nPossible enum values:\n - `\"OnDelete\"` triggers the legacy behavior. Version tracking and ordered rolling restarts are disabled. Pods are recreated from the StatefulSetSpec when they are manually deleted. When a scale operation is performed with this strategy,specification version indicated by the StatefulSet's currentRevision.\n - `\"RollingUpdate\"` indicates that update will be applied to all Pods in the StatefulSet with respect to the StatefulSet ordering constraints. When a scale operation is performed with this strategy, new Pods will be created from the specification version indicated by the StatefulSet's updateRevision.",
-      "enum": [
-        "OnDelete",
-        "RollingUpdate"
-      ],
+      "description": "Type indicates the type of the StatefulSetUpdateStrategy. Default is RollingUpdate.\n\n",
       "type": [
         "string",
         "null"

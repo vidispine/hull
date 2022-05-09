@@ -379,7 +379,7 @@ def get_objects(case, chart):
 
     items = []
     for file in os.listdir(rendered_files_folder):
-        with open(os.path.join(rendered_files_folder, file)) as file_in:
+        with open(os.path.join(rendered_files_folder, file), encoding='utf-8') as file_in:
             
             item = None
             itemIndex = -1

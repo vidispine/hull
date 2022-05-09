@@ -22,15 +22,7 @@
                           "type": "string"
                         },
                         "operator": {
-                          "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\nPossible enum values:\n - `\"DoesNotExist\"`\n - `\"Exists\"`\n - `\"Gt\"`\n - `\"In\"`\n - `\"Lt\"`\n - `\"NotIn\"`",
-                          "enum": [
-                            "DoesNotExist",
-                            "Exists",
-                            "Gt",
-                            "In",
-                            "Lt",
-                            "NotIn"
-                          ],
+                          "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\n",
                           "type": "string"
                         },
                         "values": {
@@ -72,15 +64,7 @@
                           "type": "string"
                         },
                         "operator": {
-                          "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\nPossible enum values:\n - `\"DoesNotExist\"`\n - `\"Exists\"`\n - `\"Gt\"`\n - `\"In\"`\n - `\"Lt\"`\n - `\"NotIn\"`",
-                          "enum": [
-                            "DoesNotExist",
-                            "Exists",
-                            "Gt",
-                            "In",
-                            "Lt",
-                            "NotIn"
-                          ],
+                          "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\n",
                           "type": "string"
                         },
                         "values": {
@@ -156,15 +140,7 @@
                           "type": "string"
                         },
                         "operator": {
-                          "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\nPossible enum values:\n - `\"DoesNotExist\"`\n - `\"Exists\"`\n - `\"Gt\"`\n - `\"In\"`\n - `\"Lt\"`\n - `\"NotIn\"`",
-                          "enum": [
-                            "DoesNotExist",
-                            "Exists",
-                            "Gt",
-                            "In",
-                            "Lt",
-                            "NotIn"
-                          ],
+                          "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\n",
                           "type": "string"
                         },
                         "values": {
@@ -206,15 +182,7 @@
                           "type": "string"
                         },
                         "operator": {
-                          "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\nPossible enum values:\n - `\"DoesNotExist\"`\n - `\"Exists\"`\n - `\"Gt\"`\n - `\"In\"`\n - `\"Lt\"`\n - `\"NotIn\"`",
-                          "enum": [
-                            "DoesNotExist",
-                            "Exists",
-                            "Gt",
-                            "In",
-                            "Lt",
-                            "NotIn"
-                          ],
+                          "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\n",
                           "type": "string"
                         },
                         "values": {
@@ -422,7 +390,7 @@
                     "additionalProperties": false
                   },
                   "namespaces": {
-                    "description": "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\"",
+                    "description": "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\".",
                     "items": {
                       "type": [
                         "string",
@@ -608,7 +576,7 @@
                 "additionalProperties": false
               },
               "namespaces": {
-                "description": "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\"",
+                "description": "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\".",
                 "items": {
                   "type": [
                     "string",
@@ -794,7 +762,7 @@
                     "additionalProperties": false
                   },
                   "namespaces": {
-                    "description": "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\"",
+                    "description": "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\".",
                     "items": {
                       "type": [
                         "string",
@@ -980,7 +948,7 @@
                 "additionalProperties": false
               },
               "namespaces": {
-                "description": "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\"",
+                "description": "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\".",
                 "items": {
                   "type": [
                     "string",
