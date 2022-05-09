@@ -16,6 +16,7 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
+{{- $component := default "" (index . "COMPONENT") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- if not (default false (index . "NO_TRANSFORMATIONS")) }}
@@ -28,13 +29,15 @@
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 {{ template "hull.metadata.header" . }}
 {{ include "hull.object.configmap.data" (dict "PARENT_CONTEXT" $parentClone "SPEC" $spec) }}
-{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parentClone "SPEC" $spec "HULL_OBJECT_KEYS" (list "data")) }}
+{{ include "hull.object.configmap.binarydata" (dict "PARENT_CONTEXT" $parentClone "SPEC" $spec) }}
+{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parentClone "SPEC" $spec "HULL_OBJECT_KEYS" (list "data" "binaryData")) }}
 {{- end -}}
 {{- else }}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 {{ template "hull.metadata.header" . }}
 {{ include "hull.object.configmap.data" . }}
-{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "data")) }}
+{{ include "hull.object.configmap.binarydata" (dict "PARENT_CONTEXT" $parent "SPEC" $spec) }}
+{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "data" "binaryData")) }}
 {{- end }}
 {{- end -}}
 {{ end }}
@@ -72,6 +75,37 @@ data:
 {{- else -}}
 {{- print (tpl (toString ($parent.Files.Get (printf "%s" $innerValue.path) ) ) $parent) | indent 4 }}
 {{ end }}
+{{ end }}
+{{ end }}
+{{ end }}
+{{ end }}
+
+{{- /*
+| Purpose:  
+|   
+|   Renders the K8S conform data section from the HULL input defined.
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   SPEC: The dictionary to work with
+|
+*/ -}}
+{{- define "hull.object.configmap.binarydata" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $spec := default nil (index . "SPEC") -}}
+{{- if (hasKey $spec "binaryData") -}}
+binaryData:
+{{ range $innerKey, $innerValue := $spec.binaryData }}
+{{ if typeIs "map[string]interface {}" $innerValue }}
+{{- if or (and (hasKey $innerValue "enabled") $innerValue.enabled) (not (hasKey $innerValue "enabled")) -}}
+{{ if hasKey $innerValue "path" -}}
+{{ base $innerKey | indent 2 }}: |-
+{{ toString ($parent.Files.Get (printf "%s" $innerValue.path) ) | indent 4 }}
+{{ end }}
+{{ end }}
+{{- else -}}
+{{ base $innerKey | indent 2 }}: {{ $innerValue }}
 {{ end }}
 {{ end }}
 {{ end }}
