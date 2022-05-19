@@ -64,12 +64,7 @@
             "type": "string"
           },
           "type": {
-            "description": "Type of job condition, Complete or Failed.\n\nPossible enum values:\n - `\"Complete\"` means the job has completed its execution.\n - `\"Failed\"` means the job has failed its execution.\n - `\"Suspended\"` means the job has been suspended.",
-            "enum": [
-              "Complete",
-              "Failed",
-              "Suspended"
-            ],
+            "description": "Type of job condition, Complete or Failed.",
             "type": "string"
           }
         },
@@ -100,7 +95,7 @@
       ]
     },
     "ready": {
-      "description": "The number of pods which have a Ready condition.\n\nThis field is alpha-level. The job controller populates the field when the feature gate JobReadyPods is enabled (disabled by default).",
+      "description": "The number of pods which have a Ready condition.\n\nThis field is beta-level. The job controller populates the field when the feature gate JobReadyPods is enabled (enabled by default).",
       "format": "int32",
       "type": [
         "integer",

@@ -1,4 +1,12 @@
 ------------------
+[1.24.0]
+------------------
+CHANGES:
+- initial K8S 1.24 release
+- deprecating 1.22 release
+- added option to include ConfigMap binaryData from external path
+
+------------------
 [1.23.4]
 ------------------
 CHANGES:
