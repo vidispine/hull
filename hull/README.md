@@ -64,6 +64,10 @@ Some important things to mention first before looking at the library in more det
 
 ⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases. At this time Kubernetes versions `1.22` and `1.23` and `1.24` have a matching and maintained HULL release.** ⚠️
 
+## NEW! The HULL Tutorials
+
+If you like a hands on approach you are invited to take a look at the [new HULL tutorials series at dev.to](https://dev.to/gre9ory/series/18319)! The eigth part tutorial will start from the very beginning of setting up Helm and creating a HULL based chart to finalizing a real life HULL based Helm Chart step by step. To highlight the differences to the regular Helm chart workflow the tutorials take the popular [`kubernetes-dashboard`](https://artifacthub.io/packages/helm/k8s-dashboard/kubernetes-dashboard) Helm chart as a source and transport it to a functionally equivalent HULL based Helm chart. In the end it shows that reducing the lines of configuration to create and maintain can be reduced by more than 50% when using a HULL based approach instead of the regular Helm style of writing charts!
+
 ## Creating and configuring a HULL based chart
 
 The tasks of creating and configuring a HULL based helm chart can be considered as two sides of the same coin. Both sides interact with the same interface (the HULL library) to specify the objects that should be created. The task from a creators/maintainers perspective is foremost to provide the ground structure for the objects that make up the particular application which is to be wrapped in a Helm chart. The consumer of the chart is tasked with appropriately adding his system specific context to the ground structure wherein he has the freedom to change and even add or delete objects as needed to achieve his goals. At deploy time the creators base structure is merged with the consumers system-specific yaml file to build the complete configuration. Interacting via the same library interface fosters common understanding of how to work with the library on both sides and can eliminate most of the tedious copy&paste creation and examination heavy configuration processes.
