@@ -39,6 +39,7 @@ Test creation of objects and features.
 * Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/name" with value "hull-test"
 * Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/component" with value "selectors_short"
 * Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/instance" with value "release-name"
+
 ___
 
 * Clean the test execution folder

@@ -1,4 +1,12 @@
 ------------------
+[1.22.19]
+------------------
+CHANGES:
+- improve intro documentation and add KH quote
+- add Helm 3.9.0 to tests
+- add option noObjectNamePrefixes to remove all object name prefixes globally
+
+------------------
 [1.22.18]
 ------------------
 CHANGES:

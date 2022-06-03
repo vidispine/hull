@@ -72,7 +72,7 @@ hull:
               image:
                 repository: my/image/repo
                 tag: "99.9"
-                
+
       custom_args:
         pod:
           containers:
@@ -124,6 +124,7 @@ hull:
                   configMapRef:
                     name: full_example_configmap
                     optional: _HT!true
+
       removal_test:
         pod:
           containers:
