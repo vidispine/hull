@@ -19,7 +19,7 @@
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $fullname := "" -}}
-{{- if and $spec $spec.staticName -}}
+{{- if and $spec (or $spec.staticName (index $parent.Values $hullRootKey).config.general.noObjectNamePrefixes) -}}
 {{- $fullname = default "" $component -}}
 {{- $truncate = 10000 -}}
 {{- end -}}
