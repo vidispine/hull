@@ -124,7 +124,6 @@ hull:
                   configMapRef:
                     name: full_example_configmap
                     optional: _HT!true
-      
       removal_test:
         pod:
           containers:
