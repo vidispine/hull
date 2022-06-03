@@ -22269,6 +22269,17 @@
                   "title": "FullnameOverride",
                   "type": "string"
                 },
+                "noObjectNamePrefixes": {
+                  "$id": "#/definitions/root/config/general/noObjectNamePrefixes",
+                  "description": "Never prefix any object name.",
+                  "title": "noObjectNamePrefixes",
+                  "type": "boolean",
+                  "examples": [
+                    true,
+                    false
+                  ],
+                  "default": false
+                },
                 "rbac": {
                   "$id": "#/definitions/root/config/general/rbac",
                   "description": "Global switch which enables RBAC objects for installation. If true the enabled objects are deployed to the cluster, if false no RBAC objects are created.",

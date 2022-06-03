@@ -1,6 +1,6 @@
 {{- /*
-| Purpose:
-|
+| Purpose:  
+|   
 |   Create a ConfigMap
 |   Can include values from inlines: inline specification or from an external file in files:
 |   External files can be incuded as is (no templating applied) or with templating expressions resolved.
@@ -44,8 +44,8 @@
 
 
 {{- /*
-| Purpose:
-|
+| Purpose:  
+|   
 |   Renders the K8S conform data section from the HULL input defined.
 |
 | Interface:
@@ -81,8 +81,8 @@ data:
 {{ end }}
 
 {{- /*
-| Purpose:
-|
+| Purpose:  
+|   
 |   Renders the K8S conform data section from the HULL input defined.
 |
 | Interface:

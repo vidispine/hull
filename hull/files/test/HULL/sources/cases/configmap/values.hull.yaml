@@ -13,7 +13,7 @@ hull:
         {{ printf \"%s%s\" (index . \"PARENT\").Values.hull.config.specific.value_to_resolve_1 (index . \"PARENT\").Values.hull.config.specific.value_to_resolve_2 }}
         >>>"
   ###################################################
-          
+
   ###################################################
   ### OBJECTS
   objects:
@@ -31,7 +31,7 @@ hull:
             path: files/default_file_1.json
           default_file_2.yaml:
             path: files/default_file_2.yaml
-      
+
       defaults_no_overwrite:
         enabled: true
         staticName: false
@@ -153,4 +153,6 @@ hull:
           binary_from_file:
             path: files/binary
           binary: "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+          test: _HT!{{ toString ((index . "PARENT").Files.Get "files/test.txt") | b64enc }}
+
 ###################################################
