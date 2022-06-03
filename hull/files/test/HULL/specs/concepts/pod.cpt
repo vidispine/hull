@@ -71,6 +71,29 @@
 
 
 
+* Prepare default test case for this kind including suites "pod,noobjectnameprefixes"
+* Render
+
+* Set test object to "service_account"
+* Set test object to "imagepullsecrets_custom"
+* Set test object to "imagepullsecrets_add_all"
+* Set test object to "image_name_empty_registry"
+* Set test object to "image_name_registry"
+* Set test object to "image_name_tag"
+* Set test object to "custom_args"
+* Set test object to "int_bool_dict_array_ht"
+* Set test object to "volume_test"
+* Set test object to "env_test"
+* Set test object to "envfrom_test"
+* Set test object to "enabled_true_false"
+* Set test object to "transformation_shortforms"
+* Set test object to "transformation_doc_examples"
+* Set test object to "complex_gets"
+* Set test object to "pod_get"
+
+
+
+
 * Prepare default test case for this kind including suites "pod"
 * Render
 
