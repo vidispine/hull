@@ -389,3 +389,10 @@ hull:
                   value: _HT*hull.config.specific.database.host
                 'DBPORT':
                   value: _HT!"{{ (index . "$").Values.hull.config.specific.database.port | toString }}"
+    customresource:
+      externalsecret:
+        kind: 
+        api: 
+        spec:
+          
+      
