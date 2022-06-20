@@ -20,7 +20,7 @@ Below is the HULL charts [`README.md`](/hull/README.md):
 
 One major design aspect of [Helm](https://helm.sh) is that it forces the user to create individual abstractions of the Kubernetes configuration of applications. For each individual Helm Chart that is realized in form of YAML templates in a [Helm charts](https://helm.sh/docs/topics/charts/) `/templates` folder. These template files, containing boilerplate Kubernetes YAML code blocks on the one hand and custom configuration mappings utilizing Go Templating expressions on the other hand, provide the glue between the configuration of the application via the central `values.yaml` configuration file and the desired Kubernetes YAML output. Arguably this approach of per-application abstraction is suited well to create tailormade configuration packages for even the most specialized applications but comes at a cost of having a large overhead for simpler, recurring and off-the-shelf application packaging use cases. Creating, maintaining and (often) understanding the abstractions introduced by Helm Charts - especially when facing a high number of individual Helm charts from various sources - can become tedious and challenging.
 
-The primary feature of the HULL library is the ability to remove customized YAML template files entirely from Helm chart workflows and thereby allowing to remove a level of abstraction. Using the HULL library chart, Kubernetes objects including all their properties can be completely and transparently specified in the `values.yaml`. The HULL library chart itself provides the uniform layer to streamline specification, configuration and rendering of Helm charts to achieve this. You can also think of it as a thin layer on top of the Kubernetes API to avoid the middleman between Helm Chart and Kubernetes API object configuration, yet providing flexibility when it is required to customize individual configuration options instead of requiring you to add each configuration switch manually to the templates. JSON schema validation based on the [Helm JSON validation feature](https://helm.sh/docs/topics/charts/#schema-files) (via `values.schema.json`) aids in writing Kubernetes API conforming objects right from the beginning when [using an IDE that supports live JSON schema validation](./doc/json_schema_validation.md). Additional benefits (uniform inheritable object metadata, simplified inclusion of ConfigMaps/Secrets, cross-referencing values within the `values.yaml`, ...) are available with HULL which you can read about below in the **Key Features Overview**. But maybe most importantly, the HULL library can be added as a dependency to any existing Helm chart and be used side-by-side without breaking any existing Helm charts functionalities, see [adding the HULL library chart to a Helm chart](./doc/setup.md) for more information. And lastly, by being a library chart itself, everything works 100% within the functionality that plain Helm offers - no additional tooling is introduced or involved.
+The primary feature of the HULL library is the ability to remove customized YAML template files entirely from Helm chart workflows and thereby allowing to remove a level of abstraction. Using the HULL library chart, Kubernetes objects including all their properties can be completely and transparently specified in the `values.yaml`. The HULL library chart itself provides the uniform layer to streamline specification, configuration and rendering of Helm charts to achieve this. You can also think of it as a thin layer on top of the Kubernetes API to avoid the middleman between Helm Chart and Kubernetes API object configuration, yet providing flexibility when it is required to customize individual configuration options instead of requiring you to add each configuration switch manually to the templates. JSON schema validation based on the [Helm JSON validation feature](https://helm.sh/docs/topics/charts/#schema-files) (via `values.schema.json`) aids in writing Kubernetes API conforming objects right from the beginning when [using an IDE that supports live JSON schema validation](./hull/doc/json_schema_validation.md). Additional benefits (uniform inheritable object metadata, simplified inclusion of ConfigMaps/Secrets, cross-referencing values within the `values.yaml`, ...) are available with HULL which you can read about below in the **Key Features Overview**. But maybe most importantly, the HULL library can be added as a dependency to any existing Helm chart and be used side-by-side without breaking any existing Helm charts functionalities, see [adding the HULL library chart to a Helm chart](./hull/doc/setup.md) for more information. And lastly, by being a library chart itself, everything works 100% within the functionality that plain Helm offers - no additional tooling is introduced or involved.
 
 **Your feedback on this project is valued, hence please comment or start a discussion in the `Issues` section or create feature wishes and bug reports. Thank you!**
 
@@ -37,15 +37,15 @@ As highlighted above, when included in a Helm chart the HULL library chart can t
 
 - Concentrate on what is needed to specify Kubernetes objects without having to add individual boilerplate YAML templates to your chart. This removes a common source of errors and maintenance from the regular Helm workflow. **To have the HULL rendered output conform to the Kubernetes API specification, a large number of unit tests validate the HULL rendered output against the Kubernetes API JSON schema.**
 
-  For more details refer to the documentation on [JSON Schema Validation](./doc/json_schema_validation.md).
+  For more details refer to the documentation on [JSON Schema Validation](./hull/doc/json_schema_validation.md).
 
 - For all Kubernetes object types supported by HULL, **full configurational access to the Kubernetes object types properties is directly available**. This relieves chart maintainers from having to add missing configuration options one by one and the Helm chart users from forking the Helm chart to add just the properties they need for their configuration. Only updating the HULL chart to a newer version with matching Kubernetes API version is required to enable configuration of properties added to Kubernetes objects meanwhile in newer API versions. The HULL charts are versioned to reflect the minimal Kubernetes API versions supported by them. 
 
-   For more details refer to the documentation on [Architecture Overview](./doc/architecture.md).
+   For more details refer to the documentation on [Architecture Overview](./hull/doc/architecture.md).
 
 - The single interface of the HULL library is used to both create and configure objects in charts for deployment. This fosters the mutual understanding of chart creators/maintainers and consumers of how the chart actually works and what it contains. Digging into the `/templates` folder to understand the Helm charts implications is not required anymore. To avoid any misconfiguration, the interface to the library - the `values.yaml` of the HULL library - is fully JSON validated. **When using an IDE supporting live JSON schema validation (e.g. VSCode) you can get IDE guidance when creating the HULL objects.  Before rendering, JSON schema conformance is validated by the HULL library.**
 
-  For more details refer to the documentation on [JSON Schema Validation](./doc/json_schema_validation.md).
+  For more details refer to the documentation on [JSON Schema Validation](./hull/doc/json_schema_validation.md).
 
 - **Uniform and rich metadata is automatically attached to all objects created by the HULL library.** 
   - Kubernetes standard labels as defined for [Kubernetes](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/) and [Helm](https://helm.sh/docs/chart_best_practices/labels/#standard-labels) are added to all objects metadata automatically. 
@@ -58,15 +58,15 @@ As highlighted above, when included in a Helm chart the HULL library chart can t
 
 - Flexible handling of ConfigMap and Secret input by choosing between inline specification of contents in `values.yaml` or import from external files for contents of larger sizes. When importing data from files the data can be either run through the templating engine or imported un-templated 'as is' if it already contains templating expressions that shall be passed on to the consuming application. **Adding ConfigMaps or Secrets to your deployment requires only a few lines of code.**
 
-  For more details refer to the documentation on [ConfigMaps and Secrets](./doc/configmaps_secrets.md).
+  For more details refer to the documentation on [ConfigMaps and Secrets](./hull/doc/configmaps_secrets.md).
 
 - For more complex scenarios where actual values in the target YAML are subject to configurations in the `values.yaml`, there is **support to dynamically populate values by injecting Go Templating expressions defined in place of the value in the `values.yaml`**. For example, if your concrete container arguments depend on various other settings in `values.yaml` you can inject the conditions into the calculation of the arguments.
 
-  For more details refer to the documentation on [Transformations](./doc/transformations.md).
+  For more details refer to the documentation on [Transformations](./hull/doc/transformations.md).
 
 - Enable automatic hashing of referenced ConfigMaps and Secrets to facilitate pod restarts on changes of configuration (work in progress)
 
-To learn more about the general architecture and features of the HULL library see the [Architecture Overview](./doc/architecture.md)
+To learn more about the general architecture and features of the HULL library see the [Architecture Overview](./hull/doc/architecture.md)
 
 ## Important information
 
@@ -74,7 +74,7 @@ Some important things to mention first before looking at the library in more det
 
 ⚠️ **While there may be several benefits to rendering YAML via the HULL library please take note that it is a non-breaking addition to your Helm charts. The regular Helm workflow involving rendering of YAML templates in the `/templates` folder is completely unaffected by integration of the HULL library chart. Sometimes you might have very specific requirements on your configuration or object specification which the HULL library does not meet so you can use the regular Helm workflow for them and the HULL library for your more standard needs - easily in parallel in the same Helm chart.** ⚠️
 
-⚠️ **Note that a single static file, the `hull.yaml`, must be copied 'as-is' without any modification from an embedded HULL charts root folder to the parent charts `/templates` folder to be able to render any YAML via HULL. It contains the code that initiates the HULL rendering pipeline, see [adding the HULL library chart to a Helm chart](./doc/setup.md) for more details!** ⚠️
+⚠️ **Note that a single static file, the `hull.yaml`, must be copied 'as-is' without any modification from an embedded HULL charts root folder to the parent charts `/templates` folder to be able to render any YAML via HULL. It contains the code that initiates the HULL rendering pipeline, see [adding the HULL library chart to a Helm chart](./hull/doc/setup.md) for more details!** ⚠️
 
 ⚠️ **At this time HULL releases are tested against all existing non-beta and non-alpha Helm 3 CLI versions. Note that Helm CLI versions `3.0.x` are not compatible with HULL, all other currently existing non-beta and non-alpha versions are compatible.** ⚠️
 
@@ -281,7 +281,7 @@ HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> P
 `job` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**jobspec-v1-batch**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#jobspec-v1-batch)<br>`activeDeadlineSeconds`<br>`backoffLimit`<br>`completionMode`<br>`completions`<br>`manualSelector`<br>`parallelism`<br>`selector`<br>`suspend`<br>`ttlSecondsAfterFinished` 
 `daemonset` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**daemonsetspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#daemonsetspec-v1-apps)<br>`minReadySeconds`<br>`revisionHistoryLimit`<br>`updateStrategy` 
 `statefulset` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**statefulsetspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#statefulsetspec-v1-apps)<br>`podManagementPolicy`<br>`replicas`<br>`revisionHistoryLimit`<br>`serviceName`<br>`updateStrategy`<br>`serviceName`<br>`volumeClaimTemplates` 
-`cronjob` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Job.v1**](./README.md)<br>`job` | [**cronjobspec-v1-batch**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#cronjobspec-v1-batch)<br>`concurrencyPolicy`<br>`failedJobsHistoryLimit`<br>`schedule`<br>`startingDeadlineSeconds`<br>`successfulJobsHistoryLimit`<br>`suspend` 
+`cronjob` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Job.v1**](./hull/README.md)<br>`job` | [**cronjobspec-v1-batch**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#cronjobspec-v1-batch)<br>`concurrencyPolicy`<br>`failedJobsHistoryLimit`<br>`schedule`<br>`startingDeadlineSeconds`<br>`successfulJobsHistoryLimit`<br>`suspend` 
 
 **[Service APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#-strong-service-apis-strong-)**
 HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> Properties
@@ -375,7 +375,7 @@ spec:
         - containerPort: 80
 ```
 
-To render this analogously using the HULL library your chart needs to be [setup for using HULL](./doc/setup.md). In the following section we assume the parent Helm chart is named `hull-test` and we use the `helm template` command to test render the `values.yaml`'s.
+To render this analogously using the HULL library your chart needs to be [setup for using HULL](./hull/doc/setup.md). In the following section we assume the parent Helm chart is named `hull-test` and we use the `helm template` command to test render the `values.yaml`'s.
 
 ### Minimal Example
 
@@ -771,4 +771,4 @@ metadata:
   name: release-name-hull-test-nginx_configmap
 ```
 
-Read the additional documentation in the [documentation folder](./doc) on how to utilize the features of the HULL library to the full effect.
+Read the additional documentation in the [documentation folder](./hull/doc) on how to utilize the features of the HULL library to the full effect.
