@@ -83,7 +83,7 @@ annotations:
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $allFiles := dict -}}
 {{- $volumeMount := (index . "VOLUME_MOUNT") -}}
-{{- $volume := (index . "VOLUME") -}}  
+{{- $volume := (index . "VOLUME") -}}
 {{- range $volume := $spec.volumes -}}
 {{- if $debug -}}{{- $allFiles = set $allFiles "volumeName" $volume.name -}}{{- end -}}
   {{- range $container := concat (default list $spec.containers) (default list $spec.initContainers) -}}
