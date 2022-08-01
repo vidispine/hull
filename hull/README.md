@@ -44,7 +44,7 @@ As highlighted above, when included in a Helm chart the HULL library chart can t
 
 - Flexible handling of ConfigMap and Secret input by choosing between inline specification of contents in `values.yaml` or import from external files for contents of larger sizes. When importing data from files the data can be either run through the templating engine or imported un-templated 'as is' if it already contains templating expressions that shall be passed on to the consuming application. **Adding ConfigMaps or Secrets to your deployment requires only a few lines of code.**
 
-  For more details refer to the documentation on [ConfigMaps and Secrets](./doc/configmaps_secrets.md).
+  For more details refer to the documentation on [ConfigMaps and Secrets](./doc/objects_configmaps_secrets.md).
 
 - For more complex scenarios where actual values in the target YAML are subject to configurations in the `values.yaml`, there is **support to dynamically populate values by injecting Go Templating expressions defined in place of the value in the `values.yaml`**. For example, if your concrete container arguments depend on various other settings in `values.yaml` you can inject the conditions into the calculation of the arguments.
 
