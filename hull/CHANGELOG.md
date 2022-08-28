@@ -1,4 +1,12 @@
 ------------------
+[1.25.0]
+------------------
+CHANGES:
+- initial K8S 1.25 release
+- deprecating 1.22 release
+- removed PodSecurityPolicy
+
+------------------
 [1.24.1]
 ------------------
 CHANGES:
@@ -11,7 +19,7 @@ CHANGES:
 ------------------
 CHANGES:
 - initial K8S 1.24 release
-- deprecating 1.22 release
+- deprecating 1.21 release
 - added option to include ConfigMap binaryData from external path
 
 ------------------

@@ -52,13 +52,6 @@
                   "null"
                 ]
               },
-              "clusterName": {
-                "description": "Deprecated: ClusterName is a legacy field that was always cleared by the system and never used; it will be removed completely in 1.25.\n\nThe name in the go struct is changed to help clients detect accidental use.",
-                "type": [
-                  "string",
-                  "null"
-                ]
-              },
               "creationTimestamp": {
                 "description": "Time is a wrapper around time.Time which supports correct marshaling to YAML and JSON.  Wrappers are provided for many of the factory methods that the time package offers.",
                 "format": "date-time",
@@ -723,6 +716,31 @@
                               "string",
                               "null"
                             ]
+                          },
+                          "nodeExpandSecretRef": {
+                            "description": "SecretReference represents a Secret Reference. It has enough information to retrieve secret in any namespace",
+                            "properties": {
+                              "name": {
+                                "description": "name is unique within a namespace to reference a secret resource.",
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "namespace": {
+                                "description": "namespace defines the space within which the secret name must be unique.",
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "x-kubernetes-map-type": "atomic",
+                            "additionalProperties": false
                           },
                           "nodePublishSecretRef": {
                             "description": "SecretReference represents a Secret Reference. It has enough information to retrieve secret in any namespace",
