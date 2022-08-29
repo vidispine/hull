@@ -27720,7 +27720,7 @@
                     "$ref": "#/definitions/hull.ObjectBase.v1"
                 },
                 {
-                    "$ref": "#/definitions/io.k8s.api.policy.v1beta1.PodDisruptionBudgetSpec"
+                    "$ref": "#/definitions/io.k8s.api.policy.v1.PodDisruptionBudgetSpec"
                 },
                 {
                     "propertyNames": {
@@ -27729,7 +27729,7 @@
                                 "$ref": "#/definitions/hull.ObjectBase.v1.Names"
                             },
                             {
-                                "$ref": "#/definitions/io.k8s.api.policy.v1beta1.PodDisruptionBudgetSpec.Names"
+                                "$ref": "#/definitions/io.k8s.api.policy.v1.PodDisruptionBudgetSpec.Names"
                             }
                         ]
                     }
