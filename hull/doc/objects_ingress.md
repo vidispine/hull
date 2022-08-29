@@ -6,7 +6,7 @@ The HULL Ingress object offers some comfort features for specifying ingress obje
 
 ### The `hull.Ingress.v1` properties
 
-Properties can be set as they are defined in the [Kubernetes API's ingressspec spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#ingressspec-v1-networking-k8s-io). 
+Properties can be set as they are defined in the [Kubernetes API's ingressspec spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#ingressspec-v1-networking-k8s-io). 
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -19,7 +19,7 @@ However the properties listed below are overwritten or added by HULL:
 
 > The key-value pairs of value type `hull.Ingress.Rule.v1` are converted to an array on rendering
 
-Properties can be set as they are defined in the [Kubernetes API's ingressrule spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#ingressrule-v1-networking-k8s-io). 
+Properties can be set as they are defined in the [Kubernetes API's ingressrule spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#ingressrule-v1-networking-k8s-io). 
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -32,7 +32,7 @@ However the properties listed below are overwritten or added by HULL:
 
 > The key-value pairs of value type `hull.Ingress.Rule.v1` are converted to an array on rendering
 
-Properties can be set as they are defined in the [Kubernetes API's httpingresspath spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#httpingresspath-v1-networking-k8s-io).
+Properties can be set as they are defined in the [Kubernetes API's httpingresspath spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#httpingresspath-v1-networking-k8s-io).
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -44,7 +44,7 @@ However the properties listed below are overwritten or added by HULL:
 
 > The key-value pairs of value type `hull.Ingress.Tls.v1` are converted to an array on rendering
 
-Properties can be set as they are defined in the [Kubernetes API's ingresstls spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#ingresstls-v1-networking-k8s-io). 
+Properties can be set as they are defined in the [Kubernetes API's ingresstls spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#ingresstls-v1-networking-k8s-io). 
 
 However the properties listed below are overwritten or added by HULL:
 

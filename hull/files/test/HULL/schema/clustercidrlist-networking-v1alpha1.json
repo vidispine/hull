@@ -1,5 +1,5 @@
 {
-  "description": "RuntimeClassList is a list of RuntimeClass objects.",
+  "description": "ClusterCIDRList contains a list of ClusterCIDR.",
   "properties": {
     "apiVersion": {
       "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -8,13 +8,13 @@
         "null"
       ],
       "enum": [
-        "node.k8s.io/v1beta1"
+        "networking.k8s.io/v1alpha1"
       ]
     },
     "items": {
-      "description": "Items is a list of schema objects.",
+      "description": "Items is the list of ClusterCIDRs.",
       "items": {
-        "description": "RuntimeClass defines a class of container runtime supported in the cluster. The RuntimeClass is used to determine which container runtime is used to run all containers in a pod. RuntimeClasses are (currently) manually defined by a user or cluster provisioner, and referenced in the PodSpec. The Kubelet is responsible for resolving the RuntimeClassName reference before running the pod.  For more details, see https://git.k8s.io/enhancements/keps/sig-node/585-runtime-class",
+        "description": "ClusterCIDR represents a single configuration for per-Node Pod CIDR allocations when the MultiCIDRRangeAllocator is enabled (see the config for kube-controller-manager).  A cluster may have any number of ClusterCIDR resources, all of which will be considered when allocating a CIDR for a Node.  A ClusterCIDR is eligible to be used for a given Node when the node selector matches the node in question and has free CIDRs to allocate.  In case of multiple matching ClusterCIDR resources, the allocator will attempt to break ties using internal heuristics, but any ClusterCIDR whose node selector matches the Node may be used.",
         "properties": {
           "apiVersion": {
             "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -23,12 +23,8 @@
               "null"
             ],
             "enum": [
-              "node.k8s.io/v1beta1"
+              "networking.k8s.io/v1alpha1"
             ]
-          },
-          "handler": {
-            "description": "Handler specifies the underlying runtime and configuration that the CRI implementation will use to handle pods of this class. The possible values are specific to the node & CRI configuration.  It is assumed that all handlers are available on every node, and handlers of the same name are equivalent on every node. For example, a handler called \"runc\" might specify that the runc OCI runtime (using native Linux containers) will be used to run the containers in a pod. The Handler must be lowercase, conform to the DNS Label (RFC 1123) requirements, and is immutable.",
-            "type": "string"
           },
           "kind": {
             "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
@@ -37,7 +33,7 @@
               "null"
             ],
             "enum": [
-              "RuntimeClass"
+              "ClusterCIDR"
             ]
           },
           "metadata": {
@@ -53,13 +49,6 @@
                 "description": "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations",
                 "type": [
                   "object",
-                  "null"
-                ]
-              },
-              "clusterName": {
-                "description": "Deprecated: ClusterName is a legacy field that was always cleared by the system and never used; it will be removed completely in 1.25.\n\nThe name in the go struct is changed to help clients detect accidental use.",
-                "type": [
-                  "string",
                   "null"
                 ]
               },
@@ -294,111 +283,145 @@
             ],
             "additionalProperties": false
           },
-          "overhead": {
-            "description": "Overhead structure represents the resource overhead associated with running a pod.",
+          "spec": {
+            "description": "ClusterCIDRSpec defines the desired state of ClusterCIDR.",
             "properties": {
-              "podFixed": {
-                "additionalProperties": {
-                  "oneOf": [
-                    {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    {
-                      "type": [
-                        "number",
-                        "null"
-                      ]
-                    }
-                  ]
-                },
-                "description": "PodFixed represents the fixed resource overhead associated with running a pod.",
+              "ipv4": {
+                "description": "IPv4 defines an IPv4 IP block in CIDR notation(e.g. \"10.0.0.0/8\"). At least one of IPv4 and IPv6 must be specified. This field is immutable.",
                 "type": [
-                  "object",
+                  "string",
                   "null"
                 ]
-              }
-            },
-            "type": [
-              "object",
-              "null"
-            ],
-            "additionalProperties": false
-          },
-          "scheduling": {
-            "description": "Scheduling specifies the scheduling constraints for nodes supporting a RuntimeClass.",
-            "properties": {
+              },
+              "ipv6": {
+                "description": "IPv6 defines an IPv6 IP block in CIDR notation(e.g. \"fd12:3456:789a:1::/64\"). At least one of IPv4 and IPv6 must be specified. This field is immutable.",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
               "nodeSelector": {
-                "additionalProperties": {
-                  "type": [
-                    "string",
-                    "null"
-                  ]
+                "description": "A node selector represents the union of the results of one or more label queries over a set of nodes; that is, it represents the OR of the selectors represented by the node selector terms.",
+                "properties": {
+                  "nodeSelectorTerms": {
+                    "description": "Required. A list of node selector terms. The terms are ORed.",
+                    "items": {
+                      "description": "A null or empty node selector term matches no objects. The requirements of them are ANDed. The TopologySelectorTerm type implements a subset of the NodeSelectorTerm.",
+                      "properties": {
+                        "matchExpressions": {
+                          "description": "A list of node selector requirements by node's labels.",
+                          "items": {
+                            "description": "A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values.",
+                            "properties": {
+                              "key": {
+                                "description": "The label key that the selector applies to.",
+                                "type": "string"
+                              },
+                              "operator": {
+                                "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\n",
+                                "type": "string"
+                              },
+                              "values": {
+                                "description": "An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch.",
+                                "items": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                },
+                                "type": [
+                                  "array",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "operator"
+                            ],
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "type": [
+                            "array",
+                            "null"
+                          ]
+                        },
+                        "matchFields": {
+                          "description": "A list of node selector requirements by node's fields.",
+                          "items": {
+                            "description": "A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values.",
+                            "properties": {
+                              "key": {
+                                "description": "The label key that the selector applies to.",
+                                "type": "string"
+                              },
+                              "operator": {
+                                "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\n",
+                                "type": "string"
+                              },
+                              "values": {
+                                "description": "An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch.",
+                                "items": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                },
+                                "type": [
+                                  "array",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "operator"
+                            ],
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "type": [
+                            "array",
+                            "null"
+                          ]
+                        }
+                      },
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "x-kubernetes-map-type": "atomic",
+                      "additionalProperties": false
+                    },
+                    "type": "array"
+                  }
                 },
-                "description": "nodeSelector lists labels that must be present on nodes that support this RuntimeClass. Pods using this RuntimeClass can only be scheduled to a node matched by this selector. The RuntimeClass nodeSelector is merged with a pod's existing nodeSelector. Any conflicts will cause the pod to be rejected in admission.",
+                "required": [
+                  "nodeSelectorTerms"
+                ],
                 "type": [
                   "object",
                   "null"
                 ],
-                "x-kubernetes-map-type": "atomic"
+                "x-kubernetes-map-type": "atomic",
+                "additionalProperties": false
               },
-              "tolerations": {
-                "description": "tolerations are appended (excluding duplicates) to pods running with this RuntimeClass during admission, effectively unioning the set of nodes tolerated by the pod and the RuntimeClass.",
-                "items": {
-                  "description": "The pod this Toleration is attached to tolerates any taint that matches the triple <key,value,effect> using the matching operator <operator>.",
-                  "properties": {
-                    "effect": {
-                      "description": "Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.\n\n",
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    "key": {
-                      "description": "Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys.",
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    "operator": {
-                      "description": "Operator represents a key's relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.\n\n",
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    "tolerationSeconds": {
-                      "description": "TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system.",
-                      "format": "int64",
-                      "type": [
-                        "integer",
-                        "null"
-                      ]
-                    },
-                    "value": {
-                      "description": "Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string.",
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    }
-                  },
-                  "type": [
-                    "object",
-                    "null"
-                  ],
-                  "additionalProperties": false
-                },
-                "type": [
-                  "array",
-                  "null"
-                ],
-                "x-kubernetes-list-type": "atomic"
+              "perNodeHostBits": {
+                "description": "PerNodeHostBits defines the number of host bits to be configured per node. A subnet mask determines how much of the address is used for network bits and host bits. For example an IPv4 address of 192.168.0.0/24, splits the address into 24 bits for the network portion and 8 bits for the host portion. To allocate 256 IPs, set this field to 8 (a /24 mask for IPv4 or a /120 for IPv6). Minimum value is 4 (16 IPs). This field is immutable.",
+                "format": "int32",
+                "type": "integer"
               }
             },
+            "required": [
+              "perNodeHostBits"
+            ],
             "type": [
               "object",
               "null"
@@ -406,18 +429,15 @@
             "additionalProperties": false
           }
         },
-        "required": [
-          "handler"
-        ],
         "type": [
           "object",
           "null"
         ],
         "x-kubernetes-group-version-kind": [
           {
-            "group": "node.k8s.io",
-            "kind": "RuntimeClass",
-            "version": "v1beta1"
+            "group": "networking.k8s.io",
+            "kind": "ClusterCIDR",
+            "version": "v1alpha1"
           }
         ],
         "additionalProperties": false
@@ -434,7 +454,7 @@
         "null"
       ],
       "enum": [
-        "RuntimeClassList"
+        "ClusterCIDRList"
       ]
     },
     "metadata": {
@@ -483,9 +503,9 @@
   "type": "object",
   "x-kubernetes-group-version-kind": [
     {
-      "group": "node.k8s.io",
-      "kind": "RuntimeClassList",
-      "version": "v1beta1"
+      "group": "networking.k8s.io",
+      "kind": "ClusterCIDRList",
+      "version": "v1alpha1"
     }
   ],
   "additionalProperties": false,

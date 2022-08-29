@@ -122,7 +122,6 @@ The end to end process using HULL contains the following phases:
           - `persistentvolumeclaim`
           - `servicemonitor`
           - `poddisruptionbudget`
-          - `podsecuritypolicy`
           - `resourcequota`
           - `networkpolicy`
           - `ingressclass`

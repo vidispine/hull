@@ -1,29 +1,23 @@
 {
-  "description": "PodDisruptionBudgetList is a collection of PodDisruptionBudgets.",
+  "description": "ClusterCIDRList contains a list of ClusterCIDR.",
   "properties": {
     "apiVersion": {
       "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
       "type": [
         "string",
         "null"
-      ],
-      "enum": [
-        "policy/v1beta1"
       ]
     },
     "items": {
-      "description": "items list individual PodDisruptionBudget objects",
+      "description": "Items is the list of ClusterCIDRs.",
       "items": {
-        "description": "PodDisruptionBudget is an object to define the max disruption that can be caused to a collection of pods",
+        "description": "ClusterCIDR represents a single configuration for per-Node Pod CIDR allocations when the MultiCIDRRangeAllocator is enabled (see the config for kube-controller-manager).  A cluster may have any number of ClusterCIDR resources, all of which will be considered when allocating a CIDR for a Node.  A ClusterCIDR is eligible to be used for a given Node when the node selector matches the node in question and has free CIDRs to allocate.  In case of multiple matching ClusterCIDR resources, the allocator will attempt to break ties using internal heuristics, but any ClusterCIDR whose node selector matches the Node may be used.",
         "properties": {
           "apiVersion": {
             "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
             "type": [
               "string",
               "null"
-            ],
-            "enum": [
-              "policy/v1beta1"
             ]
           },
           "kind": {
@@ -33,7 +27,7 @@
               "null"
             ],
             "enum": [
-              "PodDisruptionBudget"
+              "ClusterCIDR"
             ]
           },
           "metadata": {
@@ -49,13 +43,6 @@
                 "description": "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations",
                 "type": [
                   "object",
-                  "null"
-                ]
-              },
-              "clusterName": {
-                "description": "Deprecated: ClusterName is a legacy field that was always cleared by the system and never used; it will be removed completely in 1.25.\n\nThe name in the go struct is changed to help clients detect accidental use.",
-                "type": [
-                  "string",
                   "null"
                 ]
               },
@@ -291,65 +278,108 @@
             "additionalProperties": false
           },
           "spec": {
-            "description": "PodDisruptionBudgetSpec is a description of a PodDisruptionBudget.",
+            "description": "ClusterCIDRSpec defines the desired state of ClusterCIDR.",
             "properties": {
-              "maxUnavailable": {
-                "oneOf": [
-                  {
-                    "type": [
-                      "string",
-                      "null"
-                    ]
-                  },
-                  {
-                    "type": [
-                      "integer",
-                      "null"
-                    ]
-                  }
+              "ipv4": {
+                "description": "IPv4 defines an IPv4 IP block in CIDR notation(e.g. \"10.0.0.0/8\"). At least one of IPv4 and IPv6 must be specified. This field is immutable.",
+                "type": [
+                  "string",
+                  "null"
                 ]
               },
-              "minAvailable": {
-                "oneOf": [
-                  {
-                    "type": [
-                      "string",
-                      "null"
-                    ]
-                  },
-                  {
-                    "type": [
-                      "integer",
-                      "null"
-                    ]
-                  }
+              "ipv6": {
+                "description": "IPv6 defines an IPv6 IP block in CIDR notation(e.g. \"fd12:3456:789a:1::/64\"). At least one of IPv4 and IPv6 must be specified. This field is immutable.",
+                "type": [
+                  "string",
+                  "null"
                 ]
               },
-              "selector": {
-                "description": "A label selector is a label query over a set of resources. The result of matchLabels and matchExpressions are ANDed. An empty label selector matches all objects. A null label selector matches no objects.",
+              "nodeSelector": {
+                "description": "A node selector represents the union of the results of one or more label queries over a set of nodes; that is, it represents the OR of the selectors represented by the node selector terms.",
                 "properties": {
-                  "matchExpressions": {
-                    "description": "matchExpressions is a list of label selector requirements. The requirements are ANDed.",
+                  "nodeSelectorTerms": {
+                    "description": "Required. A list of node selector terms. The terms are ORed.",
                     "items": {
-                      "description": "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.",
+                      "description": "A null or empty node selector term matches no objects. The requirements of them are ANDed. The TopologySelectorTerm type implements a subset of the NodeSelectorTerm.",
                       "properties": {
-                        "key": {
-                          "description": "key is the label key that the selector applies to.",
-                          "type": "string",
-                          "x-kubernetes-patch-merge-key": "key",
-                          "x-kubernetes-patch-strategy": "merge"
-                        },
-                        "operator": {
-                          "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
-                          "type": "string"
-                        },
-                        "values": {
-                          "description": "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.",
+                        "matchExpressions": {
+                          "description": "A list of node selector requirements by node's labels.",
                           "items": {
+                            "description": "A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values.",
+                            "properties": {
+                              "key": {
+                                "description": "The label key that the selector applies to.",
+                                "type": "string"
+                              },
+                              "operator": {
+                                "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\n",
+                                "type": "string"
+                              },
+                              "values": {
+                                "description": "An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch.",
+                                "items": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                },
+                                "type": [
+                                  "array",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "operator"
+                            ],
                             "type": [
-                              "string",
+                              "object",
                               "null"
-                            ]
+                            ],
+                            "additionalProperties": false
+                          },
+                          "type": [
+                            "array",
+                            "null"
+                          ]
+                        },
+                        "matchFields": {
+                          "description": "A list of node selector requirements by node's fields.",
+                          "items": {
+                            "description": "A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values.",
+                            "properties": {
+                              "key": {
+                                "description": "The label key that the selector applies to.",
+                                "type": "string"
+                              },
+                              "operator": {
+                                "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\n",
+                                "type": "string"
+                              },
+                              "values": {
+                                "description": "An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch.",
+                                "items": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                },
+                                "type": [
+                                  "array",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "operator"
+                            ],
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "additionalProperties": false
                           },
                           "type": [
                             "array",
@@ -357,160 +387,34 @@
                           ]
                         }
                       },
-                      "required": [
-                        "key",
-                        "operator"
-                      ],
                       "type": [
                         "object",
                         "null"
                       ],
+                      "x-kubernetes-map-type": "atomic",
                       "additionalProperties": false
                     },
-                    "type": [
-                      "array",
-                      "null"
-                    ]
-                  },
-                  "matchLabels": {
-                    "additionalProperties": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed.",
-                    "type": [
-                      "object",
-                      "null"
-                    ]
+                    "type": "array"
                   }
                 },
+                "required": [
+                  "nodeSelectorTerms"
+                ],
                 "type": [
                   "object",
                   "null"
                 ],
                 "x-kubernetes-map-type": "atomic",
                 "additionalProperties": false
-              }
-            },
-            "type": [
-              "object",
-              "null"
-            ],
-            "additionalProperties": false
-          },
-          "status": {
-            "description": "PodDisruptionBudgetStatus represents information about the status of a PodDisruptionBudget. Status may trail the actual state of a system.",
-            "properties": {
-              "conditions": {
-                "description": "Conditions contain conditions for PDB. The disruption controller sets the DisruptionAllowed condition. The following are known values for the reason field (additional reasons could be added in the future): - SyncFailed: The controller encountered an error and wasn't able to compute\n              the number of allowed disruptions. Therefore no disruptions are\n              allowed and the status of the condition will be False.\n- InsufficientPods: The number of pods are either at or below the number\n                    required by the PodDisruptionBudget. No disruptions are\n                    allowed and the status of the condition will be False.\n- SufficientPods: There are more pods than required by the PodDisruptionBudget.\n                  The condition will be True, and the number of allowed\n                  disruptions are provided by the disruptionsAllowed property.",
-                "items": {
-                  "description": "Condition contains details for one aspect of the current state of this API Resource.",
-                  "properties": {
-                    "lastTransitionTime": {
-                      "description": "Time is a wrapper around time.Time which supports correct marshaling to YAML and JSON.  Wrappers are provided for many of the factory methods that the time package offers.",
-                      "format": "date-time",
-                      "type": "string"
-                    },
-                    "message": {
-                      "description": "message is a human readable message indicating details about the transition. This may be an empty string.",
-                      "type": "string"
-                    },
-                    "observedGeneration": {
-                      "description": "observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.",
-                      "format": "int64",
-                      "type": [
-                        "integer",
-                        "null"
-                      ]
-                    },
-                    "reason": {
-                      "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty.",
-                      "type": "string"
-                    },
-                    "status": {
-                      "description": "status of the condition, one of True, False, Unknown.",
-                      "type": "string"
-                    },
-                    "type": {
-                      "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "type",
-                    "status",
-                    "lastTransitionTime",
-                    "reason",
-                    "message"
-                  ],
-                  "type": [
-                    "object",
-                    "null"
-                  ],
-                  "additionalProperties": false
-                },
-                "type": [
-                  "array",
-                  "null"
-                ],
-                "x-kubernetes-list-map-keys": [
-                  "type"
-                ],
-                "x-kubernetes-list-type": "map",
-                "x-kubernetes-patch-merge-key": "type",
-                "x-kubernetes-patch-strategy": "merge"
               },
-              "currentHealthy": {
-                "description": "current number of healthy pods",
+              "perNodeHostBits": {
+                "description": "PerNodeHostBits defines the number of host bits to be configured per node. A subnet mask determines how much of the address is used for network bits and host bits. For example an IPv4 address of 192.168.0.0/24, splits the address into 24 bits for the network portion and 8 bits for the host portion. To allocate 256 IPs, set this field to 8 (a /24 mask for IPv4 or a /120 for IPv6). Minimum value is 4 (16 IPs). This field is immutable.",
                 "format": "int32",
                 "type": "integer"
-              },
-              "desiredHealthy": {
-                "description": "minimum desired number of healthy pods",
-                "format": "int32",
-                "type": "integer"
-              },
-              "disruptedPods": {
-                "additionalProperties": {
-                  "description": "Time is a wrapper around time.Time which supports correct marshaling to YAML and JSON.  Wrappers are provided for many of the factory methods that the time package offers.",
-                  "format": "date-time",
-                  "type": [
-                    "string",
-                    "null"
-                  ]
-                },
-                "description": "DisruptedPods contains information about pods whose eviction was processed by the API server eviction subresource handler but has not yet been observed by the PodDisruptionBudget controller. A pod will be in this map from the time when the API server processed the eviction request to the time when the pod is seen by PDB controller as having been marked for deletion (or after a timeout). The key in the map is the name of the pod and the value is the time when the API server processed the eviction request. If the deletion didn't occur and a pod is still there it will be removed from the list automatically by PodDisruptionBudget controller after some time. If everything goes smooth this map should be empty for the most of the time. Large number of entries in the map may indicate problems with pod deletions.",
-                "type": [
-                  "object",
-                  "null"
-                ]
-              },
-              "disruptionsAllowed": {
-                "description": "Number of pod disruptions that are currently allowed.",
-                "format": "int32",
-                "type": "integer"
-              },
-              "expectedPods": {
-                "description": "total number of pods counted by this disruption budget",
-                "format": "int32",
-                "type": "integer"
-              },
-              "observedGeneration": {
-                "description": "Most recent generation observed when updating this PDB status. DisruptionsAllowed and other status information is valid only if observedGeneration equals to PDB's object generation.",
-                "format": "int64",
-                "type": [
-                  "integer",
-                  "null"
-                ]
               }
             },
             "required": [
-              "disruptionsAllowed",
-              "currentHealthy",
-              "desiredHealthy",
-              "expectedPods"
+              "perNodeHostBits"
             ],
             "type": [
               "object",
@@ -525,9 +429,9 @@
         ],
         "x-kubernetes-group-version-kind": [
           {
-            "group": "policy",
-            "kind": "PodDisruptionBudget",
-            "version": "v1beta1"
+            "group": "networking.k8s.io",
+            "kind": "ClusterCIDR",
+            "version": "v1alpha1"
           }
         ],
         "additionalProperties": false
@@ -544,7 +448,7 @@
         "null"
       ],
       "enum": [
-        "PodDisruptionBudgetList"
+        "ClusterCIDRList"
       ]
     },
     "metadata": {
@@ -593,9 +497,9 @@
   "type": "object",
   "x-kubernetes-group-version-kind": [
     {
-      "group": "policy",
-      "kind": "PodDisruptionBudgetList",
-      "version": "v1beta1"
+      "group": "networking.k8s.io",
+      "kind": "ClusterCIDRList",
+      "version": "v1alpha1"
     }
   ],
   "additionalProperties": false,

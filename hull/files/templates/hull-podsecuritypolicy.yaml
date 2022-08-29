@@ -1,5 +1,0 @@
-{{ $template := "hull.object.base.spec" }}
-{{ $type := "PodSecurityPolicy" }}
-{{ $objects := dict "HULL_TEMPLATE" $template "API_VERSION" "policy/v1beta1" }}
-
-{{ include "hull.objects.render" (dict "HULL_ROOT_KEY" "hull" "ROOT_CONTEXT" $ "HULL_OBJECTS" (dict $type $objects)) }}
