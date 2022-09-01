@@ -1,5 +1,0 @@
-hull:
-  config:
-    general:
-      debug:
-        renderBrokenHullGetTransformationReferences: true
