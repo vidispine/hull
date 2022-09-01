@@ -415,7 +415,22 @@ The `tpl` transformation basically offers full flexibility and can be used for a
 
 #### __Arguments__ 
 
-- REFERENCE: The referenced key within `values.yaml` to get the value from. The key path needs to be specified starting from `.Values` only, for exampe `hull.config.specific.value_to_get`.
+- REFERENCE: 
+
+  The referenced key within `values.yaml` to get the value from. The key path needs to be specified starting from `.Values` only, for exampe `hull.config.specific.value_to_get`. 
+
+  Note that if any path element itself contains a dot (`.`) you can escape it with the `§` character to still be able to reference it, for example if you want to reference the key path:
+
+  ```yaml
+  hull:
+    config:
+        specific:
+          'key.with.dots.in.it': hello dots!
+```
+
+  you can do so by using the HULL get transformation like this:
+
+  `_HT*hull.config.specific.key§with§dots§in§it`
 
 #### __Produces__
 
@@ -435,7 +450,9 @@ string: _HT*hull.config.specific.string_value_to_get
 
 #### __Arguments__
 
-- COMPONENT: The static component name
+- COMPONENT: 
+  
+  The static component name
 
 #### __Produces__
 
@@ -455,7 +472,9 @@ string: _HT^component-name
 
 #### __Arguments__
 
-- CONTENT: The string that might contain templating expressions
+- CONTENT: 
+
+  The string that might contain templating expressions
 
 #### __Produces__
 
@@ -493,7 +512,9 @@ ports: # (⚠️ deprecated dictionary transformation ⚠️)
 
 #### __Arguments__
 
-- CONDITION: The string that contains the literal condition to be checked against
+- CONDITION: 
+
+  The string that contains the literal condition to be checked against
 
 #### __Produces__
 
@@ -517,7 +538,9 @@ bool_field: _HT?and
 
 #### __Arguments__
 
-- COMPONENT: The string that contains the name of the component to create selector dictionary for
+- COMPONENT: 
+
+  The string that contains the name of the component to create selector dictionary for
 
 #### __Produces__
 

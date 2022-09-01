@@ -136,15 +136,43 @@
 {{- $reference := (index . "REFERENCE") -}}
 {{- $path := splitList "." $reference -}}
 {{- $current := $parent.Values }}
+{{- $skipBroken := false}}
+{{- $brokenPart := "" }}
 {{- range $pathElement := $path -}}
+{{- $pathElement = regexReplaceAll "§" $pathElement "." }}
+{{- if (not $skipBroken) -}}
+{{- if (or (not $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences) (hasKey $current $pathElement)) -}}
 {{- $current = (index $current $pathElement) }}
+{{- else -}}
+{{- if $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences -}}
+{{- $skipBroken = true -}}
+{{- $brokenPart = $pathElement -}}
 {{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- if $skipBroken }}
+{{ $key }}: BROKEN-HULL-GET-TRANSFORMATION-REFERENCE --> INVALID_PATH_ELEMENT {{ $brokenPart }} IN {{ $reference }}
+{{- else -}}
 {{- if and (typeIs "string" $current) (not $current) }}
 {{ $key }}: ""
 {{- else -}}
 {{ $key }}: {{ (include "hull.util.transformation.convert" (dict "SOURCE" $current "KEY" $key)) }}
 {{- end -}}
 {{- end -}}
+{{- end -}}
+
+{{- /*
+| Purpose:  
+|   
+|   Simple conversion
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   SOURCE: The Source Object
+|
+*/ -}}
 {{- define "hull.util.transformation.convert" -}}
 {{- $source := (index . "SOURCE") -}}
 {{- if typeIs "map[string]interface {}" $source -}}
