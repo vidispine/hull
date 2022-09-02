@@ -138,6 +138,9 @@ hull:
             inline: _HT*hull.config.specific.number_defined
           number_undefined:
             inline: _HT*hull.config.specific.number_undefined
+          key_with_dots_in_it: 
+            inline: _HT*hull.config.specific.key§with§dots§in§it
+          
 
       binary_data_hull:
         binaryData:
