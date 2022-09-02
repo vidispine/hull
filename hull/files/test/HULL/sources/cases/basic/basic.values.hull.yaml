@@ -58,6 +58,7 @@ hull:
       bool_defined_true: true
       bool_defined_false: false
       bool_undefined: 
+      'key.with.dots.in.it': hello dots!
       annotations_dict:
         a: first
         b: second

@@ -17,6 +17,8 @@ config:
     createImagePullSecretsFromRegistries: true
     globalImageRegistryServer: ""
     globalImageRegistryToFirstRegistrySecretServer: false
+    debug:
+      renderBrokenHullGetTransformationReferences: false      
     metadata:
       labels:
         common:
