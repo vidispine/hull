@@ -139,7 +139,7 @@
 {{- $skipBroken := false}}
 {{- $brokenPart := "" }}
 {{- range $pathElement := $path -}}
-{{- $pathElement = regexReplaceAll "ง" $pathElement "." }}
+{{- $pathElement = regexReplaceAll "ยง" $pathElement "." }}
 {{- if (not $skipBroken) -}}
 {{- if (or (not $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences) (hasKey $current $pathElement)) -}}
 {{- $current = (index $current $pathElement) }}
