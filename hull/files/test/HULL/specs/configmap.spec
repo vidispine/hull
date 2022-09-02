@@ -75,6 +75,23 @@ Test creation of objects and features.
 * Test Object has key "data§string_undefined" with value ""
 * Test Object has key "data§number_defined" with value "999"
 * Test Object has key "data§number_undefined" with value ""
+* Test Object has key "data§key_with_dots_in_it" with value "hello dots!"
+
+## Debug options
+* Fail to render the templates for values file "values_broken_get_references.hull.yaml" to test execution folder because error contains "error calling index: index of untyped nil"
+
+* Prepare test case "configmap" for kind "ConfigMap" with test chart "hull-test" and values file "values_broken_get_references.hull.yaml" including suites "renderbrokenhullgettransformationreferences"
+* Render values file "values_broken_get_references.hull.yaml"
+
+* Set test object to "release-name-hull-test-good_reference"
+* Test Object has key "metadata§labels§test" with value "trans"
+
+* Set test object to "release-name-hull-test-broken_parent_reference"
+* Test Object has key "metadata§labels§test" with value "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE --> INVALID_PATH_ELEMENT test IN hull.config.specific.test.value_to_resolve_1"
+
+* Set test object to "release-name-hull-test-broken_leaf_reference"
+* Test Object has key "metadata§labels§test" with value "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE --> INVALID_PATH_ELEMENT value_to_resolve_3 IN hull.config.specific.value_to_resolve_3"
+
 
 ## Binary Data
 * Render

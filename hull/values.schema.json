@@ -22257,6 +22257,26 @@
                   ],
                   "default": false
                 },
+                "debug": {
+                    "$id": "#/definitions/root/config/general/debug",
+                    "description": "Debug Settings",
+                    "title": "Debug",
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "renderBrokenHullGetTransformationReferences": {
+                            "$id": "#/definitions/root/config/general/debug/renderBrokenHullGetTransformationReferences",
+                            "title": "renderBrokenHullGetTransformationReferences",
+                            "description": "Render broken Get references.",
+                            "type": "boolean",
+                            "examples": [
+                                true,
+                                false
+                            ],
+                            "default": false
+                        }
+                    }
+                },
                 "fullnameOverride": {
                   "$id": "#/definitions/root/config/general/fullnameOverride",
                   "description": "Global value to use as the fullname, overriding the dynamically created fullname.",
