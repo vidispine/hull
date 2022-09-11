@@ -1,4 +1,10 @@
 ------------------
+[1.25.2]
+------------------
+CHANGES:
+- remove required property for endpoints and selector in ServiceMonitors from schema to allow better defaulting
+
+------------------
 [1.25.1]
 ------------------
 CHANGES:
