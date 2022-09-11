@@ -20437,10 +20437,7 @@
           "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "integer"}]
         }
       },
-      "required": [
-        "endpoints",
-        "selector"
-      ]
+      "required": []
     },
     "hull.Webhook.v1.Names": {
       "enum": [
