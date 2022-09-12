@@ -30139,10 +30139,7 @@
                     ]
                 }
             },
-            "required": [
-                "endpoints",
-                "selector"
-            ]
+            "required": []
         },
         "hull.Webhook.v1.Names": {
             "enum": [

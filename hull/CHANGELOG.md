@@ -1,9 +1,15 @@
 ------------------
+[1.24.3]
+------------------
+CHANGES:
+- remove required property for endpoints and selector in ServiceMonitors from schema to allow better defaulting
+
+------------------
 [1.24.2]
 ------------------
 CHANGES:
 - add debug option renderBrokenHullGetTransformationReferences which allows to render HULL charts containing broken Get transformation references with non existing keys. By rendering these transformations with an informative placeholder instead of failing the chart rendering the broken references can be traced and fixed more easily before finishing writing the chart
-- allows to use placeholder § to escape dots within key names so GET references also work when dots are within key names
+- allows to use placeholder ï¿½ to escape dots within key names so GET references also work when dots are within key names
 
 ------------------
 [1.24.1]
