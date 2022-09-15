@@ -1,4 +1,11 @@
 ------------------
+[1.25.3]
+------------------
+CHANGES:
+- for ConfigMap and Secret data, inline specification now always has precedence over path specification to make sure that content can always be overwritten at configuration time if required
+- add active property to allow selecting amongst multiple volume definitions if they exist, eg. if a volume is defaulting to an emptyDir and is to be made a persistentVolumeClaim, the value of the active property (if specified) declares the concrete volume to render, otherwise Kubernetes will not accept multiple volume type definitions for a volume.
+
+------------------
 [1.25.2]
 ------------------
 CHANGES:

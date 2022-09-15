@@ -19,6 +19,20 @@
 {{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 - {{ dict "name" $component | toYaml }}
+{{- if hasKey $spec "active" }}
+{{- if (eq $spec.active "configMap") }}
+{{ include "hull.object.volume.configmap" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "SPEC" $spec.configMap "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
+{{- end -}}
+{{- if (eq $spec.active "secret") }}
+{{ include "hull.object.volume.secret" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "SPEC" $spec.secret "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
+{{- end -}}
+{{- if (eq $spec.active "persistentVolumeClaim") }}
+{{ include "hull.object.volume.persistentVolumeClaim" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "SPEC" $spec.persistentVolumeClaim "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
+{{- end -}}
+{{- if hasKey $spec $spec.active }}
+{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" (dict $spec.active (index $spec $spec.active)) "HULL_OBJECT_KEYS" (list "configMap" "secret" "persistentVolumeClaim")) | indent 2 }}
+{{- end -}}
+{{- else -}} 
 {{- if hasKey $spec "configMap" }}   
 {{ include "hull.object.volume.configmap" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "SPEC" $spec.configMap "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
 {{- else -}}
@@ -29,6 +43,7 @@
 {{ include "hull.object.volume.persistentVolumeClaim" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "SPEC" $spec.persistentVolumeClaim "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
 {{- else -}}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "configMap" "secret" "persistentVolumeClaim")) | indent 2 }}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
