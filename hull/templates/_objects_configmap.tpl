@@ -67,13 +67,14 @@ data:
 {{ else -}}
 {{ default "" (tpl (printf "%s" (toString $innerValue.inline)) $parent) | indent 4 }}
 {{ end }}
-{{ end }}
+{{ else }}
 {{ if hasKey $innerValue "path" }}
 {{ base $innerKey | indent 2 }}: |-
 {{ if $innerValue.noTemplating }}
 {{- toString ($parent.Files.Get (printf "%s" $innerValue.path) ) | indent 4 -}}
 {{- else -}}
 {{- print (tpl (toString ($parent.Files.Get (printf "%s" $innerValue.path) ) ) $parent) | indent 4 }}
+{{ end }}
 {{ end }}
 {{ end }}
 {{ end }}

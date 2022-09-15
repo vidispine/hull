@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "16" objects were rendered
+* Expected number of "17" objects were rendered
 * Validate
 
 ## Metadata
@@ -104,6 +104,12 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-binary_data_mixed"
 * Test Object has key "binaryData§binary" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
 * Test Object has key "binaryData§binary_from_file" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+
+## Precedence
+* Render
+* Set test object to "release-name-hull-test-inline_precedence"
+* Test Object has key "data§test1" with value "Inline Content"
+* Test Object has key "data§test2" with value "Inline Content"
 
 ___
 
