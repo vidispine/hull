@@ -166,6 +166,11 @@ hull:
       enabled_true_false:
         serviceName: enabled_true_false
                 
+      volume_active_selection:
+        serviceName: volume_active_selection
+        pod:
+          containers: {}
+
       full_example_deployment:
         serviceName: disabled
         annotations:

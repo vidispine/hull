@@ -140,7 +140,6 @@ hull:
             inline: _HT*hull.config.specific.number_undefined
           key_with_dots_in_it: 
             inline: _HT*hull.config.specific.key§with§dots§in§it
-          
 
       binary_data_hull:
         binaryData:
@@ -158,4 +157,14 @@ hull:
           binary: "QÖÚ¼ˆ”¬µÖó¼ñƒ"
           test: _HT!{{ toString ((index . "PARENT").Files.Get "files/test.txt") | b64enc }}
 
+      inline_precedence:
+        data:
+          test1:
+            inline: Inline Content
+            path: files/test.txt
+          test2:            
+            path: files/test.txt
+            inline: Inline Content
+
+          
 ###################################################
