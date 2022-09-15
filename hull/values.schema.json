@@ -11533,6 +11533,7 @@
     "io.k8s.api.core.v1.Volume.Names": {
       "enum": [
         "enabled",
+        "active",
         "awsElasticBlockStore",
         "azureDisk",
         "azureFile",
@@ -11687,6 +11688,10 @@
           "title": "Enabled",
           "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "boolean"}]
         }
+      },
+      "active": {
+        "title": "Active",
+        "type": "string"
       },
       "required": [],
       "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "null"}, { "type": "object"}]
