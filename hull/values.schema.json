@@ -15918,6 +15918,7 @@
         "io.k8s.api.core.v1.Volume.Names": {
             "enum": [
                 "enabled",
+                "active",
                 "awsElasticBlockStore",
                 "azureDisk",
                 "azureFile",
@@ -16078,6 +16079,10 @@
                             "type": "boolean"
                         }
                     ]
+                },
+                "active": {
+                  "title": "Active",
+                  "type": "string"
                 }
             },
             "required": [],

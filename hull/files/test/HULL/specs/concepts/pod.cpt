@@ -343,3 +343,30 @@
 * Test Object has key "spec§template§spec§initContainers§0§livenessProbe§httpGet§path" with value "/route"
 * Test Object has key "spec§template§spec§initContainers§0§livenessProbe§httpGet§scheme" with value "HTTP"
 * Test Object has key "spec§template§spec§initContainers§0§livenessProbe§httpGet§port" with integer value "876"
+
+* Set test object to "release-name-hull-test-volume_active_selection"
+
+* Test Object has key "spec§template§spec§volumes§0§name" with value "active_1"
+* Test Object has key "spec§template§spec§volumes§0§hostPath§path" with value "/the_path_one"
+* Test Object does not have key "spec§template§spec§volumes§0§secret"
+* Test Object does not have key "spec§template§spec§volumes§0§configMap"
+
+* Test Object has key "spec§template§spec§volumes§1§name" with value "active_2"
+* Test Object has key "spec§template§spec§volumes§1§secret§secretName" with value "release-name-hull-test-test_secret"
+* Test Object does not have key "spec§template§spec§volumes§1§hostPath"
+* Test Object does not have key "spec§template§spec§volumes§1§configMap"
+
+* Test Object has key "spec§template§spec§volumes§2§name" with value "active_3"
+* Test Object has key "spec§template§spec§volumes§2§persistentVolumeClaim§claimName" with value "release-name-hull-test-the_claim"
+* Test Object does not have key "spec§template§spec§volumes§2§hostPath"
+* Test Object does not have key "spec§template§spec§volumes§2§configMap"
+* Test Object does not have key "spec§template§spec§volumes§2§secret"
+
+* Test Object has key "spec§template§spec§volumes§3§name" with value "none_active_prefer_configmap"
+* Test Object has key "spec§template§spec§volumes§3§configMap§name" with value "release-name-hull-test-test_configmap"
+* Test Object does not have key "spec§template§spec§volumes§3§secret"
+* Test Object does not have key "spec§template§spec§volumes§3§emptyDir"
+
+* Test Object has key "spec§template§spec§volumes§4§name" with value "none_active_prefer_secret"
+* Test Object has key "spec§template§spec§volumes§4§secret§secretName" with value "release-name-hull-test-test_secret"
+* Test Object does not have key "spec§template§spec§volumes§4§emptyDir"

@@ -724,3 +724,48 @@ hull:
 
       pod_get:
         pod: _HT*hull.config.specific.pod_spec
+
+      volume_active_selection:
+        pod:
+          containers:
+            test:
+              enabled: true
+              command:
+                - test_enabled
+          volumes:
+            active_1:
+              active: hostPath
+              secret:
+                secretName: test_secret
+              configMap:
+                name: test_configmap
+              hostPath:
+                path: /the_path_one
+            active_2:
+              active: secret
+              secret:
+                secretName: test_secret
+              configMap:
+                name: test_configmap
+              hostPath:
+                path: /the_path
+            active_3:
+              active: persistentVolumeClaim
+              secret:
+                secretName: test_secret
+              configMap:
+                name: test_configmap
+              persistentVolumeClaim:
+                claimName: the_claim
+              hostPath:
+                path: /the_path
+            none_active_prefer_configmap:
+              secret:
+                secretName: test_secret
+              configMap:
+                name: test_configmap
+              emptyDir: {}
+            none_active_prefer_secret:
+              secret:
+                secretName: test_secret
+              emptyDir: {}
