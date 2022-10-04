@@ -22489,7 +22489,7 @@
       ]
     },
     "hull.Transformation.Pattern": {
-      "pattern": "^\\s*(_HT[\\*|\\?|\\^|!|&]|_HULL_TRANSFORMATION_<<<).*",
+      "pattern": "^\\s*(_HT[\\*|\\?|\\^|!|&|;]|_HULL_TRANSFORMATION_<<<).*",
       "type": "string"
     }
   },
