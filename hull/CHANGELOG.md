@@ -1,4 +1,13 @@
 ------------------
+[1.25.4]
+------------------
+CHANGES:
+- add new include transformation and short form to allow compact usage of includes with minimum typing in values.yaml. 
+
+FIXES:
+- quote versions in Chart.yaml (https://github.com/vidispine/hull/issues/169)
+
+------------------
 [1.25.3]
 ------------------
 CHANGES:

@@ -16,6 +16,7 @@
 {{- $shortForms = set $shortForms "_HT!" (list "hull.util.transformation.tpl" "CONTENT") -}}
 {{- $shortForms = set $shortForms "_HT^" (list "hull.util.transformation.makefullname" "COMPONENT") -}}
 {{- $shortForms = set $shortForms "_HT&" (list "hull.util.transformation.selector" "COMPONENT") -}}
+{{- $shortForms = set $shortForms "_HT;" (list "hull.util.transformation.include" "CONTENT") -}}
 {{- if typeIs "map[string]interface {}" $source -}}
     {{- range $key,$value := $source -}}
         {{- if typeIs "map[string]interface {}" $value -}}
@@ -27,7 +28,7 @@
             {{- end -}} 
             {{- if $params -}} 
                 {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "HULL_ROOT_KEY" $hullRootKey) $params -}}
-                {{- $others := omit $value "_HULL_TRANSFORMATION_" "_HULL_OBJECT_TYPE_DEFAULT_" "_HT?" "_HT*" "_HT!" "_HT^" "_HT&"}}
+                {{- $others := omit $value "_HULL_TRANSFORMATION_" "_HULL_OBJECT_TYPE_DEFAULT_" "_HT?" "_HT*" "_HT!" "_HT^" "_HT&" "_HT;" -}}
                 {{- $valDict := fromYaml (include $params.NAME $pass) -}}
                 {{- $combined := $valDict }}
                 {{- if (and (typeIs "map[string]interface {}" (index $valDict $key)) (gt (len (keys $others)) 0)) -}}
@@ -44,7 +45,7 @@
         {{- end -}}
         {{- if typeIs "string" $value -}}
             {{- $params := default nil nil -}}
-            {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $value) (hasPrefix "_HT?" $value) (hasPrefix "_HT*" $value) (hasPrefix "_HT!" $value) (hasPrefix "_HT^" $value) (hasPrefix "_HT&" $value)) -}}
+            {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $value) (hasPrefix "_HT?" $value) (hasPrefix "_HT*" $value) (hasPrefix "_HT!" $value) (hasPrefix "_HT^" $value) (hasPrefix "_HT&" $value) (hasPrefix "_HT;" $value)) -}}
                 {{- range $sfKey, $sfValue := $shortForms -}}
                     {{- if (hasPrefix $sfKey $value) -}}}}
                         {{- $params = dict "NAME" (first $sfValue) (last $sfValue) (trimPrefix $sfKey $value) -}}
@@ -72,7 +73,7 @@
     {{- if (and (typeIs "string" (first $source)) ) -}}
         {{- $listentry := first $source -}}
         {{- $params := default nil nil -}}
-        {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $listentry) (hasPrefix "_HT?" $listentry) (hasPrefix "_HT*" $listentry) (hasPrefix "_HT!" $listentry) (hasPrefix "_HT^" $listentry) (hasPrefix "_HT&" $listentry)) -}}
+        {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $listentry) (hasPrefix "_HT?" $listentry) (hasPrefix "_HT*" $listentry) (hasPrefix "_HT!" $listentry) (hasPrefix "_HT^" $listentry) (hasPrefix "_HT&" $listentry) (hasPrefix "_HT;" $listentry)) -}}
             {{- range $sfKey, $sfValue := $shortForms -}}
                 {{- if (hasPrefix $sfKey $listentry) -}}}}
                     {{- $params = dict "NAME" (first $sfValue) (last $sfValue)  (trimPrefix $sfKey $listentry) -}}
@@ -106,11 +107,15 @@
 {{- end -}}
 {{- end -}}
 
+
+
 {{- define "hull.util.transformation.ingress_classname_default" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $key := (index . "KEY") -}}
 {{ $key }}: {{ printf "nginx-%s" ($parent.Release.Name | quote) }}
 {{- end -}}
+
+
 
 {{- define "hull.util.transformation.makefullname" -}}
 {{- $key := (index . "KEY") -}}
@@ -162,6 +167,8 @@
 {{- end -}}
 {{- end -}}
 
+
+
 {{- /*
 | Purpose:  
 |   
@@ -194,6 +201,8 @@
 {{- end -}}
 {{- end -}}
 
+
+
 {{- /*
 | Purpose:  
 |   
@@ -212,6 +221,8 @@
 {{ $key }}: {{ tpl  $content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent) .) }}
 {{- end -}}
 
+
+
 {{- /*
 | Purpose:  
 |   
@@ -229,6 +240,9 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{ $key }}: {{ tpl  (printf "{{ if %s }}true{{ else }}false{{ end }}" $content) (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent) .) }}
 {{- end -}}
+
+
+
 {{- /*
 | Purpose:  
 |   
@@ -248,4 +262,45 @@
 {{- $instance := $parent.Release.Name | quote }}
 {{- $component := default "undefined" $component }}
 {{ $key }}: { "app.kubernetes.io/name": {{ $name }}, "app.kubernetes.io/instance": {{ $instance }}, "app.kubernetes.io/component": {{ $component}} }
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:  
+|   
+|   Calls an include and returns result
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   CONTENT: The content for the include function
+|
+*/ -}}
+{{- define "hull.util.transformation.include" -}}
+{{- $key := (index . "KEY") -}}
+{{- $content := (index . "CONTENT") -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $parts := regexSplit ":" ($content | trim) -1 -}}
+{{- $parentContextSubmitted := false -}}
+{{- $call := printf "{{ include %s (dict " ($parts | first | quote) -}}
+{{- $isKey := true -}}
+{{- range $entry := ($parts | rest) }}
+{{- if (eq $entry "PARENT_CONTEXT") -}}
+{{- $parentContextSubmitted = true -}}
+{{- end -}}
+{{- $value := $entry | replace "§" ":" -}}
+{{- if $isKey -}}
+{{- $value = ($entry | trimAll "\"" | quote) -}}
+{{- $isKey = false -}}
+{{- else -}}
+{{- $isKey = true -}}
+{{- end -}}
+{{- $call = printf "%s%s " $call $value -}}
+{{- end -}}
+{{- if (not $parentContextSubmitted) -}}
+{{- $call = printf "%s %s (index . \"$\")" $call ("PARENT_CONTEXT" | quote) -}}
+{{- end -}}
+{{- $call = printf "%s) }}" ($call | trim) -}}
+{{ $key }}: {{ tpl  $call (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent) .) }}
 {{- end -}}
