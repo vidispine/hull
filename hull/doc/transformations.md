@@ -508,6 +508,62 @@ ports: # (⚠️ deprecated dictionary transformation ⚠️)
       }
 ```
 
+
+### Call an `incude` function (_hull.util.transformation.include_)
+
+#### __Arguments__
+
+- CONTENT: 
+
+  The input to the `include` call consists of the `include`'s name first and trailing key/value pairs consisting of arguments (key-value pairs). All input fields are separated by `:`, in case of a `:` present in an argument you can use the replacement character `§` in the input which will be converted to `:` when processed. 
+  
+  To facilitate easy use with HULL `include`s, the key value pair `"PARENT_CONTEXT" (index . "$")` is automatically added to the arguments dictionary in case the key `PARENT_CONTEXT` is not explicitly supplied. 
+
+  Key names are automatically quoted so no quotes are to be provided for key names, string values however require quoting (see `hull.metadata.name` example below).
+
+#### __Produces__
+
+The `include` functions result of calling it with the provided arguments. 
+
+#### __Description__
+
+While calling an `include` function can also be realized with the _hull.util.transformation.tpl_ transformation, this transformation shortens the required input to the most compressed form. 
+
+As an example, consider using the `hull.metadata.chartref` `include` from `_templates/metadata_chartref.yaml` as a _hull.util.transformation.tpl_ transformation and a _hull.util.transformation.include_ transformation:
+
+```yaml
+chartref_tpl: _HT!{{ include "hull.metadata.chartref" (dict "PARENT_CONTEXT" (index . "$")) }}
+chartref_include: _HT;hull.metadata.chartref
+```
+
+This is an example with additional parameters, a call to `hull.metadata.name`:
+
+```yaml
+name_tpl: _HT!{{ include "hull.metadata.name" (dict "PARENT_CONTEXT" (index . "$") "COMPONENT" "test") }}
+name_include: _HT;hull.metadata.name:COMPONENT:"test"
+```
+
+Using the following _hull.util.transformation.include_ transformation on an objects `labels` would for example effectively overwrite the `app.kubernetes.io/component` label value `component-name` of the configmap with the provided COMPONENT value `overwritten_component_name`. 
+
+Under the hood the `hull.metadata.labels` `include` is called internally to create the complete standard `labels` block and thus the previous result here is overwritten with this explicit call with a different component name. Note that normally you'd not want to overwrite the standard labels, this is just for demonstration purposes!
+
+```yaml
+hull:
+  objects:
+    configmap:
+      component-name:
+        labels: _HT;hull.metadata.labels:COMPONENT:"overwritten-component-name"
+```
+
+#### __Short Form Examples__
+
+```yaml
+chartref_include: _HT;hull.metadata.chartref
+name_include: _HT;hull.metadata.name:COMPONENT:"test"
+labels: _HT;hull.metadata.labels:COMPONENT:"overwritten-component-name"
+```
+
+
 ### Evaluate a condition to a boolean with `tpl` (_hull.util.transformation.bool_)
 
 #### __Arguments__
