@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "17" objects were rendered
+* Expected number of "18" objects were rendered
 * Validate
 
 ## Metadata
@@ -76,6 +76,15 @@ Test creation of objects and features.
 * Test Object has key "data§number_defined" with value "999"
 * Test Object has key "data§number_undefined" with value ""
 * Test Object has key "data§key_with_dots_in_it" with value "hello dots!"
+
+## Include Transformation 
+* Render
+* Set test object to "release-name-hull-test-test_include_transformation"
+* Test Object has key "data§include_name" with value "hull-test-test"
+* Test Object has key "data§include_name_with_parent" with value "hull-test-test"
+* Test Object has key "data§escape" with value "hull-test-split:by:colon"
+* Test Object has key "data§chart_ref" with value "hull-test-1.24.0"
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "overwritten_component"
 
 ## Debug options
 * Fail to render the templates for values file "values_broken_get_references.hull.yaml" to test execution folder because error contains "error calling index: index of untyped nil"
