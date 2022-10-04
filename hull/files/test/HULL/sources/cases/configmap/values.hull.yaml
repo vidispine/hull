@@ -141,6 +141,18 @@ hull:
           key_with_dots_in_it: 
             inline: _HT*hull.config.specific.key§with§dots§in§it
 
+      test_include_transformation:
+        labels: _HT;hull.metadata.labels:COMPONENT:"overwritten_component"
+        data:
+          include_name:
+            inline: _HT;hull.metadata.name:COMPONENT:"test"
+          include_name_with_parent:
+            inline: _HT;hull.metadata.name:PARENT_CONTEXT:(index . "$"):COMPONENT:"test"
+          escape:
+            inline: _HT;hull.metadata.name:COMPONENT:"split§by§colon"
+          chart_ref:
+            inline: _HT;hull.metadata.chartref
+          
       binary_data_hull:
         binaryData:
           binary_from_file:
