@@ -85,6 +85,7 @@ Test creation of objects and features.
 * Test Object has key "data§escape" with value "hull-test-split:by:colon"
 * Test Object has key "data§chart_ref" with value "hull-test-1.24.0"
 * Test Object has key "metadata§labels§app.kubernetes.io/component" with value "overwritten_component"
+* Test Object has key "metadata§annotations§app.kubernetes.io/component" with value "overwritten_component"
 
 ## Debug options
 * Fail to render the templates for values file "values_broken_get_references.hull.yaml" to test execution folder because error contains "error calling index: index of untyped nil"

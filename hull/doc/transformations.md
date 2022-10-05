@@ -516,6 +516,8 @@ ports: # (⚠️ deprecated dictionary transformation ⚠️)
 - CONTENT: 
 
   The input to the `include` call consists of the `include`'s name first and trailing key/value pairs consisting of arguments (key-value pairs). All input fields are separated by `:`, in case of a `:` present in an argument you can use the replacement character `§` in the input which will be converted to `:` when processed. 
+
+  The `include` name, which is the first element in the CONTENT array after splitting it with `:`, has an optional `key reference` value which is detected in case the `include` name argument is split with `/`. If a `/` is present in the `include` name, the part before `/` denotes the key to get the values from in case a dictionary is produced by the `include` function call. The second part after the `/` marks the `include` name.
   
   To facilitate easy use with HULL `include`s, the key value pair `"PARENT_CONTEXT" (index . "$")` is automatically added to the arguments dictionary in case the key `PARENT_CONTEXT` is not explicitly supplied. 
 
@@ -529,38 +531,122 @@ The `include` functions result of calling it with the provided arguments.
 
 While calling an `include` function can also be realized with the _hull.util.transformation.tpl_ transformation, this transformation shortens the required input to the most compressed form. 
 
-As an example, consider using the `hull.metadata.chartref` `include` from `_templates/metadata_chartref.yaml` as a _hull.util.transformation.tpl_ transformation and a _hull.util.transformation.include_ transformation:
+As an example, consider using the `hull.metadata.chartref` `include` from `_templates/metadata_chartref.yaml` as a _hull.util.transformation.tpl_ transformation and a _hull.util.transformation.include_ transformation. The `hull.metadata.chartref` `include` returns a string:
 
 ```yaml
 chartref_tpl: _HT!{{ include "hull.metadata.chartref" (dict "PARENT_CONTEXT" (index . "$")) }}
-chartref_include: _HT;hull.metadata.chartref
+chartref_include: _HT/hull.metadata.chartref
 ```
 
-This is an example with additional parameters, a call to `hull.metadata.name`:
+This is an example with additional parameters, a call to `hull.metadata.name`, also returning a string:
 
 ```yaml
 name_tpl: _HT!{{ include "hull.metadata.name" (dict "PARENT_CONTEXT" (index . "$") "COMPONENT" "test") }}
-name_include: _HT;hull.metadata.name:COMPONENT:"test"
+name_include: _HT/hull.metadata.name:COMPONENT:"test"
 ```
 
-Using the following _hull.util.transformation.include_ transformation on an objects `labels` would for example effectively overwrite the `app.kubernetes.io/component` label value `component-name` of the configmap with the provided COMPONENT value `overwritten_component_name`. 
+It is possible to not only return simple strings but also complex dictionaries or arrays produced by the `include`. To do this, it is first checked whether the `include` result is parseable as YAML or not. 
 
-Under the hood the `hull.metadata.labels` `include` is called internally to create the complete standard `labels` block and thus the previous result here is overwritten with this explicit call with a different component name. Note that normally you'd not want to overwrite the standard labels, this is just for demonstration purposes!
+In case of an expected YAML dictionary, to correctly treat the result of the `include` call, you can optionally denote a dictionary key in the result to get the keys values from and insert them instead of the dictionaries root key itself. If no optional dictionary key is provided, the complete dictionary returned is the result. The following example will expand on this feature and explain the difference.
+
+Assume you want to call an _hull.util.transformation.include_ transformation on an objects `labels` section to overwrite the `app.kubernetes.io/component` label value `component-name`.  with the provided COMPONENT value `overwritten_component_name`. Under the hood the `hull.metadata.labels` `include` is called internally to create the complete standard `labels` block automatically. By making another explicitly call to this `include` with a different component name we can effectively overwrite the `app.kubernetes.io/component` label value. Note that normally you'd not want to overwrite the standard labels, this is just for demonstration purposes! 
+
+The `hull.metadata.labels` `include` is the `include` that produces the labels block looks like this:
+
+```yaml
+{{- /*
+| Purpose:  
+|   
+|   Write combined labels: block from custom and default annotations
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   PARENT_TEMPLATE: Metadata for the template section
+|   COMPONENT: The instance name to be used in creating names
+|
+*/ -}}
+{{- define "hull.metadata.labels" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $template := (index . "PARENT_TEMPLATE") -}}
+{{- $component := (index . "COMPONENT") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{ $labels := dict }}
+{{ $labels = merge $labels (include "hull.metadata.labels.custom" . | fromYaml) }}
+{{ $labels = merge $labels ((include "hull.metadata.general.labels.object" .) | fromYaml) }}
+{{ if (gt (len (keys (index (index $parent.Values $hullRootKey).config.general.metadata.labels "custom"))) 0) }}
+{{ $labels = merge $labels (index $parent.Values $hullRootKey).config.general.metadata.labels.custom }}
+{{- end -}}
+{{ $labels = merge $labels ((include "hull.metadata.labels.selector" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "HULL_ROOT_KEY" $hullRootKey)) | fromYaml) }}
+{{ if default false (index . "MERGE_TEMPLATE_METADATA") }}
+{{ $labels = merge $labels ((include "hull.metadata.labels.custom" (merge (dict "LABELS_METADATA" "templateLabels") . ) | fromYaml)) }}
+{{- end -}}
+labels:
+{{ toYaml $labels | indent 2 }}
+{{- end -}}
+```
+
+and you see that the returned YAML dictionary itself contains the root key `labels`. 
+
+Since the goal of this example is to replace the objects `labels` key's value with the actual labels (and not a dictionary which itself has a `labels` root entry) you must use the optional key reference feature to just pick the dictionary values from the returned `labels` dictionary under the `labels` key to return them.
+
+So while this _hull.util.transformation.include_:
 
 ```yaml
 hull:
   objects:
     configmap:
       component-name:
-        labels: _HT;hull.metadata.labels:COMPONENT:"overwritten-component-name"
+        labels: _HT/labels/hull.metadata.labels:COMPONENT:"overwritten-component-name"
+```
+
+will produce the expected result:
+
+```yaml
+...
+metadata:
+  labels:
+    app.kubernetes.io/component: overwritten-component-name
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: hull-test
+    app.kubernetes.io/part-of: undefined
+    app.kubernetes.io/version: 1.25.0
+...
+```
+
+using the _hull.util.transformation.include_ without the key reference to `labels`:
+
+```yaml
+hull:
+  objects:
+    configmap:
+      component-name:
+        labels: _HT/hull.metadata.labels:COMPONENT:"overwritten-component-name"
+```
+
+will produce an unwanted result with doubled `labels` key::
+
+```yaml
+...
+metadata:
+  labels:
+    labels:
+      app.kubernetes.io/component: overwritten-component-name
+      app.kubernetes.io/instance: release-name
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: hull-test
+      app.kubernetes.io/part-of: undefined
+      app.kubernetes.io/version: 1.25.0
+...
 ```
 
 #### __Short Form Examples__
 
 ```yaml
-chartref_include: _HT;hull.metadata.chartref
-name_include: _HT;hull.metadata.name:COMPONENT:"test"
-labels: _HT;hull.metadata.labels:COMPONENT:"overwritten-component-name"
+chartref_include: _HT/hull.metadata.chartref
+name_include: _HT/hull.metadata.name:COMPONENT:"test"
+labels: _HT/labels/hull.metadata.labels:COMPONENT:"overwritten-component-name"
 ```
 
 

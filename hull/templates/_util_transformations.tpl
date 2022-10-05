@@ -16,7 +16,7 @@
 {{- $shortForms = set $shortForms "_HT!" (list "hull.util.transformation.tpl" "CONTENT") -}}
 {{- $shortForms = set $shortForms "_HT^" (list "hull.util.transformation.makefullname" "COMPONENT") -}}
 {{- $shortForms = set $shortForms "_HT&" (list "hull.util.transformation.selector" "COMPONENT") -}}
-{{- $shortForms = set $shortForms "_HT;" (list "hull.util.transformation.include" "CONTENT") -}}
+{{- $shortForms = set $shortForms "_HT/" (list "hull.util.transformation.include" "CONTENT") -}}
 {{- if typeIs "map[string]interface {}" $source -}}
     {{- range $key,$value := $source -}}
         {{- if typeIs "map[string]interface {}" $value -}}
@@ -28,7 +28,7 @@
             {{- end -}} 
             {{- if $params -}} 
                 {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "HULL_ROOT_KEY" $hullRootKey) $params -}}
-                {{- $others := omit $value "_HULL_TRANSFORMATION_" "_HULL_OBJECT_TYPE_DEFAULT_" "_HT?" "_HT*" "_HT!" "_HT^" "_HT&" "_HT;" -}}
+                {{- $others := omit $value "_HULL_TRANSFORMATION_" "_HULL_OBJECT_TYPE_DEFAULT_" "_HT?" "_HT*" "_HT!" "_HT^" "_HT&" "_HT/" -}}
                 {{- $valDict := fromYaml (include $params.NAME $pass) -}}
                 {{- $combined := $valDict }}
                 {{- if (and (typeIs "map[string]interface {}" (index $valDict $key)) (gt (len (keys $others)) 0)) -}}
@@ -45,7 +45,7 @@
         {{- end -}}
         {{- if typeIs "string" $value -}}
             {{- $params := default nil nil -}}
-            {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $value) (hasPrefix "_HT?" $value) (hasPrefix "_HT*" $value) (hasPrefix "_HT!" $value) (hasPrefix "_HT^" $value) (hasPrefix "_HT&" $value) (hasPrefix "_HT;" $value)) -}}
+            {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $value) (hasPrefix "_HT?" $value) (hasPrefix "_HT*" $value) (hasPrefix "_HT!" $value) (hasPrefix "_HT^" $value) (hasPrefix "_HT&" $value) (hasPrefix "_HT/" $value)) -}}
                 {{- range $sfKey, $sfValue := $shortForms -}}
                     {{- if (hasPrefix $sfKey $value) -}}}}
                         {{- $params = dict "NAME" (first $sfValue) (last $sfValue) (trimPrefix $sfKey $value) -}}
@@ -73,7 +73,7 @@
     {{- if (and (typeIs "string" (first $source)) ) -}}
         {{- $listentry := first $source -}}
         {{- $params := default nil nil -}}
-        {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $listentry) (hasPrefix "_HT?" $listentry) (hasPrefix "_HT*" $listentry) (hasPrefix "_HT!" $listentry) (hasPrefix "_HT^" $listentry) (hasPrefix "_HT&" $listentry) (hasPrefix "_HT;" $listentry)) -}}
+        {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $listentry) (hasPrefix "_HT?" $listentry) (hasPrefix "_HT*" $listentry) (hasPrefix "_HT!" $listentry) (hasPrefix "_HT^" $listentry) (hasPrefix "_HT&" $listentry) (hasPrefix "_HT/" $listentry)) -}}
             {{- range $sfKey, $sfValue := $shortForms -}}
                 {{- if (hasPrefix $sfKey $listentry) -}}}}
                     {{- $params = dict "NAME" (first $sfValue) (last $sfValue)  (trimPrefix $sfKey $listentry) -}}
@@ -283,7 +283,13 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $parts := regexSplit ":" ($content | trim) -1 -}}
 {{- $parentContextSubmitted := false -}}
-{{- $call := printf "{{ include %s (dict " ($parts | first | quote) -}}
+{{- $resultKey := "" -}}
+{{- $includeName := ($parts | first) -}}
+{{- if (gt (len (regexSplit "/" ($parts | first) -1)) 1) -}}
+{{- $resultKey = (regexSplit "/" ($parts | first) -1) | first -}}
+{{- $includeName = (regexSplit "/" ($parts | first) -1) | last -}}
+{{- end -}}
+{{- $call := printf "{{ include %s (dict " ($includeName | quote) -}}
 {{- $isKey := true -}}
 {{- range $entry := ($parts | rest) }}
 {{- if (eq $entry "PARENT_CONTEXT") -}}
@@ -302,5 +308,14 @@
 {{- $call = printf "%s %s (index . \"$\")" $call ("PARENT_CONTEXT" | quote) -}}
 {{- end -}}
 {{- $call = printf "%s) }}" ($call | trim) -}}
-{{ $key }}: {{ tpl  $call (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent) .) }}
+{{- $tpl := tpl $call (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent) .) -}}
+{{- $result := $tpl | fromYaml -}}
+{{- if (hasKey $result "Error")  -}}
+{{- $result = $tpl -}}
+{{- else -}}
+{{- if (ne $resultKey "") -}}
+{{- $result = index $result $resultKey -}}
+{{- end -}}
+{{- end -}}
+{{ (dict $key $result) | toYaml }}
 {{- end -}}
