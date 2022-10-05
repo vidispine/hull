@@ -1,4 +1,13 @@
 ------------------
+[1.23.11]
+------------------
+CHANGES:
+- changed transformation notation for include for better readability
+
+FIXES:
+- fixed and improve include transformation
+
+------------------
 [1.23.10]
 ------------------
 CHANGES:
