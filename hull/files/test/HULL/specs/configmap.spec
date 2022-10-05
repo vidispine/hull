@@ -83,7 +83,7 @@ Test creation of objects and features.
 * Test Object has key "data§include_name" with value "hull-test-test"
 * Test Object has key "data§include_name_with_parent" with value "hull-test-test"
 * Test Object has key "data§escape" with value "hull-test-split:by:colon"
-* Test Object has key "data§chart_ref" with value "hull-test-1.25.0"
+* Test Object has key "data§chart_ref" with value "hull-test-1.24.0"
 * Test Object has key "metadata§labels§app.kubernetes.io/component" with value "overwritten_component"
 * Test Object has key "metadata§annotations§app.kubernetes.io/component" with value "overwritten_component"
 
