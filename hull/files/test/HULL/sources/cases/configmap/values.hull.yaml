@@ -142,16 +142,17 @@ hull:
             inline: _HT*hull.config.specific.key§with§dots§in§it
 
       test_include_transformation:
-        labels: _HT;hull.metadata.labels:COMPONENT:"overwritten_component"
+        labels: _HT/labels/hull.metadata.labels:COMPONENT:"overwritten_component"
+        annotations: _HT/hull.metadata.labels.selector:COMPONENT:"overwritten_component"
         data:
           include_name:
-            inline: _HT;hull.metadata.name:COMPONENT:"test"
+            inline: _HT/hull.metadata.name:COMPONENT:"test"
           include_name_with_parent:
-            inline: _HT;hull.metadata.name:PARENT_CONTEXT:(index . "$"):COMPONENT:"test"
+            inline: _HT/hull.metadata.name:PARENT_CONTEXT:(index . "$"):COMPONENT:"test"
           escape:
-            inline: _HT;hull.metadata.name:COMPONENT:"split§by§colon"
+            inline: _HT/hull.metadata.name:COMPONENT:"split§by§colon"
           chart_ref:
-            inline: _HT;hull.metadata.chartref
+            inline: _HT/hull.metadata.chartref
           
       binary_data_hull:
         binaryData:
