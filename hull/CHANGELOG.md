@@ -1,4 +1,14 @@
 ------------------
+[1.23.12]
+------------------
+FIXES:
+- render emtpy string instead of <nil> when ConfigMap or Secret inline input is nil pointer
+
+CHANGES:
+- add debug option renderNilWhenInlineIsNil to print out <nil> instead of empty string when an inline value resolves to a nil pointer
+- add debug option renderPathMissingWhenPathIsNonExistent to print out information about a missing file for a path value instead of an empty string when a path value does not resolve to an actual file
+
+------------------
 [1.23.11]
 ------------------
 CHANGES:
