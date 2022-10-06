@@ -59,19 +59,31 @@ data:
 {{ range $innerKey, $innerValue := $spec.data }}
 {{- if or (and (hasKey $innerValue "enabled") $innerValue.enabled) (not (hasKey $innerValue "enabled")) -}}
 {{ if hasKey $innerValue "inline" }}
+{{ $innerValueString := "" }}
+{{ if (or (not (kindIs "invalid" $innerValue.inline)) $parent.Values.hull.config.general.debug.renderNilWhenInlineIsNil) }}
+{{ $innerValueString = toString $innerValue.inline }}
+{{ end }}
 {{ $innerKey | indent 2 }}: |-
 {{ if $innerValue.noTemplating -}}
-{{ default "" (toString $innerValue.inline) | b64enc | indent 4 }}
+{{ default "" $innerValueString | b64enc | indent 4 }}
 {{ else -}}
-{{ default "" (tpl (printf "%s" (toString $innerValue.inline)) $parent) | b64enc | indent 4 }}
+{{ default "" (tpl (printf "%s" $innerValueString) $parent) | b64enc | indent 4 }}
 {{ end }}
 {{ else }}
 {{ if hasKey $innerValue "path" }}
+{{ $pathExists := false }}
+{{ range $path, $_ := $parent.Files.Glob $innerValue.path }}
+{{ $pathExists = true }}
+{{ end }}
 {{ base $innerKey | indent 2 }}: |-
-{{ if $innerValue.noTemplating }}
-{{- toString ($parent.Files.Get (printf "%s" $innerValue.path) ) | b64enc | indent 4 -}}
+{{ if (and (not $pathExists) ($parent.Values.hull.config.general.debug.renderPathMissingWhenPathIsNonExistent)) -}}
+{{ printf "<path missing: %s>" $innerValue.path | b64enc | indent 4 }}
 {{- else -}}
-{{- print (tpl (toString ($parent.Files.Get (printf "%s" $innerValue.path) ) ) $parent) | b64enc | indent 4 }}
+{{- if $innerValue.noTemplating -}}
+{{ toString ($parent.Files.Get (printf "%s" $innerValue.path) ) | b64enc | indent 4 }}
+{{- else -}}
+{{ print (tpl (toString ($parent.Files.Get (printf "%s" $innerValue.path) ) ) $parent) | b64enc | indent 4 }}
+{{- end -}}
 {{ end }}
 {{ end }}
 {{ end }}
