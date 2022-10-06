@@ -18,7 +18,9 @@ config:
     globalImageRegistryServer: ""
     globalImageRegistryToFirstRegistrySecretServer: false
     debug:
-      renderBrokenHullGetTransformationReferences: false      
+      renderBrokenHullGetTransformationReferences: false
+      renderNilWhenInlineIsNil: false
+      renderPathMissingWhenPathIsNonExistent: false
     metadata:
       labels:
         common:

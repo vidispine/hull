@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "18" objects were rendered
+* Expected number of "19" objects were rendered
 * Validate
 
 ## Metadata
@@ -32,7 +32,6 @@ Test creation of objects and features.
 * Test Object has key "data§concrete_file_3_untemplated.yaml" with value "name: \"i am concrete_file_3.yaml\"\ntemplating: \"\{\{ .Values.hull.config.general.metadata.labels.custom.general_custom_label_1 \}\}\""
 * Test Object has key "data§inline_templated.txt" with value "This is an inline with a pointer to a transformation."
 * Test Object has key "data§inline_untemplated.txt" with value "This is an inline with a pointer to a \{\{ .Values.hull.config.specific.resolve_me \}\}."
-
 
 ## Transformation
 * Render
@@ -102,6 +101,31 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-broken_leaf_reference"
 * Test Object has key "metadata§labels§test" with value "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE --> INVALID_PATH_ELEMENT value_to_resolve_3 IN hull.config.specific.value_to_resolve_3"
 
+* Prepare test case "configmap" for kind "ConfigMap" including suites "rendernilwheninlineisnil"
+* Render
+* Set test object to "release-name-hull-test-special_cases"
+* Test Object has key "data§empty" with value ""
+* Test Object has key "data§nothing" with value "<nil>"
+* Test Object has key "data§nil" with value "<nil>"
+
+* Prepare test case "configmap" for kind "ConfigMap" including suites "renderpathmissingwhenpathisnonexistent"
+* Render
+* Set test object to "release-name-hull-test-special_cases"
+* Test Object has key "data§non_existent" with value "<path missing: files/non_existent>"
+
+## Precedence
+* Render
+* Set test object to "release-name-hull-test-inline_precedence"
+* Test Object has key "data§test1" with value "Inline Content"
+* Test Object has key "data§test2" with value "Inline Content"
+
+## Special cases
+* Render
+* Set test object to "release-name-hull-test-special_cases"
+* Test Object has key "data§empty" with value ""
+* Test Object has key "data§nothing" with value ""
+* Test Object has key "data§nil" with value ""
+* Test Object has key "data§non_existent" with value ""
 
 ## Binary Data
 * Render
@@ -114,12 +138,6 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-binary_data_mixed"
 * Test Object has key "binaryData§binary" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
 * Test Object has key "binaryData§binary_from_file" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
-
-## Precedence
-* Render
-* Set test object to "release-name-hull-test-inline_precedence"
-* Test Object has key "data§test1" with value "Inline Content"
-* Test Object has key "data§test2" with value "Inline Content"
 
 ___
 
