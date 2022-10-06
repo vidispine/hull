@@ -32119,6 +32119,28 @@
                                                 false
                                             ],
                                             "default": false
+                                        },
+                                        "renderNilWhenInlineIsNil": {
+                                            "$id": "#/definitions/root/config/general/debug/renderFileMissingWhenPathIsNonExistent",
+                                            "title": "renderNilWhenInlineIsNil",
+                                            "description": "Render <nil> when an inline reference is nil",
+                                            "type": "boolean",
+                                            "examples": [
+                                                true,
+                                                false
+                                            ],
+                                            "default": false
+                                        },
+                                        "renderFileMissingWhenPathIsNonExistent": {
+                                            "$id": "#/definitions/root/config/general/debug/renderFileMissingWhenPathIsNonExistent",
+                                            "title": "renderFileMissingWhenPathIsNonExistent",
+                                            "description": "Render <pathMissing: path_provided> when a file to include is missing",
+                                            "type": "boolean",
+                                            "examples": [
+                                                true,
+                                                false
+                                            ],
+                                            "default": false
                                         }
                                     }
                                 },
