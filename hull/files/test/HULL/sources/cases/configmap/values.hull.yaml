@@ -31,6 +31,8 @@ hull:
             path: files/default_file_1.json
           default_file_2.yaml:
             path: files/default_file_2.yaml
+          non_existent:
+            path: files/non_existent
 
       defaults_no_overwrite:
         enabled: true
@@ -140,7 +142,7 @@ hull:
             inline: _HT*hull.config.specific.number_undefined
           key_with_dots_in_it: 
             inline: _HT*hull.config.specific.key§with§dots§in§it
-
+          
       test_include_transformation:
         labels: _HT/labels/hull.metadata.labels:COMPONENT:"overwritten_component"
         annotations: _HT/hull.metadata.labels.selector:COMPONENT:"overwritten_component"
@@ -154,6 +156,25 @@ hull:
           chart_ref:
             inline: _HT/hull.metadata.chartref
           
+
+      inline_precedence:
+        data:
+          test1:
+            inline: Inline Content
+            path: files/test.txt
+          test2:            
+            path: files/test.txt
+            inline: Inline Content
+
+      special_cases:
+        data:
+          empty:
+            inline: ""
+          nothing:
+            inline: 
+          nil: 
+            inline: _HT!{{ default nil nil }}
+
       binary_data_hull:
         binaryData:
           binary_from_file:
@@ -170,14 +191,4 @@ hull:
           binary: "QÖÚ¼ˆ”¬µÖó¼ñƒ"
           test: _HT!{{ toString ((index . "PARENT").Files.Get "files/test.txt") | b64enc }}
 
-      inline_precedence:
-        data:
-          test1:
-            inline: Inline Content
-            path: files/test.txt
-          test2:            
-            path: files/test.txt
-            inline: Inline Content
-
-          
 ###################################################

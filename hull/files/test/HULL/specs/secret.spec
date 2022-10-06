@@ -6,16 +6,14 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Render
-* Expected number of "12" objects were rendered
+* Expected number of "16" objects were rendered
 * Validate
 
 ## Metadata
 * Check basic metadata functionality
 
 ## Defaulting
-
 * Render
-
 * All test objects have key "data§default_inline_1" with Base64 encoded value of "Default Inline 1"
 * All test objects have key "data§default_file_1.json" with Base64 encoded value of "\{\"name\":\"i am default_file_1.json\"\}"
 
@@ -38,6 +36,11 @@ Test creation of objects and features.
 ## Transformation
 * Render
 * Set test object to "release-name-hull-test-transformation_resolved"
+* Test Object has key "data§concrete_file_4_resolved.txt" with Base64 encoded value of "This is a text file with a pointer to a transformation."
+* Test Object has key "data§equal_sign_preservation" with Base64 encoded value of "transformation = transformation"
+
+* Render
+* Set test object to "release-name-hull-test-transformation_resolved_short"
 * Test Object has key "data§concrete_file_4_resolved.txt" with Base64 encoded value of "This is a text file with a pointer to a transformation."
 * Test Object has key "data§equal_sign_preservation" with Base64 encoded value of "transformation = transformation"
 
@@ -71,6 +74,57 @@ Test creation of objects and features.
 * Test Object has key "data§string_undefined" with Base64 encoded value of ""
 * Test Object has key "data§number_defined" with Base64 encoded value of "999"
 * Test Object has key "data§number_undefined" with Base64 encoded value of ""
+
+## Include Transformation 
+* Render
+* Set test object to "release-name-hull-test-test_include_transformation"
+* Test Object has key "data§include_name" with Base64 encoded value of "hull-test-test"
+* Test Object has key "data§include_name_with_parent" with Base64 encoded value of "hull-test-test"
+* Test Object has key "data§escape" with Base64 encoded value of "hull-test-split:by:colon"
+* Test Object has key "data§chart_ref" with Base64 encoded value of "hull-test-1.24.0"
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "overwritten_component"
+* Test Object has key "metadata§annotations§app.kubernetes.io/component" with value "overwritten_component"
+
+## Debug options
+* Fail to render the templates for values file "values_broken_get_references.hull.yaml" to test execution folder because error contains "error calling index: index of untyped nil"
+
+* Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_broken_get_references.hull.yaml" including suites "renderbrokenhullgettransformationreferences"
+* Render values file "values_broken_get_references.hull.yaml"
+
+* Set test object to "release-name-hull-test-good_reference"
+* Test Object has key "metadata§labels§test" with value "trans"
+
+* Set test object to "release-name-hull-test-broken_parent_reference"
+* Test Object has key "metadata§labels§test" with value "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE --> INVALID_PATH_ELEMENT test IN hull.config.specific.test.value_to_resolve_1"
+
+* Set test object to "release-name-hull-test-broken_leaf_reference"
+* Test Object has key "metadata§labels§test" with value "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE --> INVALID_PATH_ELEMENT value_to_resolve_3 IN hull.config.specific.value_to_resolve_3"
+
+* Prepare test case "secret" for kind "Secret" including suites "rendernilwheninlineisnil"
+* Render
+* Set test object to "release-name-hull-test-special_cases"
+* Test Object has key "data§empty" with Base64 encoded value of ""
+* Test Object has key "data§nothing" with Base64 encoded value of "<nil>"
+* Test Object has key "data§nil" with Base64 encoded value of "<nil>"
+
+* Prepare test case "secret" for kind "Secret" including suites "renderpathmissingwhenpathisnonexistent"
+* Render
+* Set test object to "release-name-hull-test-special_cases"
+* Test Object has key "data§non_existent" with Base64 encoded value of "<path missing: files/non_existent>"
+
+## Precedence
+* Render
+* Set test object to "release-name-hull-test-inline_precedence"
+* Test Object has key "data§test1" with Base64 encoded value of "Inline Content"
+* Test Object has key "data§test2" with Base64 encoded value of "Inline Content"
+
+## Special cases
+* Render
+* Set test object to "release-name-hull-test-special_cases"
+* Test Object has key "data§empty" with Base64 encoded value of ""
+* Test Object has key "data§nothing" with Base64 encoded value of ""
+* Test Object has key "data§nil" with Base64 encoded value of ""
+* Test Object has key "data§non_existent" with Base64 encoded value of ""
 ___
 
 * Clean the test execution folder
