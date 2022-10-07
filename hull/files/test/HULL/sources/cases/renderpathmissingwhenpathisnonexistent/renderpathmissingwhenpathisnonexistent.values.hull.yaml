@@ -1,0 +1,5 @@
+hull:
+  config:
+    general:
+      debug:
+        renderPathMissingWhenPathIsNonExistent: true
