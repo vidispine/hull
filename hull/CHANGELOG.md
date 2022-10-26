@@ -1,4 +1,10 @@
 ------------------
+[1.24.8]
+------------------
+FIXES:
+- extend transformation scope from objects spec to Values.hull when computing initial transformations, fixes cases with first transformation resolving to another transformation which is then not resolved itself
+
+------------------
 [1.24.7]
 ------------------
 FIXES:
