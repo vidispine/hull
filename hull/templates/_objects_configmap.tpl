@@ -21,7 +21,7 @@
 {{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- if not (default false (index . "NO_TRANSFORMATIONS")) }}
 {{- $hullValues := (index $parent.Values $hullRootKey) -}}
-{{ $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $spec "HULL_ROOT_KEY" $hullRootKey) | fromYaml }}
+{{ $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $parent.Values.hull "HULL_ROOT_KEY" $hullRootKey) | fromYaml }}
 {{ $renderedHullValues := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $hullValues "HULL_ROOT_KEY" $hullRootKey) | fromYaml }}
 {{ $temp := dict "hull" $hullValues }}
 {{ $parentClone := deepCopy $parent }}
