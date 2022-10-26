@@ -3,6 +3,7 @@
 ------------------
 FIXES:
 - extend transformation scope from objects spec to Values.hull when computing initial transformations, fixes cases with first transformation resolving to another transformation which is then not resolved itself
+- speed up rendering by only run transformations once on complete Values.hull dictionary instead of running it once for each object type
 
 ------------------
 [1.24.7]
