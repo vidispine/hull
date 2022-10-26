@@ -8,7 +8,6 @@
 |
 |   PARENT_CONTEXT: The Parent charts context
 |   SPEC: The dictionary to work with
-|   NO_TRANSFORMATIONS: Don't execute the function that executes transformations
 |
 */ -}}
 {{- define "hull.object.base.role" -}}
@@ -21,9 +20,6 @@
 {{- if (index $parent.Values $hullRootKey).config.general.rbac }}
 {{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- $defaultRulesBasePath := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.rules._HULL_OBJECT_TYPE_DEFAULT_ }}
-{{- if not (default false (index . "NO_TRANSFORMATIONS")) }}
-{{ $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $parent.Values.hull "HULL_ROOT_KEY" $hullRootKey) | fromYaml }}
-{{- end }}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 {{ template "hull.metadata.header" . }}
 {{- if typeIs "map[string]interface {}" (index (index (index $parent.Values $hullRootKey).objects ($objectType | lower)) $component).rules -}}
