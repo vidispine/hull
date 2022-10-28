@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "IngressClass"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "7" objects were rendered
 * Validate
 

@@ -135,33 +135,33 @@ hull:
       disabled:
         enabled: false
       
-      disabled_transform:
+      disabled-transform:
         enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
           {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
           >>>"
         annotations:
           annotation: "I am an Annotation"
       
-      enabled_transform:
+      enabled-transform:
         enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
           {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
           >>>"
         annotations:
           annotation: "I am an Annotation"
       
-      disabled_transform_tpl_if:
+      disabled-transform-tpl-if:
         enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.bool>>><<<CONDITION=
           (and (index . \"PARENT\").Values.hull.config.specific.switch_condition_a_true (index . \"PARENT\").Values.hull.config.specific.switch_condition_b_false)>>>"
         annotations:
           annotation: "I am an Annotation"
 
-      enabled_transform_tpl_if:
+      enabled-transform-tpl-if:
         enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.bool>>><<<CONDITION=
           (and (index . \"PARENT\").Values.hull.config.specific.switch_condition_a_true (index . \"PARENT\").Values.hull.config.specific.switch_condition_c_true)>>>"
         annotations:
           annotation: "I am an Annotation"
           
-      disabled_transform_dict:
+      disabled-transform-dict:
         enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
           {{ if (index . \"PARENT\").Values.hull.config.specific.switch_enabled_dict_not_exists }}
           true
@@ -172,7 +172,7 @@ hull:
         annotations:
           annotation: "I am an Annotation"
       
-      enabled_transform_dict:
+      enabled-transform-dict:
         enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
           {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_dict_exists }}
           >>>"
@@ -183,10 +183,10 @@ hull:
 
       nulled: null
         
-      static_name:
+      static-name:
         staticName: true
 
-      metadata_merge:
+      metadata-merge:
         enabled: true
         staticName: false
         annotations:
@@ -196,7 +196,7 @@ hull:
           concrete_label_1: "Concrete Label 1"
           concrete_label_2: "Concrete Label 2"
 
-      metadata_overwrite:
+      metadata-overwrite:
         enabled: true
         staticName: false
         annotations:

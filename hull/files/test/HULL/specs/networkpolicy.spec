@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "NetworkPolicy"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "10" objects were rendered
 * Validate
 
@@ -14,7 +14,7 @@ Test creation of objects and features.
 
 ## Data
 
-* Render
+* Lint and Render
 
 * Set test object to "release-name-hull-test-standard"
 * Test Object has key "spec§egress§0§ports§0§port" with integer value "80"
@@ -35,9 +35,9 @@ Test creation of objects and features.
 * Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/component" with value "selectors"
 * Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/instance" with value "release-name"
 
-* Set test object to "release-name-hull-test-selectors_short"
+* Set test object to "release-name-hull-test-selectors-short"
 * Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/name" with value "hull-test"
-* Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/component" with value "selectors_short"
+* Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/component" with value "selectors-short"
 * Test Object has key "spec§podSelector§matchLabels§app.kubernetes.io/instance" with value "release-name"
 
 ___

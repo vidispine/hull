@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "EndpointSlice"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "9" objects were rendered
 * Validate
 
@@ -14,9 +14,9 @@ Test creation of objects and features.
 
 ## References
 
-* Render
+* Lint and Render
 
-* Set test object to "release-name-hull-test-test_one"
+* Set test object to "release-name-hull-test-test-one"
 * Test Object has key "addressType" with value "FQDN"
 * Test Object has key "endpoints§0§addresses§0" with value "a.b.com"
 * Test Object has key "endpoints§0§addresses§1" with value "b.b.com"
