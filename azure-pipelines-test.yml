@@ -46,9 +46,10 @@ steps:
 - ${{ each version in parameters.HelmVersions }}: # Each Helm Version
 
   - script: |
-      export no_lint=true
+      echo $(NoLint)
+      export no_lint=$(NoLint)
     displayName: 'set no_lint v$(NoLint)'
-    condition: and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','True'),eq(variables['NoLint'], true))
+    condition: and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0))
      
   - script: |
       set -euo pipefail
