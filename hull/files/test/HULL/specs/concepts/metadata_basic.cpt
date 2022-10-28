@@ -1,7 +1,7 @@
 # Check basic metadata functionality
 
 * Prepare default test case for this kind including suites "namingoverride"
-* Render
+* Lint and Render
 
 General label section must be populated with overriden names
 
@@ -13,13 +13,13 @@ General label section must be populated with overriden names
 
 Static names can be created
 
-* Set test object to "static_name"
+* Set test object to "static-name"
 
-* Set test object to "a-slightly-longer-name-metadata_merge"
+* Set test object to "a-slightly-longer-name-metadata-merge"
 
 Component must be key name
 
-* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata_merge"
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata-merge"
 
 All labels and annotations from general metadata, defaults and object must be present
 
@@ -38,9 +38,9 @@ All labels and annotations from general metadata, defaults and object must be pr
 
 Overwriting metadata must work properly
 
-* Set test object to "a-slightly-longer-name-metadata_overwrite"
+* Set test object to "a-slightly-longer-name-metadata-overwrite"
 
-* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata_overwrite"
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata-overwrite"
 
 * Test Object has key "metadata§labels§concrete_label_1" with value "Concrete Label 1"
 * Test Object has key "metadata§labels§general_custom_label_1" with value "General Custom Label 1"
@@ -58,7 +58,7 @@ Overwriting metadata must work properly
 Run non-name override tests
 
 * Prepare default test case for this kind including suites ""
-* Render
+* Lint and Render
 
 General label section must be populated
 
@@ -70,13 +70,13 @@ General label section must be populated
 
 Static names can be created
 
-* Set test object to "static_name"
+* Set test object to "static-name"
 
-* Set test object to "release-name-hull-test-metadata_merge"
+* Set test object to "release-name-hull-test-metadata-merge"
 
 Component must be key name
 
-* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata_merge"
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata-merge"
 
 All labels and annotations from general metadata, defaults and object must be present
 
@@ -95,9 +95,9 @@ All labels and annotations from general metadata, defaults and object must be pr
 
 Overwriting metadata must work properly
 
-* Set test object to "release-name-hull-test-metadata_overwrite"
+* Set test object to "release-name-hull-test-metadata-overwrite"
 
-* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata_overwrite"
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata-overwrite"
 
 * Test Object has key "metadata§labels§concrete_label_1" with value "Concrete Label 1"
 * Test Object has key "metadata§labels§general_custom_label_1" with value "General Custom Label 1"
@@ -115,20 +115,20 @@ Overwriting metadata must work properly
 Enabling and Disabling
 
 * Test object "release-name-hull-test-disabled" does not exist
-* Test object "release-name-hull-test-disabled_transform" does not exist
-* Test object "release-name-hull-test-disabled_transform_dict" does not exist
+* Test object "release-name-hull-test-disabled-transform" does not exist
+* Test object "release-name-hull-test-disabled-transform-dict" does not exist
 * Test object "release-name-hull-test-nulled" does not exist
 
-* Set test object to "release-name-hull-test-enabled_transform"
+* Set test object to "release-name-hull-test-enabled-transform"
 * Test Object has key "metadata§annotations§annotation" with value "I am an Annotation"
 
-* Set test object to "release-name-hull-test-enabled_transform_dict"
+* Set test object to "release-name-hull-test-enabled-transform-dict"
 * Test Object has key "metadata§annotations§annotation" with value "I am an Annotation"
 
 Transformation checks
 
-* Test object "release-name-hull-test-disabled_transform_tpl_if" does not exist
+* Test object "release-name-hull-test-disabled-transform-tpl-if" does not exist
 
-* Set test object to "release-name-hull-test-enabled_transform_tpl_if"
+* Set test object to "release-name-hull-test-enabled-transform-tpl-if"
 * Test Object has key "metadata§annotations§annotation" with value "I am an Annotation"
 

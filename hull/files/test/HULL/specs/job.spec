@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "Job" including suites "pod"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "27" objects were rendered
 * Validate
 
@@ -13,15 +13,15 @@ Test creation of objects and features.
 * Check basic metadata functionality
 
 ## Pod
-* Render
+* Lint and Render
 * Check pod functionality
 
 ## Selector
-* Render
-* Set test object to "release-name-hull-test-no_selector_provided"
+* Lint and Render
+* Set test object to "release-name-hull-test-no-selector-provided"
 * Test Object does not have key "spec§selector"
 
-* Set test object to "release-name-hull-test-selector_provided"
+* Set test object to "release-name-hull-test-selector-provided"
 * Test Object has key "spec§selector§matchLabels§test_label" with value "test_value"
 
 ___

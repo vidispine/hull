@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 
-* Render
+* Lint and Render
 * Expected number of "13" objects of kind "ServiceMonitor" were rendered
 
 ## Metadata
@@ -15,7 +15,7 @@ Test creation of objects and features.
 
 ## Properties
 
-* Render
+* Lint and Render
 
 * Set test object to "release-name-hull-test-simple" of kind "ServiceMonitor"
 * Test Object has key "spec§selector§matchLabels§app" with value "example-app"

@@ -17,39 +17,39 @@ hull:
         selector: {}
         endpoints: []
 
-      static_name:
+      static-name:
         selector: {}
         endpoints: []
         
-      metadata_merge:
+      metadata-merge:
         selector: {}
         endpoints: []
         
-      metadata_overwrite:
+      metadata-overwrite:
         selector: {}
         endpoints: []
         
-      image_name_empty_registry:
+      image-name-empty-registry:
         selector: {}
         endpoints: []
         
-      image_name_registry:
+      image-name-registry:
         selector: {}
         endpoints: []
         
-      image_name_tag:
+      image-name-tag:
         selector: {}
         endpoints: []
         
-      volume_test:
+      volume-test:
         selector: {}
         endpoints: []
         
-      env_test:
+      env-test:
         selector: {}
         endpoints: []
         
-      envfrom_test:
+      envfrom-test:
         selector: {}
         endpoints: []
         
@@ -62,27 +62,27 @@ hull:
         endpoints:
         - port: web
       
-      disabled_transform:
+      disabled-transform:
         selector: {}
         endpoints: []
         
-      enabled_transform:
+      enabled-transform:
         selector: {}
         endpoints: []
         
-      disabled_transform_dict:
+      disabled-transform-dict:
         selector: {}
         endpoints: []
         
-      enabled_transform_dict:
+      enabled-transform-dict:
         selector: {}
         endpoints: []
 
-      disabled_transform_tpl_if:
+      disabled-transform-tpl-if:
         selector: {}
         endpoints: []
         
-      enabled_transform_tpl_if:
+      enabled-transform-tpl-if:
         selector: {}
         endpoints: []
       

@@ -15,13 +15,13 @@ hull:
       disabled:
         provisioner: "local-volume"
       
-      static_name:
+      static-name:
         provisioner: "local-volume"
       
-      metadata_merge:
+      metadata-merge:
         provisioner: "local-volume"
 
-      metadata_overwrite:
+      metadata-overwrite:
         provisioner: "local-volume"
 
       simple:
@@ -32,22 +32,22 @@ hull:
         - "automount"
         provisioner: "local-volume"
       
-      disabled_transform:
+      disabled-transform:
         provisioner: "local-volume"
         
-      enabled_transform:
+      enabled-transform:
         provisioner: "local-volume"
         
-      disabled_transform_dict:
+      disabled-transform-dict:
         provisioner: "local-volume"
         
-      enabled_transform_dict:
+      enabled-transform-dict:
         provisioner: "local-volume"
 
-      disabled_transform_tpl_if:
+      disabled-transform-tpl-if:
         provisioner: "local-volume"
         
-      enabled_transform_tpl_if:
+      enabled-transform-tpl-if:
         provisioner: "local-volume"
         
 

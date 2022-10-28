@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "Ingress"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "9" objects were rendered
 * Validate
 
@@ -13,7 +13,7 @@ Test creation of objects and features.
 * Check basic metadata functionality
 
 ## Static Naming
-* Render
+* Lint and Render
 * Set test object to "release-name-hull-test-staticnames"
 * Test Object has key "spec§rules§0§http§paths§0§path" with value "/external"
 * Test Object has key "spec§rules§0§http§paths§0§backend§service§name" with value "external_service"
@@ -25,8 +25,8 @@ Test creation of objects and features.
 * Test Object has key "spec§tls§1§secretName" with value "release-name-hull-test-local_secret"
 
 ## Enable Disable Tls Rules 
-* Render
-* Set test object to "release-name-hull-test-tls_rules_enabled_false_true"
+* Lint and Render
+* Set test object to "release-name-hull-test-tls-rules-enabled-false-true"
 * Test Object has key "spec§tls" with array value that has "3" items
 * Test Object has key "spec§rules" with array value that has "3" items
 

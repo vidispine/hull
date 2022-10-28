@@ -16,15 +16,15 @@ hull:
         addressType: FQDN
         endpoints: []
       
-      static_name:
+      static-name:
         addressType: FQDN
         endpoints: []
       
-      metadata_merge:
+      metadata-merge:
         addressType: FQDN
         endpoints: []
       
-      metadata_overwrite:
+      metadata-overwrite:
         addressType: FQDN
         endpoints: []
       
@@ -36,31 +36,31 @@ hull:
         addressType: FQDN
         endpoints: []
       
-      disabled_transform:
+      disabled-transform:
         addressType: FQDN
         endpoints: []
       
-      enabled_transform:
+      enabled-transform:
         addressType: FQDN
         endpoints: []
       
-      disabled_transform_dict:
+      disabled-transform-dict:
         addressType: FQDN
         endpoints: []
       
-      enabled_transform_dict:
+      enabled-transform-dict:
         addressType: FQDN
         endpoints: []
       
-      disabled_transform_tpl_if:
+      disabled-transform-tpl-if:
         addressType: FQDN
         endpoints: []
       
-      enabled_transform_tpl_if:
+      enabled-transform-tpl-if:
         addressType: FQDN
         endpoints: []
       
-      test_one:
+      test-one:
         addressType: FQDN
         endpoints:
         - addresses:
