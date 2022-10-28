@@ -49,7 +49,7 @@ steps:
       echo $(NoLint)
       export no_lint=$(NoLint)
     displayName: 'set no_lint v$(NoLint)'
-    condition: and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0))
+    condition: and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','True'))
      
   - script: |
       set -euo pipefail
