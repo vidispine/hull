@@ -20,25 +20,25 @@ hull:
           kind: Role
           name: example_role
 
-      static_name:
+      static-name:
         roleRef: 
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
       
-      metadata_merge:
+      metadata-merge:
         roleRef:
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
 
-      metadata_overwrite:
+      metadata-overwrite:
         roleRef:
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
       
-      no_transformation:
+      no-transformation:
         roleRef: 
           apiGroup: rbac.authorization.k8s.io
           kind: Role
@@ -58,37 +58,37 @@ hull:
           kind: ServiceAccount
           name: _HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.makefullname>>><<<COMPONENT=simple>>>
 
-      disabled_transform:
+      disabled-transform:
         roleRef:
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
         
-      enabled_transform:
+      enabled-transform:
         roleRef:
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
         
-      disabled_transform_dict:
+      disabled-transform-dict:
         roleRef:
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
         
-      enabled_transform_dict:
+      enabled-transform-dict:
         roleRef:
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
 
-      disabled_transform_tpl_if:
+      disabled-transform-tpl-if:
         roleRef:
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
           
-      enabled_transform_tpl_if:
+      enabled-transform-tpl-if:
         roleRef:
           apiGroup: rbac.authorization.k8s.io
           kind: Role

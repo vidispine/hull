@@ -33,19 +33,19 @@ hull:
         pod:
           containers: {}
         
-      static_name:
+      static-name:
         pod:
           containers: {}
         
-      metadata_merge:
+      metadata-merge:
         pod:
           containers: {}
         
-      metadata_overwrite:
+      metadata-overwrite:
         pod:
           containers: {}
         
-      image_name_empty_registry:
+      image-name-empty-registry:
         pod:
           containers:
             main:
@@ -53,14 +53,14 @@ hull:
                 registry: ""
                 repository: my/image/repo
 
-      image_name_registry:
+      image-name-registry:
         pod:
           containers:
             main:
               image:
                 repository: my/image/repo
 
-      image_name_tag:
+      image-name-tag:
         pod:
           containers:
             main:
@@ -68,7 +68,7 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
 
-      removal_test:
+      removal-test:
         pod:
           containers:
             remove: null
@@ -76,20 +76,20 @@ hull:
               ports:
                 remove: null
                 
-      volume_test:
+      volume-test:
         pod:
           volumes:
             to_be_removed: null
             
-      full_example_deployment:
+      full-example-deployment:
         annotations:
-          example: "Some annotation applied to this deployment full_example_deployment"
+          example: "Some annotation applied to this deployment full-example-deployment"
         labels:
-          example: "Some label applied to this deployment full_example_deployment"
+          example: "Some label applied to this deployment full-example-deployment"
         templateAnnotations:
-          example: "Some annotation applied to the template section of this deployment full_example_deployment"
+          example: "Some annotation applied to the template section of this deployment full-example-deployment"
         templateLabels:
-          example: "Some label applied to the template section of this deployments full_example_deployment"
+          example: "Some label applied to the template section of this deployments full-example-deployment"
         strategy:
           type: Recreate
         minReadySeconds: _HT!300

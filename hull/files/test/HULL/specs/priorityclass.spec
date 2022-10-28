@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "PriorityClass"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "8" objects were rendered
 * Validate
 
@@ -14,7 +14,7 @@ Test creation of objects and features.
 
 ## References
 
-* Render
+* Lint and Render
 
 * Set test object to "release-name-hull-test-minimal"
 * Test Object has key "value" with integer value "100"

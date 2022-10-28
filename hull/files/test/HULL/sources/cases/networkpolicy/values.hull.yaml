@@ -17,17 +17,17 @@ hull:
           matchLabels:
             key: value
       
-      static_name:
+      static-name:
         podSelector: 
           matchLabels:
             key: value
       
-      metadata_merge:
+      metadata-merge:
         podSelector: 
           matchLabels:
             key: value 
 
-      metadata_overwrite:
+      metadata-overwrite:
         podSelector: 
           matchLabels:
             key: value
@@ -37,32 +37,32 @@ hull:
           matchLabels:
             key: value
       
-      disabled_transform:
+      disabled-transform:
         podSelector: 
           matchLabels:
             key: value
         
-      enabled_transform:
+      enabled-transform:
         podSelector: 
           matchLabels:
             key: value
         
-      disabled_transform_dict:
+      disabled-transform-dict:
         podSelector: 
           matchLabels:
             key: value
         
-      enabled_transform_dict:
+      enabled-transform-dict:
         podSelector: 
           matchLabels:
             key: value
       
-      disabled_transform_tpl_if:
+      disabled-transform-tpl-if:
         podSelector: 
           matchLabels:
             key: value
       
-      enabled_transform_tpl_if:
+      enabled-transform-tpl-if:
         podSelector: 
           matchLabels:
             key: value
@@ -97,7 +97,7 @@ hull:
         podSelector:
           matchLabels: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.selector>>><<<COMPONENT=selectors>>>"
       
-      selectors_short:
+      selectors-short:
         podSelector:
-          matchLabels: _HT&selectors_short
+          matchLabels: _HT&selectors-short
 ###################################################

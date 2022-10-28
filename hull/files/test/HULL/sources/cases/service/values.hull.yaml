@@ -29,7 +29,7 @@ hull:
             targetPort: 2020
             nodePort: 202020
       
-      no_selector:
+      no-selector:
         type: ClusterIP
         
       selector:
@@ -37,7 +37,7 @@ hull:
         selector:
           app.kubernetes.io/component: some_other_component
           
-      port_enabled_false_true:
+      port-enabled-false-true:
         type: NodePort
         ports:
           test_disabled:
@@ -69,7 +69,7 @@ hull:
             targetPort: 5050
             nodePort: 505050
         
-      mixed_key_transformation:
+      mixed-key-transformation:
         type: NodePort
         ports:
           static_one:
@@ -90,7 +90,7 @@ hull:
               dynamic_two: {enabled: true, port: 40, targetPort: 4040, nodePort: 404040 }
               }
 
-      full_transformation:
+      full-transformation:
         type: NodePort
         ports: |-
           _HT!{

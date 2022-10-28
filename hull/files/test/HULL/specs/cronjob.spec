@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "CronJob"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "6" objects were rendered
 * Validate
 
@@ -14,7 +14,7 @@ Test creation of objects and features.
 
 ## Secrets and ConfigMaps and CronJobs
 * Prepare default test case for this kind with test chart "hull-test" and values file "values_cronjob_secret_configmap.hull.yaml" including suites "basic"
-* Render values file "values_cronjob_secret_configmap.hull.yaml"
+* Lint and Render values file "values_cronjob_secret_configmap.hull.yaml"
 
 * Set test object to "release-name-hull-test-git-gc"
 * Test Object has key "spec§schedule" with value "0 0 * * *"
@@ -24,9 +24,9 @@ Test creation of objects and features.
 
 ## Secrets and ConfigMaps and CronJobs - ConfigMap
 * Prepare default test case for this kind with test chart "hull-test" and values file "values_cronjob_secret_configmap.hull.yaml" including suites "basic"
-* Render values file "values_cronjob_secret_configmap.hull.yaml"
+* Lint and Render values file "values_cronjob_secret_configmap.hull.yaml"
 
-* Set test object to "release-name-hull-test-application_configmap" of kind "ConfigMap"
+* Set test object to "release-name-hull-test-application-configmap" of kind "ConfigMap"
 * Test Object has key "data§dbAdminUsername" with value "the_user"
 * Test Object has key "data§dbAdminPassword" with value ""
 * Test Object has key "data§gitRepositoryPath" with value "the_repo"
@@ -34,9 +34,9 @@ Test creation of objects and features.
 ## Secrets and ConfigMaps and CronJobs - Secrets
 
 * Prepare default test case for this kind with test chart "hull-test" and values file "values_cronjob_secret_configmap.hull.yaml" including suites "basic"
-* Render values file "values_cronjob_secret_configmap.hull.yaml"
+* Lint and Render values file "values_cronjob_secret_configmap.hull.yaml"
 
-* Set test object to "release-name-hull-test-application_secret" of kind "Secret"
+* Set test object to "release-name-hull-test-application-secret" of kind "Secret"
 * Test Object has key "data§dbAdminUsername" with Base64 encoded value of "the_user"
 * Test Object has key "data§dbAdminPassword" with Base64 encoded value of ""
 * Test Object has key "data§gitRepositoryPath" with Base64 encoded value of "the_repo"

@@ -16,31 +16,31 @@ hull:
       disabled:
         limits: []
 
-      static_name:
+      static-name:
         limits: []
 
-      metadata_merge:
+      metadata-merge:
         limits: []
 
-      metadata_overwrite:
+      metadata-overwrite:
         limits: []
 
-      disabled_transform:
+      disabled-transform:
         limits: []
 
-      enabled_transform:
+      enabled-transform:
         limits: []
 
-      disabled_transform_dict:
+      disabled-transform-dict:
         limits: []
 
-      enabled_transform_dict:
+      enabled-transform-dict:
         limits: []
 
-      disabled_transform_tpl_if:
+      disabled-transform-tpl-if:
         limits: []
 
-      enabled_transform_tpl_if:
+      enabled-transform-tpl-if:
         limits: []
 
       cpu:
