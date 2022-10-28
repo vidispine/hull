@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "Role"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "9" objects were rendered
 * Validate
 
@@ -14,7 +14,7 @@ Test creation of objects and features.
 
 ## Properties
 
-* Render
+* Lint and Render
 * Set test object to "release-name-hull-test-simple"
 * Test Object has key "rules" with array value that has "7" items
 
@@ -22,13 +22,13 @@ Test creation of objects and features.
 * Test Object has key "rules" with array value that has "3" items
 
 ## Defaulting
-* Render values file "values_disable_default.hull.yaml"
+* Lint and Render values file "values_disable_default.hull.yaml"
 * Expected number of "6" objects were rendered
 * Validate
 
 ## RBAC
 * Prepare default test case for kind "Role"
-* Render
+* Lint and Render
 
 * Set test object to "release-name-hull-test-default" of kind "ServiceAccount"
 * Test Object has key "metadata§name" with value "release-name-hull-test-default"
@@ -40,7 +40,7 @@ Test creation of objects and features.
 * Test Object has key "metadata§name" with value "release-name-hull-test-default"
 
 * Prepare default test case for this kind including suites "norbac"
-* Render
+* Lint and Render
 
 * Set test object to "release-name-hull-test-default" of kind "ServiceAccount"
 * Test Object has key "metadata§name" with value "release-name-hull-test-default"

@@ -1,4 +1,11 @@
 ------------------
+[1.24.9]
+------------------
+FIXES:
+- fixed general linter error due to bad whitespace chomping between YAML objects, this did not affect template rendering however (https://github.com/vidispine/hull/issues/186)
+- added strict linting to test cases, now all cases must not emit linting WARNINGs or ERRORs to be considered successful
+
+------------------
 [1.24.8]
 ------------------
 FIXES:

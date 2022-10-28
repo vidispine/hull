@@ -32,38 +32,38 @@ hull:
       disabled:
         server: disabled.cr.io
       
-      static_name:
-        server: static_name.cr.io
+      static-name:
+        server: static-name.cr.io
       
-      metadata_merge:
-        server: metadata_merge.cr.io
+      metadata-merge:
+        server: metadata-merge.cr.io
 
-      metadata_overwrite:
-        server: metadata_overwrite.cr.io
+      metadata-overwrite:
+        server: metadata-overwrite.cr.io
 
-      disabled_transform:
-        server: disabled_transform.cr.io
+      disabled-transform:
+        server: disabled-transform.cr.io
         
-      enabled_transform:
-        server: enabled_transform.cr.io
+      enabled-transform:
+        server: enabled-transform.cr.io
         
-      disabled_transform_dict:
-        server: disabled_transform_dict.cr.io
+      disabled-transform-dict:
+        server: disabled-transform-dict.cr.io
         
-      enabled_transform_dict:
-        server: enabled_transform_dict.cr.io
+      enabled-transform-dict:
+        server: enabled-transform-dict.cr.io
         
-      disabled_transform_tpl_if:
-        server: enabled_transform_tpl_if.cr.io
+      disabled-transform-tpl-if:
+        server: enabled-transform-tpl-if.cr.io
       
-      enabled_transform_tpl_if:
-        server: enabled_transform_tpl_if.cr.io
+      enabled-transform-tpl-if:
+        server: enabled-transform-tpl-if.cr.io
         
       example:
         annotations:
-          example: "Some annotation applied to this registry full_example_registry"
+          example: "Some annotation applied to this registry full_example-registry"
         labels:
-          example: "Some label applied to this registry full_example_registry"
+          example: "Some label applied to this registry full_example-registry"
         server: example.cr.io
         username: exmple_user
         password: example_password

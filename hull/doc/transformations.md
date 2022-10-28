@@ -285,7 +285,7 @@ hull:
 
   objects:
     deployment:
-      custom_args:
+      custom-args:
         pod:
           containers:
             main:
@@ -361,24 +361,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/component: custom_args
+    app.kubernetes.io/component: custom-args
     app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
     app.kubernetes.io/version: 1.20.0
     helm.sh/chart: hull-test-1.20.1
-  name: release-name-hull-test-custom_args
+  name: release-name-hull-test-custom-args
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/component: custom_args
+      app.kubernetes.io/component: custom-args
       app.kubernetes.io/instance: release-name
       app.kubernetes.io/name: hull-test
   template:
     metadata:
       labels:
-        app.kubernetes.io/component: custom_args
+        app.kubernetes.io/component: custom-args
         app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test

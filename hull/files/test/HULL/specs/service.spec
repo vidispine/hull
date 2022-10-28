@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "Service"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "13" objects were rendered
 * Validate
 
@@ -14,7 +14,7 @@ Test creation of objects and features.
 
 ## Properties
 
-* Render
+* Lint and Render
 
 * Set test object to "release-name-hull-test-loadbalancer"
 * Test Object has key "spec§loadBalancerIP" with value "10.10.10.10"
@@ -27,16 +27,16 @@ Test creation of objects and features.
 
 ## Selector
 
-* Render
-* Set test object to "release-name-hull-test-no_selector"
-* Test Object has key "spec§selector§app.kubernetes.io/component" with value "no_selector"
+* Lint and Render
+* Set test object to "release-name-hull-test-no-selector"
+* Test Object has key "spec§selector§app.kubernetes.io/component" with value "no-selector"
 
 * Set test object to "release-name-hull-test-selector"
 * Test Object has key "spec§selector§app.kubernetes.io/component" with value "some_other_component"
 
 ## Enable Disable Port
-* Render
-* Set test object to "release-name-hull-test-port_enabled_false_true"
+* Lint and Render
+* Set test object to "release-name-hull-test-port-enabled-false-true"
 * Test Object has key "spec§ports" with array value that has "3" items
 
 * Test Object has key "spec§ports§0§name" with value "test_enabled"
@@ -44,8 +44,8 @@ Test creation of objects and features.
 * Test Object has key "spec§ports§2§name" with value "test_enabled_transform"
 
 ## Mixed Key Transformation
-* Render
-* Set test object to "release-name-hull-test-mixed_key_transformation"
+* Lint and Render
+* Set test object to "release-name-hull-test-mixed-key-transformation"
 * Test Object has key "spec§ports" with array value that has "4" items
 * Test Object has key "spec§ports§0§name" with value "dynamic_one"
 * Test Object has key "spec§ports§1§name" with value "dynamic_two"
@@ -53,8 +53,8 @@ Test creation of objects and features.
 * Test Object has key "spec§ports§3§name" with value "static_two"
 
 ## Full Transformation
-* Render
-* Set test object to "release-name-hull-test-full_transformation"
+* Lint and Render
+* Set test object to "release-name-hull-test-full-transformation"
 * Test Object has key "spec§ports" with array value that has "2" items
 * Test Object has key "spec§ports§0§name" with value "dynamic_one"
 * Test Object has key "spec§ports§1§name" with value "dynamic_two"

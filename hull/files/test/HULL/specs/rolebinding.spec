@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "RoleBinding"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "9" objects were rendered
 * Validate
 
@@ -14,8 +14,8 @@ Test creation of objects and features.
 
 ## Properties
 
-* Render
-* Set test object to "release-name-hull-test-no_transformation"
+* Lint and Render
+* Set test object to "release-name-hull-test-no-transformation"
 * Test Object has key "roleRef§name" with value "example_role"
 * Test Object has key "subjects§0§name" with value "Jane"
 
@@ -25,12 +25,12 @@ Test creation of objects and features.
 * Test Object has key "subjects§0§namespace" with value "default"
 
 ## Defaulting
-* Render values file "values_disable_default.hull.yaml"
+* Lint and Render values file "values_disable_default.hull.yaml"
 * Expected number of "8" objects were rendered
 * Validate
 
 ## Test enable disabled and disable default
-* Render values file "values_disable_default_enable_disabled.hull.yaml"
+* Lint and Render values file "values_disable_default_enable_disabled.hull.yaml"
 * Expected number of "9" objects were rendered
 * Validate
 ___

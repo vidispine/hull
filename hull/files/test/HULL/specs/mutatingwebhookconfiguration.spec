@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "MutatingWebhookConfiguration"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "8" objects were rendered
 * Validate
 
@@ -14,7 +14,7 @@ Test creation of objects and features.
 
 ## References
 
-* Render
+* Lint and Render
 
 * Set test object to "release-name-hull-test-standard"
 * Test Object has key "webhooks§0§failurePolicy" with value "Ignore"
@@ -34,8 +34,8 @@ Test creation of objects and features.
 * Test Object has key "webhooks§1§admissionReviewVersions§0" with value "second_draft"
 
 ## Enable Disable Webhook
-* Render
-* Set test object to "release-name-hull-test-webhook_enabled_false_true"
+* Lint and Render
+* Set test object to "release-name-hull-test-webhook-enabled-false-true"
 * Test Object has key "webhooks" with array value that has "3" items
 
 * Test Object has key "webhooks§0§name" with value "test_enabled"
