@@ -37,7 +37,7 @@ hull:
             admissionReviewVersions:
             - second_draft
 
-      webhook_enabled_false_true:
+      webhook-enabled-false-true:
         webhooks:
           test_disabled:
             enabled: false

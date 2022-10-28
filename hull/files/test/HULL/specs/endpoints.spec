@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "Endpoints"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "7" objects were rendered
 * Validate
 
@@ -14,7 +14,7 @@ Test creation of objects and features.
 
 ## References
 
-* Render
+* Lint and Render
 
 * Set test object to "release-name-hull-test-standard"
 * Test Object has key "subsets§0§addresses§0§hostname" with value "some_host"

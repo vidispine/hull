@@ -19,57 +19,57 @@ hull:
           kind: "Deployment"
         maxReplicas: 3
       
-      static_name:
+      static-name:
         scaleTargetRef:
-          name: static_name
+          name: static-name
           kind: "Deployment"
         maxReplicas: 3
 
-      metadata_merge:
+      metadata-merge:
         scaleTargetRef:
-          name: metadata_merge
+          name: metadata-merge
           kind: "Deployment"
         maxReplicas: 3
 
-      metadata_overwrite:
+      metadata-overwrite:
         scaleTargetRef:
-          name: metadata_overwrite
+          name: metadata-overwrite
           kind: "Deployment"
         maxReplicas: 3
 
-      disabled_transform:
+      disabled-transform:
         scaleTargetRef:
-          name: metadata_overwrite
+          name: metadata-overwrite
           kind: "Deployment"
         maxReplicas: 3
         
-      enabled_transform:
+      enabled-transform:
         scaleTargetRef:
-          name: metadata_overwrite
+          name: metadata-overwrite
           kind: "Deployment"
         maxReplicas: 3
         
-      disabled_transform_dict:
+      disabled-transform-dict:
         scaleTargetRef:
-          name: metadata_overwrite
+          name: metadata-overwrite
           kind: "Deployment"
         maxReplicas: 3
         
-      enabled_transform_dict:
+      enabled-transform-dict:
         scaleTargetRef:
-          name: metadata_overwrite
+          name: metadata-overwrite
           kind: "Deployment"
         maxReplicas: 3
 
-      disabled_transform_tpl_if:
+      disabled-transform-tpl-if:
         scaleTargetRef:
-          name: metadata_overwrite
+          name: metadata-overwrite
           kind: "Deployment"
         maxReplicas: 3
         
-      enabled_transform_tpl_if:
+      enabled-transform-tpl-if:
         scaleTargetRef:
-          name: metadata_overwrite
+          name: metadata-overwrite
           kind: "Deployment"
         maxReplicas: 3
 

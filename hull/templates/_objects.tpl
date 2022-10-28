@@ -157,7 +157,7 @@ metadata:
 {{ toYaml $objectSpec }}
 
 ---
-{{- end -}}
+{{ end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

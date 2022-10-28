@@ -16,13 +16,13 @@ hull:
       disabled:
         value: 100
       
-      static_name:
+      static-name:
         value: 100
       
-      metadata_merge:
+      metadata-merge:
         value: 100
 
-      metadata_overwrite:
+      metadata-overwrite:
         value: 100
 
       minimal:
@@ -34,22 +34,22 @@ hull:
         preemptionPolicy: PreemptLowerPriority
         value: 50
       
-      disabled_transform:
+      disabled-transform:
         value: 100
         
-      enabled_transform:
+      enabled-transform:
         value: 100
         
-      disabled_transform_dict:
+      disabled-transform-dict:
         value: 100
         
-      enabled_transform_dict:
+      enabled-transform-dict:
         value: 100
       
-      disabled_transform_tpl_if:
+      disabled-transform-tpl-if:
         value: 100
         
-      enabled_transform_tpl_if:
+      enabled-transform-tpl-if:
         value: 100
 
 ###################################################

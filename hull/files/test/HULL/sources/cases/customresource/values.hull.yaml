@@ -17,59 +17,59 @@ hull:
         kind: "Dummy"
         spec: {}
           
-      static_name:
+      static-name:
         apiVersion: "dummyApi/v1"
         kind: "Dummy"
         spec: {}
 
-      metadata_merge:
+      metadata-merge:
         apiVersion: "dummyApi/v1"
         kind: "Dummy"
         spec: {}
       
-      metadata_overwrite:
+      metadata-overwrite:
         apiVersion: "dummyApi/v1"
         kind: "Dummy"
         spec: {}
       
-      mail_sender:
+      mail-sender:
         apiVersion: "mailSenderApi/v1"
         kind: "MailSender"
         spec:
           outgoingAddress: "somemailaddress@mail.com"
       
-      mail_receiver:
+      mail-receiver:
         apiVersion: "mailReceiverApi/v1"
         kind: "MailReceiver"
         spec:
           incomingAddress: "othermailaddress@mail.com"
       
-      disabled_transform:
+      disabled-transform:
         apiVersion: "dummyApi/v1"
         kind: "Dummy"
         spec: {}
         
-      enabled_transform:
+      enabled-transform:
         apiVersion: "dummyApi/v1"
         kind: "Dummy"
         spec: {}
         
-      disabled_transform_dict:
+      disabled-transform-dict:
         apiVersion: "dummyApi/v1"
         kind: "Dummy"
         spec: {}
         
-      enabled_transform_dict:
+      enabled-transform-dict:
         apiVersion: "dummyApi/v1"
         kind: "Dummy"
         spec: {}
 
-      disabled_transform_tpl_if:
+      disabled-transform-tpl-if:
         apiVersion: "dummyApi/v1"
         kind: "Dummy"
         spec: {}
         
-      enabled_transform_tpl_if:
+      enabled-transform-tpl-if:
         apiVersion: "dummyApi/v1"
         kind: "Dummy"
         spec: {}
