@@ -10,6 +10,9 @@ parameters:
 - name: RunTests
   type: boolean
   default: true
+- name: NoLint
+  type: boolean
+  default: false
 
 steps:
 - script: |
@@ -38,18 +41,14 @@ steps:
     ls
     cd hull/files/test/HULL
     ls
+    echo no_lint: $(NoLint)
+    export no_lint=$(NoLint)
     gauge run --env single_file -p -l debug specs
     gauge run --env multi_file -p -l debug specs
   displayName: 'gauge test against helm v$(HelmVersion)'
   condition: and(ne(variables['HelmVersion'],''),eq('${{ parameters.RunTests }}','True'))
     
 - ${{ each version in parameters.HelmVersions }}: # Each Helm Version
-
-  - script: |
-      echo $(NoLint)
-      export no_lint=$(NoLint)
-    displayName: 'set no_lint v$(NoLint)'
-    condition: and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','True'))
      
   - script: |
       set -euo pipefail
