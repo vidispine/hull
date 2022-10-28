@@ -44,7 +44,12 @@ steps:
   condition: and(ne(variables['HelmVersion'],''),eq('${{ parameters.RunTests }}','True'))
     
 - ${{ each version in parameters.HelmVersions }}: # Each Helm Version
-  
+
+  - script: |
+      export no_lint=true
+    displayName: 'set no_lint v${{ NoLint }}'
+    condition: and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','True'),eq('${{ NoLint }}','True'))
+     
   - script: |
       set -euo pipefail
       echo installing helm

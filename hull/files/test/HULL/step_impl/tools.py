@@ -148,8 +148,11 @@ def fail_to_render_the_templates_for_test_case_and_chart_and_values_file(case, c
 
 @step("Lint the templates for values file <values_file>")
 def lint_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file):
-    lint = lint_chart(data_store.scenario.case, data_store.scenario.chart, values_file)
-    assert lint.returncode == 0, "Linting failed with ExitCode " + str(lint.returncode) + " STDOUT was:\n\n" + str(lint.stdout) + "\n\n and STDERR\n\n: " + str(lint.stderr)
+    if os.environ.get("no_lint") == 'true':
+        print('Skipping Linting')
+    else: 
+        lint = lint_chart(data_store.scenario.case, data_store.scenario.chart, values_file)
+        assert lint.returncode == 0, "Linting failed with ExitCode " + str(lint.returncode) + " STDOUT was:\n\n" + str(lint.stdout) + "\n\n and STDERR\n\n: " + str(lint.stderr)
 
 @step("Render the templates for values file <values_file> to test execution folder")
 def render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file):
@@ -163,7 +166,10 @@ def render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file):
 
 @step("Lint and render the templates for values file <values_file> to test execution folder")
 def lint_and_render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file):
-    lint_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file)
+    if os.environ.get("no_lint") == 'true':
+        print('Skipping Linting')
+    else:
+        lint_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file)
     render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file)
 
 @step("Fill data store with rendered objects")
