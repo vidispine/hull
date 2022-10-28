@@ -46,6 +46,13 @@
 
 * Prepare default test case for this kind with test chart "hull-test" and values file "values.hull.yaml" including suites <suites>
 
+# Lint and Render
+* Lint
+* Render
 
+# Lint and Render values file <values_file>
+* Lint the templates for values file <values_file>
+* Render the templates for values file <values_file> to test execution folder
+* Fill data store with rendered objects
 
 

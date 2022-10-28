@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "StatefulSet" including suites "pod"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "25" objects were rendered
 * Validate
 
@@ -13,7 +13,7 @@ Test creation of objects and features.
 * Check basic metadata functionality
 
 ## Pod
-* Render
+* Lint and Render
 * Check pod functionality
 
 ## Violate schema

@@ -29,8 +29,8 @@ hull:
   # CONFIGMAPS
     statefulset:      
 
-      service_account:
-        serviceName: service_account
+      service-account:
+        serviceName: service-account
         pod:
           containers: {}
     
@@ -39,107 +39,107 @@ hull:
         pod:
           containers: {}
         
-      static_name:
-        serviceName: static_name
+      static-name:
+        serviceName: static-name
         pod:
           containers: {}
         
 
-      metadata_merge:
-        serviceName: metadata_merge
+      metadata-merge:
+        serviceName: metadata-merge
         pod:
           containers: {}
         
-      metadata_overwrite:
-        serviceName: metadata_overwrite
+      metadata-overwrite:
+        serviceName: metadata-overwrite
         pod:
           containers: {}
       
-      disabled_transform:
-        serviceName: disabled_transform
+      disabled-transform:
+        serviceName: disabled-transform
         pod:
           containers: {}
         
-      enabled_transform:
-        serviceName: enabled_transform
+      enabled-transform:
+        serviceName: enabled-transform
         pod:
           containers: {}
         
-      disabled_transform_dict:
-        serviceName: disabled_transform_dict
+      disabled-transform-dict:
+        serviceName: disabled-transform-dict
         pod:
           containers: {}
         
-      enabled_transform_dict:
-        serviceName: enabled_transform_dict
+      enabled-transform-dict:
+        serviceName: enabled-transform-dict
         pod:
           containers: {}
       
-      disabled_transform_tpl_if:
-        serviceName: enabled_transform_dict
+      disabled-transform-tpl-if:
+        serviceName: enabled-transform-dict
         pod:
           containers: {}
       
-      transformation_shortforms:
-        serviceName: transformation_shortforms
+      transformation-shortforms:
+        serviceName: transformation-shortforms
         pod:
           containers: {}
 
-      transformation_doc_examples:
-        serviceName: transformation_doc_examples
+      transformation-doc-examples:
+        serviceName: transformation-doc-examples
         pod:
           containers: {}
 
-      enabled_transform_tpl_if:
-        serviceName: enabled_transform_tpl_if
+      enabled-transform-tpl-if:
+        serviceName: enabled-transform-tpl-if
         pod:
           containers: {}
 
-      complex_gets:
-        serviceName: complex_gets
+      complex-gets:
+        serviceName: complex-gets
         pod:
           containers: {}
 
-      pod_get:
-        serviceName: pod_get
+      pod-get:
+        serviceName: pod-get
 
-      imagepullsecrets_custom:
-        serviceName: image_name_empty_registry
+      imagepullsecrets-custom:
+        serviceName: image-name-empty-registry
         pod:
           containers: {}
 
-      imagepullsecrets_add_all:
-        serviceName: image_name_empty_registry
+      imagepullsecrets-add-all:
+        serviceName: image-name-empty-registry
         pod:
           containers: {}
           
-      image_name_empty_registry:
-        serviceName: image_name_empty_registry
+      image-name-empty-registry:
+        serviceName: image-name-empty-registry
         pod:
           containers: {}
         
-      image_name_registry:
-        serviceName: image_name_registry
+      image-name-registry:
+        serviceName: image-name-registry
         pod:
           containers: {}
         
-      image_name_tag:
-        serviceName: image_name_tag
+      image-name-tag:
+        serviceName: image-name-tag
         pod:
           containers: {}
 
-      custom_args:
-        serviceName: custom_args
+      custom-args:
+        serviceName: custom-args
         pod:
           containers: {}
 
-      int_bool_dict_array_ht:
-        serviceName: custom_args_as_string
+      int-bool-dict-array-ht:
+        serviceName: custom-args_as_string
         pod:
           containers: {}
 
-      removal_test:
-        serviceName: removal_test
+      removal-test:
+        serviceName: removal-test
         pod:
           containers:
             remove: null
@@ -147,40 +147,40 @@ hull:
               ports:
                 remove: null
                 
-      volume_test:
-        serviceName: volume_test
+      volume-test:
+        serviceName: volume-test
         pod:
           volumes:
             to_be_removed: null
       
-      env_test:
-        serviceName: env_test
+      env-test:
+        serviceName: env-test
         pod:
           containers: {}
 
-      envfrom_test:
-        serviceName: envfrom_test
+      envfrom-test:
+        serviceName: envfrom-test
         pod:
           containers: {}
 
-      enabled_true_false:
-        serviceName: enabled_true_false
+      enabled-true-false:
+        serviceName: enabled-true-false
                 
-      volume_active_selection:
-        serviceName: volume_active_selection
+      volume-active-selection:
+        serviceName: volume-active-selection
         pod:
           containers: {}
 
-      full_example_deployment:
+      full-example-deployment:
         serviceName: disabled
         annotations:
-          example: "Some annotation applied to this deployment full_example_deployment"
+          example: "Some annotation applied to this deployment full-example-deployment"
         labels:
-          example: "Some label applied to this deployment full_example_deployment"
+          example: "Some label applied to this deployment full-example-deployment"
         templateAnnotations:
-          example: "Some annotation applied to the template section of this deployment full_example_deployment"
+          example: "Some annotation applied to the template section of this deployment full-example-deployment"
         templateLabels:
-          example: "Some label applied to the template section of this deployments full_example_deployment"
+          example: "Some label applied to the template section of this deployments full-example-deployment"
         revisionHistoryLimit: 1000
         pod:
           serviceAccountName: full_example_serviceaccount

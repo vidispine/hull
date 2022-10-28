@@ -8,19 +8,19 @@ hull:
   objects:
     registry:
 
-      example_registry:
+      example-registry:
         server: example.cr.io
         username: exmple_user
         password: example_password
 
-      local_registry:
+      local-registry:
         server: local.cr.io
         username: local_user
         password: local_password
 
     <OBJECT_TYPE>:
       
-      service_account:
+      service-account:
         pod:
           containers:
             main:
@@ -29,7 +29,7 @@ hull:
                 tag: "99.9"
           serviceAccountName: another_account
 
-      imagepullsecrets_custom:
+      imagepullsecrets-custom:
         pod:
           containers:
             main:
@@ -39,7 +39,7 @@ hull:
           imagePullSecrets:
           - name: some-custom-imagepull-secret
 
-      imagepullsecrets_add_all:
+      imagepullsecrets-add-all:
         pod:
           containers:
             main:
@@ -47,7 +47,7 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
 
-      image_name_empty_registry:
+      image-name-empty-registry:
         pod:
           containers:
             main:
@@ -55,7 +55,7 @@ hull:
                 registry: ""
                 repository: my/image/repo
 
-      image_name_registry:
+      image-name-registry:
         pod:
           containers:
             main:
@@ -65,7 +65,7 @@ hull:
                   >>>"
                 repository: my/image/repo
 
-      image_name_tag:
+      image-name-tag:
         pod:
           containers:
             main:
@@ -73,7 +73,7 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
 
-      custom_args:
+      custom-args:
         pod:
           containers:
             main:
@@ -93,7 +93,7 @@ hull:
 ]
 >>>"
 
-      int_bool_dict_array_ht:
+      int-bool-dict-array-ht:
         pod:
           containers:
             main:
@@ -124,7 +124,7 @@ hull:
                   configMapRef:
                     name: full_example_configmap
                     optional: _HT!true
-      removal_test:
+      removal-test:
         pod:
           containers:
             keep:
@@ -141,7 +141,7 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
 
-      volume_test:
+      volume-test:
         pod:
           containers:
             main:
@@ -194,7 +194,7 @@ hull:
               persistentVolumeClaim:
                 claimName: remove_me
 
-      env_test:
+      env-test:
         pod:
           containers:
             main:
@@ -239,7 +239,7 @@ hull:
                       containerName: main_container
                       divisor: "5"
       
-      envfrom_test:
+      envfrom-test:
         pod:
           containers:
             main:
@@ -273,7 +273,7 @@ hull:
                     name: a_very_loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong_secret_name
                     staticName: true
 
-      enabled_true_false:
+      enabled-true-false:
         pod:
           containers:
             test_disabled:
@@ -540,7 +540,7 @@ hull:
               secret:
                 secretName: test_enabled_missing
 
-      transformation_shortforms:
+      transformation-shortforms:
         pod:
           containers:
             test_disabled:
@@ -613,7 +613,7 @@ hull:
               command:
               - _HT! [ {{ (printf "%s_%s" "test_enabled" "missing") }} ]
               
-      transformation_doc_examples:
+      transformation-doc-examples:
         pod:
           containers:
             
@@ -713,7 +713,7 @@ hull:
                       second: { containerPort: {{ (index . "$").Values.hull.config.specific.port_two }} }
                     }
 
-      complex_gets:
+      complex-gets:
         annotations: _HT*hull.config.specific.annotations_dict
         pod:
           containers:
@@ -722,10 +722,10 @@ hull:
               args: _HT*hull.config.specific.args_array
             deferred: _HT*hull.config.specific.deferred_container
 
-      pod_get:
+      pod-get:
         pod: _HT*hull.config.specific.pod_spec
 
-      volume_active_selection:
+      volume-active-selection:
         pod:
           containers:
             test:

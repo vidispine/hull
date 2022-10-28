@@ -12,7 +12,7 @@ hull:
 
   # RESOURCEQUOTA
     resourcequota:
-      quota_one:
+      quota-one:
         hard: 
           cpu: "10"
           memory: 20Gi

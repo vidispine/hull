@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "LimitRange"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "9" objects were rendered
 * Validate
 
@@ -14,7 +14,7 @@ Test creation of objects and features.
 
 ## Data
 
-* Render
+* Lint and Render
 
 * Set test object to "release-name-hull-test-cpu"
 

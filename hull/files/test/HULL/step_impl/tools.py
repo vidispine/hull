@@ -146,17 +146,31 @@ def fail_to_render_the_templates_for_test_case_and_chart_and_values_file(case, c
     else:
         assert False, "With ExitCode " + str(result.returncode) + ", expected error " + expected_error + " not found in STDOUT: " + str(result.stdout)
 
+@step("Lint the templates for values file <values_file>")
+def lint_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file):
+    if os.environ.get("no_lint") == 'true':
+        print('Skipping Linting')
+    else: 
+        lint = lint_chart(data_store.scenario.case, data_store.scenario.chart, values_file)
+        assert lint.returncode == 0, "Linting failed with ExitCode " + str(lint.returncode) + " STDOUT was:\n\n" + str(lint.stdout) + "\n\n and STDERR\n\n: " + str(lint.stderr)
+
 @step("Render the templates for values file <values_file> to test execution folder")
 def render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file):
-    result = render_chart(data_store.scenario.case, data_store.scenario.chart, values_file)
+    render = render_chart(data_store.scenario.case, data_store.scenario.chart, values_file)
     #if result.returncode == 0:
     #    render_path = get_render_path(data_store.scenario.case, data_store.scenario.chart, values_file)
     #    with open(render_path) as reader:
     #        for line in reader.readlines():
     #            Messages.write_message(line)
-    assert result.returncode == 0, "With ExitCode " + str(result.returncode) + " STDOUT was:\n\n" + str(result.stdout) + "\n\n and STDERR\n\n: " + str(result.stderr)
+    assert render.returncode == 0, "Rendering failed with ExitCode " + str(render.returncode) + " STDOUT was:\n\n" + str(render.stdout) + "\n\n and STDERR\n\n: " + str(render.stderr)
 
-
+@step("Lint and render the templates for values file <values_file> to test execution folder")
+def lint_and_render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file):
+    if os.environ.get("no_lint") == 'true':
+        print('Skipping Linting')
+    else:
+        lint_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file)
+    render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file)
 
 @step("Fill data store with rendered objects")
 def fill_data_store_with_rendered_objects():
@@ -335,6 +349,25 @@ def validateJson(test_object):
 def get_render_path(case, chart, values_file):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     return os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered', chart, 'templates',  'hull.yaml')
+
+def lint_chart(case, chart, values_file):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    chart_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart)
+    render_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered')
+    
+    if not os.path.isdir(render_path):
+        os.makedirs(render_path)
+    
+    suites = ()
+    for suite in data_store.scenario.suites:
+        suites += ("-f", os.path.join(chart_path, suite + ".values.hull.yaml"))
+    
+    args = ("helm", "lint", chart_path, "--debug", "--strict") + suites + ("-f",  os.path.join(chart_path, values_file))
+    
+    popen = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    print('STDOUT:\n', popen.stdout.decode("utf-8").replace("\n",os.linesep))
+    print('STDERR:\n', popen.stderr.decode("utf-8").replace("\n",os.linesep) if popen.stderr is not None else "")
+    return popen
 
 def render_chart(case, chart, values_file):
     dir_path = os.path.dirname(os.path.realpath(__file__))
