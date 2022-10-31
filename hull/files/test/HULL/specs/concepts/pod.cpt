@@ -1,120 +1,120 @@
 # Check pod functionality
 
 * Prepare default test case for this kind including suites "pod,noimagepullsecrets"
-* Render
+* Lint and Render
 
-* Set test object to "release-name-hull-test-service_account"
+* Set test object to "release-name-hull-test-service-account"
 * Test Object has key "spec§template§spec§serviceAccountName" with value "another_account"
 
 
-* Set test object to "release-name-hull-test-imagepullsecrets_add_all"
+* Set test object to "release-name-hull-test-imagepullsecrets-add-all"
 * Test Object does not have key "spec§template§spec§imagePullSecrets"
 
 
 
 * Prepare default test case for this kind including suites "pod,imagepullsecretsfromfirstregistry"
-* Render
+* Lint and Render
 
-* Set test object to "release-name-hull-test-service_account"
+* Set test object to "release-name-hull-test-service-account"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-imagepullsecrets_custom"
+* Set test object to "release-name-hull-test-imagepullsecrets-custom"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-imagepullsecrets_add_all"
+* Set test object to "release-name-hull-test-imagepullsecrets-add-all"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-image_name_empty_registry"
+* Set test object to "release-name-hull-test-image-name-empty-registry"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-image_name_registry"
+* Set test object to "release-name-hull-test-image-name-registry"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-image_name_tag"
+* Set test object to "release-name-hull-test-image-name-tag"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-custom_args"
+* Set test object to "release-name-hull-test-custom-args"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-removal_test"
+* Set test object to "release-name-hull-test-removal-test"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
 
 
 
 
 * Prepare default test case for this kind including suites "pod,imagepullsecretsfromregistryname"
-* Render
+* Lint and Render
 
-* Set test object to "release-name-hull-test-service_account"
+* Set test object to "release-name-hull-test-service-account"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-imagepullsecrets_custom"
+* Set test object to "release-name-hull-test-imagepullsecrets-custom"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-imagepullsecrets_add_all"
+* Set test object to "release-name-hull-test-imagepullsecrets-add-all"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-image_name_empty_registry"
+* Set test object to "release-name-hull-test-image-name-empty-registry"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-image_name_registry"
+* Set test object to "release-name-hull-test-image-name-registry"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-image_name_tag"
+* Set test object to "release-name-hull-test-image-name-tag"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-custom_args"
+* Set test object to "release-name-hull-test-custom-args"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
-* Set test object to "release-name-hull-test-removal_test"
+* Set test object to "release-name-hull-test-removal-test"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
 
 
 * Prepare default test case for this kind including suites "pod,noobjectnameprefixes"
-* Render
+* Lint and Render
 
-* Set test object to "service_account"
-* Set test object to "imagepullsecrets_custom"
-* Set test object to "imagepullsecrets_add_all"
-* Set test object to "image_name_empty_registry"
-* Set test object to "image_name_registry"
-* Set test object to "image_name_tag"
-* Set test object to "custom_args"
-* Set test object to "int_bool_dict_array_ht"
-* Set test object to "volume_test"
-* Set test object to "env_test"
-* Set test object to "envfrom_test"
-* Set test object to "enabled_true_false"
-* Set test object to "transformation_shortforms"
-* Set test object to "transformation_doc_examples"
-* Set test object to "complex_gets"
-* Set test object to "pod_get"
+* Set test object to "service-account"
+* Set test object to "imagepullsecrets-custom"
+* Set test object to "imagepullsecrets-add-all"
+* Set test object to "image-name-empty-registry"
+* Set test object to "image-name-registry"
+* Set test object to "image-name-tag"
+* Set test object to "custom-args"
+* Set test object to "int-bool-dict-array-ht"
+* Set test object to "volume-test"
+* Set test object to "env-test"
+* Set test object to "envfrom-test"
+* Set test object to "enabled-true-false"
+* Set test object to "transformation-shortforms"
+* Set test object to "transformation-doc-examples"
+* Set test object to "complex-gets"
+* Set test object to "pod-get"
 
 
 
 
 * Prepare default test case for this kind including suites "pod"
-* Render
+* Lint and Render
 
-* Set test object to "release-name-hull-test-imagepullsecrets_add_all"
-* Test Object has key "spec§template§spec§imagePullSecrets§0§name" with value "release-name-hull-test-example_registry"
-* Test Object has key "spec§template§spec§imagePullSecrets§1§name" with value "release-name-hull-test-local_registry"
+* Set test object to "release-name-hull-test-imagepullsecrets-add-all"
+* Test Object has key "spec§template§spec§imagePullSecrets§0§name" with value "release-name-hull-test-example-registry"
+* Test Object has key "spec§template§spec§imagePullSecrets§1§name" with value "release-name-hull-test-local-registry"
 
-* Set test object to "release-name-hull-test-image_name_empty_registry"
+* Set test object to "release-name-hull-test-image-name-empty-registry"
 
-* Set test object to "release-name-hull-test-image_name_empty_registry"
+* Set test object to "release-name-hull-test-image-name-empty-registry"
 * Test Object has key "spec§template§spec§containers§0§image" with value "my/image/repo"
 
-* Set test object to "release-name-hull-test-image_name_registry"
+* Set test object to "release-name-hull-test-image-name-registry"
 * Test Object has key "spec§template§spec§containers§0§image" with value "local.registry/my/image/repo"
 
-* Set test object to "release-name-hull-test-custom_args"
+* Set test object to "release-name-hull-test-custom-args"
 * Test Object has key "spec§template§spec§containers§0§args§0" with value "--this-is-defined"
 * Test Object has key "spec§template§spec§containers§0§args§1" with value "--hence-is-this"
 * Test Object has key "spec§template§spec§containers§0§args§2" with value "--and-this-because-other-is-not-defined"
 
-* Set test object to "release-name-hull-test-int_bool_dict_array_ht"
+* Set test object to "release-name-hull-test-int-bool-dict-array-ht"
 * Test Object has key "spec§template§spec§containers§0§args" with array value that has "3" items
 * Test Object has key "spec§template§spec§containers§0§args§0" with value "--this-is-defined"
 * Test Object has key "spec§template§spec§containers§0§args§1" with value "--hence-is-this"
@@ -127,14 +127,14 @@
 * Test Object has key "spec§template§spec§containers§0§envFrom§0§configMapRef§optional" set to true
 
 
-* Set test object to "release-name-hull-test-image_name_tag"
+* Set test object to "release-name-hull-test-image-name-tag"
 * Test Object has key "spec§template§spec§containers§0§image" with value "my/image/repo:99.9"
 
-* Set test object to "release-name-hull-test-removal_test"
+* Set test object to "release-name-hull-test-removal-test"
 * Test Object has key "spec§template§spec§containers" with array value that has "1" items
 * Test Object has key "spec§template§spec§containers§0§ports" with array value that has "1" items
 
-* Set test object to "release-name-hull-test-volume_test"
+* Set test object to "release-name-hull-test-volume-test"
 * Test Object has key "spec§template§spec§volumes" with array value that has "8" items
 * Test Object has key "spec§template§spec§volumes§0§name" with value "azure_disk_volume"
 * Test Object has key "spec§template§spec§volumes§0§azureDisk§diskName" with value "myDisk"
@@ -159,7 +159,7 @@
 * Test Object has key "spec§template§spec§volumes§7§secret§secretName" with value "a_static_secret"
 * Test Object has key "spec§template§spec§volumes§7§secret§defaultMode" with integer value "42"
 
-* Set test object to "release-name-hull-test-env_test"
+* Set test object to "release-name-hull-test-env-test"
 * Test Object has key "spec§template§spec§containers§0§env§0§name" with value "ENV_VAR_CONFIGMAP"
 * Test Object has key "spec§template§spec§containers§0§env§0§valueFrom§configMapKeyRef§key" with value "the_configmap_key"
 * Test Object has key "spec§template§spec§containers§0§env§0§valueFrom§configMapKeyRef§name" with value "release-name-hull-test-env_configmap_name"
@@ -184,7 +184,7 @@
 * Test Object has key "spec§template§spec§containers§0§env§6§name" with value "ENV_VAR_VALUE"
 * Test Object has key "spec§template§spec§containers§0§env§6§value" with value "plain_value"
 
-* Set test object to "release-name-hull-test-envfrom_test"
+* Set test object to "release-name-hull-test-envfrom-test"
 * Test Object has key "spec§template§spec§containers§0§envFrom§0§configMapRef§name" with value "release-name-hull-test-a_configmap"
 * Test Object has key "spec§template§spec§containers§0§envFrom§0§secretRef§name" with value "release-name-hull-test-a_secret"
 * Test Object has key "spec§template§spec§containers§0§envFrom§1§configMapRef§name" with value "release-name-hull-test-envfrom_configmap_name"
@@ -196,7 +196,7 @@
 * Test Object has key "spec§template§spec§containers§0§envFrom§4§secretRef§name" with value "envfrom_secret_name_static"
 * Test Object has key "spec§template§spec§containers§0§envFrom§5§secretRef§name" with value "a_very_loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong_secret_name"
 
-* Set test object to "release-name-hull-test-enabled_true_false"
+* Set test object to "release-name-hull-test-enabled-true-false"
 
 * Test Object has key "spec§template§spec§containers" with array value that has "3" items
 * Test Object has key "spec§template§spec§containers§0§env" with array value that has "3" items
@@ -239,7 +239,7 @@
 * Test Object has key "spec§template§spec§volumes§1§secret§secretName" with value "release-name-hull-test-test_enabled_missing"
 * Test Object has key "spec§template§spec§volumes§2§secret§secretName" with value "release-name-hull-test-test_enabled_transform"
 
-* Set test object to "release-name-hull-test-transformation_shortforms"
+* Set test object to "release-name-hull-test-transformation-shortforms"
 
 * Test Object has key "spec§template§spec§containers" with array value that has "3" items
 * Test Object has key "spec§template§spec§containers§0§env" with array value that has "3" items
@@ -262,7 +262,7 @@
 * Test Object has key "spec§template§spec§containers§2§command" with array value that has "1" items
 * Test Object has key "spec§template§spec§containers§2§command§0" with value "test_enabled_transform"
 
-* Set test object to "release-name-hull-test-transformation_doc_examples"
+* Set test object to "release-name-hull-test-transformation-doc-examples"
 
 * Test Object has key "spec§template§spec§containers" with array value that has "9" items
 * Test Object has key "spec§template§spec§containers§0§command" with array value that has "3" items
@@ -301,7 +301,7 @@
 * Test Object has key "spec§template§spec§containers§8§ports§1§name" with value "second"
 * Test Object has key "spec§template§spec§containers§8§ports§1§containerPort" with integer value "2"
 
-* Set test object to "release-name-hull-test-complex_gets"
+* Set test object to "release-name-hull-test-complex-gets"
 
 * Test Object has key "metadata§annotations§a" with value "first"
 * Test Object has key "metadata§annotations§b" with value "second"
@@ -329,7 +329,7 @@
 * Test Object has key "spec§template§spec§containers§1§livenessProbe§httpGet§scheme" with value "HTTPS"
 * Test Object has key "spec§template§spec§containers§1§livenessProbe§httpGet§port" with integer value "543"
 
-* Set test object to "release-name-hull-test-pod_get"
+* Set test object to "release-name-hull-test-pod-get"
 
 * Test Object has key "spec§template§spec§initContainers" with array value that has "1" items
 * Test Object has key "spec§template§spec§initContainers§0§args§0" with value "or"
@@ -344,7 +344,7 @@
 * Test Object has key "spec§template§spec§initContainers§0§livenessProbe§httpGet§scheme" with value "HTTP"
 * Test Object has key "spec§template§spec§initContainers§0§livenessProbe§httpGet§port" with integer value "876"
 
-* Set test object to "release-name-hull-test-volume_active_selection"
+* Set test object to "release-name-hull-test-volume-active-selection"
 
 * Test Object has key "spec§template§spec§volumes§0§name" with value "active_1"
 * Test Object has key "spec§template§spec§volumes§0§hostPath§path" with value "/the_path_one"

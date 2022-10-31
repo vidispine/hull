@@ -12,7 +12,7 @@ hull:
 
   # CONFIGMAPS
     persistentvolume:
-      volume_one:
+      volume-one:
         azureDisk:
           diskName: test
           diskURI: azure://

@@ -1,5 +1,5 @@
 # Basic chart description and version
-apiVersion: v1
+apiVersion: v2
 appVersion: 1.25.0
 description: hull-test
 name: hull-test

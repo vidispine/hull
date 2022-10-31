@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare default test case for kind "PodDisruptionBudget"
 
 ## Render and Validate
-* Render
+* Lint and Render
 * Expected number of "7" objects were rendered
 * Validate
 
@@ -14,7 +14,7 @@ Test creation of objects and features.
 
 ## References
 
-* Render
+* Lint and Render
 
 * Set test object to "release-name-hull-test-simple"
 * Test Object has key "spec§maxUnavailable" with integer value "1"

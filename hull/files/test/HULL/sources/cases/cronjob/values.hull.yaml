@@ -39,7 +39,7 @@ hull:
                   repository: my/image/repo
                   tag: "99.9"
         
-      static_name:
+      static-name:
         schedule: "* * 2"
         job:
           pod:
@@ -50,7 +50,7 @@ hull:
                   tag: "99.9"
         
         
-      metadata_merge:
+      metadata-merge:
         schedule: "a"
         job:
           pod:
@@ -61,7 +61,7 @@ hull:
                   tag: "99.9"
         
         
-      metadata_overwrite:
+      metadata-overwrite:
         schedule: "* * 2"
         job:
           pod:
@@ -71,7 +71,7 @@ hull:
                   repository: my/image/repo
                   tag: "99.9"
 
-      disabled_transform:
+      disabled-transform:
         schedule: "* * 2"
         job:
           pod:
@@ -81,7 +81,7 @@ hull:
                   repository: my/image/repo
                   tag: "99.9"
         
-      enabled_transform:
+      enabled-transform:
         schedule: "* * 2"
         job:
           pod:
@@ -91,7 +91,7 @@ hull:
                   repository: my/image/repo
                   tag: "99.9"
         
-      disabled_transform_dict:
+      disabled-transform-dict:
         schedule: "* * 2"
         job:
           pod:
@@ -101,7 +101,7 @@ hull:
                   repository: my/image/repo
                   tag: "99.9"
         
-      enabled_transform_dict:
+      enabled-transform-dict:
         schedule: "* * 2"
         job:
           pod:
@@ -111,7 +111,7 @@ hull:
                   repository: my/image/repo
                   tag: "99.9"
                   
-      disabled_transform_tpl_if:
+      disabled-transform-tpl-if:
         schedule: "* * 2"
         job:
           pod:
@@ -122,7 +122,7 @@ hull:
                   tag: "99.9"
 
       
-      enabled_transform_tpl_if:
+      enabled-transform-tpl-if:
         schedule: "* * 2"
         job:
           pod:

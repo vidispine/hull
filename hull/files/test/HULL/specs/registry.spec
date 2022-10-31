@@ -5,7 +5,7 @@ Test creation of objects and features.
 * Prepare test case "registry" for kind "Secret"
 
 ## Rendering
-* Render
+* Lint and Render
 * Expected number of "7" objects were rendered
 * Validate
 

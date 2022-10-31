@@ -128,7 +128,7 @@ hull:
             hosts:
               - "host.two.com"
 
-      tls_rules_enabled_false_true:
+      tls-rules-enabled-false-true:
         enabled: true
         staticName: false
         rules:
