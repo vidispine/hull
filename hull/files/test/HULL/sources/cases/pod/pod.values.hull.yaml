@@ -5,6 +5,10 @@
 ###################################################
 ### CONFIG
 hull:
+  config:
+    specific:
+      pullPolicy: IfNotPresent
+
   objects:
     registry:
 
@@ -72,6 +76,20 @@ hull:
               image:
                 repository: my/image/repo
                 tag: "99.9"
+      
+      image-pull-policy:
+        pod:
+          containers:
+            never:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              imagePullPolicy: Never
+            not-present:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              imagePullPolicy: _HT*hull.config.specific.pullPolicy
 
       custom-args:
         pod:
