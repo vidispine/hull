@@ -1,4 +1,11 @@
 ------------------
+[1.23.15]
+------------------
+FIXES:
+- fixed incorrect schema structure for imagePullPolicy (thanks [matthias4217](https://github.com/matthias4217)!)
+- fixed remaining occurences of same schema structure problem with enums
+
+------------------
 [1.23.14]
 ------------------
 FIXES:
