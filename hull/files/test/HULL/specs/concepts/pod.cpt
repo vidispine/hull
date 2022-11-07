@@ -63,6 +63,10 @@
 * Set test object to "release-name-hull-test-image-name-tag"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
+* Set test object to "release-name-hull-test-image-pull-policy"
+* Test Object has key "spec§template§spec§containers§0§imagePullPolicy" with value "Never"
+* Test Object has key "spec§template§spec§containers§1§imagePullPolicy" with value "IfNotPresent"
+
 * Set test object to "release-name-hull-test-custom-args"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "local.cr.io/.*$"
 
