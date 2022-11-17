@@ -1,0 +1,19 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+  config:
+    general:
+      data:
+        installation:
+          config:
+            customCaCertificates:
+              test_cert_1: |-
+                CERT-DATA-1
+              test_cert_2: |-
+                CERT-DATA-2
+            
+###################################################

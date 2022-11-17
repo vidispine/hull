@@ -1,4 +1,11 @@
 ------------------
+[1.24.11]
+------------------
+FIXES:
+- when a dictionary structure contains a _HULL_TRANSFORMATION_ key for producing dynamically rendered key-value content and additional static keys side-by-side, transformations were not being correctly processed for the structures beneath the static key contents
+- some minor documentation fixes (links in main README.md, broken structures)
+
+------------------
 [1.24.10]
 ------------------
 FIXES:
