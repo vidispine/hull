@@ -32,7 +32,8 @@
                 {{- $valDict := fromYaml (include $params.NAME $pass) -}}
                 {{- $combined := $valDict }}
                 {{- if (and (typeIs "map[string]interface {}" (index $valDict $key)) (gt (len (keys $others)) 0)) -}}
-                {{- $combined = dict $key (merge $others (index $valDict $key)) }}
+                  {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $others "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey) -}}
+                  {{- $combined = dict $key (merge $others (index $valDict $key)) }}
                 {{- end -}}
                 {{- $source := unset $source $key -}}
                 {{- $source := merge $source $combined -}}
