@@ -106,11 +106,12 @@ which is equivalent to writing:
 registry: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.get>>><<<REFERENCE=hull.config.specific.globalRegistry>>>"
 ```
 
-but much shorter. The full transformation call is reduced to a short prefix (`_HT`), a character indicating the specific transformation to use (`*` for `hull.util.transformation.get`) and the single arguments (`REFERENCE`) value without the need to specify the arguments name. The other possible characters for short forms are `?`, `!`,`^` and `&`  the following transformation short forms are available for use:
+but much shorter. The full transformation call is reduced to a short prefix (`_HT`), a character indicating the specific transformation to use (`*` for `hull.util.transformation.get`) and the single arguments (`REFERENCE`) value without the need to specify the arguments name. The other possible characters for short forms are `?`, `!`, `/`, `^` and `&` and  the following transformation short forms are available for use:
 
 - `_HT*`: `hull.util.transformation.get`
 - `_HT?`: `hull.util.transformation.bool`
 - `_HT!`: `hull.util.transformation.tpl`
+- `_HT/`: `hull.util.transformation.include`
 - `_HT^`: `hull.util.transformation.makefullname`
 - `_HT&`: `hull.util.transformation.selector`
 
@@ -426,7 +427,7 @@ The `tpl` transformation basically offers full flexibility and can be used for a
     config:
         specific:
           'key.with.dots.in.it': hello dots!
-```
+  ```
 
   you can do so by using the HULL get transformation like this:
 
