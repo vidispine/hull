@@ -5,6 +5,13 @@
 ###################################################
 ### CONFIG
 hull:
+  config:
+    general:
+      data:
+        installation:
+          config:
+            customCaCertificates: {}
+
 #  config:
 #    general:  
 #      data: {} 
@@ -286,5 +293,48 @@ hull:
         pod:
           containers: {}
 
+      mixed-key-transformations:
+        pod:
+          containers:
+            mixed-key-transformations:
+              volumeMounts:
+                etcssl:
+                  enabled: _HT?(index . "$").Values.hull.config.general.data.installation.config.customCaCertificates
+                  name: etcssl
+                  mountPath: '/etc/ssl/certs'
+                'installation':
+                  name: 'installation'
+                  mountPath: /script
+                custom-installation-files:
+                  name: custom-installation-files
+                  mountPath: /custom-installation-files
+                _HULL_TRANSFORMATION_:
+                  NAME: hull.util.transformation.tpl
+                  CONTENT: |-
+                    {
+                      {{ range $certkey, $certvalue := (index . "$").Values.hull.config.general.data.installation.config.customCaCertificates}}
+                      "custom-ca-certificates-{{ $certkey }}": 
+                        {
+                          enabled: true, 
+                          name: "certs",
+                          mountPath: "/usr/local/share/ca-certificates/custom-ca-certificates-{{ $certkey }}",
+                          subPath: "{{ $certkey }}"
+                        },
+                      {{ end }}
+                    }
+          volumes:
+            installation:
+              secret:
+                secretName: hull-install
+            custom-installation-files:
+              secret:
+                secretName: custom-installation-files
+            etcssl:
+              enabled: _HT?(index . "$").Values.hull.config.general.data.installation.config.customCaCertificates
+              emptyDir: {}
+            certs:
+              enabled: _HT?(index . "$").Values.hull.config.general.data.installation.config.customCaCertificates
+              secret:
+                secretName: "custom-ca-certificates"
 
   ###################################################
