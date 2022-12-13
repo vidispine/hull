@@ -1,0 +1,100 @@
+hull: # HULL is configured via subchart key
+  config: # chart setup
+    specific: # central place for shared values specific to this chart
+      debug: true # one switch determining overall creation of objects
+      application_version: v23.1 # a share image tag for multiple container
+      myapp: # some exemplary configuration settings for the app, exposed here for transparency
+        rate_limit: 100
+        max_connections: 5     
+  objects: # all objects to create are defined here
+    deployment: # create deployments
+      myapp-frontend: # the base part of the object name for frontend deployment
+        pod: # configure pod-related aspects
+          containers: # non-init containers
+            main: # one main container
+              image: # image reference
+                repository: mycompany/myapp-frontend # repository
+                tag: _HT*hull.config.specific.application_version # reference to central tag value above
+              ports: # exposed ports
+                http: # port name is http
+                  containerPort: 80 # the port number
+              env: # environment variables
+                SERVER_HOSTNAME: # name of variable
+                  value: _HT^myapp-backend # value is dynamically rendered reference to myapp-backend service name
+                SERVER_PORT: # name of variable
+                  value: "8080" # server service port
+      myapp-backend: # the base part of the object name for backend deployment
+        pod: # configure pod-related aspects
+          containers: # non-init containers
+            main: # one main container
+              image: # image reference
+                repository: mycompany/myapp-backend # repository
+                tag: _HT*hull.config.specific.application_version # reference to central tag value above
+              ports: # exposed ports
+                http: # port name is http
+                  containerPort: 8080 # the port number
+              volumeMounts: # mounts of the container
+                appconfig: # context key is appconfig
+                  name: myappconfig # the name needs to match a volume
+                  mountPath: /etc/config/appconfig.json # mountPath
+                  subPath: server-appconfig.json # subPath
+          volumes: # volumes that may be mounted
+            myappconfig: # key matching a volumeMounts name
+              configMap: # configmap reference
+                name: myappconfig # the configmap to load, simply referenced by key name   
+    configmap: # create configmaps
+      myappconfig: # the backend configuration
+        data: # data section
+          server-appconfig.json: # key name is file name
+            inline: |- # define the contents of the file, using templating logic and references
+              {
+                "rate-limit": {{ .Values.hull.config.specific.myapp.rate_limit }}, 
+                "max-connections": {{ .Values.hull.config.specific.myapp.max_connections }},
+                {{ if .Values.hull.config.specific.debug }}
+                "debug-log": true
+                {{- else -}}
+                "debug-log": false
+                {{- end -}}
+              }
+    service: # create services
+      myapp-frontend: # frontend service, automatically matches pods with identical parent object's key name
+        type: |-  # dynamically switch type based on debug setting
+          _HT!
+            {{- if (index . "$").Values.hull.config.specific.debug -}}
+            NodePort
+            {{- else -}}
+            ClusterIP
+            {{- end -}}
+        ports: # definition of service ports
+          http: # http port for type=ClusterIP
+            enabled: _HT?not (index . "$").Values.hull.config.specific.debug # bind rendering to debug: false condition
+            port: 80 # regular port 
+            targetPort: http # targetPort setting
+          http_nodeport: # http port for type=NodePort
+            enabled: _HT?(index . "$").Values.hull.config.specific.debug # bind rendering to debug: true condition
+            port: 80 # regular port 
+            nodePort: 31111 # the node port
+            targetPort: http # targetPort setting
+      myapp-backend: # backend service, automatically matches pods with identical parent object's key name
+        type: ClusterIP # in cluster service
+        ports: # definition of service ports
+          http: # http port
+            port: 80 # regular port 
+            targetPort: http # targetPort setting
+    ingress: # crete ingresses
+      myapp: # the central frontend ingress
+        enabled: _HT?not (index . "$").Values.hull.config.specific.debug # rendering bound to debug: false
+        rules: # the ingress rules
+          myapp: # key-value dictionary of rules
+            host: SET_HOSTNAME_HERE # change the host for actual deployment
+            http: # http settings
+              paths: # paths definition
+                standard: # a standard path definition
+                  path: / # could be changed at deployment time
+                  pathType: ImplementationSpecific # path type
+                  backend: # backend config
+                    service: # service targeted
+                      name: myapp-frontend # key name suffices to reference service created in this chart
+                      port: # target port
+                        name: http # target port name
+      
