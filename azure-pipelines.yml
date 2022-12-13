@@ -160,6 +160,7 @@ jobs:
         sudo ./cr package ./hull-demo 
         echo "-> upload hull-demo chart"
         sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
+        rm -rf .cr-index
         mkdir .cr-index
         wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
         sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) --charts-repo https://vidispine.github.io/hull --push 
