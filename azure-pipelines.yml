@@ -147,10 +147,18 @@ jobs:
         echo "-> Chart.yaml:"
         cat ./hull-demo/Chart.yaml 
         echo "<- Chart.yaml"
-        echo "-> package charts"
+        echo "-> package hull chart"        
         sudo ./cr package ./hull
+        echo "-> upload hull chart"
+        sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
+        mkdir .cr-index
+        wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
+        sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) --charts-repo https://vidispine.github.io/hull --push 
+        rm ./*.tgz
+        rm -rf ./hull
+        echo "-> package hull-demo chart"        
         sudo ./cr package ./hull-demo 
-        echo "-> upload charts"
+        echo "-> upload hull-demo chart"
         sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
         mkdir .cr-index
         wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
