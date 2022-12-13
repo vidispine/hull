@@ -1947,6 +1947,28 @@ entries:
     version: 1.19.0
   hull-demo:
   - apiVersion: v2
+    appVersion: "1.26"
+    created: "2022-12-13T17:15:15.114271739Z"
+    dependencies:
+    - name: hull
+      repository: https://vidispine.github.io/hull
+      version: 1.26.0
+    description: Demo Chart for showcasing HULL library chart usage
+    digest: b45ecbf2b31a581904f9dc54e318807a113d021826ba1262ac68ab5a35be118e
+    home: https://github.com/vidispine/hull
+    keywords:
+    - hull
+    - utility
+    kubeVersion: '>= 1.26.0'
+    maintainers:
+    - email: georgmartin.weber@bertelsmann.de
+      name: georg weber
+    name: hull-demo
+    type: application
+    urls:
+    - https://github.com/vidispine/hull/releases/download/hull-demo-1.26.0/hull-demo-1.26.0.tgz
+    version: 1.26.0
+  - apiVersion: v2
     appVersion: "1.25"
     created: "2022-12-13T15:06:06.083641736Z"
     dependencies:
