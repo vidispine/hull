@@ -159,10 +159,10 @@ jobs:
         rm -rf ./hull
         echo "-> package hull-demo chart"  
         sudo ./cr package ./hull-demo 
-        echo "-> test chart"
-        helm repo add hull https://vidispine.github.io/hull
-        helm dep build hull-demo
-        helm template hull-demo    
+        # echo "-> test chart"
+        # helm repo add hull https://vidispine.github.io/hull
+        # helm dep build hull-demo
+        # helm template hull-demo    
         echo "-> upload hull-demo chart"
         sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
         sudo rm -rf .cr-index
