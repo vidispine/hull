@@ -50,7 +50,7 @@ hull: # HULL is configured via subchart key
                 SERVER_HOSTNAME: # name of variable
                   value: _HT^myapp-backend # value is dynamically rendered reference to myapp-backend service name
                 SERVER_PORT: # name of variable
-                  value: "8080" # server service port
+                  value: "8080" # backend service port
       myapp-backend: # the base part of the object name for backend deployment
         pod: # configure pod-related aspects
           containers: # non-init containers
@@ -65,7 +65,7 @@ hull: # HULL is configured via subchart key
                 appconfig: # context key is appconfig
                   name: myappconfig # the name needs to match a volume
                   mountPath: /etc/config/appconfig.json # mountPath
-                  subPath: server-appconfig.json # subPath
+                  subPath: backend-appconfig.json # subPath
           volumes: # volumes that may be mounted
             myappconfig: # key matching a volumeMounts name
               configMap: # configmap reference
@@ -73,16 +73,12 @@ hull: # HULL is configured via subchart key
     configmap: # create configmaps
       myappconfig: # the backend configuration
         data: # data section
-          server-appconfig.json: # key name is file name
+          backend-appconfig.json: # key name is file name
             inline: |- # define the contents of the file, using templating logic and references
               {
                 "rate-limit": {{ .Values.hull.config.specific.myapp.rate_limit }}, 
-                "max-connections": {{ .Values.hull.config.specific.myapp.max_connections }},
-                {{ if .Values.hull.config.specific.debug }}
-                "debug-log": true
-                {{- else -}}
-                "debug-log": false
-                {{- end -}}
+                "max-connections": {{ .Values.hull.config.specific.myapp.max_connections }}, 
+                "debug-log": {{ if .Values.hull.config.specific.debug }}true{{ else }}false{{ end }}
               }
     service: # create services
       myapp-frontend: # frontend service, automatically matches pods with identical parent object's key name
@@ -107,7 +103,7 @@ hull: # HULL is configured via subchart key
         type: ClusterIP # in cluster service
         ports: # definition of service ports
           http: # http port
-            port: 80 # regular port 
+            port: 8080 # regular port 
             targetPort: http # targetPort setting
     ingress: # crete ingresses
       myapp: # the central frontend ingress
@@ -125,7 +121,6 @@ hull: # HULL is configured via subchart key
                       name: myapp-frontend # key name suffices to reference service created in this chart
                       port: # target port
                         name: http # target port name
-      
 ```
 
 This is the example constituting as `hull-demo`'s `values.yaml`, if you download the latest `hull-demo` release and execute:

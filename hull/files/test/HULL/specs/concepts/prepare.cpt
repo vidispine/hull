@@ -22,6 +22,14 @@
 
 * Prepare test case <case> for kind <kind> with test chart <chart> and values file <values_file> including suites ""
 
+# Prepare test case <case> for kind <kind> and values file <values_file>
+
+* Prepare test case <case> for kind <kind> with test chart "hull-test" and values file <values_file> including suites ""
+
+# Prepare test case <case> for kind <kind> and values file <values_file> including suites <suites>
+
+* Prepare test case <case> for kind <kind> with test chart "hull-test" and values file <values_file> including suites <suites>
+
 # Prepare test case <case> for kind <kind> including suites <suites>
 
 * Prepare test case <case> for kind <kind> with test chart "hull-test" and values file "values.hull.yaml" including suites <suites>
