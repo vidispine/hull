@@ -160,7 +160,7 @@ jobs:
         echo "-> package hull-demo chart"  
         sudo ./cr package ./hull-demo 
         echo "-> test chart"
-        helm repo add https://vidispine.github.io/hull
+        helm repo add hull https://vidispine.github.io/hull
         helm dep build hull-demo
         helm template hull-demo    
         echo "-> upload hull-demo chart"
