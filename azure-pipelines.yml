@@ -154,7 +154,7 @@ jobs:
         mkdir .cr-index
         wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
         sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) --charts-repo https://vidispine.github.io/hull --push 
-        rm ./*.tgz
+        find . -name 'hull\.*\.tgz' -delete
         rm -rf ./hull
         echo "-> package hull-demo chart"        
         sudo ./cr package ./hull-demo 
