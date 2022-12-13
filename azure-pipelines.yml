@@ -157,11 +157,11 @@ jobs:
         find . -name 'hull\.*\.tgz' -delete
         sudo rm -rf .cr-release-packages
         rm -rf ./hull
-        echo "-> test chart"
-        helm dep build hull-demo
-        helm template hull-demo      
         echo "-> package hull-demo chart"  
         sudo ./cr package ./hull-demo 
+        echo "-> test chart"
+        helm dep build hull-demo
+        helm template hull-demo    
         echo "-> upload hull-demo chart"
         sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
         sudo rm -rf .cr-index
