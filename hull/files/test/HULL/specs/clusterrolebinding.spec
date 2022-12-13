@@ -1,4 +1,4 @@
-# RoleBinding
+# ClusterRoleBinding
 
 Test creation of objects and features.
 
@@ -31,7 +31,7 @@ Test creation of objects and features.
 
 ## Test enable disabled and disable default
 * Lint and Render values file "values_disable_default_enable_disabled.hull.yaml"
-* Expected number of "9" objects were rendered
+* Expected number of "8" objects were rendered
 * Validate
 ___
 

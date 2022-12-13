@@ -71,15 +71,26 @@ hull:
       removal-test:
         pod:
           containers:
-            remove: null
             keep:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               ports:
-                remove: null
+                keep:
+                  containerPort: 80
+                remove:
+                  containerPort: 80
+            remove:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
                 
       volume-test:
         pod:
           volumes:
-            to_be_removed: null
+            to_be_removed:
+              persistentVolumeClaim:
+                claimName: remove_me
             
       full-example-deployment:
         annotations:
