@@ -229,6 +229,20 @@ def test_object_has_key_with_value_matching_regex(key, regex):
     compiled = re.compile(regex)
     assert compiled.match(data_store.scenario.test_object[key]), "The value '" + data_store.scenario.test_object[key] + "' was not matched by regex '" + regex + "'!"
 
+@step("Test Object has key <key> with value containing <contains>")
+def test_object_has_key_with_value_containing(key, contains):
+    assert "test_object" in data_store.scenario != None, "No Test Object set!"    
+    assert data_store.scenario.test_object != None, "Test Object set to None!"
+    assert contains != None, "Contains string cannot be empty!"
+    assert contains in data_store.scenario.test_object[key], "The value '" + data_store.scenario.test_object[key] + "' does not contain '" + contains + "'!"
+
+@step("Test Object has key <key> with value not containing <contains>")
+def test_object_has_key_with_value_containing(key, contains):
+    assert "test_object" in data_store.scenario != None, "No Test Object set!"    
+    assert data_store.scenario.test_object != None, "Test Object set to None!"
+    assert contains != None, "Contains string cannot be empty!"
+    assert contains not in data_store.scenario.test_object[key], "The value '" + data_store.scenario.test_object[key] + "' contains '" + contains + "'!"
+
 @step("Test Object has key <key> set to true")
 def test_object_has_key_set_to_true(key):
     test_object_has_key_with_value(key, True)
@@ -287,7 +301,7 @@ def all_test_objects_have_key_with_value_matching_regex(key, regex):
     for i in test_objects:
         set_test_object_to(i)
         test_object_has_key_with_value_matching_regex(key, regex)
-        
+
 @step("All test objects have key <key> with value of key <scenario_key> from scenario data_store")
 def all_test_objects_have_key_with_value_of_key_from_data_store(key, scenario_key):
     test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
@@ -381,7 +395,7 @@ def render_chart(case, chart, values_file):
     for suite in data_store.scenario.suites:
         suites += ("-f", os.path.join(chart_path, suite + ".values.hull.yaml"))
     
-    args = ("helm", "template", chart_path, "--name-template", "release-name", "--debug", "--output-dir", render_path) + suites + ("-f",  os.path.join(chart_path, values_file))
+    args = ("helm", "template", chart_path, "--name-template", "release-name", "--debug", "--output-dir", render_path) + ("-f",  os.path.join(chart_path, values_file)) + suites
     
     popen = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     print('STDOUT:\n', popen.stdout.decode("utf-8").replace("\n",os.linesep))
