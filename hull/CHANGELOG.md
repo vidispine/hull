@@ -1,3 +1,16 @@
+
+------------------
+[1.24.12]
+------------------
+CHANGES:
+- initial K8S 1.26 release
+- deprecating 1.23 release
+- build and release hull-demo chart for easy demoing and bootstrapping HULL based Helm Charts
+
+FIXES:
+- improved schema structure for centrally defined probe configurations ([PR](https://github.com/vidispine/hull/pull/202), thanks [matthias4217](https://github.com/matthias4217))
+- fix merging order for tests with additional overlay values.yamls
+
 ------------------
 [1.24.11]
 ------------------

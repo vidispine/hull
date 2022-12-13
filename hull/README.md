@@ -17,6 +17,138 @@ https://github.com/helm/charts/tree/master/incubator/common) Helm chart concept 
 
 [![Build Status](https://dev.azure.com/arvato-systems-dmm/VPMS3%20CrossCutting/_apis/build/status/vidispine.hull?branchName=main)](https://dev.azure.com/arvato-systems-dmm/VPMS3%20CrossCutting/_build/latest?definitionId=589&branchName=main)
 
+## Quick Start - the `hull-demo` chart
+
+Before diving into the details of HULL, here is a first glimpse at how it works. You can simply download the latest version of the `hull-demo` Helm chart from the Releases section of this page, it has everything bootstrapped for testing out HULL or setting up a new Helm Chart based on HULL with minimal effort.  
+
+The `hull-demo` chart wraps a fictional application `myapp` with a `frontend` and `backend` deployment and service pair. There is a config file for the server configuration that is mounted to the `backend` pods. The `frontend` pods need to know about the `backend` service address via environment variables. Moreover, the setup should by default be easily switchable from a `debug` setup (using a NodePort for accessing the frontend) to a production-like setup (using a ClusterIP service and an ingress). 
+
+A bare default structure to capture these aspects may look like this (with added line comments for explanation):
+
+```yaml
+hull: # HULL is configured via subchart key
+  config: # chart setup
+    specific: # central place for shared values specific to this chart
+      debug: true # one switch determining overall creation of objects
+      application_version: v23.1 # a share image tag for multiple container
+      myapp: # some exemplary configuration settings for the app, exposed here for transparency
+        rate_limit: 100
+        max_connections: 5     
+  objects: # all objects to create are defined here
+    deployment: # create deployments
+      myapp-frontend: # the base part of the object name for frontend deployment
+        pod: # configure pod-related aspects
+          containers: # non-init containers
+            main: # one main container
+              image: # image reference
+                repository: mycompany/myapp-frontend # repository
+                tag: _HT*hull.config.specific.application_version # reference to central tag value above
+              ports: # exposed ports
+                http: # port name is http
+                  containerPort: 80 # the port number
+              env: # environment variables
+                SERVER_HOSTNAME: # name of variable
+                  value: _HT^myapp-backend # value is dynamically rendered reference to myapp-backend service name
+                SERVER_PORT: # name of variable
+                  value: "8080" # backend service port
+      myapp-backend: # the base part of the object name for backend deployment
+        pod: # configure pod-related aspects
+          containers: # non-init containers
+            main: # one main container
+              image: # image reference
+                repository: mycompany/myapp-backend # repository
+                tag: _HT*hull.config.specific.application_version # reference to central tag value above
+              ports: # exposed ports
+                http: # port name is http
+                  containerPort: 8080 # the port number
+              volumeMounts: # mounts of the container
+                appconfig: # context key is appconfig
+                  name: myappconfig # the name needs to match a volume
+                  mountPath: /etc/config/appconfig.json # mountPath
+                  subPath: backend-appconfig.json # subPath
+          volumes: # volumes that may be mounted
+            myappconfig: # key matching a volumeMounts name
+              configMap: # configmap reference
+                name: myappconfig # the configmap to load, simply referenced by key name   
+    configmap: # create configmaps
+      myappconfig: # the backend configuration
+        data: # data section
+          backend-appconfig.json: # key name is file name
+            inline: |- # define the contents of the file, using templating logic and references
+              {
+                "rate-limit": {{ .Values.hull.config.specific.myapp.rate_limit }}, 
+                "max-connections": {{ .Values.hull.config.specific.myapp.max_connections }}, 
+                "debug-log": {{ if .Values.hull.config.specific.debug }}true{{ else }}false{{ end }}
+              }
+    service: # create services
+      myapp-frontend: # frontend service, automatically matches pods with identical parent object's key name
+        type: |-  # dynamically switch type based on debug setting
+          _HT!
+            {{- if (index . "$").Values.hull.config.specific.debug -}}
+            NodePort
+            {{- else -}}
+            ClusterIP
+            {{- end -}}
+        ports: # definition of service ports
+          http: # http port for type=ClusterIP
+            enabled: _HT?not (index . "$").Values.hull.config.specific.debug # bind rendering to debug: false condition
+            port: 80 # regular port 
+            targetPort: http # targetPort setting
+          http_nodeport: # http port for type=NodePort
+            enabled: _HT?(index . "$").Values.hull.config.specific.debug # bind rendering to debug: true condition
+            port: 80 # regular port 
+            nodePort: 31111 # the node port
+            targetPort: http # targetPort setting
+      myapp-backend: # backend service, automatically matches pods with identical parent object's key name
+        type: ClusterIP # in cluster service
+        ports: # definition of service ports
+          http: # http port
+            port: 8080 # regular port 
+            targetPort: http # targetPort setting
+    ingress: # crete ingresses
+      myapp: # the central frontend ingress
+        enabled: _HT?not (index . "$").Values.hull.config.specific.debug # rendering bound to debug: false
+        rules: # the ingress rules
+          myapp: # key-value dictionary of rules
+            host: SET_HOSTNAME_HERE # change the host for actual deployment
+            http: # http settings
+              paths: # paths definition
+                standard: # a standard path definition
+                  path: / # could be changed at deployment time
+                  pathType: ImplementationSpecific # path type
+                  backend: # backend config
+                    service: # service targeted
+                      name: myapp-frontend # key name suffices to reference service created in this chart
+                      port: # target port
+                        name: http # target port name
+```
+
+This is the example constituting as `hull-demo`'s `values.yaml`, if you download the latest `hull-demo` release and execute:
+
+```
+helm template hull-demo-<version>.tgz
+```
+
+it renders out a set of objects based on above `values.yaml` containing:
+- a deployment for `myapp-frontend` that has a centrally configured image `tag` set (by default `v23.1`), and environment variables pointing to the `myapp-backend`'s service in-cluster address
+- a deployment for `myapp-backend` that has a centrally configured image `tag` set (by default `v23.1`) and a configuration mounted from the `myappconfig` ConfigMap
+- a `myappconfig` ConfigMap with a JSON file that is dynamically built by incorporating templating expressions and referencing values defined elsewhere in `values.yaml`
+- a simple ClusterIP Service fronting `myapp-backend` Deployment
+- a service fronting `myapp-frontend` deployment whose type and port configuration is dependend on the central `debug` switch - either type `NodePort` in a `debug` setup mode or type `ClusterIP` in combination with a `myapp` ingress in non-debug setups
+- an ingress object `myapp` which is only rendered/created in case the `debug: false` value is set
+
+Every aspect of this configuration can be changed or overwritten add deployment time using additional `values.yaml` overlay files, for example:
+- switching the overall configuration from and to `debug` mode by settings `debug: true` or `debug: false`
+- adding resource definitions to the deployments
+- setting hostname and path for the ingress 
+- add further environment variables to pods
+- change `myapp` ConfigMaps source values (`rate_limit` and `max_connections`) or overwrite it completely
+- ...
+
+All objects and logic was created with under a hundred lines of overall configuration code in the `hull-demo`'s `values.yaml`. You can test all of the above mentioned aspects or simply experiment by adding additional `values.yaml` overlay files to the `helm template` command above. For bootstrapping your own Helm chart, just empty the `values.yaml` configuration, rename the charts folder and `name` in `Chart.yaml` to whatever you want and you are ready to go. 
+
+This is a first demo of how HULL could be used but there is a lot more functionality and supported use-cases. Check the key features and the detailed documentation for more information.
+
 ## Key Features Overview
 
 As highlighted above, when included in a Helm chart the HULL library chart can take over the job of dynamically rendering Kubernetes objects from their given specifications from the `values.yaml` file alone. With YAML object construction deferred to the HULL library's Go Templating functions instead of custom YAML templates in the `/templates` folder you can centrally enforce best practices:
