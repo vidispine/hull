@@ -13446,6 +13446,9 @@
                 },
                 {
                     "type": "object"
+                },
+                {
+                    "type": "null"
                 }
             ],
             "additionalProperties": false
