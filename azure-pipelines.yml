@@ -116,15 +116,56 @@ jobs:
   
   - script: |
         set -euo pipefail
-        echo package chart
+        echo "-> get chartreleaser"
         cp -r . $(Agent.TempDirectory)
         cd $(Agent.TempDirectory)
         wget https://github.com/helm/chart-releaser/releases/download/v1.1.1/chart-releaser_1.1.1_linux_amd64.tar.gz
         tar -xvzf chart-releaser_1.1.1_linux_amd64.tar.gz -C ./
         ls
         sudo chmod +x ./cr
-        sudo ./cr package ./hull 
+        echo "-> create hull-demo chart"
+        export HULL_VERSION=`sed -n 's/^version:\s//p' ./hull/Chart.yaml` 
+        echo "-> hull version is ${HULL_VERSION}"
+        mkdir ./hull-demo
+        cp ./hull/files/test/HULL/sources/cases/deployment/values_short_demo.hull.yaml ./hull-demo/values.yaml
+        echo "This is a Helm chart for demonstration of the HULL library." > ./hull-demo/README.md
+        echo "" >> ./hull-demo/README.md
+        echo "It can also be used as a bootstrapped parent chart already fully integrating HULL." >> ./hull-demo/README.md
+        cp ./hull/LICENSE ./hull-demo/LICENSE
+        mkdir ./hull-demo/templates
+        cp ./hull/hull.yaml ./hull-demo/templates/hull.yaml
+        cp ./hull/Chart.yaml ./hull-demo/Chart.yaml
+        sed -i 's/name: hull/name: hull-demo/' ./hull-demo/Chart.yaml
+        sed -i 's/description: HULL - Helm Uniform Layer Library/description: Demo Chart for showcasing HULL library chart usage/' ./hull-demo/Chart.yaml
+        sed -i 's/type: library/type: application/' ./hull-demo/Chart.yaml
+        sed -i "/dependencies: \[\]/d" ./hull-demo/Chart.yaml
+        echo ""
+        echo "dependencies:" >> ./hull-demo/Chart.yaml
+        echo "- name: hull" >> ./hull-demo/Chart.yaml
+        echo "  version: ${HULL_VERSION}" >> ./hull-demo/Chart.yaml
+        echo "  repository: \"https://vidispine.github.io/hull\"" >> ./hull-demo/Chart.yaml
+        echo "-> Chart.yaml:"
+        cat ./hull-demo/Chart.yaml 
+        echo "<- Chart.yaml"
+        echo "-> package hull chart"        
+        sudo ./cr package ./hull
+        echo "-> upload hull chart"
         sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
+        mkdir .cr-index
+        wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
+        sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) --charts-repo https://vidispine.github.io/hull --push 
+        find . -name 'hull\.*\.tgz' -delete
+        sudo rm -rf .cr-release-packages
+        rm -rf ./hull
+        echo "-> package hull-demo chart"  
+        sudo ./cr package ./hull-demo 
+        # echo "-> test chart"
+        # helm repo add hull https://vidispine.github.io/hull
+        # helm dep build hull-demo
+        # helm template hull-demo    
+        echo "-> upload hull-demo chart"
+        sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
+        sudo rm -rf .cr-index
         mkdir .cr-index
         wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
         sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) --charts-repo https://vidispine.github.io/hull --push 
