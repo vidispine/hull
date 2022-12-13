@@ -155,8 +155,11 @@ jobs:
         wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
         sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) --charts-repo https://vidispine.github.io/hull --push 
         find . -name 'hull\.*\.tgz' -delete
+        rm -rf .cr-release-packages
         rm -rf ./hull
-        echo "-> package hull-demo chart"        
+        echo "-> test chart"
+        helm template hull-demo      
+        echo "-> package hull-demo chart"  
         sudo ./cr package ./hull-demo 
         echo "-> upload hull-demo chart"
         sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
