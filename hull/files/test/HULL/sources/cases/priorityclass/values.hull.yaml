@@ -52,4 +52,10 @@ hull:
       enabled-transform-tpl-if:
         value: 100
 
+      metadata-name-override:
+        value: 100
+        
+      metadata-name-override-static:
+        value: 100
+
 ###################################################

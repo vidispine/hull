@@ -73,3 +73,14 @@ hull:
         apiVersion: "dummyApi/v1"
         kind: "Dummy"
         spec: {}
+
+      metadata-name-override:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+ 
+      metadata-name-override-static:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+
