@@ -99,7 +99,7 @@ General label section must be populated
 * All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
 * All test objects have key "metadata§labels§app.kubernetes.io/name" with value of key "chart" from scenario data_store
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
-* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.26.0"
+* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.24.0"
 
 Static names can be created
 
