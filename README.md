@@ -40,11 +40,11 @@ The `hull-demo` chart wraps a fictional application `myapp` with a `frontend` an
 A bare default structure to capture these aspects may look like this (with added line comments for explanation):
 
 ```yaml
-hull: # HULL is configured via subchart key
-  config: # chart setup
+hull: # HULL is configured via subchart key 'hull'
+  config: # chart setup takes place here for everything besides object definitions
     specific: # central place for shared values specific to this chart
-      debug: true # one switch determining overall creation of objects
-      application_version: v23.1 # a share image tag for multiple container
+      debug: true # a switch influencing creation of objects in this chart
+      application_version: v23.1 # a shared image tag for multiple container
       myapp: # some exemplary configuration settings for the app, exposed here for transparency
         rate_limit: 100
         max_connections: 5     
@@ -54,7 +54,7 @@ hull: # HULL is configured via subchart key
         pod: # configure pod-related aspects
           containers: # non-init containers
             main: # one main container
-              image: # image reference
+              image: # provide image reference
                 repository: mycompany/myapp-frontend # repository
                 tag: _HT*hull.config.specific.application_version # reference to central tag value above
               ports: # exposed ports
@@ -96,7 +96,7 @@ hull: # HULL is configured via subchart key
               }
     service: # create services
       myapp-frontend: # frontend service, automatically matches pods with identical parent object's key name
-        type: |-  # dynamically switch type based on debug setting
+        type: |-  # dynamically switch type based on hull.config.specific.debug setting
           _HT!
             {{- if (index . "$").Values.hull.config.specific.debug -}}
             NodePort
@@ -119,12 +119,12 @@ hull: # HULL is configured via subchart key
           http: # http port
             port: 8080 # regular port 
             targetPort: http # targetPort setting
-    ingress: # crete ingresses
+    ingress: # create ingresses
       myapp: # the central frontend ingress
         enabled: _HT?not (index . "$").Values.hull.config.specific.debug # rendering bound to debug: false
         rules: # the ingress rules
           myapp: # key-value dictionary of rules
-            host: SET_HOSTNAME_HERE # change the host for actual deployment
+            host: SET_HOSTNAME_HERE # change the host at deployment time to actual one
             http: # http settings
               paths: # paths definition
                 standard: # a standard path definition
@@ -151,7 +151,7 @@ it renders out a set of objects based on above `values.yaml` containing:
 - a service fronting `myapp-frontend` deployment whose type and port configuration is dependend on the central `debug` switch - either type `NodePort` in a `debug` setup mode or type `ClusterIP` in combination with a `myapp` ingress in non-debug setups
 - an ingress object `myapp` which is only rendered/created in case the `debug: false` value is set
 
-Every aspect of this configuration can be changed or overwritten add deployment time using additional `values.yaml` overlay files, for example:
+Every aspect of this configuration can be changed or overwritten at deployment time using additional `values.yaml` overlay files, for example:
 - switching the overall configuration from and to `debug` mode by settings `debug: true` or `debug: false`
 - adding resource definitions to the deployments
 - setting hostname and path for the ingress 

@@ -121,8 +121,27 @@ hull:
                   repository: my/image/repo
                   tag: "99.9"
 
-      
       enabled-transform-tpl-if:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-name-override:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+          
+      metadata-name-override-static:
         schedule: "* * 2"
         job:
           pod:

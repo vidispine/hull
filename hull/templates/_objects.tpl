@@ -152,7 +152,12 @@ metadata:
 ### Now render the result object instance
 */ -}}
 {{- $objectSpec := dict }}
-{{- $objectSpec = include "hull.util.merge" (merge (dict "PARENT_CONTEXT" $rootContext "PARENT_TEMPLATE" $parentTemplate "API_VERSION" (default $apiVersion $spec.apiVersion) "API_KIND" (default $apiKind $spec.apiKind) "COMPONENT" $objectKey "SPEC" $spec "DEFAULT_COMPONENT" $defaultSpec "HULL_ROOT_KEY" $hullRootKey "NO_SELECTOR" $noSelector "OBJECT_TYPE" $objectType) (dict "LOCAL_TEMPLATE" (printf "%s" $hullTemplate))) | fromYaml }}
+{{- $namingElement := $objectKey -}}
+{{- if and $spec $spec.metadataNameOverride -}}
+{{- $namingElement = $spec.metadataNameOverride -}}
+{{- $spec = unset $spec "metadataNameOverride" }}
+{{- end -}}
+{{- $objectSpec = include "hull.util.merge" (merge (dict "PARENT_CONTEXT" $rootContext "PARENT_TEMPLATE" $parentTemplate "API_VERSION" (default $apiVersion $spec.apiVersion) "API_KIND" (default $apiKind $spec.apiKind) "COMPONENT" $namingElement "SPEC" $spec "DEFAULT_COMPONENT" $defaultSpec "HULL_ROOT_KEY" $hullRootKey "NO_SELECTOR" $noSelector "OBJECT_TYPE" $objectType) (dict "LOCAL_TEMPLATE" (printf "%s" $hullTemplate))) | fromYaml }}
 {{- if (gt (len (keys (default dict $objectSpec))) 0) -}}
 {{ toYaml $objectSpec }}
 
