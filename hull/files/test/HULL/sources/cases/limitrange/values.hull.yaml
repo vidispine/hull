@@ -43,6 +43,12 @@ hull:
       enabled-transform-tpl-if:
         limits: []
 
+      metadata-name-override:
+        limits: []
+
+      metadata-name-override-static:
+        limits: []
+
       cpu:
         limits:
         - max:

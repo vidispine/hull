@@ -50,5 +50,9 @@ hull:
       enabled-transform-tpl-if:
         provisioner: "local-volume"
         
-
+      metadata-name-override:
+        provisioner: "local-volume"
+        
+      metadata-name-override-static:
+        provisioner: "local-volume"
 ###################################################

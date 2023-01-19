@@ -67,6 +67,16 @@ hull:
           matchLabels:
             key: value
 
+      metadata-name-override:
+        podSelector: 
+          matchLabels:
+            key: value
+
+      metadata-name-override-static:
+        podSelector: 
+          matchLabels:
+            key: value
+
       standard:
         egress:
         - ports:
