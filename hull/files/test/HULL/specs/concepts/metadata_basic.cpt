@@ -15,11 +15,22 @@ Static names can be created
 
 * Set test object to "static-name"
 
+Check explicit name override
+
+* Set test object to "a-slightly-longer-name-usethisfinename"
+* Test Object has key "metadata§name" with value "a-slightly-longer-name-usethisfinename"
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "usethisfinename"
+
+* Set test object to "usethisfinestaticname"
+* Test Object has key "metadata§name" with value "usethisfinestaticname"
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "usethisfinestaticname"
+
 * Set test object to "a-slightly-longer-name-metadata-merge"
 
 Component must be key name
 
 * Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata-merge"
+
 
 All labels and annotations from general metadata, defaults and object must be present
 
@@ -56,6 +67,29 @@ Overwriting metadata must work properly
 * Test Object has key "metadata§annotations§default_annotation_2" with value "Concrete Annotation 2"
 
 Run non-name override tests
+
+* Prepare default test case for this kind including suites ""
+* Lint and Render
+
+General label section must be populated
+
+* All test objects have key "metadata§labels§app.kubernetes.io/instance" with value "release-name"
+* All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
+* All test objects have key "metadata§labels§app.kubernetes.io/name" with value of key "chart" from scenario data_store
+* All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
+* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.26.0"
+
+Run metadataNameOverride tests
+
+Check explicit name override
+
+* Set test object to "release-name-hull-test-usethisfinename"
+* Test Object has key "metadata§name" with value "release-name-hull-test-usethisfinename"
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "usethisfinename"
+
+* Set test object to "usethisfinestaticname"
+* Test Object has key "metadata§name" with value "usethisfinestaticname"
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "usethisfinestaticname"
 
 * Prepare default test case for this kind including suites ""
 * Lint and Render
