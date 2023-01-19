@@ -28341,7 +28341,8 @@
                 "enabled",
                 "annotations",
                 "labels",
-                "staticName"
+                "staticName",
+                "metadataNameOverride"
             ]
         },
         "hull.ObjectBase.v1": {
@@ -28399,6 +28400,17 @@
                         },
                         {
                             "type": "boolean"
+                        }
+                    ]
+                },
+                "metadataNameOverride": {
+                    "title": "MetadataNameOverride",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/hull.Transformation.Pattern"
+                        },
+                        {
+                            "type": "string"
                         }
                     ]
                 }

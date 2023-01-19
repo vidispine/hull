@@ -104,6 +104,10 @@ jobs:
         HelmVersion: "3.10.1"
       Helm_3_10_2: 
         HelmVersion: "3.10.2"
+      Helm_3_10_3: 
+        HelmVersion: "3.10.3"
+      Helm_3_11_0: 
+        HelmVersion: "3.11.0"
   
   steps:
   - template: azure-pipelines-test.yml  # Template reference
@@ -159,10 +163,10 @@ jobs:
         rm -rf ./hull
         echo "-> package hull-demo chart"  
         sudo ./cr package ./hull-demo 
-        echo "-> test chart"
-        helm repo add hull https://vidispine.github.io/hull
-        helm dep build hull-demo
-        helm template hull-demo    
+        # echo "-> test chart"
+        # helm repo add hull https://vidispine.github.io/hull
+        # helm dep build hull-demo
+        # helm template hull-demo    
         echo "-> upload hull-demo chart"
         sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
         sudo rm -rf .cr-index

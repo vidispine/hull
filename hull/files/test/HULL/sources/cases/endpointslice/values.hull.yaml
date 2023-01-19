@@ -51,12 +51,20 @@ hull:
       enabled-transform-dict:
         addressType: FQDN
         endpoints: []
-      
+
       disabled-transform-tpl-if:
         addressType: FQDN
         endpoints: []
       
       enabled-transform-tpl-if:
+        addressType: FQDN
+        endpoints: []
+      
+      metadata-name-override:
+        addressType: FQDN
+        endpoints: []
+      
+      metadata-name-override-static:
         addressType: FQDN
         endpoints: []
       
