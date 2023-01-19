@@ -94,6 +94,16 @@ hull:
         pod:
           containers: {}
 
+      metadata-name-override:
+        serviceName: enabled-transform-tpl-if
+        pod:
+          containers: {}
+
+      metadata-name-override-static:
+        serviceName: enabled-transform-tpl-if
+        pod:
+          containers: {}
+
       complex-gets:
         serviceName: complex-gets
         pod:
