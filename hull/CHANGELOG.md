@@ -1,4 +1,10 @@
 ------------------
+[1.25.12]
+------------------
+CHANGES:
+- add metadataNameOverride possibility to Hull.Object.Base to allow setting an object instance metadata.name that is different from the implicit component key. This enables special use-cases where e.g. the definition of a custom resource instance is done in the chart's values.yaml under a fixed key and the CustomResources actual instance name - maybe playing an important role for the operator functionality - is only set at deployment time dynamically
+
+------------------
 [1.25.11]
 ------------------
 CHANGES:

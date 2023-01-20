@@ -207,3 +207,14 @@ hull:
           concrete_label_1: "Concrete Label 1"
           default_label_2: "Concrete Label 2"
           general_custom_label_3: "Concrete Label 3"
+      
+      metadata-name-override:
+        metadataNameOverride: usethisfinename
+        enabled: true
+        staticName: false
+      
+      metadata-name-override-static:
+        metadataNameOverride: usethisfinestaticname
+        enabled: true
+        staticName: true
+      

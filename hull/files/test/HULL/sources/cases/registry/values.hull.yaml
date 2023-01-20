@@ -54,10 +54,16 @@ hull:
         server: enabled-transform-dict.cr.io
         
       disabled-transform-tpl-if:
-        server: enabled-transform-tpl-if.cr.io
+        server: disabled-transform-tpl-if.cr.io
       
       enabled-transform-tpl-if:
         server: enabled-transform-tpl-if.cr.io
+
+      metadata-name-override:
+        server: metadata-name-override.cr.io
+      
+      metadata-name-override-static:
+        server: metadata-name-override-static.cr.io
         
       example:
         annotations:
