@@ -72,7 +72,9 @@ However the properties listed below are overwritten or added by HULL:
 | --------  | -------------| ------- | --------
 `enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` |
 | `valueFrom.configMapKeyRef.staticName` | Specifies whether the `name` key of this `valueFrom.configMapKeyRef` refers to a fixed name of a ConfigMap in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `valueFrom.configMapKeyRef` references a key defined in this helm chart. | `false` | `true`
+| `valueFrom.configMapKeyRef.hashsumAnnotation` | If present and true, the contents of the referenced ConfigMap data key is automatically hashed and added as an annotation to the pod template metadata annotations (`templateAnnotations`). <br><br>If set to true, any change to the referenced content will trigger a pod restart on upgrade. | `false` | `true`
 | `valueFrom.secretKeyRef.staticName` | Specifies whether the `name` key of this `valueFrom.secretKeyRef` refers to a fixed name of a Secret in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `valueFrom.secretKeyRef` references a key defined in this helm chart. | `false` | `true`
+| `valueFrom.secretKeyRef.hashsumAnnotation` | If present and true, the contents of the referenced Secret data key is automatically hashed and added as an annotation to the pod template metadata annotations (`templateAnnotations`). <br><br>If set to true, any change to the referenced content will trigger a pod restart on upgrade. | `false` | `true`
 
 ### The `hull.EnvFrom.v1` properties
 
@@ -90,7 +92,9 @@ However the properties listed below are overwritten or added by HULL:
 | --------  | -------------| ------- | --------
 `enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` | 
 | `configMapRef.staticName` | Specifies whether the `name` key of this `configMapRef` refers to a fixed name of a ConfigMap in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `configMapRef` references a key defined in this helm chart. | `false` | `true`
+| `valueFrom.configMapRef.hashsumAnnotation` | If present and true, the contents of the referenced ConfigMap data keys are automatically hashed and added as annotations to the pod template metadata annotations (`templateAnnotations`). <br><br>If set to true, any change to the referenced content will trigger a pod restart on upgrade. | `false` | `true`
 | `secretRef.staticName` | Specifies whether the `name` key of this `secretRef` refers to a fixed name of a Secret in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `secretRef` references a key defined in this helm chart. | `false` | `true`
+| `valueFrom.secretRef.hashsumAnnotation` | If present and true, the contents of the referenced Secret data keys are automatically hashed and added as annotations to the pod template metadata annotations (`templateAnnotations`). <br><br>If set to true, any change to the referenced content will trigger a pod restart on upgrade. | `false` | `true`
 
 ### The `hull.ContainerPort.v1` properties
 
@@ -117,6 +121,7 @@ However the properties listed below are overwritten or added by HULL:
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------
 `enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` |  
+| `hashsumAnnotation` | If present and true, the setting takes effect when the volume for this mount is a ConfigMap or Secret reference. In case of a present `subPath` property, the ConfigMaps or Secrets data `subPath` key content is automatically hashed and added as annotations to the pod template metadata annotations (`templateAnnotations`). In case of a missing `subPath`, all data keys contents of the ConfigMap or Secret are automatically hashed and added as annotations to the pod template metadata annotations (`templateAnnotations`). <br><br>If set to true, any change to the referenced content will trigger a pod restart on upgrade. | `false` | `true`
 
 ### The `hull.Volume.v1` properties
 

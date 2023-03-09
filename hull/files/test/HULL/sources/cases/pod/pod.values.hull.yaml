@@ -10,6 +10,100 @@ hull:
       pullPolicy: IfNotPresent
 
   objects:
+    
+    secret:
+      secret-one:
+        data:
+          secret-one-inline.txt: 
+            inline: |
+              i only exist so a sha256 sum can be calulated of this secret-one
+          secret-one-inline-one.json:
+            inline: |
+              { "key": "inline json for hash sum calculation of this secret-one-subpath-one.json" }
+          secret-one-inline-two.json:
+            inline: |
+              { "key": "inline json for hash sum calculation of this secret-one-subpath-two.json" }
+          secret-one-path-one.txt:
+            path: files/secret-one-path-one.txt
+          secret-one-path-two.txt:
+            path: files/secret-one-path-two.txt
+      secret-two:
+        data:
+          secret-two-inline.txt: 
+            inline: |
+              i only exist so a sha256 sum can be calulated of this secret-two
+          secret-two-inline-one.json:
+            inline: |
+              { "key": "inline json for hash sum calculation of this secret-two-subpath-one.json" }
+          secret-two-inline-two.json:
+            inline: |
+              { "key": "inline json for hash sum calculation of this secret-two-subpath-two.json" }
+          secret-two-path-one.txt:
+            path: files/secret-two-path-one.txt
+          secret-two-path-two.txt:
+            path: files/secret-two-path-two.txt
+      secret-three:
+        data:
+          secret-three-inline.txt: 
+            inline: |
+              i only exist so a sha256 sum can be calulated of this secret-three
+          secret-three-inline-one.json:
+            inline: |
+              { "key": "inline json for hash sum calculation of this secret-three-subpath-one.json" }
+          secret-three-inline-two.json:
+            inline: |
+              { "key": "inline json for hash sum calculation of this secret-three-subpath-two.json" }
+          secret-three-path-one.txt:
+            path: files/secret-three-path-one.txt
+          secret-three-path-two.txt:
+            path: files/secret-three-path-two.txt
+      
+    configmap:
+      configmap-one:
+        data:
+          configmap-one-inline.txt: 
+            inline: |
+              i only exist so a sha256 sum can be calulated of this configmap-one
+          configmap-one-inline-one.json:
+            inline: |
+              { "key": "inline json for hash sum calculation of this configmap-one-subpath-one.json" }
+          configmap-one-inline-two.json:
+            inline: |
+              { "key": "inline json for hash sum calculation of this configmap-one-subpath-two.json" }
+          configmap-one-path-one.txt:
+            path: files/configmap-one-path-one.txt
+          configmap-one-path-two.txt:
+            path: files/configmap-one-path-two.txt
+      configmap-two:
+        data:
+          configmap-two-inline.txt: 
+            inline: |
+              i only exist so a sha256 sum can be calulated of this configmap-two
+          configmap-two-inline-one.json:
+            inline: |
+              { "key": "inline json for hash sum calculation of this configmap-two-subpath-one.json" }
+          configmap-two-inline-two.json:
+            inline: |
+              { "key": "inline json for hash sum calculation of this configmap-two-subpath-two.json" }
+          configmap-two-path-one.txt:
+            path: files/configmap-two-path-one.txt
+          configmap-two-path-two.txt:
+            path: files/configmap-two-path-two.txt
+      configmap-three:
+        data:
+          configmap-three-inline.txt: 
+            inline: |
+              i only exist so a sha256 sum can be calulated of this configmap-three
+          configmap-three-inline-one.json:
+            inline: |
+              { "key": "inline json for hash sum calculation of this configmap-three-subpath-one.json" }
+          configmap-three-inline-two.json:
+            inline: |
+              { "key": "inline json for hash sum calculation of this configmap-three-subpath-two.json" }
+          configmap-three-path-one.txt:
+            path: files/configmap-three-path-one.txt
+          configmap-three-path-two.txt:
+            path: files/configmap-three-path-two.txt
     registry:
 
       example-registry:
@@ -777,3 +871,505 @@ hull:
               secret:
                 secretName: test_secret
               emptyDir: {}
+
+      hashing-pod-volumemounts:
+        pod:
+          initContainers:
+            one-configmap:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              volumeMounts:
+                configmap-one-all:
+                  name: configmap-one
+                  mountPath: /one
+                  hashsumAnnotation: true
+                configmap-one-inline-one:
+                  name: configmap-one
+                  mountPath: /one/subpath.json
+                  subPath: configmap-one-inline-one.json
+                  hashsumAnnotation: true
+                configmap-one-path-one:
+                  name: configmap-one
+                  mountPath: /one/subpath.txt
+                  subPath: configmap-one-path-one.txt
+                  hashsumAnnotation: true
+            two-configmap:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              volumeMounts:
+                configmap-two-inline-one:
+                  name: configmap-two
+                  mountPath: /two/subpath.json
+                  subPath: configmap-two-inline-one.json
+                  hashsumAnnotation: true
+                configmap-two-path-one:
+                  name: configmap-two
+                  mountPath: /two/subpath.json
+                  subPath: configmap-two-path-one.txt
+                  hashsumAnnotation: false
+            three-configmap:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              volumeMounts:
+                configmap-three-path-one:
+                  name: configmap-three
+                  mountPath: /three/subpath.txt
+                  subPath: configmap-three-path-one.txt
+                configmap-three-path-two:
+                  name: configmap-three
+                  mountPath: /three/subpath.txt
+                  subPath: configmap-three-path-two.txt
+                  hashsumAnnotation: false
+                configmap-three-inline-one:
+                  name: configmap-three
+                  mountPath: /three/subpath.txt
+                  subPath: configmap-three-inline-one.json
+                  hashsumAnnotation: true
+                configmap-three-inline-two:
+                  name: configmap-three
+                  mountPath: /three/subpath.txt
+                  subPath: configmap-three-inline-two.json
+            one-secret:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              volumeMounts:
+                secret-one-all:
+                  name: secret-one
+                  mountPath: /one
+                  hashsumAnnotation: true
+                secret-one-inline-one:
+                  name: secret-one
+                  mountPath: /one/subpath.json
+                  subPath: secret-one-inline-one.json
+                  hashsumAnnotation: true
+                secret-one-path-one:
+                  name: secret-one
+                  mountPath: /one/subpath.txt
+                  subPath: secret-one-path-one.txt
+                  hashsumAnnotation: true
+            two-secret:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              volumeMounts:
+                secret-two-inline-one:
+                  name: secret-two
+                  mountPath: /two/subpath.json
+                  subPath: secret-two-inline-one.json
+                  hashsumAnnotation: true
+                secret-two-path-one:
+                  name: secret-two
+                  mountPath: /two/subpath.json
+                  subPath: secret-two-path-one.txt
+                  hashsumAnnotation: false
+            three-secret:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              volumeMounts:
+                secret-three-path-one:
+                  name: secret-three
+                  mountPath: /three/subpath.txt
+                  subPath: secret-three-path-one.txt
+                secret-three-path-two:
+                  name: secret-three
+                  mountPath: /three/subpath.txt
+                  subPath: secret-three-path-two.txt
+                  hashsumAnnotation: false
+                secret-three-inline-one:
+                  name: secret-three
+                  mountPath: /three/subpath.txt
+                  subPath: secret-three-inline-one.json
+                  hashsumAnnotation: true
+                secret-three-inline-two:
+                  name: secret-three
+                  mountPath: /three/subpath.txt
+                  subPath: secret-three-inline-two.json
+          containers:
+            one-configmap:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              volumeMounts:
+                configmap-one-inline-two:
+                  name: configmap-one
+                  mountPath: /one/subpath.json
+                  subPath: configmap-one-inline-two.json
+                configmap-one-path-two:
+                  name: configmap-one
+                  mountPath: /one/subpath.txt
+                  subPath: configmap-one-path-two.txt
+            two-configmap:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              volumeMounts:
+                configmap-two-inline-two:
+                  name: configmap-two
+                  mountPath: /two/subpath.json
+                  subPath: configmap-two-inline-two.json
+                  hashsumAnnotation: false
+                configmap-two-path-two:
+                  name: configmap-two
+                  mountPath: /two/subpath.json
+                  subPath: configmap-two-path-two.txt
+                  hashsumAnnotation: true
+            three-configmap:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              volumeMounts:                
+                configmap-three-path-one:
+                  name: configmap-three
+                  mountPath: /three/subpath.txt
+                  subPath: configmap-three-path-one.txt
+                  hashsumAnnotation: true
+                configmap-three-path-two:
+                  name: configmap-three
+                  mountPath: /three/subpath.txt
+                  subPath: configmap-three-path-two.txt
+                  hashsumAnnotation: false
+                configmap-three-inline-one:
+                  name: configmap-three
+                  mountPath: /three/subpath.txt
+                  subPath: configmap-three-inline-one.json
+                configmap-three-inline-two:
+                  name: configmap-three
+                  mountPath: /three/subpath.txt
+                  subPath: configmap-three-inline-two.json
+                  hashsumAnnotation: false
+            one-secret:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              volumeMounts:
+                secret-one-inline-two:
+                  name: secret-one
+                  mountPath: /one/subpath.json
+                  subPath: secret-one-inline-two.json
+                secret-one-path-two:
+                  name: secret-one
+                  mountPath: /one/subpath.txt
+                  subPath: secret-one-path-two.txt
+            two-secret:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              volumeMounts:
+                secret-two-inline-two:
+                  name: secret-two
+                  mountPath: /two/subpath.json
+                  subPath: secret-two-inline-two.json
+                  hashsumAnnotation: false
+                secret-two-path-two:
+                  name: secret-two
+                  mountPath: /two/subpath.json
+                  subPath: secret-two-path-two.txt
+                  hashsumAnnotation: true
+            three-secret:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              volumeMounts:                
+                secret-three-path-one:
+                  name: secret-three
+                  mountPath: /three/subpath.txt
+                  subPath: secret-three-path-one.txt
+                  hashsumAnnotation: true
+                secret-three-path-two:
+                  name: secret-three
+                  mountPath: /three/subpath.txt
+                  subPath: secret-three-path-two.txt
+                  hashsumAnnotation: false
+                secret-three-inline-one:
+                  name: secret-three
+                  mountPath: /three/subpath.txt
+                  subPath: secret-three-inline-one.json
+                secret-three-inline-two:
+                  name: secret-three
+                  mountPath: /three/subpath.txt
+                  subPath: secret-three-inline-two.json
+                  hashsumAnnotation: false
+          volumes:
+            configmap-one:
+              configMap:
+                name: configmap-one
+            configmap-two:
+              configMap:
+                name: configmap-two
+            configmap-three:
+              configMap:
+                name: configmap-three
+            secret-one:
+              secret:
+                secretName: secret-one
+            secret-two:
+              secret:
+                secretName: secret-two
+            secret-three:
+              secret:
+                secretName: secret-three
+            other:
+              hostPath: 
+                path: /the_path_one
+
+      hashing-pod-env:
+        pod:
+          initContainers:
+            one-configmap:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              envFrom:
+                configmap-one:
+                  configMapRef:
+                    name: configmap-one
+                    hashsumAnnotation: true
+              env:
+                configmap-one-inline-one:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-one
+                      key: configmap-one-inline-one.json
+                      hashsumAnnotation: true
+                configmap-one-path-one:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-one
+                      key: configmap-one-inline-one.json
+                      hashsumAnnotation: true
+            two-configmap:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              env:
+                configmap-two-inline-one:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-two
+                      key: configmap-two-inline-one.json
+                      hashsumAnnotation: true
+                configmap-two-path-one:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-two
+                      key: configmap-two-path-one.txt
+                      hashsumAnnotation: false
+            three-configmap:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              env:
+                configmap-three-path-one:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-three
+                      key: configmap-three-path-one.txt
+                configmap-three-path-two:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-three
+                      key: configmap-three-path-two.txt
+                      hashsumAnnotation: false
+                configmap-three-inline-one:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-three
+                      key: configmap-three-inline-one.json
+                      hashsumAnnotation: true
+                configmap-three-inline-two:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-three
+                      key: configmap-three-inline-two.json
+            one-secret:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              envFrom:
+                secret-one:
+                  secretRef:
+                    name: secret-one
+                    hashsumAnnotation: true
+              env:
+                secret-one-inline-one:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-one
+                      key: secret-one-inline-one.json
+                      hashsumAnnotation: true
+                secret-one-path-one:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-one
+                      key: secret-one-inline-one.json
+                      hashsumAnnotation: true
+            two-secret:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              env:
+                secret-two-inline-one:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-two
+                      key: secret-two-inline-one.json
+                      hashsumAnnotation: true
+                secret-two-path-one:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-two
+                      key: secret-two-path-one.txt
+                      hashsumAnnotation: false
+            three-secret:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              env:
+                secret-three-path-one:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-three
+                      key: secret-three-path-one.txt
+                secret-three-path-two:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-three
+                      key: secret-three-path-two.txt
+                      hashsumAnnotation: false
+                secret-three-inline-one:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-three
+                      key: secret-three-inline-one.json
+                      hashsumAnnotation: true
+                secret-three-inline-two:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-three
+                      key: secret-three-inline-two.json
+          containers:
+            one-configmap:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              env:
+                configmap-one-inline-two:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-one
+                      key: configmap-one-inline-two.json
+                configmap-one-path-two:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-one
+                      key: configmap-one-path-two.txt
+            two-configmap:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              env:
+                configmap-two-inline-two:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-two
+                      key: configmap-two-inline-two.json
+                      hashsumAnnotation: false
+                configmap-two-path-two:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-two
+                      key: configmap-two-path-two.txt
+                      hashsumAnnotation: true
+            three-configmap:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              env:                
+                configmap-three-path-one:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-three
+                      key: configmap-three-path-one.txt
+                      hashsumAnnotation: true
+                configmap-three-path-two:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-three
+                      key: configmap-three-path-two.txt
+                      hashsumAnnotation: false
+                configmap-three-inline-one:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-three
+                      key: configmap-three-inline-one.json
+                configmap-three-inline-two:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-three
+                      key: configmap-three-inline-two.json
+                      hashsumAnnotation: false
+            one-secret:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              env:
+                secret-one-inline-two:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-one
+                      key: secret-one-inline-two.json
+                secret-one-path-two:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-one
+                      key: secret-one-path-two.txt
+            two-secret:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              env:
+                secret-two-inline-two:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-two
+                      key: secret-two-inline-two.json
+                      hashsumAnnotation: false
+                secret-two-path-two:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-two
+                      key: secret-two-path-two.txt
+                      hashsumAnnotation: true
+            three-secret:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              env:                
+                secret-three-path-one:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-three
+                      key: secret-three-path-one.txt
+                      hashsumAnnotation: true
+                secret-three-path-two:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-three
+                      key: secret-three-path-two.txt
+                      hashsumAnnotation: false
+                secret-three-inline-one:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-three
+                      key: secret-three-inline-one.json
+                secret-three-inline-two:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-three
+                      key: secret-three-inline-two.json
+                      hashsumAnnotation: false              

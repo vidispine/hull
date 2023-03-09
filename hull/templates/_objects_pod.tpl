@@ -34,14 +34,15 @@ template:
 {{- $apiKind := default "" (index . "API_KIND") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $keepHashsumAnnotations := default false (index . "KEEP_HASHSUM_ANNOTATIONS") -}}
 {{- $defaultPodBasePath := (index (index $parent.Values $hullRootKey).objects ($apiKind | lower))._HULL_OBJECT_TYPE_DEFAULT_.pod }}
 {{- if hasKey . "DEFAULT_POD_BASE_PATH" }}
 {{- $defaultPodBasePath = index . "DEFAULT_POD_BASE_PATH" }}
 {{- end }}
 spec:
-{{- include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultPodBasePath.containers._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec.pod "KEY" "containers" "OBJECT_TEMPLATE" "hull.object.container" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) | indent 2 -}}
+{{- include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultPodBasePath.containers._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec.pod "KEY" "containers" "OBJECT_TEMPLATE" "hull.object.container" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 -}}
 {{- include "hull.object.pod.imagePullSecrets" . | indent 2 -}}
-{{- include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultPodBasePath.initContainers._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec.pod "KEY" "initContainers" "OBJECT_TEMPLATE" "hull.object.container" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) | indent 2 -}}
+{{- include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultPodBasePath.initContainers._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec.pod "KEY" "initContainers" "OBJECT_TEMPLATE" "hull.object.container" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 -}}
 {{- include "hull.object.pod.serviceAccountName" . | indent 2 -}}
 {{- include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultPodBasePath.volumes._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec.pod "KEY" "volumes" "OBJECT_TEMPLATE" "hull.object.volume" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) | indent 2 -}}
 {{- include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.pod "HULL_OBJECT_KEYS" (list "imagePullSecrets" "serviceAccountName" "containers" "initContainers" "volumes")) | indent 2 -}}
