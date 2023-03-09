@@ -20,13 +20,14 @@
 {{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- $component := default "" (index . "COMPONENT") -}}
 {{- $defaultSpec := (index . "DEFAULT_SPEC") -}}
+{{- $keepHashsumAnnotations := (index . "KEEP_HASHSUM_ANNOTATIONS") -}}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 - {{ dict "name" $component | toYaml }}
 {{ include "hull.object.container.image" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.image "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) | indent 2 }}
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.env._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "env" "OBJECT_TEMPLATE" "hull.object.container.env" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) | indent 2 }}
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.envFrom._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "envFrom" "OBJECT_TEMPLATE" "hull.object.container.envFrom" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) | indent 2 }}
+{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.env._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "env" "OBJECT_TEMPLATE" "hull.object.container.env" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 }}
+{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.envFrom._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "envFrom" "OBJECT_TEMPLATE" "hull.object.container.envFrom" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 }}
 {{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.ports._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "ports" "OBJECT_TEMPLATE" "hull.object.container.ports" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) | indent 2 }}
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.volumeMounts._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "volumeMounts" "OBJECT_TEMPLATE" "hull.object.container.volumeMounts" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) | indent 2 }}
+{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultSpec.volumeMounts._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "volumeMounts" "OBJECT_TEMPLATE" "hull.object.container.volumeMounts" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "name" "image" "env" "envFrom" "ports" "volumeMounts")) | indent 2 }}
 {{ end }}
 {{ end }}
@@ -92,12 +93,13 @@ image: {{ $baseName }}
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $keepHashsumAnnotations := default false (index . "KEEP_HASHSUM_ANNOTATIONS") -}}
 {{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- $component := default nil (index . "COMPONENT") -}}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 - {{ dict "name" $component | toYaml }}
 {{ if hasKey $spec "valueFrom" }}
-{{ include "hull.object.container.env.valueFrom" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "SPEC" $spec.valueFrom "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) | indent 2 }}
+{{ include "hull.object.container.env.valueFrom" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "SPEC" $spec.valueFrom "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 }}
 {{ end }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "name" "valueFrom")) | indent 2 }}
 {{- end -}}
@@ -121,6 +123,7 @@ image: {{ $baseName }}
 {{ $spec := (index . "SPEC") }}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $keepHashsumAnnotations := default false (index . "KEEP_HASHSUM_ANNOTATIONS") -}}
 {{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 valueFrom:
@@ -129,7 +132,11 @@ valueFrom:
 {{ if $refValue.name }}
     name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $refValue.name "SPEC" $refValue "HULL_ROOT_KEY" $hullRootKey) }}    
 {{ end }}
-{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $refValue "HULL_OBJECT_KEYS" (list "name")) | indent 4 }}
+{{- $k8sOmit := list "name" -}}
+{{- if (not $keepHashsumAnnotations) -}}
+{{- $k8sOmit = append $k8sOmit "hashsumAnnotation" -}}
+{{- end -}}
+{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $refValue "HULL_OBJECT_KEYS" $k8sOmit) | indent 4 }}
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -153,11 +160,12 @@ valueFrom:
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $keepHashsumAnnotations := default false (index . "KEEP_HASHSUM_ANNOTATIONS") -}}
 {{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- $component := default nil (index . "COMPONENT") }}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 - {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "configMapRef" "secretRef")) | indent 2 }}
-{{ include "hull.object.container.envFrom.ref" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey) |indent 2}}
+{{ include "hull.object.container.envFrom.ref" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) |indent 2}}
 {{ end }}
 {{ end }}
 
@@ -182,11 +190,16 @@ valueFrom:
 {{ $spec := (index . "SPEC") }}
 {{ $component :=  (index . "COMPONENT") }}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $keepHashsumAnnotations := default false (index . "KEEP_HASHSUM_ANNOTATIONS") -}}
 {{ range $refKey, $refValue := $spec }}
 {{ if (or (eq $refKey "configMapRef") (eq $refKey "secretRef")) }}
 {{ $refKey }}:
-  name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $refValue.name "SPEC" $refValue "HULL_ROOT_KEY" $hullRootKey) }}    
-{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $refValue "HULL_OBJECT_KEYS" (list "name")) | indent 2 }}
+  name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "COMPONENT" $refValue.name "SPEC" $refValue "HULL_ROOT_KEY" $hullRootKey) }}   
+{{- $k8sOmit := list "name" -}}
+{{- if (not $keepHashsumAnnotations) -}}
+{{- $k8sOmit = append $k8sOmit "hashsumAnnotation" -}}
+{{- end -}} 
+{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $refValue "HULL_OBJECT_KEYS" $k8sOmit) | indent 2 }}
 {{ end }}
 {{ end }}
 {{ end }}
@@ -207,9 +220,14 @@ valueFrom:
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $keepHashsumAnnotations := default false (index . "KEEP_HASHSUM_ANNOTATIONS") -}}
 {{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
--{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list)) | indent 1 }}
+{{- $k8sOmit := list -}}
+{{- if (not $keepHashsumAnnotations) -}}
+{{- $k8sOmit = append $k8sOmit "hashsumAnnotation" -}}
+{{- end -}}
+-{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" $k8sOmit) | indent 1 }}
 {{ end }}
 {{ end }}
 

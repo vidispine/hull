@@ -108,6 +108,10 @@ jobs:
         HelmVersion: "3.10.3"
       Helm_3_11_0: 
         HelmVersion: "3.11.0"
+      Helm_3_11_1: 
+        HelmVersion: "3.11.1"
+      Helm_3_11_2: 
+        HelmVersion: "3.11.2"
   
   steps:
   - template: azure-pipelines-test.yml  # Template reference
@@ -154,7 +158,7 @@ jobs:
         echo "-> package hull chart"        
         sudo ./cr package ./hull
         echo "-> upload hull chart"
-        sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
+        sudo ./cr upload --git-repo hull --owner vidispine --release-notes-file ./hull/CHANGELOG.md  --token $(GITHUBTOKEN) || true
         mkdir .cr-index
         wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
         sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) --charts-repo https://vidispine.github.io/hull --push 
@@ -163,10 +167,11 @@ jobs:
         rm -rf ./hull
         echo "-> package hull-demo chart"  
         sudo ./cr package ./hull-demo 
-        # echo "-> test chart"
-        # helm repo add hull https://vidispine.github.io/hull
-        # helm dep build hull-demo
-        # helm template hull-demo    
+        echo "-> test chart"
+        helm repo add hull https://vidispine.github.io/hull
+        helm dep update
+        helm dep build hull-demo
+        helm template hull-demo    
         echo "-> upload hull-demo chart"
         sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
         sudo rm -rf .cr-index

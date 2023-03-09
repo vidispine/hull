@@ -96,6 +96,7 @@
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
+{{- $keepHashsumAnnotations := default false (index . "KEEP_HASHSUM_ANNOTATIONS") -}}
 {{- $isDefined := false }}
 {{- range $key, $value := (index $spec (printf "%s" $objectKey)) }}
 {{ if ne $key "_HULL_OBJECT_TYPE_DEFAULT_" }}
@@ -109,7 +110,7 @@
 {{ if (gt (len (keys (default dict $value))) 0) }}
 {{ $merged := dict }}
 {{ $merged = merge $value $defaultObjectSpec }}  
-{{ include (printf "%s" $objectTemplate) (dict "PARENT_CONTEXT" $parent "SPEC" $merged "ORIGIN_SPEC" $spec "COMPONENT" $key "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) | indent 0 }}
+{{ include (printf "%s" $objectTemplate) (dict "PARENT_CONTEXT" $parent "SPEC" $merged "ORIGIN_SPEC" $spec "COMPONENT" $key "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 0 }}
 {{ end }}
 {{ end }}
 {{ end }}
