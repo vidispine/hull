@@ -196,7 +196,9 @@ As highlighted above, when included in a Helm chart the HULL library chart can t
 
   For more details refer to the documentation on [Transformations](./hull/doc/transformations.md).
 
-- Enable automatic hashing of referenced ConfigMaps and Secrets to facilitate pod restarts on changes of configuration (work in progress)
+- Enable automatic hashing of referenced ConfigMaps and Secrets to facilitate pod restarts on changes of configuration when required.
+
+  For more details refer to the documentation on [Pods](./hull/doc/objects_pod.md).
 
 To learn more about the general architecture and features of the HULL library see the [Architecture Overview](./hull/doc/architecture.md)
 
@@ -210,7 +212,7 @@ Some important things to mention first before looking at the library in more det
 
 ⚠️ **At this time HULL releases are tested against all existing non-beta and non-alpha Helm 3 CLI versions. Note that Helm CLI versions `3.0.x` are not compatible with HULL, all other currently existing non-beta and non-alpha versions are compatible.** ⚠️
 
-⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases. At this time Kubernetes versions `1.22` and `1.23` and `1.24` have a matching and maintained HULL release.** ⚠️
+⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases. At this time Kubernetes versions `1.24` and `1.25` and `1.26` have a matching and maintained HULL release.** ⚠️
 
 ## NEW! The HULL Tutorials
 
