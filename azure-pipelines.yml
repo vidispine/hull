@@ -132,7 +132,6 @@ jobs:
         sleep 60
         echo "-> test chart"
         helm repo add hull https://vidispine.github.io/hull
-        helm dep update
         helm dep build hull-demo
         helm template hull-demo    
         echo "-> upload hull-demo chart"
