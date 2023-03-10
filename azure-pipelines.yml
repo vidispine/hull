@@ -85,10 +85,11 @@ jobs:
   - script: |
         set -euo pipefail
         echo "-> get chartreleaser"
+        CHART_RELEASER_VERSION=1.5.0
         cp -r . $(Agent.TempDirectory)
         cd $(Agent.TempDirectory)
-        wget https://github.com/helm/chart-releaser/releases/download/v1.1.1/chart-releaser_1.1.1_linux_amd64.tar.gz
-        tar -xvzf chart-releaser_1.1.1_linux_amd64.tar.gz -C ./
+        wget https://github.com/helm/chart-releaser/releases/download/v${CHART_RELEASER_VERSION}/chart-releaser_${CHART_RELEASER_VERSION}_linux_amd64.tar.gz
+        tar -xvzf chart-releaser_${CHART_RELEASER_VERSION}_linux_amd64.tar.gz -C ./
         ls
         sudo chmod +x ./cr
         echo "-> create hull-demo chart"
