@@ -7630,6 +7630,17 @@
                             "type": "boolean"
                         }
                     ]
+                },
+                "hashsumAnnotation": {
+                    "description": "If true, adds annotations with hashsums of the values of all ConfigMap keys to the pods template annotations.",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/hull.Transformation.Pattern"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ]
                 }
             },
             "anyOf": [
@@ -7666,6 +7677,17 @@
                 },
                 "staticName": {
                     "description": "Specify whether the ConfigMap refers to an internally named ConfigMap",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/hull.Transformation.Pattern"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                "hashsumAnnotation": {
+                    "description": "If true, adds an annotation with the hashsum of the ConfigMaps key value to the pods template annotations.",
                     "anyOf": [
                         {
                             "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -14601,7 +14623,18 @@
                             "type": "boolean"
                         }
                     ]
-                }
+                },
+                "hashsumAnnotation": {
+                    "description": "If true, adds annotations with hashsums of the values of all Secrets keys to the pods template annotations.",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/hull.Transformation.Pattern"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ]
+                }     
             },
             "anyOf": [
                 {
@@ -14637,6 +14670,17 @@
                 },
                 "staticName": {
                     "description": "Specify whether the Secret refers to an internally named Secret",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/hull.Transformation.Pattern"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                "hashsumAnnotation": {
+                    "description": "If true, adds an annotation with the hashsum of the Secrets key value to the pods template annotations.",
                     "anyOf": [
                         {
                             "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -16134,7 +16178,8 @@
                 "name",
                 "readOnly",
                 "subPath",
-                "subPathExpr"
+                "subPathExpr",
+                "hashsumAnnotation"
             ]
         },
         "io.k8s.api.core.v1.VolumeMount": {
@@ -16173,6 +16218,17 @@
                 },
                 "enabled": {
                     "title": "Enabled",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/hull.Transformation.Pattern"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                "hashsumAnnotation": {
+                    "description": "If true and volume for this volumeMount is a ConfigMap or Secret, enables enabling adding hashsum annotation to the pods template annotations.",
                     "anyOf": [
                         {
                             "$ref": "#/definitions/hull.Transformation.Pattern"

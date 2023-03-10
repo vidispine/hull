@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "29" objects were rendered
+* Expected number of "31" objects were rendered
 * Validate
 
 ## Metadata
@@ -97,7 +97,6 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-myapp" of kind "Ingress"
 * Test Object has key "spec§rules§0§host" with value "SET_HOSTNAME_HERE"
 * Test Object has key "spec§rules§0§http§paths§0§backend§service§name" with value "release-name-hull-test-myapp-frontend"
-
 ___
 
 * Clean the test execution folder

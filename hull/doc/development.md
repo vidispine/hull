@@ -261,6 +261,9 @@ is changed to
 
 `{{- $allObjects = merge $allObjects (dict "CronJob" (dict "API_VERSION" "batch/v1")) }}`
 
+Also make the same change(s) to the per-object type files of `hull` which you may use to render a file per object type instead of one big `hull.yaml`. the files are located in the `files/templates` folder.
+
+
 ### Adapt test chart
 
 Set the versions in `Chart.yaml` of the test chart at `hull/files/test/HULL/sources/charts/hull-test`:
@@ -282,10 +285,18 @@ Replace the files for the Kubernetes JSON schema in `hull/files/test/HULL/schema
 
 ### Adapt tests
 
-in the `specs/concepts/metadata_basic.cpt` change the version that is tested against:
+In the `specs/concepts/metadata_basic.cpt` change the version that is tested against:
 
 - `* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.x.y"` where x is the Kubernetes major version and y the patch version of the schema
 
+The ConfigMap and Secret tests also contain a particular test which references the current version of the library. These tests need to be updated es well and hence in the `specs/configmap.cpt` exchange versions in the `Include transformations` test line:
+
+`* Test Object has key "data§chart_ref" with value "hull-test-1.x.0"`
+
+and do the same for `specs/secret.cpt` line:
+
+`* Test Object has key "data§chart_ref" with Base64 encoded value of "hull-test-1.x.0"`
+``
 ### Run tests
 
 All tests need to run successfully.

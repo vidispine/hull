@@ -388,4 +388,13 @@ hull:
               secret:
                 staticName: true
 
+      hashing-pod-volumemounts:
+        serviceName: envfrom-test
+        pod:
+          containers: {}
+
+      hashing-pod-env:
+        serviceName: envfrom-test
+        pod:
+          containers: {}
   ###################################################

@@ -95,7 +95,10 @@ def copy_the_suite_source_folder_for_case_and_chart_and_suite_to_TEST_EXECUTION_
             dst_file = open(os.path.join(dst_path, suite + ".values.hull.yaml"), "w")
             dst_file.write(data)
             dst_file.close()
-            
+
+        files = os.path.join(dir_path,'./../sources/cases/',suite, 'files')
+        if os.path.isdir(files):
+            copytree(files, os.path.join(dst_path, 'files'))
     except Exception as e:
         print("Oops!", e.__str__, "occurred.")
         assert False
