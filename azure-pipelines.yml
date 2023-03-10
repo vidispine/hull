@@ -130,10 +130,10 @@ jobs:
         find . -name 'hull\.*\.tgz' -delete
         sudo rm -rf .cr-release-packages
         rm -rf ./hull
-        echo "-> package hull-demo chart"  
-        sudo ./cr package ./hull-demo 
         echo "sleep 60s"
         sleep 60
+        echo "-> package hull-demo chart"  
+        sudo ./cr package ./hull-demo 
         echo "-> test chart"
         helm repo add hull https://vidispine.github.io/hull
         helm dep build hull-demo
