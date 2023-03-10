@@ -100,6 +100,8 @@ jobs:
         echo "This is a Helm chart for demonstration of the HULL library." > ./hull-demo/README.md
         echo "" >> ./hull-demo/README.md
         echo "It can also be used as a bootstrapped parent chart already fully integrating HULL." >> ./hull-demo/README.md
+        echo "" >> ./hull-demo/README.md
+        echo "Please visit (the HULL website)[https://github.com/vidispine/hull] for more information." >> ./hull-demo/README.md
         cp ./hull/LICENSE ./hull-demo/LICENSE
         mkdir ./hull-demo/templates
         cp ./hull/hull.yaml ./hull-demo/templates/hull.yaml
@@ -116,10 +118,12 @@ jobs:
         echo "-> Chart.yaml:"
         cat ./hull-demo/Chart.yaml 
         echo "<- Chart.yaml"
+        cp ./hull/CHANGELOG.md ./hull-demo/CHANGELOG.md
+        cp ./hull/HISTORY.md ./hull-demo/HISTORY.md
         echo "-> package hull chart"        
         sudo ./cr package ./hull
         echo "-> upload hull chart"
-        sudo ./cr upload --git-repo hull --owner vidispine --release-notes-file CHANGELOG.md  --token $(GITHUBTOKEN) || true
+        sudo ./cr upload --git-repo hull --owner vidispine --release-notes-file CHANGELOG.md --token $(GITHUBTOKEN) || true
         mkdir .cr-index
         wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
         sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) --charts-repo https://vidispine.github.io/hull --push 
@@ -135,7 +139,7 @@ jobs:
         helm dep build hull-demo
         helm template hull-demo    
         echo "-> upload hull-demo chart"
-        sudo ./cr upload --git-repo hull --owner vidispine --token $(GITHUBTOKEN) || true
+        sudo ./cr upload --git-repo hull --owner vidispine --release-notes-file CHANGELOG.md --token $(GITHUBTOKEN) || true
         sudo rm -rf .cr-index
         mkdir .cr-index
         wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
