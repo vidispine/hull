@@ -119,7 +119,7 @@ jobs:
         echo "-> package hull chart"        
         sudo ./cr package ./hull
         echo "-> upload hull chart"
-        sudo ./cr upload --git-repo hull --owner vidispine --release-notes-file ./hull/CHANGELOG.md  --token $(GITHUBTOKEN) || true
+        sudo ./cr upload --git-repo hull --owner vidispine --release-notes-file CHANGELOG.md  --token $(GITHUBTOKEN) || true
         mkdir .cr-index
         wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
         sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) --charts-repo https://vidispine.github.io/hull --push 
@@ -128,6 +128,8 @@ jobs:
         rm -rf ./hull
         echo "-> package hull-demo chart"  
         sudo ./cr package ./hull-demo 
+        echo "sleep 60s"
+        sleep 60
         echo "-> test chart"
         helm repo add hull https://vidispine.github.io/hull
         helm dep update
