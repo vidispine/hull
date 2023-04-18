@@ -55,7 +55,7 @@ jobs:
         ls
         sudo chmod +x ./cr
         echo "-> create hull-demo chart"
-        export HULL_VERSION=`sed -n 's/^version:\s//p' ./hull/Chart.yaml` 
+        export HULL_VERSION=`sed -n 's/^version:\s//p' ./hull/Chart.yaml | sed 's/\"//'` 
         echo "-> hull version is ${HULL_VERSION}"
         mkdir ./hull-demo
         cp ./hull/files/test/HULL/sources/cases/deployment/values_short_demo.hull.yaml ./hull-demo/values.yaml
@@ -75,7 +75,7 @@ jobs:
         echo ""
         echo "dependencies:" >> ./hull-demo/Chart.yaml
         echo "- name: hull" >> ./hull-demo/Chart.yaml
-        echo "  version: ${HULL_VERSION}" >> ./hull-demo/Chart.yaml
+        echo "  version: \"${HULL_VERSION}\"" >> ./hull-demo/Chart.yaml
         echo "  repository: \"https://vidispine.github.io/hull\"" >> ./hull-demo/Chart.yaml
         echo "-> Chart.yaml:"
         cat ./hull-demo/Chart.yaml 
