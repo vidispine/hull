@@ -20,7 +20,7 @@ So for all HULL based objects, the pod specific information is wrapped like this
 
 ### The `hull.Pod.v1` properties
 
-Properties can be set as they are defined in the [Kubernetes API's pod spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#podspec-v1-core).
+Properties can be set as they are defined in the [Kubernetes API's pod spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#podspec-v1-core).
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -36,7 +36,7 @@ However the properties listed below are overwritten or added by HULL:
 
 > The `name` property of the container is derived from the key.
 
-Properties can be set as they are defined in the [Kubernetes API's container spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#container-v1-core). 
+Properties can be set as they are defined in the [Kubernetes API's container spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#container-v1-core). 
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -64,7 +64,7 @@ Definition of container images is split into multiple parts to allow better supp
 
 > The `name` property of the environment variable is derived from the key.
 
-Properties can be set as they are defined in the [Kubernetes API's envvar spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#envvar-v1-core). 
+Properties can be set as they are defined in the [Kubernetes API's envvar spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#envvar-v1-core). 
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -80,7 +80,7 @@ However the properties listed below are overwritten or added by HULL:
 
 > The key-value pairs of value type `hull.EnvFrom.v1` are converted to an array on rendering
 
-Properties can be set as they are defined in the [Kubernetes API's envfromsource spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#envfromsource-v1-core). 
+Properties can be set as they are defined in the [Kubernetes API's envfromsource spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#envfromsource-v1-core). 
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -102,7 +102,7 @@ However the properties listed below are overwritten or added by HULL:
 
 > The `name` property of the container's port is derived from the key.
 
-Properties can be set as they are defined in the [Kubernetes API's containerport spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#containerport-v1-core). 
+Properties can be set as they are defined in the [Kubernetes API's containerport spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#containerport-v1-core). 
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -114,7 +114,7 @@ However the properties listed below are overwritten or added by HULL:
 
 > The key-value pairs of value type `hull.VolumeMount.v1` are converted to an array on rendering 
 
-Properties can be set as they are defined in the [Kubernetes API's volumemount spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#volumemount-v1-core). 
+Properties can be set as they are defined in the [Kubernetes API's volumemount spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#volumemount-v1-core). 
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -129,7 +129,7 @@ However the properties listed below are overwritten or added by HULL:
 
 > The `name` property of the volume is derived from the key.
 
-Properties can be set as they are defined in the [Kubernetes API's volume spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#volume-v1-core). 
+Properties can be set as they are defined in the [Kubernetes API's volume spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#volume-v1-core). 
 
 However the properties listed below are overwritten or added by HULL:
 

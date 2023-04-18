@@ -18,46 +18,6 @@ jobs:
   strategy: 
     maxParallel: 100
     matrix:
-      Helm_3_5_0: 
-        HelmVersion: "3.5.0"
-      Helm_3_5_1: 
-        HelmVersion: "3.5.1"
-      Helm_3_5_2: 
-        HelmVersion: "3.5.2"
-      Helm_3_5_3: 
-        HelmVersion: "3.5.3"
-      Helm_3_5_4: 
-        HelmVersion: "3.5.4"
-      Helm_3_6_0: 
-        HelmVersion: "3.6.0"
-      Helm_3_6_1: 
-        HelmVersion: "3.6.1"
-      Helm_3_6_2: 
-        HelmVersion: "3.6.2"
-      Helm_3_6_3: 
-        HelmVersion: "3.6.3"
-      Helm_3_7_0: 
-        HelmVersion: "3.7.0"
-      Helm_3_7_1: 
-        HelmVersion: "3.7.1"
-      Helm_3_7_2: 
-        HelmVersion: "3.7.2"
-      Helm_3_8_0: 
-        HelmVersion: "3.8.0"
-      Helm_3_8_1: 
-        HelmVersion: "3.8.1"
-      Helm_3_8_2: 
-        HelmVersion: "3.8.2"
-      Helm_3_9_0: 
-        HelmVersion: "3.9.0"
-      Helm_3_9_1: 
-        HelmVersion: "3.9.1"
-      Helm_3_9_2: 
-        HelmVersion: "3.9.2"
-      Helm_3_9_3: 
-        HelmVersion: "3.9.3"
-      Helm_3_9_4: 
-        HelmVersion: "3.9.4"
       Helm_3_10_0: 
         HelmVersion: "3.10.0"
       Helm_3_10_1: 
@@ -72,7 +32,9 @@ jobs:
         HelmVersion: "3.11.1"
       Helm_3_11_2: 
         HelmVersion: "3.11.2"
-  
+      Helm_3_11_3: 
+        HelmVersion: "3.11.3"  
+        
   steps:
   - template: azure-pipelines-test.yml  # Template reference
     parameters:

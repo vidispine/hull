@@ -149,6 +149,11 @@
     {
       "group": "certificates.k8s.io",
       "kind": "WatchEvent",
+      "version": "v1alpha1"
+    },
+    {
+      "group": "certificates.k8s.io",
+      "kind": "WatchEvent",
       "version": "v1beta1"
     },
     {
@@ -274,7 +279,7 @@
     {
       "group": "resource.k8s.io",
       "kind": "WatchEvent",
-      "version": "v1alpha1"
+      "version": "v1alpha2"
     },
     {
       "group": "scheduling.k8s.io",

@@ -2,7 +2,7 @@
   "description": "CronJobSpec describes how the job execution will look like and when it will actually run.",
   "properties": {
     "concurrencyPolicy": {
-      "description": "Specifies how to treat concurrent executions of a Job. Valid values are: - \"Allow\" (default): allows CronJobs to run concurrently; - \"Forbid\": forbids concurrent runs, skipping next run if previous run hasn't finished yet; - \"Replace\": cancels currently running job and replaces it with a new one\n\n",
+      "description": "Specifies how to treat concurrent executions of a Job. Valid values are:\n\n- \"Allow\" (default): allows CronJobs to run concurrently; - \"Forbid\": forbids concurrent runs, skipping next run if previous run hasn't finished yet; - \"Replace\": cancels currently running job and replaces it with a new one",
       "type": [
         "string",
         "null"
@@ -29,7 +29,7 @@
                   "null"
                 ]
               },
-              "description": "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations",
+              "description": "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations",
               "type": [
                 "object",
                 "null"
@@ -95,7 +95,7 @@
                   "null"
                 ]
               },
-              "description": "Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: http://kubernetes.io/docs/user-guide/labels",
+              "description": "Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels",
               "type": [
                 "object",
                 "null"
@@ -169,14 +169,14 @@
               ]
             },
             "name": {
-              "description": "Name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: http://kubernetes.io/docs/user-guide/identifiers#names",
+              "description": "Name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names",
               "type": [
                 "string",
                 "null"
               ]
             },
             "namespace": {
-              "description": "Namespace defines the space within which each name must be unique. An empty namespace is equivalent to the \"default\" namespace, but \"default\" is the canonical representation. Not all objects are required to be scoped to a namespace - the value of this field for those objects will be empty.\n\nMust be a DNS_LABEL. Cannot be updated. More info: http://kubernetes.io/docs/user-guide/namespaces",
+              "description": "Namespace defines the space within which each name must be unique. An empty namespace is equivalent to the \"default\" namespace, but \"default\" is the canonical representation. Not all objects are required to be scoped to a namespace - the value of this field for those objects will be empty.\n\nMust be a DNS_LABEL. Cannot be updated. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces",
               "type": [
                 "string",
                 "null"
@@ -210,11 +210,11 @@
                     "type": "string"
                   },
                   "name": {
-                    "description": "Name of the referent. More info: http://kubernetes.io/docs/user-guide/identifiers#names",
+                    "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names",
                     "type": "string"
                   },
                   "uid": {
-                    "description": "UID of the referent. More info: http://kubernetes.io/docs/user-guide/identifiers#uids",
+                    "description": "UID of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids",
                     "type": "string"
                   }
                 },
@@ -253,7 +253,7 @@
               ]
             },
             "uid": {
-              "description": "UID is the unique in time and space value for this object. It is typically generated by the server on successful creation of a resource and is not allowed to change on PUT operations.\n\nPopulated by the system. Read-only. More info: http://kubernetes.io/docs/user-guide/identifiers#uids",
+              "description": "UID is the unique in time and space value for this object. It is typically generated by the server on successful creation of a resource and is not allowed to change on PUT operations.\n\nPopulated by the system. Read-only. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids",
               "type": [
                 "string",
                 "null"
@@ -286,14 +286,14 @@
               ]
             },
             "completionMode": {
-              "description": "CompletionMode specifies how Pod completions are tracked. It can be `NonIndexed` (default) or `Indexed`.\n\n`NonIndexed` means that the Job is considered complete when there have been .spec.completions successfully completed Pods. Each Pod completion is homologous to each other.\n\n`Indexed` means that the Pods of a Job get an associated completion index from 0 to (.spec.completions - 1), available in the annotation batch.kubernetes.io/job-completion-index. The Job is considered complete when there is one successfully completed Pod for each index. When value is `Indexed`, .spec.completions must be specified and `.spec.parallelism` must be less than or equal to 10^5. In addition, The Pod name takes the form `$(job-name)-$(index)-$(random-string)`, the Pod hostname takes the form `$(job-name)-$(index)`.\n\nMore completion modes can be added in the future. If the Job controller observes a mode that it doesn't recognize, which is possible during upgrades due to version skew, the controller skips updates for the Job.",
+              "description": "completionMode specifies how Pod completions are tracked. It can be `NonIndexed` (default) or `Indexed`.\n\n`NonIndexed` means that the Job is considered complete when there have been .spec.completions successfully completed Pods. Each Pod completion is homologous to each other.\n\n`Indexed` means that the Pods of a Job get an associated completion index from 0 to (.spec.completions - 1), available in the annotation batch.kubernetes.io/job-completion-index. The Job is considered complete when there is one successfully completed Pod for each index. When value is `Indexed`, .spec.completions must be specified and `.spec.parallelism` must be less than or equal to 10^5. In addition, The Pod name takes the form `$(job-name)-$(index)-$(random-string)`, the Pod hostname takes the form `$(job-name)-$(index)`.\n\nMore completion modes can be added in the future. If the Job controller observes a mode that it doesn't recognize, which is possible during upgrades due to version skew, the controller skips updates for the Job.",
               "type": [
                 "string",
                 "null"
               ]
             },
             "completions": {
-              "description": "Specifies the desired number of successfully finished pods the job should be run with.  Setting to nil means that the success of any pod signals the success of all pods, and allows parallelism to have any positive value.  Setting to 1 means that parallelism is limited to 1 and the success of that pod signals the success of the job. More info: https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/",
+              "description": "Specifies the desired number of successfully finished pods the job should be run with.  Setting to null means that the success of any pod signals the success of all pods, and allows parallelism to have any positive value.  Setting to 1 means that parallelism is limited to 1 and the success of that pod signals the success of the job. More info: https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/",
               "format": "int32",
               "type": [
                 "integer",
@@ -321,10 +321,10 @@
                 "rules": {
                   "description": "A list of pod failure policy rules. The rules are evaluated in order. Once a rule matches a Pod failure, the remaining of the rules are ignored. When no rule matches the Pod failure, the default handling applies - the counter of pod failures is incremented and it is checked against the backoffLimit. At most 20 elements are allowed.",
                   "items": {
-                    "description": "PodFailurePolicyRule describes how a pod failure is handled when the requirements are met. One of OnExitCodes and onPodConditions, but not both, can be used in each rule.",
+                    "description": "PodFailurePolicyRule describes how a pod failure is handled when the requirements are met. One of onExitCodes and onPodConditions, but not both, can be used in each rule.",
                     "properties": {
                       "action": {
-                        "description": "Specifies the action taken on a pod failure when the requirements are satisfied. Possible values are: - FailJob: indicates that the pod's job is marked as Failed and all\n  running pods are terminated.\n- Ignore: indicates that the counter towards the .backoffLimit is not\n  incremented and a replacement pod is created.\n- Count: indicates that the pod is handled in the default way - the\n  counter towards the .backoffLimit is incremented.\nAdditional values are considered to be added in the future. Clients should react to an unknown action by skipping the rule.\n\n",
+                        "description": "Specifies the action taken on a pod failure when the requirements are satisfied. Possible values are:\n\n- FailJob: indicates that the pod's job is marked as Failed and all\n  running pods are terminated.\n- Ignore: indicates that the counter towards the .backoffLimit is not\n  incremented and a replacement pod is created.\n- Count: indicates that the pod is handled in the default way - the\n  counter towards the .backoffLimit is incremented.\nAdditional values are considered to be added in the future. Clients should react to an unknown action by skipping the rule.",
                         "type": "string"
                       },
                       "onExitCodes": {
@@ -338,7 +338,7 @@
                             ]
                           },
                           "operator": {
-                            "description": "Represents the relationship between the container exit code(s) and the specified values. Containers completed with success (exit code 0) are excluded from the requirement check. Possible values are: - In: the requirement is satisfied if at least one container exit code\n  (might be multiple if there are multiple containers not restricted\n  by the 'containerName' field) is in the set of specified values.\n- NotIn: the requirement is satisfied if at least one container exit code\n  (might be multiple if there are multiple containers not restricted\n  by the 'containerName' field) is not in the set of specified values.\nAdditional values are considered to be added in the future. Clients should react to an unknown operator by assuming the requirement is not satisfied.\n\n",
+                            "description": "Represents the relationship between the container exit code(s) and the specified values. Containers completed with success (exit code 0) are excluded from the requirement check. Possible values are:\n\n- In: the requirement is satisfied if at least one container exit code\n  (might be multiple if there are multiple containers not restricted\n  by the 'containerName' field) is in the set of specified values.\n- NotIn: the requirement is satisfied if at least one container exit code\n  (might be multiple if there are multiple containers not restricted\n  by the 'containerName' field) is not in the set of specified values.\nAdditional values are considered to be added in the future. Clients should react to an unknown operator by assuming the requirement is not satisfied.",
                             "type": "string"
                           },
                           "values": {
@@ -484,7 +484,7 @@
               "additionalProperties": false
             },
             "suspend": {
-              "description": "Suspend specifies whether the Job controller should create Pods or not. If a Job is created with suspend set to true, no Pods are created by the Job controller. If a Job is suspended after creation (i.e. the flag goes from false to true), the Job controller will delete all active Pods associated with this Job. Users must design their workload to gracefully handle this. Suspending a Job will reset the StartTime field of the Job, effectively resetting the ActiveDeadlineSeconds timer too. Defaults to false.",
+              "description": "suspend specifies whether the Job controller should create Pods or not. If a Job is created with suspend set to true, no Pods are created by the Job controller. If a Job is suspended after creation (i.e. the flag goes from false to true), the Job controller will delete all active Pods associated with this Job. Users must design their workload to gracefully handle this. Suspending a Job will reset the StartTime field of the Job, effectively resetting the ActiveDeadlineSeconds timer too. Defaults to false.",
               "type": [
                 "boolean",
                 "null"
@@ -503,7 +503,7 @@
                           "null"
                         ]
                       },
-                      "description": "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations",
+                      "description": "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations",
                       "type": [
                         "object",
                         "null"
@@ -569,7 +569,7 @@
                           "null"
                         ]
                       },
-                      "description": "Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: http://kubernetes.io/docs/user-guide/labels",
+                      "description": "Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels",
                       "type": [
                         "object",
                         "null"
@@ -643,14 +643,14 @@
                       ]
                     },
                     "name": {
-                      "description": "Name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: http://kubernetes.io/docs/user-guide/identifiers#names",
+                      "description": "Name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names",
                       "type": [
                         "string",
                         "null"
                       ]
                     },
                     "namespace": {
-                      "description": "Namespace defines the space within which each name must be unique. An empty namespace is equivalent to the \"default\" namespace, but \"default\" is the canonical representation. Not all objects are required to be scoped to a namespace - the value of this field for those objects will be empty.\n\nMust be a DNS_LABEL. Cannot be updated. More info: http://kubernetes.io/docs/user-guide/namespaces",
+                      "description": "Namespace defines the space within which each name must be unique. An empty namespace is equivalent to the \"default\" namespace, but \"default\" is the canonical representation. Not all objects are required to be scoped to a namespace - the value of this field for those objects will be empty.\n\nMust be a DNS_LABEL. Cannot be updated. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces",
                       "type": [
                         "string",
                         "null"
@@ -684,11 +684,11 @@
                             "type": "string"
                           },
                           "name": {
-                            "description": "Name of the referent. More info: http://kubernetes.io/docs/user-guide/identifiers#names",
+                            "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names",
                             "type": "string"
                           },
                           "uid": {
-                            "description": "UID of the referent. More info: http://kubernetes.io/docs/user-guide/identifiers#uids",
+                            "description": "UID of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids",
                             "type": "string"
                           }
                         },
@@ -727,7 +727,7 @@
                       ]
                     },
                     "uid": {
-                      "description": "UID is the unique in time and space value for this object. It is typically generated by the server on successful creation of a resource and is not allowed to change on PUT operations.\n\nPopulated by the system. Read-only. More info: http://kubernetes.io/docs/user-guide/identifiers#uids",
+                      "description": "UID is the unique in time and space value for this object. It is typically generated by the server on successful creation of a resource and is not allowed to change on PUT operations.\n\nPopulated by the system. Read-only. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids",
                       "type": [
                         "string",
                         "null"
@@ -775,7 +775,7 @@
                                               "type": "string"
                                             },
                                             "operator": {
-                                              "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\n",
+                                              "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.",
                                               "type": "string"
                                             },
                                             "values": {
@@ -817,7 +817,7 @@
                                               "type": "string"
                                             },
                                             "operator": {
-                                              "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\n",
+                                              "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.",
                                               "type": "string"
                                             },
                                             "values": {
@@ -893,7 +893,7 @@
                                               "type": "string"
                                             },
                                             "operator": {
-                                              "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\n",
+                                              "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.",
                                               "type": "string"
                                             },
                                             "values": {
@@ -935,7 +935,7 @@
                                               "type": "string"
                                             },
                                             "operator": {
-                                              "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.\n\n",
+                                              "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.",
                                               "type": "string"
                                             },
                                             "values": {
@@ -2037,7 +2037,7 @@
                             ]
                           },
                           "imagePullPolicy": {
-                            "description": "Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images\n\n",
+                            "description": "Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images",
                             "type": [
                               "string",
                               "null"
@@ -2135,7 +2135,7 @@
                                         ]
                                       },
                                       "scheme": {
-                                        "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                        "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                         "type": [
                                           "string",
                                           "null"
@@ -2283,7 +2283,7 @@
                                         ]
                                       },
                                       "scheme": {
-                                        "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                        "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                         "type": [
                                           "string",
                                           "null"
@@ -2470,7 +2470,7 @@
                                     ]
                                   },
                                   "scheme": {
-                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                     "type": [
                                       "string",
                                       "null"
@@ -2606,7 +2606,7 @@
                                   ]
                                 },
                                 "protocol": {
-                                  "description": "Protocol for port. Must be UDP, TCP, or SCTP. Defaults to \"TCP\".\n\n",
+                                  "description": "Protocol for port. Must be UDP, TCP, or SCTP. Defaults to \"TCP\".",
                                   "type": [
                                     "string",
                                     "null"
@@ -2755,7 +2755,7 @@
                                     ]
                                   },
                                   "scheme": {
-                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                     "type": [
                                       "string",
                                       "null"
@@ -2854,11 +2854,41 @@
                             ],
                             "additionalProperties": false
                           },
+                          "resizePolicy": {
+                            "description": "Resources resize policy for the container.",
+                            "items": {
+                              "description": "ContainerResizePolicy represents resource resize policy for the container.",
+                              "properties": {
+                                "resourceName": {
+                                  "description": "Name of the resource to which this resource resize policy applies. Supported values: cpu, memory.",
+                                  "type": "string"
+                                },
+                                "restartPolicy": {
+                                  "description": "Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired.",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "resourceName",
+                                "restartPolicy"
+                              ],
+                              "type": [
+                                "object",
+                                "null"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "type": [
+                              "array",
+                              "null"
+                            ],
+                            "x-kubernetes-list-type": "atomic"
+                          },
                           "resources": {
                             "description": "ResourceRequirements describes the compute resource requirements.",
                             "properties": {
                               "claims": {
-                                "description": "Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.\n\nThis is an alpha field and requires enabling the DynamicResourceAllocation feature gate.\n\nThis field is immutable.",
+                                "description": "Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.\n\nThis is an alpha field and requires enabling the DynamicResourceAllocation feature gate.\n\nThis field is immutable. It can only be set for containers.",
                                 "items": {
                                   "description": "ResourceClaim references one entry in PodSpec.ResourceClaims.",
                                   "properties": {
@@ -2880,7 +2910,10 @@
                                   "array",
                                   "null"
                                 ],
-                                "x-kubernetes-list-type": "set"
+                                "x-kubernetes-list-map-keys": [
+                                  "name"
+                                ],
+                                "x-kubernetes-list-type": "map"
                               },
                               "limits": {
                                 "additionalProperties": {
@@ -2922,7 +2955,7 @@
                                     }
                                   ]
                                 },
-                                "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+                                "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
                                 "type": [
                                   "object",
                                   "null"
@@ -3074,7 +3107,7 @@
                                     ]
                                   },
                                   "type": {
-                                    "description": "type indicates which kind of seccomp profile will be applied. Valid options are:\n\nLocalhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.\n\n",
+                                    "description": "type indicates which kind of seccomp profile will be applied. Valid options are:\n\nLocalhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.",
                                     "type": "string"
                                   }
                                 },
@@ -3261,7 +3294,7 @@
                                     ]
                                   },
                                   "scheme": {
-                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                     "type": [
                                       "string",
                                       "null"
@@ -3382,7 +3415,7 @@
                             ]
                           },
                           "terminationMessagePolicy": {
-                            "description": "Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated.\n\n",
+                            "description": "Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated.",
                             "type": [
                               "string",
                               "null"
@@ -3573,7 +3606,7 @@
                       "additionalProperties": false
                     },
                     "dnsPolicy": {
-                      "description": "Set DNS policy for the pod. Defaults to \"ClusterFirst\". Valid values are 'ClusterFirstWithHostNet', 'ClusterFirst', 'Default' or 'None'. DNS parameters given in DNSConfig will be merged with the policy selected with DNSPolicy. To have DNS options set along with hostNetwork, you have to specify DNS policy explicitly to 'ClusterFirstWithHostNet'.\n\n",
+                      "description": "Set DNS policy for the pod. Defaults to \"ClusterFirst\". Valid values are 'ClusterFirstWithHostNet', 'ClusterFirst', 'Default' or 'None'. DNS parameters given in DNSConfig will be merged with the policy selected with DNSPolicy. To have DNS options set along with hostNetwork, you have to specify DNS policy explicitly to 'ClusterFirstWithHostNet'.",
                       "type": [
                         "string",
                         "null"
@@ -3870,7 +3903,7 @@
                             ]
                           },
                           "imagePullPolicy": {
-                            "description": "Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images\n\n",
+                            "description": "Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images",
                             "type": [
                               "string",
                               "null"
@@ -3968,7 +4001,7 @@
                                         ]
                                       },
                                       "scheme": {
-                                        "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                        "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                         "type": [
                                           "string",
                                           "null"
@@ -4116,7 +4149,7 @@
                                         ]
                                       },
                                       "scheme": {
-                                        "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                        "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                         "type": [
                                           "string",
                                           "null"
@@ -4303,7 +4336,7 @@
                                     ]
                                   },
                                   "scheme": {
-                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                     "type": [
                                       "string",
                                       "null"
@@ -4439,7 +4472,7 @@
                                   ]
                                 },
                                 "protocol": {
-                                  "description": "Protocol for port. Must be UDP, TCP, or SCTP. Defaults to \"TCP\".\n\n",
+                                  "description": "Protocol for port. Must be UDP, TCP, or SCTP. Defaults to \"TCP\".",
                                   "type": [
                                     "string",
                                     "null"
@@ -4588,7 +4621,7 @@
                                     ]
                                   },
                                   "scheme": {
-                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                     "type": [
                                       "string",
                                       "null"
@@ -4687,11 +4720,41 @@
                             ],
                             "additionalProperties": false
                           },
+                          "resizePolicy": {
+                            "description": "Resources resize policy for the container.",
+                            "items": {
+                              "description": "ContainerResizePolicy represents resource resize policy for the container.",
+                              "properties": {
+                                "resourceName": {
+                                  "description": "Name of the resource to which this resource resize policy applies. Supported values: cpu, memory.",
+                                  "type": "string"
+                                },
+                                "restartPolicy": {
+                                  "description": "Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired.",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "resourceName",
+                                "restartPolicy"
+                              ],
+                              "type": [
+                                "object",
+                                "null"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "type": [
+                              "array",
+                              "null"
+                            ],
+                            "x-kubernetes-list-type": "atomic"
+                          },
                           "resources": {
                             "description": "ResourceRequirements describes the compute resource requirements.",
                             "properties": {
                               "claims": {
-                                "description": "Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.\n\nThis is an alpha field and requires enabling the DynamicResourceAllocation feature gate.\n\nThis field is immutable.",
+                                "description": "Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.\n\nThis is an alpha field and requires enabling the DynamicResourceAllocation feature gate.\n\nThis field is immutable. It can only be set for containers.",
                                 "items": {
                                   "description": "ResourceClaim references one entry in PodSpec.ResourceClaims.",
                                   "properties": {
@@ -4713,7 +4776,10 @@
                                   "array",
                                   "null"
                                 ],
-                                "x-kubernetes-list-type": "set"
+                                "x-kubernetes-list-map-keys": [
+                                  "name"
+                                ],
+                                "x-kubernetes-list-type": "map"
                               },
                               "limits": {
                                 "additionalProperties": {
@@ -4755,7 +4821,7 @@
                                     }
                                   ]
                                 },
-                                "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+                                "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
                                 "type": [
                                   "object",
                                   "null"
@@ -4907,7 +4973,7 @@
                                     ]
                                   },
                                   "type": {
-                                    "description": "type indicates which kind of seccomp profile will be applied. Valid options are:\n\nLocalhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.\n\n",
+                                    "description": "type indicates which kind of seccomp profile will be applied. Valid options are:\n\nLocalhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.",
                                     "type": "string"
                                   }
                                 },
@@ -5094,7 +5160,7 @@
                                     ]
                                   },
                                   "scheme": {
-                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                     "type": [
                                       "string",
                                       "null"
@@ -5222,7 +5288,7 @@
                             ]
                           },
                           "terminationMessagePolicy": {
-                            "description": "Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated.\n\n",
+                            "description": "Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated.",
                             "type": [
                               "string",
                               "null"
@@ -5734,7 +5800,7 @@
                             ]
                           },
                           "imagePullPolicy": {
-                            "description": "Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images\n\n",
+                            "description": "Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images",
                             "type": [
                               "string",
                               "null"
@@ -5832,7 +5898,7 @@
                                         ]
                                       },
                                       "scheme": {
-                                        "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                        "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                         "type": [
                                           "string",
                                           "null"
@@ -5980,7 +6046,7 @@
                                         ]
                                       },
                                       "scheme": {
-                                        "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                        "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                         "type": [
                                           "string",
                                           "null"
@@ -6167,7 +6233,7 @@
                                     ]
                                   },
                                   "scheme": {
-                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                     "type": [
                                       "string",
                                       "null"
@@ -6303,7 +6369,7 @@
                                   ]
                                 },
                                 "protocol": {
-                                  "description": "Protocol for port. Must be UDP, TCP, or SCTP. Defaults to \"TCP\".\n\n",
+                                  "description": "Protocol for port. Must be UDP, TCP, or SCTP. Defaults to \"TCP\".",
                                   "type": [
                                     "string",
                                     "null"
@@ -6452,7 +6518,7 @@
                                     ]
                                   },
                                   "scheme": {
-                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                     "type": [
                                       "string",
                                       "null"
@@ -6551,11 +6617,41 @@
                             ],
                             "additionalProperties": false
                           },
+                          "resizePolicy": {
+                            "description": "Resources resize policy for the container.",
+                            "items": {
+                              "description": "ContainerResizePolicy represents resource resize policy for the container.",
+                              "properties": {
+                                "resourceName": {
+                                  "description": "Name of the resource to which this resource resize policy applies. Supported values: cpu, memory.",
+                                  "type": "string"
+                                },
+                                "restartPolicy": {
+                                  "description": "Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired.",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "resourceName",
+                                "restartPolicy"
+                              ],
+                              "type": [
+                                "object",
+                                "null"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "type": [
+                              "array",
+                              "null"
+                            ],
+                            "x-kubernetes-list-type": "atomic"
+                          },
                           "resources": {
                             "description": "ResourceRequirements describes the compute resource requirements.",
                             "properties": {
                               "claims": {
-                                "description": "Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.\n\nThis is an alpha field and requires enabling the DynamicResourceAllocation feature gate.\n\nThis field is immutable.",
+                                "description": "Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.\n\nThis is an alpha field and requires enabling the DynamicResourceAllocation feature gate.\n\nThis field is immutable. It can only be set for containers.",
                                 "items": {
                                   "description": "ResourceClaim references one entry in PodSpec.ResourceClaims.",
                                   "properties": {
@@ -6577,7 +6673,10 @@
                                   "array",
                                   "null"
                                 ],
-                                "x-kubernetes-list-type": "set"
+                                "x-kubernetes-list-map-keys": [
+                                  "name"
+                                ],
+                                "x-kubernetes-list-type": "map"
                               },
                               "limits": {
                                 "additionalProperties": {
@@ -6619,7 +6718,7 @@
                                     }
                                   ]
                                 },
-                                "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+                                "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
                                 "type": [
                                   "object",
                                   "null"
@@ -6771,7 +6870,7 @@
                                     ]
                                   },
                                   "type": {
-                                    "description": "type indicates which kind of seccomp profile will be applied. Valid options are:\n\nLocalhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.\n\n",
+                                    "description": "type indicates which kind of seccomp profile will be applied. Valid options are:\n\nLocalhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.",
                                     "type": "string"
                                   }
                                 },
@@ -6958,7 +7057,7 @@
                                     ]
                                   },
                                   "scheme": {
-                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.\n\n",
+                                    "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                                     "type": [
                                       "string",
                                       "null"
@@ -7079,7 +7178,7 @@
                             ]
                           },
                           "terminationMessagePolicy": {
-                            "description": "Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated.\n\n",
+                            "description": "Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated.",
                             "type": [
                               "string",
                               "null"
@@ -7368,7 +7467,7 @@
                       "x-kubernetes-patch-strategy": "merge,retainKeys"
                     },
                     "restartPolicy": {
-                      "description": "Restart policy for all containers within the pod. One of Always, OnFailure, Never. Default to Always. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy\n\n",
+                      "description": "Restart policy for all containers within the pod. One of Always, OnFailure, Never. In some contexts, only a subset of those values may be permitted. Default to Always. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy",
                       "type": [
                         "string",
                         "null"
@@ -7389,7 +7488,7 @@
                       ]
                     },
                     "schedulingGates": {
-                      "description": "SchedulingGates is an opaque list of values that if specified will block scheduling the pod. More info:  https://git.k8s.io/enhancements/keps/sig-scheduling/3521-pod-scheduling-readiness.\n\nThis is an alpha-level feature enabled by PodSchedulingReadiness feature gate.",
+                      "description": "SchedulingGates is an opaque list of values that if specified will block scheduling the pod. If schedulingGates is not empty, the pod will stay in the SchedulingGated state and the scheduler will not attempt to schedule the pod.\n\nSchedulingGates can only be set at pod creation time, and be removed only afterwards.\n\nThis is a beta feature enabled by the PodSchedulingReadiness feature gate.",
                       "items": {
                         "description": "PodSchedulingGate is associated to a Pod to guard its scheduling.",
                         "properties": {
@@ -7508,7 +7607,7 @@
                               ]
                             },
                             "type": {
-                              "description": "type indicates which kind of seccomp profile will be applied. Valid options are:\n\nLocalhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.\n\n",
+                              "description": "type indicates which kind of seccomp profile will be applied. Valid options are:\n\nLocalhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.",
                               "type": "string"
                             }
                           },
@@ -7666,7 +7765,7 @@
                         "description": "The pod this Toleration is attached to tolerates any taint that matches the triple <key,value,effect> using the matching operator <operator>.",
                         "properties": {
                           "effect": {
-                            "description": "Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.\n\n",
+                            "description": "Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.",
                             "type": [
                               "string",
                               "null"
@@ -7680,7 +7779,7 @@
                             ]
                           },
                           "operator": {
-                            "description": "Operator represents a key's relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.\n\n",
+                            "description": "Operator represents a key's relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.",
                             "type": [
                               "string",
                               "null"
@@ -7787,7 +7886,7 @@
                             "additionalProperties": false
                           },
                           "matchLabelKeys": {
-                            "description": "MatchLabelKeys is a set of pod label keys to select the pods over which spreading will be calculated. The keys are used to lookup values from the incoming pod labels, those key-value labels are ANDed with labelSelector to select the group of existing pods over which spreading will be calculated for the incoming pod. Keys that don't exist in the incoming pod labels will be ignored. A null or empty list means only match against labelSelector.",
+                            "description": "MatchLabelKeys is a set of pod label keys to select the pods over which spreading will be calculated. The keys are used to lookup values from the incoming pod labels, those key-value labels are ANDed with labelSelector to select the group of existing pods over which spreading will be calculated for the incoming pod. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. MatchLabelKeys cannot be set when LabelSelector isn't set. Keys that don't exist in the incoming pod labels will be ignored. A null or empty list means only match against labelSelector.\n\nThis is a beta field and requires the MatchLabelKeysInPodTopologySpread feature gate to be enabled (enabled by default).",
                             "items": {
                               "type": [
                                 "string",
@@ -7832,7 +7931,7 @@
                             "type": "string"
                           },
                           "whenUnsatisfiable": {
-                            "description": "WhenUnsatisfiable indicates how to deal with a pod if it doesn't satisfy the spread constraint. - DoNotSchedule (default) tells the scheduler not to schedule it. - ScheduleAnyway tells the scheduler to schedule the pod in any location,\n  but giving higher precedence to topologies that would help reduce the\n  skew.\nA constraint is considered \"Unsatisfiable\" for an incoming pod if and only if every possible node assignment for that pod would violate \"MaxSkew\" on some topology. For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same labelSelector spread as 3/1/1: | zone1 | zone2 | zone3 | | P P P |   P   |   P   | If WhenUnsatisfiable is set to DoNotSchedule, incoming pod can only be scheduled to zone2(zone3) to become 3/2/1(3/1/2) as ActualSkew(2-1) on zone2(zone3) satisfies MaxSkew(1). In other words, the cluster can still be imbalanced, but scheduler won't make it *more* imbalanced. It's a required field.\n\n",
+                            "description": "WhenUnsatisfiable indicates how to deal with a pod if it doesn't satisfy the spread constraint. - DoNotSchedule (default) tells the scheduler not to schedule it. - ScheduleAnyway tells the scheduler to schedule the pod in any location,\n  but giving higher precedence to topologies that would help reduce the\n  skew.\nA constraint is considered \"Unsatisfiable\" for an incoming pod if and only if every possible node assignment for that pod would violate \"MaxSkew\" on some topology. For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same labelSelector spread as 3/1/1: | zone1 | zone2 | zone3 | | P P P |   P   |   P   | If WhenUnsatisfiable is set to DoNotSchedule, incoming pod can only be scheduled to zone2(zone3) to become 3/2/1(3/1/2) as ActualSkew(2-1) on zone2(zone3) satisfies MaxSkew(1). In other words, the cluster can still be imbalanced, but scheduler won't make it *more* imbalanced. It's a required field.",
                             "type": "string"
                           }
                         },
@@ -8396,7 +8495,7 @@
                                             "null"
                                           ]
                                         },
-                                        "description": "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations",
+                                        "description": "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations",
                                         "type": [
                                           "object",
                                           "null"
@@ -8462,7 +8561,7 @@
                                             "null"
                                           ]
                                         },
-                                        "description": "Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: http://kubernetes.io/docs/user-guide/labels",
+                                        "description": "Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels",
                                         "type": [
                                           "object",
                                           "null"
@@ -8536,14 +8635,14 @@
                                         ]
                                       },
                                       "name": {
-                                        "description": "Name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: http://kubernetes.io/docs/user-guide/identifiers#names",
+                                        "description": "Name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names",
                                         "type": [
                                           "string",
                                           "null"
                                         ]
                                       },
                                       "namespace": {
-                                        "description": "Namespace defines the space within which each name must be unique. An empty namespace is equivalent to the \"default\" namespace, but \"default\" is the canonical representation. Not all objects are required to be scoped to a namespace - the value of this field for those objects will be empty.\n\nMust be a DNS_LABEL. Cannot be updated. More info: http://kubernetes.io/docs/user-guide/namespaces",
+                                        "description": "Namespace defines the space within which each name must be unique. An empty namespace is equivalent to the \"default\" namespace, but \"default\" is the canonical representation. Not all objects are required to be scoped to a namespace - the value of this field for those objects will be empty.\n\nMust be a DNS_LABEL. Cannot be updated. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces",
                                         "type": [
                                           "string",
                                           "null"
@@ -8577,11 +8676,11 @@
                                               "type": "string"
                                             },
                                             "name": {
-                                              "description": "Name of the referent. More info: http://kubernetes.io/docs/user-guide/identifiers#names",
+                                              "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names",
                                               "type": "string"
                                             },
                                             "uid": {
-                                              "description": "UID of the referent. More info: http://kubernetes.io/docs/user-guide/identifiers#uids",
+                                              "description": "UID of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids",
                                               "type": "string"
                                             }
                                           },
@@ -8620,7 +8719,7 @@
                                         ]
                                       },
                                       "uid": {
-                                        "description": "UID is the unique in time and space value for this object. It is typically generated by the server on successful creation of a resource and is not allowed to change on PUT operations.\n\nPopulated by the system. Read-only. More info: http://kubernetes.io/docs/user-guide/identifiers#uids",
+                                        "description": "UID is the unique in time and space value for this object. It is typically generated by the server on successful creation of a resource and is not allowed to change on PUT operations.\n\nPopulated by the system. Read-only. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids",
                                         "type": [
                                           "string",
                                           "null"
@@ -8718,7 +8817,7 @@
                                         "description": "ResourceRequirements describes the compute resource requirements.",
                                         "properties": {
                                           "claims": {
-                                            "description": "Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.\n\nThis is an alpha field and requires enabling the DynamicResourceAllocation feature gate.\n\nThis field is immutable.",
+                                            "description": "Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.\n\nThis is an alpha field and requires enabling the DynamicResourceAllocation feature gate.\n\nThis field is immutable. It can only be set for containers.",
                                             "items": {
                                               "description": "ResourceClaim references one entry in PodSpec.ResourceClaims.",
                                               "properties": {
@@ -8740,7 +8839,10 @@
                                               "array",
                                               "null"
                                             ],
-                                            "x-kubernetes-list-type": "set"
+                                            "x-kubernetes-list-map-keys": [
+                                              "name"
+                                            ],
+                                            "x-kubernetes-list-type": "map"
                                           },
                                           "limits": {
                                             "additionalProperties": {
@@ -8782,7 +8884,7 @@
                                                 }
                                               ]
                                             },
-                                            "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+                                            "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
                                             "type": [
                                               "object",
                                               "null"
@@ -10150,7 +10252,7 @@
       ]
     },
     "timeZone": {
-      "description": "The time zone name for the given schedule, see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones. If not specified, this will default to the time zone of the kube-controller-manager process. The set of valid time zone names and the time zone offset is loaded from the system-wide time zone database by the API server during CronJob validation and the controller manager during execution. If no system-wide time zone database can be found a bundled version of the database is used instead. If the time zone name becomes invalid during the lifetime of a CronJob or due to a change in host configuration, the controller will stop creating new new Jobs and will create a system event with the reason UnknownTimeZone. More information can be found in https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/#time-zones This is beta field and must be enabled via the `CronJobTimeZone` feature gate.",
+      "description": "The time zone name for the given schedule, see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones. If not specified, this will default to the time zone of the kube-controller-manager process. The set of valid time zone names and the time zone offset is loaded from the system-wide time zone database by the API server during CronJob validation and the controller manager during execution. If no system-wide time zone database can be found a bundled version of the database is used instead. If the time zone name becomes invalid during the lifetime of a CronJob or due to a change in host configuration, the controller will stop creating new new Jobs and will create a system event with the reason UnknownTimeZone. More information can be found in https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/#time-zones",
       "type": [
         "string",
         "null"
