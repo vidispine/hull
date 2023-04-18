@@ -99,7 +99,7 @@ jobs:
         echo "-> test chart"
         helm repo add hull https://vidispine.github.io/hull
         helm dep build hull-demo
-        helm template hull-demo    
+        helm template --kube-version ${HULL_VERSION} hull-demo    
         echo "-> upload hull-demo chart"
         sudo ./cr upload --git-repo hull --owner vidispine --release-notes-file CHANGELOG.md --token $(GITHUBTOKEN) || true
         sudo rm -rf .cr-index
