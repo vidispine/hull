@@ -9,7 +9,7 @@ General label section must be populated with overriden names
 * All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
 * All test objects have key "metadata§labels§app.kubernetes.io/name" with value "a-shorter-name"
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
-* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.26.0"
+* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.27.0"
 
 Static names can be created
 
@@ -77,7 +77,7 @@ General label section must be populated
 * All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
 * All test objects have key "metadata§labels§app.kubernetes.io/name" with value of key "chart" from scenario data_store
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
-* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.26.0"
+* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.27.0"
 
 Run metadataNameOverride tests
 
@@ -100,7 +100,7 @@ General label section must be populated
 * All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
 * All test objects have key "metadata§labels§app.kubernetes.io/name" with value of key "chart" from scenario data_store
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
-* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.26.0"
+* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.27.0"
 
 Static names can be created
 

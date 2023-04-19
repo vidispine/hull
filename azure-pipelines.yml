@@ -18,46 +18,6 @@ jobs:
   strategy: 
     maxParallel: 100
     matrix:
-      Helm_3_5_0: 
-        HelmVersion: "3.5.0"
-      Helm_3_5_1: 
-        HelmVersion: "3.5.1"
-      Helm_3_5_2: 
-        HelmVersion: "3.5.2"
-      Helm_3_5_3: 
-        HelmVersion: "3.5.3"
-      Helm_3_5_4: 
-        HelmVersion: "3.5.4"
-      Helm_3_6_0: 
-        HelmVersion: "3.6.0"
-      Helm_3_6_1: 
-        HelmVersion: "3.6.1"
-      Helm_3_6_2: 
-        HelmVersion: "3.6.2"
-      Helm_3_6_3: 
-        HelmVersion: "3.6.3"
-      Helm_3_7_0: 
-        HelmVersion: "3.7.0"
-      Helm_3_7_1: 
-        HelmVersion: "3.7.1"
-      Helm_3_7_2: 
-        HelmVersion: "3.7.2"
-      Helm_3_8_0: 
-        HelmVersion: "3.8.0"
-      Helm_3_8_1: 
-        HelmVersion: "3.8.1"
-      Helm_3_8_2: 
-        HelmVersion: "3.8.2"
-      Helm_3_9_0: 
-        HelmVersion: "3.9.0"
-      Helm_3_9_1: 
-        HelmVersion: "3.9.1"
-      Helm_3_9_2: 
-        HelmVersion: "3.9.2"
-      Helm_3_9_3: 
-        HelmVersion: "3.9.3"
-      Helm_3_9_4: 
-        HelmVersion: "3.9.4"
       Helm_3_10_0: 
         HelmVersion: "3.10.0"
       Helm_3_10_1: 
@@ -72,7 +32,9 @@ jobs:
         HelmVersion: "3.11.1"
       Helm_3_11_2: 
         HelmVersion: "3.11.2"
-  
+      Helm_3_11_3: 
+        HelmVersion: "3.11.3"  
+        
   steps:
   - template: azure-pipelines-test.yml  # Template reference
     parameters:
@@ -93,7 +55,7 @@ jobs:
         ls
         sudo chmod +x ./cr
         echo "-> create hull-demo chart"
-        export HULL_VERSION=`sed -n 's/^version:\s//p' ./hull/Chart.yaml` 
+        export HULL_VERSION=`sed -n 's/^version:\s//p' ./hull/Chart.yaml | sed 's/\"//g'` 
         echo "-> hull version is ${HULL_VERSION}"
         mkdir ./hull-demo
         cp ./hull/files/test/HULL/sources/cases/deployment/values_short_demo.hull.yaml ./hull-demo/values.yaml
@@ -113,7 +75,7 @@ jobs:
         echo ""
         echo "dependencies:" >> ./hull-demo/Chart.yaml
         echo "- name: hull" >> ./hull-demo/Chart.yaml
-        echo "  version: ${HULL_VERSION}" >> ./hull-demo/Chart.yaml
+        echo "  version: \"${HULL_VERSION}\"" >> ./hull-demo/Chart.yaml
         echo "  repository: \"https://vidispine.github.io/hull\"" >> ./hull-demo/Chart.yaml
         echo "-> Chart.yaml:"
         cat ./hull-demo/Chart.yaml 
@@ -137,7 +99,7 @@ jobs:
         echo "-> test chart"
         helm repo add hull https://vidispine.github.io/hull
         helm dep build hull-demo
-        helm template hull-demo    
+        helm template --kube-version ${HULL_VERSION} hull-demo    
         echo "-> upload hull-demo chart"
         sudo ./cr upload --git-repo hull --owner vidispine --release-notes-file CHANGELOG.md --token $(GITHUBTOKEN) || true
         sudo rm -rf .cr-index

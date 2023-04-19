@@ -67,19 +67,42 @@
       "items": {
         "description": "ContainerStatus contains details for the current status of this container.",
         "properties": {
+          "allocatedResources": {
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ]
+            },
+            "description": "AllocatedResources represents the compute resources allocated for this container by the node. Kubelet sets this value to Container.Resources.Requests upon successful pod admission and after successfully admitting desired pod resize.",
+            "type": [
+              "object",
+              "null"
+            ]
+          },
           "containerID": {
-            "description": "Container's ID in the format '<type>://<container_id>'.",
+            "description": "ContainerID is the ID of the container in the format '<type>://<container_id>'. Where type is a container runtime identifier, returned from Version call of CRI API (for example \"containerd\").",
             "type": [
               "string",
               "null"
             ]
           },
           "image": {
-            "description": "The image the container is running. More info: https://kubernetes.io/docs/concepts/containers/images.",
+            "description": "Image is the name of container image that the container is running. The container image may not match the image used in the PodSpec, as it may have been resolved by the runtime. More info: https://kubernetes.io/docs/concepts/containers/images.",
             "type": "string"
           },
           "imageID": {
-            "description": "ImageID of the container's image.",
+            "description": "ImageID is the image ID of the container's image. The image ID may not match the image ID of the image used in the PodSpec, as it may have been resolved by the runtime.",
             "type": "string"
           },
           "lastState": {
@@ -198,20 +221,104 @@
             "additionalProperties": false
           },
           "name": {
-            "description": "This must be a DNS_LABEL. Each container in a pod must have a unique name. Cannot be updated.",
+            "description": "Name is a DNS_LABEL representing the unique name of the container. Each container in a pod must have a unique name across all container types. Cannot be updated.",
             "type": "string"
           },
           "ready": {
-            "description": "Specifies whether the container has passed its readiness probe.",
+            "description": "Ready specifies whether the container is currently passing its readiness check. The value will change as readiness probes keep executing. If no readiness probes are specified, this field defaults to true once the container is fully started (see Started field).\n\nThe value is typically used to determine whether a container is ready to accept traffic.",
             "type": "boolean"
           },
+          "resources": {
+            "description": "ResourceRequirements describes the compute resource requirements.",
+            "properties": {
+              "claims": {
+                "description": "Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.\n\nThis is an alpha field and requires enabling the DynamicResourceAllocation feature gate.\n\nThis field is immutable. It can only be set for containers.",
+                "items": {
+                  "description": "ResourceClaim references one entry in PodSpec.ResourceClaims.",
+                  "properties": {
+                    "name": {
+                      "description": "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "additionalProperties": false
+                },
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "x-kubernetes-list-map-keys": [
+                  "name"
+                ],
+                "x-kubernetes-list-type": "map"
+              },
+              "limits": {
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  ]
+                },
+                "description": "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "requests": {
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  ]
+                },
+                "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+                "type": [
+                  "object",
+                  "null"
+                ]
+              }
+            },
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false
+          },
           "restartCount": {
-            "description": "The number of times the container has been restarted.",
+            "description": "RestartCount holds the number of times the container has been restarted. Kubelet makes an effort to always increment the value, but there are cases when the state may be lost due to node restarts and then the value may be reset to 0. The value is never negative.",
             "format": "int32",
             "type": "integer"
           },
           "started": {
-            "description": "Specifies whether the container has passed its startup probe. Initialized as false, becomes true after startupProbe is considered successful. Resets to false when the container is restarted, or if kubelet loses state temporarily. Is always true when no startupProbe is defined.",
+            "description": "Started indicates whether the container has finished its postStart lifecycle hook and passed its startup probe. Initialized as false, becomes true after startupProbe is considered successful. Resets to false when the container is restarted, or if kubelet loses state temporarily. In both cases, startup probes will run again. Is always true when no startupProbe is defined and container is running and has passed the postStart lifecycle hook. The null value must be treated the same as false.",
             "type": [
               "boolean",
               "null"
@@ -356,19 +463,42 @@
       "items": {
         "description": "ContainerStatus contains details for the current status of this container.",
         "properties": {
+          "allocatedResources": {
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ]
+            },
+            "description": "AllocatedResources represents the compute resources allocated for this container by the node. Kubelet sets this value to Container.Resources.Requests upon successful pod admission and after successfully admitting desired pod resize.",
+            "type": [
+              "object",
+              "null"
+            ]
+          },
           "containerID": {
-            "description": "Container's ID in the format '<type>://<container_id>'.",
+            "description": "ContainerID is the ID of the container in the format '<type>://<container_id>'. Where type is a container runtime identifier, returned from Version call of CRI API (for example \"containerd\").",
             "type": [
               "string",
               "null"
             ]
           },
           "image": {
-            "description": "The image the container is running. More info: https://kubernetes.io/docs/concepts/containers/images.",
+            "description": "Image is the name of container image that the container is running. The container image may not match the image used in the PodSpec, as it may have been resolved by the runtime. More info: https://kubernetes.io/docs/concepts/containers/images.",
             "type": "string"
           },
           "imageID": {
-            "description": "ImageID of the container's image.",
+            "description": "ImageID is the image ID of the container's image. The image ID may not match the image ID of the image used in the PodSpec, as it may have been resolved by the runtime.",
             "type": "string"
           },
           "lastState": {
@@ -487,20 +617,104 @@
             "additionalProperties": false
           },
           "name": {
-            "description": "This must be a DNS_LABEL. Each container in a pod must have a unique name. Cannot be updated.",
+            "description": "Name is a DNS_LABEL representing the unique name of the container. Each container in a pod must have a unique name across all container types. Cannot be updated.",
             "type": "string"
           },
           "ready": {
-            "description": "Specifies whether the container has passed its readiness probe.",
+            "description": "Ready specifies whether the container is currently passing its readiness check. The value will change as readiness probes keep executing. If no readiness probes are specified, this field defaults to true once the container is fully started (see Started field).\n\nThe value is typically used to determine whether a container is ready to accept traffic.",
             "type": "boolean"
           },
+          "resources": {
+            "description": "ResourceRequirements describes the compute resource requirements.",
+            "properties": {
+              "claims": {
+                "description": "Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.\n\nThis is an alpha field and requires enabling the DynamicResourceAllocation feature gate.\n\nThis field is immutable. It can only be set for containers.",
+                "items": {
+                  "description": "ResourceClaim references one entry in PodSpec.ResourceClaims.",
+                  "properties": {
+                    "name": {
+                      "description": "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "additionalProperties": false
+                },
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "x-kubernetes-list-map-keys": [
+                  "name"
+                ],
+                "x-kubernetes-list-type": "map"
+              },
+              "limits": {
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  ]
+                },
+                "description": "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "requests": {
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  ]
+                },
+                "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+                "type": [
+                  "object",
+                  "null"
+                ]
+              }
+            },
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false
+          },
           "restartCount": {
-            "description": "The number of times the container has been restarted.",
+            "description": "RestartCount holds the number of times the container has been restarted. Kubelet makes an effort to always increment the value, but there are cases when the state may be lost due to node restarts and then the value may be reset to 0. The value is never negative.",
             "format": "int32",
             "type": "integer"
           },
           "started": {
-            "description": "Specifies whether the container has passed its startup probe. Initialized as false, becomes true after startupProbe is considered successful. Resets to false when the container is restarted, or if kubelet loses state temporarily. Is always true when no startupProbe is defined.",
+            "description": "Started indicates whether the container has finished its postStart lifecycle hook and passed its startup probe. Initialized as false, becomes true after startupProbe is considered successful. Resets to false when the container is restarted, or if kubelet loses state temporarily. In both cases, startup probes will run again. Is always true when no startupProbe is defined and container is running and has passed the postStart lifecycle hook. The null value must be treated the same as false.",
             "type": [
               "boolean",
               "null"
@@ -652,19 +866,42 @@
       "items": {
         "description": "ContainerStatus contains details for the current status of this container.",
         "properties": {
+          "allocatedResources": {
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ]
+            },
+            "description": "AllocatedResources represents the compute resources allocated for this container by the node. Kubelet sets this value to Container.Resources.Requests upon successful pod admission and after successfully admitting desired pod resize.",
+            "type": [
+              "object",
+              "null"
+            ]
+          },
           "containerID": {
-            "description": "Container's ID in the format '<type>://<container_id>'.",
+            "description": "ContainerID is the ID of the container in the format '<type>://<container_id>'. Where type is a container runtime identifier, returned from Version call of CRI API (for example \"containerd\").",
             "type": [
               "string",
               "null"
             ]
           },
           "image": {
-            "description": "The image the container is running. More info: https://kubernetes.io/docs/concepts/containers/images.",
+            "description": "Image is the name of container image that the container is running. The container image may not match the image used in the PodSpec, as it may have been resolved by the runtime. More info: https://kubernetes.io/docs/concepts/containers/images.",
             "type": "string"
           },
           "imageID": {
-            "description": "ImageID of the container's image.",
+            "description": "ImageID is the image ID of the container's image. The image ID may not match the image ID of the image used in the PodSpec, as it may have been resolved by the runtime.",
             "type": "string"
           },
           "lastState": {
@@ -783,20 +1020,104 @@
             "additionalProperties": false
           },
           "name": {
-            "description": "This must be a DNS_LABEL. Each container in a pod must have a unique name. Cannot be updated.",
+            "description": "Name is a DNS_LABEL representing the unique name of the container. Each container in a pod must have a unique name across all container types. Cannot be updated.",
             "type": "string"
           },
           "ready": {
-            "description": "Specifies whether the container has passed its readiness probe.",
+            "description": "Ready specifies whether the container is currently passing its readiness check. The value will change as readiness probes keep executing. If no readiness probes are specified, this field defaults to true once the container is fully started (see Started field).\n\nThe value is typically used to determine whether a container is ready to accept traffic.",
             "type": "boolean"
           },
+          "resources": {
+            "description": "ResourceRequirements describes the compute resource requirements.",
+            "properties": {
+              "claims": {
+                "description": "Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.\n\nThis is an alpha field and requires enabling the DynamicResourceAllocation feature gate.\n\nThis field is immutable. It can only be set for containers.",
+                "items": {
+                  "description": "ResourceClaim references one entry in PodSpec.ResourceClaims.",
+                  "properties": {
+                    "name": {
+                      "description": "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "additionalProperties": false
+                },
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "x-kubernetes-list-map-keys": [
+                  "name"
+                ],
+                "x-kubernetes-list-type": "map"
+              },
+              "limits": {
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  ]
+                },
+                "description": "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "requests": {
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  ]
+                },
+                "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+                "type": [
+                  "object",
+                  "null"
+                ]
+              }
+            },
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false
+          },
           "restartCount": {
-            "description": "The number of times the container has been restarted.",
+            "description": "RestartCount holds the number of times the container has been restarted. Kubelet makes an effort to always increment the value, but there are cases when the state may be lost due to node restarts and then the value may be reset to 0. The value is never negative.",
             "format": "int32",
             "type": "integer"
           },
           "started": {
-            "description": "Specifies whether the container has passed its startup probe. Initialized as false, becomes true after startupProbe is considered successful. Resets to false when the container is restarted, or if kubelet loses state temporarily. Is always true when no startupProbe is defined.",
+            "description": "Started indicates whether the container has finished its postStart lifecycle hook and passed its startup probe. Initialized as false, becomes true after startupProbe is considered successful. Resets to false when the container is restarted, or if kubelet loses state temporarily. In both cases, startup probes will run again. Is always true when no startupProbe is defined and container is running and has passed the postStart lifecycle hook. The null value must be treated the same as false.",
             "type": [
               "boolean",
               "null"
@@ -951,7 +1272,7 @@
       ]
     },
     "phase": {
-      "description": "The phase of a Pod is a simple, high-level summary of where the Pod is in its lifecycle. The conditions array, the reason and message fields, and the individual container status arrays contain more detail about the pod's status. There are five possible phase values:\n\nPending: The pod has been accepted by the Kubernetes system, but one or more of the container images has not been created. This includes time before being scheduled as well as time spent downloading images over the network, which could take a while. Running: The pod has been bound to a node, and all of the containers have been created. At least one container is still running, or is in the process of starting or restarting. Succeeded: All containers in the pod have terminated in success, and will not be restarted. Failed: All containers in the pod have terminated, and at least one container has terminated in failure. The container either exited with non-zero status or was terminated by the system. Unknown: For some reason the state of the pod could not be obtained, typically due to an error in communicating with the host of the pod.\n\nMore info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-phase\n\n",
+      "description": "The phase of a Pod is a simple, high-level summary of where the Pod is in its lifecycle. The conditions array, the reason and message fields, and the individual container status arrays contain more detail about the pod's status. There are five possible phase values:\n\nPending: The pod has been accepted by the Kubernetes system, but one or more of the container images has not been created. This includes time before being scheduled as well as time spent downloading images over the network, which could take a while. Running: The pod has been bound to a node, and all of the containers have been created. At least one container is still running, or is in the process of starting or restarting. Succeeded: All containers in the pod have terminated in success, and will not be restarted. Failed: All containers in the pod have terminated, and at least one container has terminated in failure. The container either exited with non-zero status or was terminated by the system. Unknown: For some reason the state of the pod could not be obtained, typically due to an error in communicating with the host of the pod.\n\nMore info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-phase",
       "type": [
         "string",
         "null"
@@ -991,7 +1312,7 @@
       "x-kubernetes-patch-strategy": "merge"
     },
     "qosClass": {
-      "description": "The Quality of Service (QOS) classification assigned to the pod based on resource requirements See PodQOSClass type for available QOS classes More info: https://git.k8s.io/community/contributors/design-proposals/node/resource-qos.md\n\n",
+      "description": "The Quality of Service (QOS) classification assigned to the pod based on resource requirements See PodQOSClass type for available QOS classes More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/#quality-of-service-classes",
       "type": [
         "string",
         "null"
@@ -999,6 +1320,13 @@
     },
     "reason": {
       "description": "A brief CamelCase message indicating details about why the pod is in this state. e.g. 'Evicted'",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "resize": {
+      "description": "Status of resources resize desired for pod's containers. It is empty if no resources resize is pending. Any changes to container resources will automatically set this to \"Proposed\"",
       "type": [
         "string",
         "null"

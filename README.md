@@ -6,7 +6,7 @@ The chart itself and all documentation related to it can be found in the [`hull`
 
 The Kubernetes API JSON Schemas are stored in the [`kubernetes-json-schema`](kubernetes-json-schema) folder. 
 
-[![Build Status](https://dev.azure.com/arvato-systems-dmm/VPMS3%20CrossCutting/_apis/build/status/HULL/vidispine.hull.release?branchName=release-1.26)](https://dev.azure.com/arvato-systems-dmm/VPMS3%20CrossCutting/_build/latest?definitionId=589&branchName=release-1.23)
+[![Build Status](https://dev.azure.com/arvato-systems-dmm/VPMS3%20CrossCutting/_apis/build/status/HULL/vidispine.hull.release?branchName=release-1.27)](https://dev.azure.com/arvato-systems-dmm/VPMS3%20CrossCutting/_build/latest?definitionId=589&branchName=release-1.23)
 
 ---
 
@@ -212,7 +212,7 @@ Some important things to mention first before looking at the library in more det
 
 ⚠️ **At this time HULL releases are tested against all existing non-beta and non-alpha Helm 3 CLI versions. Note that Helm CLI versions `3.0.x` are not compatible with HULL, all other currently existing non-beta and non-alpha versions are compatible.** ⚠️
 
-⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases. At this time Kubernetes versions `1.24` and `1.25` and `1.26` have a matching and maintained HULL release.** ⚠️
+⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases. At this time Kubernetes versions `1.25` and `1.26` and `1.27` have a matching and maintained HULL release.** ⚠️
 
 ## NEW! The HULL Tutorials
 
@@ -383,7 +383,7 @@ The values of object instance keys reflects the Kubernetes objects to create for
 
     Some lower level structures are also converted from the Kubernetes API array form to a dictionary form or are modified to improve working with them. This also enables more sophisticated merging of layers since arrays don't merge well, they only can be overwritten completely. Overwriting arrays however can make it hard to forget about elements that are contained in the default form of the array (you would need to know that they existed in the first place). In short, for a layered configuration approach without an endless amount of elements the dictionary is preferable for representing data since it offers a much better merging support.
 
-    So again using the example of a `deployment` named `nginx` you can add the remaining available Kubernetes properties to the object instance which are not handled by HULL as shown below. For a `deployment` specifically you can add all the remaining properties defined in the `deploymentspec` API schema from [**deploymentspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#deploymentspec-v1-apps) which are `minReadySeconds`, `paused`, `progressDeadlineSeconds`, `replicas`, `revisionHistoryLimit` and `strategy`. If properties are marked as mandatory in the Kubernetes JSON schema you must provide them otherwise the rendering process will fail:
+    So again using the example of a `deployment` named `nginx` you can add the remaining available Kubernetes properties to the object instance which are not handled by HULL as shown below. For a `deployment` specifically you can add all the remaining properties defined in the `deploymentspec` API schema from [**deploymentspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#deploymentspec-v1-apps) which are `minReadySeconds`, `paused`, `progressDeadlineSeconds`, `replicas`, `revisionHistoryLimit` and `strategy`. If properties are marked as mandatory in the Kubernetes JSON schema you must provide them otherwise the rendering process will fail:
 
     ```yaml
     hull:
@@ -410,57 +410,57 @@ The values of object instance keys reflects the Kubernetes objects to create for
 
 Here is an overview of which top level properties are available for which object type in HULL. The HULL properties are grouped by the respective HULL JSON schema group they belong to. A detailed description of these groups and their properties is found in the documentation of this helm chart and the respective linked documents.
 
-**[Workloads APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#-strong-workloads-apis-strong-)**
+**[Workloads APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#-strong-workloads-apis-strong-)**
 
 HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> Properties
 ------------------------------ | --------------------| ----------------------------------
-`deployment` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](./hull/doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**deploymentspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#deploymentspec-v1-apps)<br>`minReadySeconds`<br>`paused`<br>`progressDeadlineSeconds`<br>`replicas`<br>`revisionHistoryLimit`<br>`strategy` 
-`job` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](./hull/doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**jobspec-v1-batch**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#jobspec-v1-batch)<br>`activeDeadlineSeconds`<br>`backoffLimit`<br>`completionMode`<br>`completions`<br>`manualSelector`<br>`parallelism`<br>`selector`<br>`suspend`<br>`ttlSecondsAfterFinished` 
-`daemonset` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](./hull/doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**daemonsetspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#daemonsetspec-v1-apps)<br>`minReadySeconds`<br>`revisionHistoryLimit`<br>`updateStrategy` 
-`statefulset` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](./hull/doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**statefulsetspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#statefulsetspec-v1-apps)<br>`podManagementPolicy`<br>`replicas`<br>`revisionHistoryLimit`<br>`serviceName`<br>`updateStrategy`<br>`serviceName`<br>`volumeClaimTemplates` 
-`cronjob` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Job.v1**](./hull/README.md)<br>`job` | [**cronjobspec-v1-batch**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#cronjobspec-v1-batch)<br>`concurrencyPolicy`<br>`failedJobsHistoryLimit`<br>`schedule`<br>`startingDeadlineSeconds`<br>`successfulJobsHistoryLimit`<br>`suspend` 
+`deployment` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](./hull/doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**deploymentspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#deploymentspec-v1-apps)<br>`minReadySeconds`<br>`paused`<br>`progressDeadlineSeconds`<br>`replicas`<br>`revisionHistoryLimit`<br>`strategy` 
+`job` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](./hull/doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**jobspec-v1-batch**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#jobspec-v1-batch)<br>`activeDeadlineSeconds`<br>`backoffLimit`<br>`completionMode`<br>`completions`<br>`manualSelector`<br>`parallelism`<br>`selector`<br>`suspend`<br>`ttlSecondsAfterFinished` 
+`daemonset` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](./hull/doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**daemonsetspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#daemonsetspec-v1-apps)<br>`minReadySeconds`<br>`revisionHistoryLimit`<br>`updateStrategy` 
+`statefulset` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](./hull/doc/objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**statefulsetspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#statefulsetspec-v1-apps)<br>`podManagementPolicy`<br>`replicas`<br>`revisionHistoryLimit`<br>`serviceName`<br>`updateStrategy`<br>`serviceName`<br>`volumeClaimTemplates` 
+`cronjob` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Job.v1**](./hull/README.md)<br>`job` | [**cronjobspec-v1-batch**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#cronjobspec-v1-batch)<br>`concurrencyPolicy`<br>`failedJobsHistoryLimit`<br>`schedule`<br>`startingDeadlineSeconds`<br>`successfulJobsHistoryLimit`<br>`suspend` 
 
-**[Service APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#-strong-service-apis-strong-)**
+**[Service APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#-strong-service-apis-strong-)**
 HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> Properties
 ------------------------------ | --------------------| ----------------------------------
-`endpoints` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**endpoints-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#endpoints-v1-core)<br>`subsets`
-`endpointslice` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**endpointslice-v1-discovery-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#endpointslice-v1-discovery-k8s-io)<br>`addressType`<br>`endpoints`<br>`ports`
-`service` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Service.v1**](./hull/doc/objects_service.md)<br>`ports` | [**servicespec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#servicespec-v1-core)<br>`allocateLoadBalancerNodePorts`<br>`clusterIP`<br>`clusterIPs`<br>`externalIPs`<br>`externalName`<br>`externalTrafficPolicy`<br>`healthCheckNodePort`<br>`internalTrafficPolicy`<br>`ipFamilies`<br>`ipFamilyPolicy`<br>`loadBalancerClass`<br>`loadBalancerIP`<br>`loadBalancerSourceRanges`<br>`publishNotReadyAddresses`<br>`selector`<br>`sessionAffinity`<br>`sessionAffinityConfig`<br>`topologyKeys`<br>`type`
-`ingress` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Ingress.v1**](./hull/doc/objects_ingress.md)<br>`tls`<br>`rules` | [**ingressspec-v1-networking-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#ingressspec-v1-networking-k8s-io)<br>`defaultBackend`<br>`ingressClassName`
-`ingressclass` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**ingressclassspec-v1-networking-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#ingressclassspec-v1-networking-k8s-io)<br>`controller`<br>`parameters`
+`endpoints` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**endpoints-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#endpoints-v1-core)<br>`subsets`
+`endpointslice` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**endpointslice-v1-discovery-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#endpointslice-v1-discovery-k8s-io)<br>`addressType`<br>`endpoints`<br>`ports`
+`service` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Service.v1**](./hull/doc/objects_service.md)<br>`ports` | [**servicespec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#servicespec-v1-core)<br>`allocateLoadBalancerNodePorts`<br>`clusterIP`<br>`clusterIPs`<br>`externalIPs`<br>`externalName`<br>`externalTrafficPolicy`<br>`healthCheckNodePort`<br>`internalTrafficPolicy`<br>`ipFamilies`<br>`ipFamilyPolicy`<br>`loadBalancerClass`<br>`loadBalancerIP`<br>`loadBalancerSourceRanges`<br>`publishNotReadyAddresses`<br>`selector`<br>`sessionAffinity`<br>`sessionAffinityConfig`<br>`topologyKeys`<br>`type`
+`ingress` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Ingress.v1**](./hull/doc/objects_ingress.md)<br>`tls`<br>`rules` | [**ingressspec-v1-networking-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#ingressspec-v1-networking-k8s-io)<br>`defaultBackend`<br>`ingressClassName`
+`ingressclass` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**ingressclassspec-v1-networking-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#ingressclassspec-v1-networking-k8s-io)<br>`controller`<br>`parameters`
 
-**[Config and Storage APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#-strong-config-and-storage-apis-strong-)**
+**[Config and Storage APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#-strong-config-and-storage-apis-strong-)**
 HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> Properties
 ------------------------------ | --------------------| ----------------------------------
-`configmap` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.VirtualFolder.v1**](./hull/doc/objects_configmaps_secrets.md)<br>`data` |  [**configmap-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#configmap-v1-core)<br>`binaryData`<br>`immutable`
-`secret` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.VirtualFolder.v1**](./hull/doc/objects_configmaps_secrets.md)<br>`data` |  [**secret-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#secret-v1-core)<br>`immutable`<br>`stringData`<br>`type` 
-`registry` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Registry.v1**](./hull/doc/objects_registry.md)<br>`server`<br>`username`<br>`password` | [**secret-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#secret-v1-core)
-`persistentvolumeclaim` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**persistentvolumeclaimspec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#persistentvolumeclaimspec-v1-core)<br>`accessModes`<br>`dataSource`<br>`resources`<br>`selector`<br>`storageClassName`<br>`volumeMode`<br>`volumeName`
-`storageclass` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**storageclass-v1-storage-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#storageclass-v1-storage-k8s-io)<br>`allowVolumeExpansion`<br>`allowedTopologies`<br>`mountOptions`<br>`parameters`<br>`provisioner`<br>`reclaimPolicy`<br>`volumeBindingMode`
+`configmap` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.VirtualFolder.v1**](./hull/doc/objects_configmaps_secrets.md)<br>`data` |  [**configmap-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#configmap-v1-core)<br>`binaryData`<br>`immutable`
+`secret` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.VirtualFolder.v1**](./hull/doc/objects_configmaps_secrets.md)<br>`data` |  [**secret-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#secret-v1-core)<br>`immutable`<br>`stringData`<br>`type` 
+`registry` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Registry.v1**](./hull/doc/objects_registry.md)<br>`server`<br>`username`<br>`password` | [**secret-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#secret-v1-core)
+`persistentvolumeclaim` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**persistentvolumeclaimspec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#persistentvolumeclaimspec-v1-core)<br>`accessModes`<br>`dataSource`<br>`resources`<br>`selector`<br>`storageClassName`<br>`volumeMode`<br>`volumeName`
+`storageclass` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**storageclass-v1-storage-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#storageclass-v1-storage-k8s-io)<br>`allowVolumeExpansion`<br>`allowedTopologies`<br>`mountOptions`<br>`parameters`<br>`provisioner`<br>`reclaimPolicy`<br>`volumeBindingMode`
 
-**[Metadata APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#-strong-metadata-apis-strong-)**
+**[Metadata APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#-strong-metadata-apis-strong-)**
 HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> Properties
 ------------------------------ | --------------------| ----------------------------------
 `customresource` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.CustomResource.v1**](./hull/doc/objects_customresource.md)<br>`apiVersion`<br>`kind`<br>`spec`
-`limitrange` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**limitrange-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#limitrange-v1-core)<br>`limits`
-`horizontalpodautoscaler` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.HorizontalPodAutoscaler.v1**](./hull/doc/objects_horizontalpodautoscaler.md)<br>`scaleTargetRef` | [**horizontalpodautoscalerspec-v2-autoscaling**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#horizontalpodautoscalerspec-v2-autoscaling)<br>`behavior`<br>`maxReplicas`<br>`metrics`<br>`minReplicas`
+`limitrange` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**limitrange-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#limitrange-v1-core)<br>`limits`
+`horizontalpodautoscaler` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.HorizontalPodAutoscaler.v1**](./hull/doc/objects_horizontalpodautoscaler.md)<br>`scaleTargetRef` | [**horizontalpodautoscalerspec-v2-autoscaling**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#horizontalpodautoscalerspec-v2-autoscaling)<br>`behavior`<br>`maxReplicas`<br>`metrics`<br>`minReplicas`
 `mutatingwebhookconfiguration` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.MutatingWebhook.v1**](./hull/doc/objects_base_webhook.md)<br>`webhooks`
-`poddisruptionbudget` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**poddisruptionbudgetspec-v1-policy**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#poddisruptionbudgetspec-v1-policy)<br>`maxUnavailable`<br>`minAvailable`<br>`selector`
+`poddisruptionbudget` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**poddisruptionbudgetspec-v1-policy**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#poddisruptionbudgetspec-v1-policy)<br>`maxUnavailable`<br>`minAvailable`<br>`selector`
 `validatingwebhookconfiguration` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.ValidatingWebhook.v1**](./hull/doc/objects_base_webhook.md)<br>`webhooks` 
-`priorityclass` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**priorityclass-v1-scheduling-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#priorityclass-v1-scheduling-k8s-io)<br>`description`<br>`globalDefault`<br>`preemptionPolicy`<br>`value`
+`priorityclass` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**priorityclass-v1-scheduling-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#priorityclass-v1-scheduling-k8s-io)<br>`description`<br>`globalDefault`<br>`preemptionPolicy`<br>`value`
 
-**[Cluster APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#-strong-cluster-apis-strong-)**
+**[Cluster APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#-strong-cluster-apis-strong-)**
 HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> Properties
 ------------------------------ | --------------------| ----------------------------------
-`clusterrole` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Rule.v1**](./hull/doc/objects_role.md)<br>`rules` |  [**clusterrole-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#clusterrole-v1-rbac-authorization-k8s-io)<br>`aggregationRule`
-`clusterrolebinding` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**clusterrolebinding-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#clusterrolebinding-v1-rbac-authorization-k8s-io)<br>`roleRef`<br>`subjects`
-`namespace` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**namespace-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#namespace-v1-core)<br>`spec`<br>`status`
-`persistentvolume` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**persistentvolumespec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#persistentvolumespec-v1-core)<br>`accessModes`<br>`awsElasticBlockStore`<br>`azureDisk`<br>`azureFile`<br>`capacity`<br>`cephfs`<br>`cinder`<br>`claimRef`<br>`csi`<br>`fc`<br>`flexVolume`<br>`flocker`<br>`gcePersistentDisk`<br>`glusterfs`<br>`hostPath`<br>`iscsi`<br>`local`<br>`mountOptions`<br>`nfs`<br>`nodeAffinity`<br>`persistentVolumeReclaimPolicy`<br>`photonPersistentDisk`<br>`portworxVolume`<br>`quobyte`<br>`rbd`<br>`scaleIO`<br>`storageClassName`<br>`storageos`<br>`volumeMode`<br>`vsphereVolume`
-`role` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Rule.v1**](./hull/doc/objects_role.md)<br>`rules` |  [**role-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#role-v1-rbac-authorization-k8s-io)
-`rolebinding` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**rolebinding-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#rolebinding-v1-rbac-authorization-k8s-io)<br>`roleRef`<br>`subjects`
-`serviceaccount` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**serviceaccount-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#serviceaccount-v1-core)<br>`automountServiceAccountToken`<br>`imagePullSecrets`<br>`secrets`
-`resourcequota` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**resourcequotaspec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#resourcequotaspec-v1-core)<br>`hard`<br>`scopeSelector`<br>`scopes`
-`networkpolicy` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**networkpolicyspec-v1-networking-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#networkpolicyspec-v1-networking-k8s-io)<br>`egress`<br>`ingress`<br>`podSelector`<br>`policyTypes`
+`clusterrole` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Rule.v1**](./hull/doc/objects_role.md)<br>`rules` |  [**clusterrole-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#clusterrole-v1-rbac-authorization-k8s-io)<br>`aggregationRule`
+`clusterrolebinding` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**clusterrolebinding-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#clusterrolebinding-v1-rbac-authorization-k8s-io)<br>`roleRef`<br>`subjects`
+`namespace` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**namespace-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#namespace-v1-core)<br>`spec`<br>`status`
+`persistentvolume` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**persistentvolumespec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#persistentvolumespec-v1-core)<br>`accessModes`<br>`awsElasticBlockStore`<br>`azureDisk`<br>`azureFile`<br>`capacity`<br>`cephfs`<br>`cinder`<br>`claimRef`<br>`csi`<br>`fc`<br>`flexVolume`<br>`flocker`<br>`gcePersistentDisk`<br>`glusterfs`<br>`hostPath`<br>`iscsi`<br>`local`<br>`mountOptions`<br>`nfs`<br>`nodeAffinity`<br>`persistentVolumeReclaimPolicy`<br>`photonPersistentDisk`<br>`portworxVolume`<br>`quobyte`<br>`rbd`<br>`scaleIO`<br>`storageClassName`<br>`storageos`<br>`volumeMode`<br>`vsphereVolume`
+`role` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Rule.v1**](./hull/doc/objects_role.md)<br>`rules` |  [**role-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#role-v1-rbac-authorization-k8s-io)
+`rolebinding` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**rolebinding-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#rolebinding-v1-rbac-authorization-k8s-io)<br>`roleRef`<br>`subjects`
+`serviceaccount` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**serviceaccount-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#serviceaccount-v1-core)<br>`automountServiceAccountToken`<br>`imagePullSecrets`<br>`secrets`
+`resourcequota` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**resourcequotaspec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#resourcequotaspec-v1-core)<br>`hard`<br>`scopeSelector`<br>`scopes`
+`networkpolicy` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**networkpolicyspec-v1-networking-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#networkpolicyspec-v1-networking-k8s-io)<br>`egress`<br>`ingress`<br>`podSelector`<br>`policyTypes`
 
 **Other APIs**
 HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> Properties
@@ -568,8 +568,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.24.0
-    helm.sh/chart: hull-test-1.24.1
+    app.kubernetes.io/version: 1.27.0
+    helm.sh/chart: hull-test-1.27.0
   name: nginx # default name would be 'release-name-hull-test-nginx' 
               # but with staticName: true in the HULL spec it is just the key name
 spec:
@@ -589,8 +589,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.24.0
-        helm.sh/chart: hull-test-1.24.1
+        app.kubernetes.io/version: 1.27.0
+        helm.sh/chart: hull-test-1.27.0
     spec:
       containers:
       - env: []
@@ -740,11 +740,11 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.24.0
+    app.kubernetes.io/version: 1.27.0
     general_custom_label_1: General Custom Label 1 # All objects share the general_custom_labels
     general_custom_label_2: General Custom Label 2 # if they are not overwritten for the object type's
     general_custom_label_3: General Custom Label 3 # default or specific instance
-    helm.sh/chart: hull-test-1.24.1
+    helm.sh/chart: hull-test-1.27.0
   name: release-name-hull-test-default # This is the default ServiceAccount created for this chart.
                                        # As all object instances by default it will be assigned a 
                                        # dynamically created unique name in context of this object type.
@@ -765,11 +765,11 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.24.0
+    app.kubernetes.io/version: 1.27.0
     general_custom_label_1: General Custom Label 1
     general_custom_label_2: General Custom Label 2
     general_custom_label_3: General Custom Label 3
-    helm.sh/chart: hull-test-1.24.1
+    helm.sh/chart: hull-test-1.27.0
   name: release-name-hull-test-default # A default Role for RBAC. 
 rules: []
 ---
@@ -787,11 +787,11 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.24.0
+    app.kubernetes.io/version: 1.27.0
     general_custom_label_1: General Custom Label 1
     general_custom_label_2: General Custom Label 2
     general_custom_label_3: General Custom Label 3
-    helm.sh/chart: hull-test-1.24.1
+    helm.sh/chart: hull-test-1.27.0
   name: release-name-hull-test-default
 roleRef:
   apiGroup: rbac.authorization.k8s.io/v1
@@ -823,14 +823,14 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.24.0
+    app.kubernetes.io/version: 1.27.0
     default_label_1: Default Label 1 # non-overwritten default_label
     default_label_2: Specific Object Label 2 # overwritten default_label by instance
     general_custom_label_1: General Custom Label 1 # non-overwritten general_custom_label
     general_custom_label_2: Default Label 2 # overwritten general_custom_label by default_label
     general_custom_label_3: Specific Object Label 3 # overwritten general_custom_label 
                                                     # by specific_label
-    helm.sh/chart: hull-test-1.24.1
+    helm.sh/chart: hull-test-1.27.0
     specific_label_1: Specific Object Label 1 # added label for instance metadata only
   name: release-name-hull-test-nginx
 spec:
@@ -857,13 +857,13 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.24.0
+        app.kubernetes.io/version: 1.27.0
         default_label_1: Default Label 1
         default_label_2: Specific Object Label 2
         general_custom_label_1: General Custom Label 1
         general_custom_label_2: Default Label 2
         general_custom_label_3: Specific Object Label 3
-        helm.sh/chart: hull-test-1.24.1
+        helm.sh/chart: hull-test-1.27.0
         specific_label_1: Specific Object Label 1
         specific_label_2: Specific Template Label 2 # this label was added only 
                                                     # for the pod template's metadata
@@ -899,11 +899,11 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.24.0
+    app.kubernetes.io/version: 1.27.0
     general_custom_label_1: General Custom Label 1 # All objects share the general_custom_labels
     general_custom_label_2: General Custom Label 2 # if they are not overwritten for the object type's
     general_custom_label_3: General Custom Label 3 # default or specific instance
-    helm.sh/chart: hull-test-1.24.1
+    helm.sh/chart: hull-test-1.27.0
   name: release-name-hull-test-nginx_configmap
 ```
 
