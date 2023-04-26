@@ -139,11 +139,15 @@ def copy_the_hull_chart_files_to_test_object_in_chart(case, chart):
 
 @step("Fail to render the templates for values file <values_file> to test execution folder because error contains <expected_error>")
 def fail_to_render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, expected_error):
-    fail_to_render_the_templates_for_test_case_and_chart_and_values_file(data_store.scenario.case, data_store.scenario.chart, values_file, expected_error)
+    fail_to_render_the_templates_to_namespace_namespace_for_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, "default", expected_error)
 
-@step("Fail to render the templates for test case <case> and chart <chart> and values file <values_file> to test execution folder because error contains <expected_error>")
-def fail_to_render_the_templates_for_test_case_and_chart_and_values_file(case, chart, values_file, expected_error):
-    result = render_chart(case, chart, values_file)
+@step("Fail to render the templates for values file <values_file> to test execution folder and namespace <namespace> because error contains <expected_error>")
+def fail_to_render_the_templates_to_namespace_namespace_for_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, namespace, expected_error):
+    fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_and_values_file(data_store.scenario.case, data_store.scenario.chart, values_file, namespace, expected_error)
+
+@step("Fail to render the templates for test case <case> and chart <chart> and values file <values_file> to test execution folder and namespace <namespace> because error contains <expected_error>")
+def fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_and_values_file(case, chart, values_file, namespace, expected_error):
+    result = render_chart(case, chart, values_file, namespace)
     if result.returncode != 0 and expected_error in str(result.stdout):
         assert True
     else:
