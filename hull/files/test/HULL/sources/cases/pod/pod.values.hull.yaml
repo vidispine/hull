@@ -1372,4 +1372,4 @@ hull:
                     secretKeyRef:
                       name: secret-three
                       key: secret-three-inline-two.json
-                      hashsumAnnotation: false              
+                      hashsumAnnotation: false
