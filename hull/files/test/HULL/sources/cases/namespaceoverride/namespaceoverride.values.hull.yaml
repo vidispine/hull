@@ -1,0 +1,4 @@
+hull:
+  config:
+    general:
+      namespaceOverride: "a-namespace-to-render"
