@@ -1,7 +1,11 @@
 # Lint values file <values_file>
+* Lint the templates for values file <values_file> to namespace "default"
 
-* Lint the templates for values file <values_file>
+# Lint values file <values_file> to namespace <namespace>
+* Lint the templates for values file <values_file> to namespace <namespace>
 
 # Lint
+* Lint values file "values.hull.yaml" to namespace "default"
 
-* Lint values file "values.hull.yaml"
+# Lint to namespace <namespace>
+* Lint values file "values.hull.yaml" to namespace <namespace>

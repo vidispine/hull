@@ -1,5 +1,12 @@
 # Check basic metadata functionality
 
+* Prepare default test case for this kind including suites "namespaceoverride"
+* Lint and Render
+
+Namespace must be set and overriden
+
+* All test objects have key "metadata§namespace" with value "a-namespace-to-render"
+
 * Prepare default test case for this kind including suites "namingoverride"
 * Lint and Render
 
@@ -30,6 +37,7 @@ Check explicit name override
 Component must be key name
 
 * Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata-merge"
+
 
 All labels and annotations from general metadata, defaults and object must be present
 
@@ -65,10 +73,23 @@ Overwriting metadata must work properly
 * Test Object has key "metadata§annotations§default_annotation_1" with value "Default Annotation 1"
 * Test Object has key "metadata§annotations§default_annotation_2" with value "Concrete Annotation 2"
 
+
+Run namespace set via argument test
+
+* Prepare default test case for this kind including suites ""
+* Lint and Render to namespace "namespace-provided-as-arg"
+* All test objects have key "metadata§namespace" with value "namespace-provided-as-arg"
+
+
+
 Run non-name override tests
 
 * Prepare default test case for this kind including suites ""
 * Lint and Render
+
+Namespace must be set to default
+
+* All test objects have key "metadata§namespace" with value "default"
 
 General label section must be populated
 
