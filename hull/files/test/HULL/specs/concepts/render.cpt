@@ -1,9 +1,12 @@
 # Render values file <values_file>
-
 * Lint and Render the templates for values file <values_file> to test execution folder
 * Fill data store with rendered objects
 
+# Render values file <values_file> to namespace <namespace>
+* Lint and Render the templates for values file <values_file> to namespace <namespace>
+
 # Render 
+* Lint and Render values file "values.hull.yaml" to namespace "default"
 
-* Lint and Render values file "values.hull.yaml"
-
+# Render to namespace <namespace>
+* Lint and Render values file "values.hull.yaml" to namespace <namespace>
