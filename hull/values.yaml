@@ -13,6 +13,7 @@ config:
     rbac: true
     fullnameOverride: ""
     nameOverride: ""
+    namespaceOverride: ""
     noObjectNamePrefixes: false
     createImagePullSecretsFromRegistries: true
     globalImageRegistryServer: ""

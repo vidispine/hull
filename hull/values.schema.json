@@ -30300,6 +30300,12 @@
                   "title": "FullnameOverride",
                   "type": "string"
                 },
+                "namespaceOverride": {
+                  "$id": "#/definitions/root/config/general/namespaceOverride",
+                  "description": "Global value for the namespace to create objects in, if missing defaults to releases namespace.",
+                  "title": "NamespaceOverride",
+                  "type": "string"
+                },
                 "noObjectNamePrefixes": {
                   "$id": "#/definitions/root/config/general/noObjectNamePrefixes",
                   "description": "Never prefix any object name.",
