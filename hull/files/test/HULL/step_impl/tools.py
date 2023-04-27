@@ -139,27 +139,31 @@ def copy_the_hull_chart_files_to_test_object_in_chart(case, chart):
 
 @step("Fail to render the templates for values file <values_file> to test execution folder because error contains <expected_error>")
 def fail_to_render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, expected_error):
-    fail_to_render_the_templates_for_test_case_and_chart_and_values_file(data_store.scenario.case, data_store.scenario.chart, values_file, expected_error)
+    fail_to_render_the_templates_to_namespace_namespace_for_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, "default", expected_error)
 
-@step("Fail to render the templates for test case <case> and chart <chart> and values file <values_file> to test execution folder because error contains <expected_error>")
-def fail_to_render_the_templates_for_test_case_and_chart_and_values_file(case, chart, values_file, expected_error):
-    result = render_chart(case, chart, values_file)
+@step("Fail to render the templates for values file <values_file> to test execution folder and namespace <namespace> because error contains <expected_error>")
+def fail_to_render_the_templates_to_namespace_namespace_for_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, namespace, expected_error):
+    fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_and_values_file(data_store.scenario.case, data_store.scenario.chart, values_file, namespace, expected_error)
+
+@step("Fail to render the templates for test case <case> and chart <chart> and values file <values_file> to test execution folder and namespace <namespace> because error contains <expected_error>")
+def fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_and_values_file(case, chart, values_file, namespace, expected_error):
+    result = render_chart(case, chart, values_file, namespace)
     if result.returncode != 0 and expected_error in str(result.stdout):
         assert True
     else:
         assert False, "With ExitCode " + str(result.returncode) + ", expected error " + expected_error + " not found in STDOUT: " + str(result.stdout)
 
-@step("Lint the templates for values file <values_file>")
-def lint_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file):
+@step("Lint the templates for values file <values_file> to namespace <namespace>")
+def lint_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file, namespace):
     if os.environ.get("no_lint") == 'true':
         print('Skipping Linting')
     else: 
-        lint = lint_chart(data_store.scenario.case, data_store.scenario.chart, values_file)
+        lint = lint_chart(data_store.scenario.case, data_store.scenario.chart, values_file, namespace)
         assert lint.returncode == 0, "Linting failed with ExitCode " + str(lint.returncode) + " STDOUT was:\n\n" + str(lint.stdout) + "\n\n and STDERR\n\n: " + str(lint.stderr)
 
-@step("Render the templates for values file <values_file> to test execution folder")
-def render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file):
-    render = render_chart(data_store.scenario.case, data_store.scenario.chart, values_file)
+@step("Render the templates for values file <values_file> to test execution folder and namespace <namespace>")
+def render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file, namespace):
+    render = render_chart(data_store.scenario.case, data_store.scenario.chart, values_file, namespace)
     #if result.returncode == 0:
     #    render_path = get_render_path(data_store.scenario.case, data_store.scenario.chart, values_file)
     #    with open(render_path) as reader:
@@ -368,6 +372,9 @@ def get_render_path(case, chart, values_file):
     return os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered', chart, 'templates',  'hull.yaml')
 
 def lint_chart(case, chart, values_file):
+    return lint_chart(case, chart, values_file, "default")
+
+def lint_chart(case, chart, values_file, namespace):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     chart_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart)
     render_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered')
@@ -379,14 +386,14 @@ def lint_chart(case, chart, values_file):
     for suite in data_store.scenario.suites:
         suites += ("-f", os.path.join(chart_path, suite + ".values.hull.yaml"))
     
-    args = ("helm", "lint", chart_path, "--debug", "--strict") + suites + ("-f",  os.path.join(chart_path, values_file))
+    args = ("helm", "lint", chart_path, "--debug", "--strict", "--namespace", namespace) + suites + ("-f",  os.path.join(chart_path, values_file))
     
     popen = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     print('STDOUT:\n', popen.stdout.decode("utf-8").replace("\n",os.linesep))
     print('STDERR:\n', popen.stderr.decode("utf-8").replace("\n",os.linesep) if popen.stderr is not None else "")
     return popen
 
-def render_chart(case, chart, values_file):
+def render_chart(case, chart, values_file, namespace):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     chart_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart)
     render_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered')
@@ -398,7 +405,7 @@ def render_chart(case, chart, values_file):
     for suite in data_store.scenario.suites:
         suites += ("-f", os.path.join(chart_path, suite + ".values.hull.yaml"))
     
-    args = ("helm", "template", chart_path, "--name-template", "release-name", "--debug", "--output-dir", render_path) + ("-f",  os.path.join(chart_path, values_file)) + suites
+    args = ("helm", "template", chart_path, "--name-template", "release-name", "--debug", "--output-dir", render_path, "--namespace", namespace) + ("-f",  os.path.join(chart_path, values_file)) + suites
     
     popen = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     print('STDOUT:\n', popen.stdout.decode("utf-8").replace("\n",os.linesep))
