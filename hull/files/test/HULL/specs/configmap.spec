@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "21" objects were rendered
+* Expected number of "22" objects were rendered
 * Validate
 
 ## Metadata
@@ -83,6 +83,12 @@ Test creation of objects and features.
 * Test Object has key "data§include_name_with_parent" with value "hull-test-test"
 * Test Object has key "data§escape" with value "hull-test-split:by:colon"
 * Test Object has key "data§chart_ref" with value "hull-test-1.26.0"
+* Test Object has key "data§object_instance_key" with value "test-include-transformation"
+* Test Object has key "data§object_type" with value "configmap"
+* Test Object has key "data§object_instance_key_include" with value "hull-test-test-include-transformation"
+* Test Object has key "data§object_type_include" with value "hull-test-configmap"
+* Test Object has key "data§test_no_object_instance_key" with value ""
+* Test Object has key "data§test_no_object_type" with value ""
 * Test Object has key "metadata§labels§app.kubernetes.io/component" with value "overwritten_component"
 * Test Object has key "metadata§annotations§app.kubernetes.io/component" with value "overwritten_component"
 

@@ -54,7 +54,12 @@ hull:
         serviceName: metadata-overwrite
         pod:
           containers: {}
-      
+
+      metadata-object-info:
+        serviceName: metadata-overwrite
+        pod:
+          containers: {}
+
       disabled-transform:
         serviceName: disabled-transform
         pod:

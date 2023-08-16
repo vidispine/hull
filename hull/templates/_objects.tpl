@@ -104,7 +104,7 @@ metadata:
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $rootContext := (index . "ROOT_CONTEXT") -}}
 {{- $allObjects := (index . "HULL_OBJECTS") -}}
-{{- $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $rootContext.Values.hull "HULL_ROOT_KEY" $hullRootKey) | fromYaml }}
+{{- $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $rootContext.Values.hull "HULL_ROOT_KEY" $hullRootKey "SOURCE_PATH" (list "hull")) | fromYaml }}
 
 
 {{- range $objectType, $objectTypeSpec := $allObjects }}

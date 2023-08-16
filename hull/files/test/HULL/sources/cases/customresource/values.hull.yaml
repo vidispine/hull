@@ -84,3 +84,7 @@ hull:
         kind: "Dummy"
         spec: {}
 
+      metadata-object-info:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}

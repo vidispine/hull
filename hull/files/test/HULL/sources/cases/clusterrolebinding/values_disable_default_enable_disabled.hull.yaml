@@ -104,4 +104,9 @@ hull:
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
+      metadata-object-info:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role          
 ###################################################
