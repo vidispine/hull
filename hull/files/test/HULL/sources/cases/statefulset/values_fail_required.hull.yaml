@@ -55,7 +55,7 @@ hull:
         pod:
           containers: {}
 
-     metadata-object-info:
+      metadata-object-info:
         serviceName: metadata-overwrite
         pod:
           containers: {}
