@@ -49,6 +49,9 @@ hull:
       metadata-name-override-static:
         limits: []
 
+      metadata-object-info:
+        limits: []
+
       cpu:
         limits:
         - max:
