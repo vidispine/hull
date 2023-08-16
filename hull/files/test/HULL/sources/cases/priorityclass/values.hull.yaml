@@ -58,4 +58,7 @@ hull:
       metadata-name-override-static:
         value: 100
 
+      metadata-object-info:
+        value: 100
+
 ###################################################

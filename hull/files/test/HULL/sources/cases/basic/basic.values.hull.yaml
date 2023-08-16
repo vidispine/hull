@@ -217,4 +217,12 @@ hull:
         metadataNameOverride: usethisfinestaticname
         enabled: true
         staticName: true
+
+      metadata-object-info:
+        annotations:
+          annotation_object_instance_key: _HT!{{ (index . "OBJECT_INSTANCE_KEY") }}
+          annotation_object_type: _HT!{{ (index . "OBJECT_TYPE") }}
+        labels:
+          label_object_instance_key: _HT!{{ (index . "OBJECT_INSTANCE_KEY") }}
+          label_object_type: _HT!{{ (index . "OBJECT_TYPE") }}
       
