@@ -107,10 +107,13 @@ def copy_the_suite_source_folder_for_case_and_chart_and_suite_to_TEST_EXECUTION_
 
 @step("Clean the test execution folder")
 def delete_the_TEST_EXECUTION_FOLDER():
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    dst_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, "case", data_store.scenario.case)
-    if os.path.isdir(dst_path):
-        shutil.rmtree(dst_path, ignore_errors=True)
+    if os.environ.get("no_cleanup") != 'true':
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        dst_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, "case", data_store.scenario.case)
+        if os.path.isdir(dst_path):
+            shutil.rmtree(dst_path, ignore_errors=True)
+    else:
+          print("Not cleaning up test execution folder.")
     assert True    
 
 @step("Copy the HULL chart files to test execution folder")
@@ -228,6 +231,11 @@ def test_object_has_key_with_value(key, value):
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert_values_equal(data_store.scenario.test_object[key], value, key)
 
+@step("Test Object has key <key> with value equaling object type")
+def test_object_has_key_with_value_equaling_object_type(key):
+    assert "test_object" in data_store.scenario != None, "No Test Object set!"
+    assert data_store.scenario.test_object != None, "Test Object set to None!"
+    assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.case.lower(), key)
 @step("Test Object has key <key> with value matching regex <regex>")
 def test_object_has_key_with_value_matching_regex(key, regex):
     assert "test_object" in data_store.scenario != None, "No Test Object set!"    

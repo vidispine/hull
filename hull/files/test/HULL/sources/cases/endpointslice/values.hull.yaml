@@ -68,6 +68,9 @@ hull:
         addressType: FQDN
         endpoints: []
       
+      metadata-object-info:
+        addressType: FQDN
+        endpoints: []
       test-one:
         addressType: FQDN
         endpoints:

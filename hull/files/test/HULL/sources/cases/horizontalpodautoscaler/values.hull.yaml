@@ -85,6 +85,11 @@ hull:
           kind: "Deployment"
         maxReplicas: 3
 
+      metadata-object-info:
+        scaleTargetRef:
+          name: metadata-overwrite
+          kind: "Deployment"
+        maxReplicas: 3        
       internal:
         minReplicas: 1
         maxReplicas: 2

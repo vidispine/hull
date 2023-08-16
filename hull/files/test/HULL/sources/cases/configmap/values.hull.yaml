@@ -12,6 +12,8 @@ hull:
       resolve_me: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
         {{ printf \"%s%s\" (index . \"PARENT\").Values.hull.config.specific.value_to_resolve_1 (index . \"PARENT\").Values.hull.config.specific.value_to_resolve_2 }}
         >>>"
+      test_no_object_instance_key: _HT!{{ (index . "OBJECT_INSTANCE_KEY") }}
+      test_no_object_type: _HT!{{ (index . "OBJECT_TYPE") }}
   ###################################################
 
   ###################################################
@@ -155,7 +157,18 @@ hull:
             inline: _HT/hull.metadata.name:COMPONENT:"split§by§colon"
           chart_ref:
             inline: _HT/hull.metadata.chartref
-          
+          object_instance_key:
+            inline: _HT!{{ (index . "OBJECT_INSTANCE_KEY") }}
+          object_type:
+            inline: _HT!{{ (index . "OBJECT_TYPE") }}
+          object_instance_key_include:
+            inline: _HT/hull.metadata.name:COMPONENT:(index . "OBJECT_INSTANCE_KEY")
+          object_type_include:
+            inline: _HT/hull.metadata.name:COMPONENT:(index . "OBJECT_TYPE")
+          test_no_object_instance_key:
+            inline: _HT*hull.config.specific.test_no_object_instance_key
+          test_no_object_type:
+            inline: _HT*hull.config.specific.test_no_object_type
 
       inline-precedence:
         data:

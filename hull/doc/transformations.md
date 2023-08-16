@@ -330,6 +330,24 @@ On rendering the following happens:
     
     ⚠️ **Instead of `(index . "$")` you can alternatively use the longer legacy form `(index . "PARENT")` which is slight longer to write but does the same.** ⚠️
 
+    The key `(index . "$")` is not the only special context variable you can use directly. When you execute a transformation in the scope of an objects definition (somewhere beneath `hull.objects.<object_type>.<object_instance_key>`) you have direct access to the objects type and object instance key as string values by accessing `(index . "OBJECT_TYPE")` and `(index . "OBJECT_INSTANCE_KEY")`. This is helpful because otherwise you would need to pass in the information manually each time if you want to use it in your transformation for naming purposes for example.
+    To exemplify this, if you use these settings:
+    ```
+    hull:
+      objects:
+        configmap:
+          test-configmap-key:
+            object_instance_key:
+              inline: _HT!{{ (index . "OBJECT_INSTANCE_KEY") }}
+            object_type:
+              inline: _HT!{{ (index . "OBJECT_TYPE") }}
+    ```
+    you will render the following ConfigMap entries in the output:
+    ```
+    object_instance_key: test-configmap-key
+    object_type: configmap
+    ```
+    ⚠️ **Note that if you use `(index . "OBJECT_INSTANCE_KEY")` or `(index . "OBJECT_TYPE")` outside of an object instance definition such as `hull.objects.<object_type>.<object_instance_name>` the resulting values will be empty strings.** ⚠️
   - When the `tpl`-ed string should result in a string array, use the 
 
     ```yaml
