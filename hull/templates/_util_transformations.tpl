@@ -10,8 +10,6 @@
 {{- $sourcePath := default list (index . "SOURCE_PATH") -}}
 {{- $caller := default nil (index . "CALLER") -}}
 {{- $callerKey := default nil (index . "CALLER_KEY") -}}
-{{- $objectType := default nil (index . "OBJECT_TYPE") }}
-{{- $objectInstanceKey := default "" (index . "OBJECT_INSTANCE_KEY") }}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $shortForms := dict -}}
 {{- $shortForms = set $shortForms "_HT?" (list "hull.util.transformation.bool" "CONDITION") -}}
@@ -20,16 +18,9 @@
 {{- $shortForms = set $shortForms "_HT^" (list "hull.util.transformation.makefullname" "COMPONENT") -}}
 {{- $shortForms = set $shortForms "_HT&" (list "hull.util.transformation.selector" "COMPONENT") -}}
 {{- $shortForms = set $shortForms "_HT/" (list "hull.util.transformation.include" "CONTENT") -}}
-{{- if (gt (len $sourcePath) 3) -}}
-{{  if (eq (index $sourcePath 1) "objects") -}}
-{{- $objectType = index $sourcePath 2 -}}
-{{- if (ne (index $sourcePath 3) "_HULL_OBJECT_TYPE_DEFAULT_") -}}
-{{- $objectInstanceKey = index $sourcePath 3 -}}
-{{- end -}}
-{{- end -}}
-{{- end -}}
 {{- if typeIs "map[string]interface {}" $source -}}
     {{- range $key,$value := $source -}}
+        {{- $sourcePathKey := append $sourcePath $key }}
         {{- if typeIs "map[string]interface {}" $value -}}
             {{- $params := default nil $value._HULL_TRANSFORMATION_ -}}
             {{- range $sfKey, $sfValue := $shortForms -}}
@@ -38,22 +29,22 @@
                 {{- end -}} 
             {{- end -}} 
             {{- if $params -}} 
-                {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) $params -}}
+                {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "SOURCE_PATH" $sourcePathKey "HULL_ROOT_KEY" $hullRootKey) $params -}}
                 {{- $others := omit $value "_HULL_TRANSFORMATION_" "_HULL_OBJECT_TYPE_DEFAULT_" "_HT?" "_HT*" "_HT!" "_HT^" "_HT&" "_HT/" -}}
                 {{- $valDict := fromYaml (include $params.NAME $pass) -}}
                 {{- $combined := $valDict }}
                 {{- if (and (typeIs "map[string]interface {}" (index $valDict $key)) (gt (len (keys $others)) 0)) -}}
-                  {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $others "SOURCE_PATH" (append $sourcePath $key) "CALLER" $source "CALLER_KEY" $key "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
+                  {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $others "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey) -}}
                   {{- $combined = dict $key (merge $others (index $valDict $key)) }}
                 {{- end -}}
                 {{- $source := unset $source $key -}}
                 {{- $source := merge $source $combined -}}
             {{- else -}}
-                {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" (append $sourcePath $key) "CALLER" $source "CALLER_KEY" $key "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
+                {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey) -}}
             {{- end -}}
         {{- end -}}
         {{- if typeIs "[]interface {}" $value -}}
-            {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" (append $sourcePath $key) "CALLER" $source "CALLER_KEY" $key "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
+            {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey) -}}
         {{- end -}}
         {{- if typeIs "string" $value -}}
             {{- $params := default nil nil -}}
@@ -73,7 +64,7 @@
                 {{- end -}}
             {{- end -}}             
             {{- if $params }}
-                {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) $params -}}
+                {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "SOURCE_PATH" $sourcePathKey "HULL_ROOT_KEY" $hullRootKey) $params -}}
                 {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
                 {{- $source := unset $source $key -}}
                 {{- $source := set $source $key (index $valDict $key) -}}  
@@ -101,18 +92,18 @@
             {{- end -}}
         {{- end -}}
         {{- if $params }}
-            {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" "key" "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) $params -}}
+            {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" "key" "SOURCE_PATH" $sourcePath "HULL_ROOT_KEY" $hullRootKey) $params -}}
             {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
             {{- $t2 := set $caller $callerKey (index $valDict "key") -}}
         {{- else -}}
             {{- range $listentry := $source -}}
-                {{- $newlistentry := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $listentry "CALLER" nil "CALLER_KEY" nil "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
+                {{- $newlistentry := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $listentry "CALLER" nil "CALLER_KEY" nil "SOURCE_PATH" $sourcePath "HULL_ROOT_KEY" $hullRootKey) -}}
             {{- end -}}
             {{- $t2 := set $caller $callerKey $source -}}
         {{- end -}}
     {{- else -}}
         {{- range $listentry := $source -}}
-            {{- $newlistentry := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $listentry "CALLER" nil "CALLER_KEY" nil "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
+            {{- $newlistentry := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $listentry "CALLER" nil "CALLER_KEY" nil "SOURCE_PATH" $sourcePath "HULL_ROOT_KEY" $hullRootKey) -}}
         {{- end -}}
         {{- $t2 := set $caller $callerKey $source -}}
     {{- end -}}
@@ -230,7 +221,18 @@
 {{- $key := (index . "KEY") -}}
 {{ $content := (index . "CONTENT") }}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
-{{ $key }}: {{ tpl  $content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent) .) }}
+{{- $sourcePath := default nil (index . "SOURCE_PATH") -}}
+{{- $objectType := "" -}}
+{{- $objectInstanceKey := "" -}}
+{{- if (gt (len $sourcePath) 3) -}}
+{{  if (eq (index $sourcePath 1) "objects") -}}
+{{- $objectType = index $sourcePath 2 -}}
+{{- if (ne (index $sourcePath 3) "_HULL_OBJECT_TYPE_DEFAULT_") -}}
+{{- $objectInstanceKey = index $sourcePath 3 -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{ $key }}: {{ tpl  $content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) }}
 {{- end -}}
 
 
@@ -293,6 +295,17 @@
 {{- $key := (index . "KEY") -}}
 {{- $content := (index . "CONTENT") -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $sourcePath := default nil (index . "SOURCE_PATH") -}}
+{{- $objectType := "" -}}
+{{- $objectInstanceKey := "" -}}
+{{- if (gt (len $sourcePath) 3) -}}
+{{  if (eq (index $sourcePath 1) "objects") -}}
+{{- $objectType = index $sourcePath 2 -}}
+{{- if (ne (index $sourcePath 3) "_HULL_OBJECT_TYPE_DEFAULT_") -}}
+{{- $objectInstanceKey = index $sourcePath 3 -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
 {{- $parts := regexSplit ":" ($content | trim) -1 -}}
 {{- $parentContextSubmitted := false -}}
 {{- $resultKey := "" -}}
@@ -320,7 +333,7 @@
 {{- $call = printf "%s %s (index . \"$\")" $call ("PARENT_CONTEXT" | quote) -}}
 {{- end -}}
 {{- $call = printf "%s) }}" ($call | trim) -}}
-{{- $tpl := tpl $call (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent) .) -}}
+{{- $tpl := tpl $call (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType ) .) -}}
 {{- $result := $tpl | fromYaml -}}
 {{- if (hasKey $result "Error")  -}}
 {{- $result = $tpl -}}
