@@ -27,9 +27,7 @@
             "properties": {
               "key": {
                 "description": "key is the label key that the selector applies to.",
-                "type": "string",
-                "x-kubernetes-patch-merge-key": "key",
-                "x-kubernetes-patch-strategy": "merge"
+                "type": "string"
               },
               "operator": {
                 "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
@@ -611,9 +609,7 @@
                                       "properties": {
                                         "key": {
                                           "description": "key is the label key that the selector applies to.",
-                                          "type": "string",
-                                          "x-kubernetes-patch-merge-key": "key",
-                                          "x-kubernetes-patch-strategy": "merge"
+                                          "type": "string"
                                         },
                                         "operator": {
                                           "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
@@ -679,9 +675,7 @@
                                       "properties": {
                                         "key": {
                                           "description": "key is the label key that the selector applies to.",
-                                          "type": "string",
-                                          "x-kubernetes-patch-merge-key": "key",
-                                          "x-kubernetes-patch-strategy": "merge"
+                                          "type": "string"
                                         },
                                         "operator": {
                                           "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
@@ -797,9 +791,7 @@
                                   "properties": {
                                     "key": {
                                       "description": "key is the label key that the selector applies to.",
-                                      "type": "string",
-                                      "x-kubernetes-patch-merge-key": "key",
-                                      "x-kubernetes-patch-strategy": "merge"
+                                      "type": "string"
                                     },
                                     "operator": {
                                       "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
@@ -865,9 +857,7 @@
                                   "properties": {
                                     "key": {
                                       "description": "key is the label key that the selector applies to.",
-                                      "type": "string",
-                                      "x-kubernetes-patch-merge-key": "key",
-                                      "x-kubernetes-patch-strategy": "merge"
+                                      "type": "string"
                                     },
                                     "operator": {
                                       "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
@@ -983,9 +973,7 @@
                                       "properties": {
                                         "key": {
                                           "description": "key is the label key that the selector applies to.",
-                                          "type": "string",
-                                          "x-kubernetes-patch-merge-key": "key",
-                                          "x-kubernetes-patch-strategy": "merge"
+                                          "type": "string"
                                         },
                                         "operator": {
                                           "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
@@ -1051,9 +1039,7 @@
                                       "properties": {
                                         "key": {
                                           "description": "key is the label key that the selector applies to.",
-                                          "type": "string",
-                                          "x-kubernetes-patch-merge-key": "key",
-                                          "x-kubernetes-patch-strategy": "merge"
+                                          "type": "string"
                                         },
                                         "operator": {
                                           "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
@@ -1169,9 +1155,7 @@
                                   "properties": {
                                     "key": {
                                       "description": "key is the label key that the selector applies to.",
-                                      "type": "string",
-                                      "x-kubernetes-patch-merge-key": "key",
-                                      "x-kubernetes-patch-strategy": "merge"
+                                      "type": "string"
                                     },
                                     "operator": {
                                       "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
@@ -1237,9 +1221,7 @@
                                   "properties": {
                                     "key": {
                                       "description": "key is the label key that the selector applies to.",
-                                      "type": "string",
-                                      "x-kubernetes-patch-merge-key": "key",
-                                      "x-kubernetes-patch-strategy": "merge"
+                                      "type": "string"
                                     },
                                     "operator": {
                                       "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
@@ -1683,7 +1665,7 @@
                                   "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                                   "properties": {
                                     "name": {
-                                      "description": "The header field name",
+                                      "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                       "type": "string"
                                     },
                                     "value": {
@@ -1831,7 +1813,7 @@
                                   "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                                   "properties": {
                                     "name": {
-                                      "description": "The header field name",
+                                      "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                       "type": "string"
                                     },
                                     "value": {
@@ -2018,7 +2000,7 @@
                               "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                               "properties": {
                                 "name": {
-                                  "description": "The header field name",
+                                  "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                   "type": "string"
                                 },
                                 "value": {
@@ -2303,7 +2285,7 @@
                               "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                               "properties": {
                                 "name": {
-                                  "description": "The header field name",
+                                  "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                   "type": "string"
                                 },
                                 "value": {
@@ -2563,6 +2545,13 @@
                     ],
                     "additionalProperties": false
                   },
+                  "restartPolicy": {
+                    "description": "RestartPolicy defines the restart behavior of individual containers in a pod. This field may only be set for init containers, and the only allowed value is \"Always\". For non-init containers or when this field is not specified, the restart behavior is defined by the Pod's restart policy and the container type. Setting the RestartPolicy as \"Always\" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy \"Always\" will be shut down. This lifecycle differs from normal init containers and is often referred to as a \"sidecar\" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed.",
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
                   "securityContext": {
                     "description": "SecurityContext holds security configuration that will be applied to a container. Some fields are present in both SecurityContext and PodSecurityContext.  When both are set, the values in SecurityContext take precedence.",
                     "properties": {
@@ -2695,7 +2684,7 @@
                         "description": "SeccompProfile defines a pod/container's seccomp profile settings. Only one profile source may be set.",
                         "properties": {
                           "localhostProfile": {
-                            "description": "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\".",
+                            "description": "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type.",
                             "type": [
                               "string",
                               "null"
@@ -2741,7 +2730,7 @@
                             ]
                           },
                           "hostProcess": {
-                            "description": "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true.",
+                            "description": "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true.",
                             "type": [
                               "boolean",
                               "null"
@@ -2842,7 +2831,7 @@
                               "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                               "properties": {
                                 "name": {
-                                  "description": "The header field name",
+                                  "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                   "type": "string"
                                 },
                                 "value": {
@@ -3549,7 +3538,7 @@
                                   "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                                   "properties": {
                                     "name": {
-                                      "description": "The header field name",
+                                      "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                       "type": "string"
                                     },
                                     "value": {
@@ -3697,7 +3686,7 @@
                                   "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                                   "properties": {
                                     "name": {
-                                      "description": "The header field name",
+                                      "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                       "type": "string"
                                     },
                                     "value": {
@@ -3884,7 +3873,7 @@
                               "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                               "properties": {
                                 "name": {
-                                  "description": "The header field name",
+                                  "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                   "type": "string"
                                 },
                                 "value": {
@@ -4169,7 +4158,7 @@
                               "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                               "properties": {
                                 "name": {
-                                  "description": "The header field name",
+                                  "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                   "type": "string"
                                 },
                                 "value": {
@@ -4429,6 +4418,13 @@
                     ],
                     "additionalProperties": false
                   },
+                  "restartPolicy": {
+                    "description": "Restart policy for the container to manage the restart behavior of each container within a pod. This may only be set for init containers. You cannot set this field on ephemeral containers.",
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
                   "securityContext": {
                     "description": "SecurityContext holds security configuration that will be applied to a container. Some fields are present in both SecurityContext and PodSecurityContext.  When both are set, the values in SecurityContext take precedence.",
                     "properties": {
@@ -4561,7 +4557,7 @@
                         "description": "SeccompProfile defines a pod/container's seccomp profile settings. Only one profile source may be set.",
                         "properties": {
                           "localhostProfile": {
-                            "description": "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\".",
+                            "description": "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type.",
                             "type": [
                               "string",
                               "null"
@@ -4607,7 +4603,7 @@
                             ]
                           },
                           "hostProcess": {
-                            "description": "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true.",
+                            "description": "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true.",
                             "type": [
                               "boolean",
                               "null"
@@ -4708,7 +4704,7 @@
                               "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                               "properties": {
                                 "name": {
-                                  "description": "The header field name",
+                                  "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                   "type": "string"
                                 },
                                 "value": {
@@ -5446,7 +5442,7 @@
                                   "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                                   "properties": {
                                     "name": {
-                                      "description": "The header field name",
+                                      "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                       "type": "string"
                                     },
                                     "value": {
@@ -5594,7 +5590,7 @@
                                   "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                                   "properties": {
                                     "name": {
-                                      "description": "The header field name",
+                                      "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                       "type": "string"
                                     },
                                     "value": {
@@ -5781,7 +5777,7 @@
                               "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                               "properties": {
                                 "name": {
-                                  "description": "The header field name",
+                                  "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                   "type": "string"
                                 },
                                 "value": {
@@ -6066,7 +6062,7 @@
                               "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                               "properties": {
                                 "name": {
-                                  "description": "The header field name",
+                                  "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                   "type": "string"
                                 },
                                 "value": {
@@ -6326,6 +6322,13 @@
                     ],
                     "additionalProperties": false
                   },
+                  "restartPolicy": {
+                    "description": "RestartPolicy defines the restart behavior of individual containers in a pod. This field may only be set for init containers, and the only allowed value is \"Always\". For non-init containers or when this field is not specified, the restart behavior is defined by the Pod's restart policy and the container type. Setting the RestartPolicy as \"Always\" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy \"Always\" will be shut down. This lifecycle differs from normal init containers and is often referred to as a \"sidecar\" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed.",
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
                   "securityContext": {
                     "description": "SecurityContext holds security configuration that will be applied to a container. Some fields are present in both SecurityContext and PodSecurityContext.  When both are set, the values in SecurityContext take precedence.",
                     "properties": {
@@ -6458,7 +6461,7 @@
                         "description": "SeccompProfile defines a pod/container's seccomp profile settings. Only one profile source may be set.",
                         "properties": {
                           "localhostProfile": {
-                            "description": "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\".",
+                            "description": "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type.",
                             "type": [
                               "string",
                               "null"
@@ -6504,7 +6507,7 @@
                             ]
                           },
                           "hostProcess": {
-                            "description": "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true.",
+                            "description": "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true.",
                             "type": [
                               "boolean",
                               "null"
@@ -6605,7 +6608,7 @@
                               "description": "HTTPHeader describes a custom header to be used in HTTP probes",
                               "properties": {
                                 "name": {
-                                  "description": "The header field name",
+                                  "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
                                   "type": "string"
                                 },
                                 "value": {
@@ -7027,7 +7030,7 @@
                         ]
                       },
                       "resourceClaimTemplateName": {
-                        "description": "ResourceClaimTemplateName is the name of a ResourceClaimTemplate object in the same namespace as this pod.\n\nThe template will be used to create a new ResourceClaim, which will be bound to this pod. When this pod is deleted, the ResourceClaim will also be deleted. The name of the ResourceClaim will be <pod name>-<resource name>, where <resource name> is the PodResourceClaim.Name. Pod validation will reject the pod if the concatenated name is not valid for a ResourceClaim (e.g. too long).\n\nAn existing ResourceClaim with that name that is not owned by the pod will not be used for the pod to avoid using an unrelated resource by mistake. Scheduling and pod startup are then blocked until the unrelated ResourceClaim is removed.\n\nThis field is immutable and no changes will be made to the corresponding ResourceClaim by the control plane after creating the ResourceClaim.",
+                        "description": "ResourceClaimTemplateName is the name of a ResourceClaimTemplate object in the same namespace as this pod.\n\nThe template will be used to create a new ResourceClaim, which will be bound to this pod. When this pod is deleted, the ResourceClaim will also be deleted. The pod name and resource name, along with a generated component, will be used to form a unique name for the ResourceClaim, which will be recorded in pod.status.resourceClaimStatuses.\n\nThis field is immutable and no changes will be made to the corresponding ResourceClaim by the control plane after creating the ResourceClaim.",
                         "type": [
                           "string",
                           "null"
@@ -7195,7 +7198,7 @@
                   "description": "SeccompProfile defines a pod/container's seccomp profile settings. Only one profile source may be set.",
                   "properties": {
                     "localhostProfile": {
-                      "description": "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\".",
+                      "description": "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type.",
                       "type": [
                         "string",
                         "null"
@@ -7284,7 +7287,7 @@
                       ]
                     },
                     "hostProcess": {
-                      "description": "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true.",
+                      "description": "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true.",
                       "type": [
                         "boolean",
                         "null"
@@ -7422,9 +7425,7 @@
                           "properties": {
                             "key": {
                               "description": "key is the label key that the selector applies to.",
-                              "type": "string",
-                              "x-kubernetes-patch-merge-key": "key",
-                              "x-kubernetes-patch-strategy": "merge"
+                              "type": "string"
                             },
                             "operator": {
                               "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
@@ -8502,9 +8503,7 @@
                                       "properties": {
                                         "key": {
                                           "description": "key is the label key that the selector applies to.",
-                                          "type": "string",
-                                          "x-kubernetes-patch-merge-key": "key",
-                                          "x-kubernetes-patch-strategy": "merge"
+                                          "type": "string"
                                         },
                                         "operator": {
                                           "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",

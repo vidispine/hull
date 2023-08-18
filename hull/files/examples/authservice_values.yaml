@@ -291,7 +291,7 @@ hull:
             check-database-ready:
               image:
                 repository: docker.io/busybox
-                tag: 1.27.2
+                tag: 1.28.2
               command:
               - sh
               - -c

@@ -1,6 +1,7 @@
 # Changelog
 ------------------
-[1.27.2]
+[1.28.0]
 ------------------
 CHANGES:
-- allow to use implicitly set OBJECT_INSTANCE_KEY and OBJECT_TYPE context variables for accessing an object instance's key and type as strings in the context of transformations executed within an object instance's specification.
+- initial K8S 1.28 release
+- deprecating 1.25 release
