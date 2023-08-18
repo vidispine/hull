@@ -55,4 +55,7 @@ hull:
         
       metadata-name-override-static:
         provisioner: "local-volume"
+
+      metadata-object-info:
+        provisioner: "local-volume"        
 ###################################################
