@@ -21195,8 +21195,7 @@
         {
           "type": "object"
         }
-      ],
-      "additionalProperties": false
+      ]
     },
     "io.k8s.api.networking.v1.ServiceBackendPort": {
       "description": "ServiceBackendPort is the service port being referenced.",
