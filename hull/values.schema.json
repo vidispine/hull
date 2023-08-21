@@ -26213,7 +26213,17 @@
                         },
                         "tag": {
                             "description": "The tag of the image",
+              "anyOf": [
+                {
                             "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                }
+              ]
                         }
                     }
                 },

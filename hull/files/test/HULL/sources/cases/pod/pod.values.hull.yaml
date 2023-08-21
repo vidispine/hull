@@ -170,6 +170,14 @@ hull:
               image:
                 repository: my/image/repo
                 tag: "99.9"
+            number-tag:
+              image:
+                repository: my/image/repo
+                tag: 99.9
+            integer-tag:
+              image:
+                repository: my/image/repo
+                tag: 99
       
       image-pull-policy:
         pod:

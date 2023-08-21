@@ -100,12 +100,17 @@ hull:
           containers: {}
 
       metadata-name-override:
-        serviceName: enabled-transform-tpl-if
+        serviceName: metadata-name-override
         pod:
           containers: {}
 
       metadata-name-override-static:
-        serviceName: enabled-transform-tpl-if
+        serviceName: metadata-name-override-static
+        pod:
+          containers: {}
+      
+      metadata-stringify:
+        serviceName: metadata-stringify
         pod:
           containers: {}
 
