@@ -24,7 +24,7 @@ jobs:
         HelmVersion: "3.10.3"
       Helm_3_11_0: 
         HelmVersion: "3.11.3"
-      Helm_3_12_1: 
+      Helm_3_12_3: 
         HelmVersion: "3.12.3"  
   steps:
   - template: azure-pipelines-test.yml  # Template reference
