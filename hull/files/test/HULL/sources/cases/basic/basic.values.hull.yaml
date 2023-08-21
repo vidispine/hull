@@ -225,4 +225,18 @@ hull:
         labels:
           label_object_instance_key: _HT!{{ (index . "OBJECT_INSTANCE_KEY") }}
           label_object_type: _HT!{{ (index . "OBJECT_TYPE") }}
+
+      metadata-stringify:
+        enabled: true
+        staticName: false
+        annotations:
+          a_string_value: a_string_value
+          an_integer_value: 123
+          a_float_value: 1.23
+          a_boolean_value: true
+        labels:
+          a_string_value: a_string_value
+          an_integer_value: 123
+          a_float_value: 1.23
+          a_boolean_value: true
       

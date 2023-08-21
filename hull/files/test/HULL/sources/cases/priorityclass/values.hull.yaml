@@ -60,5 +60,7 @@ hull:
 
       metadata-object-info:
         value: 100
-
+      
+      metadata-stringify:
+        value: 100
 ###################################################

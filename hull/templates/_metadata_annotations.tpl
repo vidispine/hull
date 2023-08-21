@@ -23,8 +23,12 @@
   {{ $annotations = merge $annotations ((include "hull.metadata.annotations.custom" (merge (dict "ANNOTATIONS_METADATA" "templateAnnotations") . ) | fromYaml)) }}
   {{ $annotations = merge $annotations (include "hull.metadata.annotations.hash" . | fromYaml) }}
 {{ end }}
+{{- $annotationsStringify := dict }}
+{{- range $annotationKey, $annotationValue := $annotations -}}
+{{- $_ := set $annotationsStringify $annotationKey ($annotationValue | toString) -}}
+{{- end -}}
 annotations:
-{{ toYaml $annotations | indent 2 }}
+{{ toYaml $annotationsStringify | indent 2 }}
 {{- end -}}
 
 {{- /*

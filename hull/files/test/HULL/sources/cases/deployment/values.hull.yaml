@@ -48,6 +48,10 @@ hull:
       metadata-object-info:
         pod:
           containers: {}
+      
+      metadata-stringify:
+        pod:
+          containers: {}
 
       image-name-empty-registry:
         pod:

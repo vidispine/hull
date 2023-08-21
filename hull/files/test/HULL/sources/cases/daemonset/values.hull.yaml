@@ -60,7 +60,15 @@ hull:
               image:
                 repository: my/image/repo
                 tag: "99.9"
-        
+      
+      metadata-stringify:
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+    
       image-name-empty-registry:
         pod:
           containers:
