@@ -81,6 +81,11 @@ hull:
         podSelector: 
           matchLabels:
             key: value
+      
+      metadata-stringify:
+        podSelector: 
+          matchLabels:
+            key: value
 
       standard:
         egress:

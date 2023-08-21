@@ -44,7 +44,6 @@ hull:
         pod:
           containers: {}
         
-
       metadata-merge:
         serviceName: metadata-merge
         pod:
@@ -56,10 +55,15 @@ hull:
           containers: {}
 
       metadata-object-info:
-        serviceName: metadata-overwrite
+        serviceName: metadata-object-info
         pod:
           containers: {}
-
+      
+      metadata-stringify:
+        serviceName: metadata-stringify
+        pod:
+          containers: {}
+      
       disabled-transform:
         serviceName: disabled-transform
         pod:
