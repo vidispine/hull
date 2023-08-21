@@ -76,7 +76,13 @@ hull:
         podSelector: 
           matchLabels:
             key: value
+      
       metadata-object-info:
+        podSelector: 
+          matchLabels:
+            key: value
+      
+      metadata-stringify:
         podSelector: 
           matchLabels:
             key: value

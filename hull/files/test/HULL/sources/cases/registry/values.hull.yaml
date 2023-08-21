@@ -67,6 +67,10 @@ hull:
         
       metadata-object-info:
         server: metadata-name-override-static.cr.io
+      
+      metadata-stringify:
+        server: metadata-name-stringify.cr.io
+
       example:
         annotations:
           example: "Some annotation applied to this registry full_example-registry"
