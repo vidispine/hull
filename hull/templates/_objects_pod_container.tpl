@@ -69,7 +69,7 @@
 {{- end }}
 {{- end }}
 {{ if (and (hasKey $spec "tag") (ne (printf "%s" $spec.tag) "")) }}
-{{- $baseName = printf "%s:%s" $baseName $spec.tag }}
+{{- $baseName = printf "%s:%s" $baseName ($spec.tag | toString) }}
 {{ end }}
 image: {{ $baseName }}
 {{- end -}}
