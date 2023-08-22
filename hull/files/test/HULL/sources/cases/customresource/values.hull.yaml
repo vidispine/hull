@@ -32,6 +32,11 @@ hull:
         kind: "Dummy"
         spec: {}
       
+      metadata-stringify:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+      
       mail-sender:
         apiVersion: "mailSenderApi/v1"
         kind: "MailSender"

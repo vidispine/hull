@@ -16,7 +16,7 @@ General label section must be populated with overriden names
 * All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
 * All test objects have key "metadata§labels§app.kubernetes.io/name" with value "a-shorter-name"
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
-* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.27.0"
+* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.28.0"
 
 Static names can be created
 
@@ -97,7 +97,7 @@ General label section must be populated
 * All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
 * All test objects have key "metadata§labels§app.kubernetes.io/name" with value of key "chart" from scenario data_store
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
-* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.27.0"
+* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.28.0"
 
 Run metadataNameOverride tests
 
@@ -120,7 +120,7 @@ General label section must be populated
 * All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
 * All test objects have key "metadata§labels§app.kubernetes.io/name" with value of key "chart" from scenario data_store
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
-* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.27.0"
+* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.28.0"
 
 Static names can be created
 
@@ -187,8 +187,16 @@ Transformation checks
 * Test Object has key "metadata§annotations§annotation" with value "I am an Annotation"
 
 Use Object Type and Instance Key
+
 * Set test object to "release-name-hull-test-metadata-object-info"
 * Test Object has key "metadata§annotations§annotation_object_instance_key" with value "metadata-object-info"
 * Test Object has key "metadata§annotations§annotation_object_type" with value equaling object type
 * Test Object has key "metadata§labels§label_object_instance_key" with value "metadata-object-info"
 * Test Object has key "metadata§labels§label_object_type" with value equaling object type
+
+Force Strings as annotation and label values
+* Set test object to "release-name-hull-test-metadata-stringify"
+* Test Object has key "metadata§annotations§a_string_value" with value "a_string_value"
+* Test Object has key "metadata§annotations§an_integer_value" with value "123"
+* Test Object has key "metadata§annotations§a_float_value" with value "1.23"
+* Test Object has key "metadata§annotations§a_boolean_value" with value "true"

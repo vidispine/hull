@@ -203,7 +203,11 @@
 
 
 * Set test object to "release-name-hull-test-image-name-tag"
-* Test Object has key "spec§template§spec§containers§0§image" with value "my/image/repo:99.9"
+* Test Object has key "spec§template§spec§containers§0§image" with value "my/image/repo:99"
+* Test Object has key "spec§template§spec§containers§1§image" with value "my/image/repo:99.9"
+* Test Object has key "spec§template§spec§containers§2§image" with value "my/image/repo:99.9"
+
+
 
 * Set test object to "release-name-hull-test-removal-test"
 * Test Object has key "spec§template§spec§containers" with array value that has "1" items

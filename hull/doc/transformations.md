@@ -176,8 +176,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.27.0
-    helm.sh/chart: hull-test-1.27.0
+    app.kubernetes.io/version: 1.28.0
+    helm.sh/chart: hull-test-1.28.0
   name: release-name-hull-test-external_app
 spec:
   selector:
@@ -194,8 +194,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.27.0
-        helm.sh/chart: hull-test-1.27.0
+        app.kubernetes.io/version: 1.28.0
+        helm.sh/chart: hull-test-1.28.0
    spec:
       containers:
       - env: []
@@ -391,8 +391,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.27.0
-    helm.sh/chart: hull-test-1.27.0
+    app.kubernetes.io/version: 1.28.0
+    helm.sh/chart: hull-test-1.28.0
   name: release-name-hull-test-custom-args
 spec:
   selector:
@@ -408,7 +408,7 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.27.0
+        app.kubernetes.io/version: 1.28.0
     spec:
       containers:
       - args:
@@ -636,7 +636,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.27.0
+    app.kubernetes.io/version: 1.28.0
 ...
 ```
 
@@ -662,7 +662,7 @@ metadata:
       app.kubernetes.io/managed-by: Helm
       app.kubernetes.io/name: hull-test
       app.kubernetes.io/part-of: undefined
-      app.kubernetes.io/version: 1.27.0
+      app.kubernetes.io/version: 1.28.0
 ...
 ```
 

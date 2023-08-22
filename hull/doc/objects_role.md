@@ -8,7 +8,7 @@ The HULL Roles allow to have key value pair `rules` to define the rules.
 
 ### The `hull.Role.v1` properties
 
-Properties can be set as they are defined in the [Kubernetes API's roles spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#role-v1-rbac-authorization-k8s-io). 
+Properties can be set as they are defined in the [Kubernetes API's roles spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#role-v1-rbac-authorization-k8s-io). 
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -19,7 +19,7 @@ However the properties listed below are overwritten or added by HULL:
 
 ### The `hull.ClusterRole.v1` properties
 
-Properties can be set as they are defined in the [Kubernetes API's clusterroles spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#clusterrole-v1-rbac-authorization-k8s-io). 
+Properties can be set as they are defined in the [Kubernetes API's clusterroles spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#clusterrole-v1-rbac-authorization-k8s-io). 
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -31,7 +31,7 @@ However the properties listed below are overwritten or added by HULL:
 
 > The key-value pairs of value type `hull.PolicyRules.v1` are converted to an array on rendering 
 
-Properties can be set as they are defined in the [Kubernetes API's policyrules spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#policyrule-v1-rbac-authorization-k8s-io). 
+Properties can be set as they are defined in the [Kubernetes API's policyrules spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#policyrule-v1-rbac-authorization-k8s-io). 
 
 However the properties listed below are overwritten or added by HULL:
 

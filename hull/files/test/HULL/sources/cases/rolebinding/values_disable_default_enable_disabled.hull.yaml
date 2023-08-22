@@ -51,6 +51,12 @@ hull:
           kind: Role
           name: example_role
 
+      metadata-stringify:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+          
       no-transformation:
         roleRef: 
           apiGroup: rbac.authorization.k8s.io
