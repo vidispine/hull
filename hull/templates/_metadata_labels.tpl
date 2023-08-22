@@ -25,8 +25,12 @@
 {{ if default false (index . "MERGE_TEMPLATE_METADATA") }}
 {{ $labels = merge $labels ((include "hull.metadata.labels.custom" (merge (dict "LABELS_METADATA" "templateLabels") . ) | fromYaml)) }}
 {{- end -}}
+{{- $labelsStringify := dict }}
+{{- range $labelKey, $labelValue := $labels -}}
+{{- $_ := set $labelsStringify $labelKey ($labelValue | toString) -}}
+{{- end -}}
 labels:
-{{ toYaml $labels | indent 2 }}
+{{ toYaml $labelsStringify | indent 2 }}
 {{- end -}}
 
 

@@ -27911,7 +27911,17 @@
             },
             "tag": {
               "description": "The tag of the image",
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                }
+              ]
             }
           }
         },

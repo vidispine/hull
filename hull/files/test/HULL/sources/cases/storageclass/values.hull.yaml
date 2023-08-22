@@ -58,4 +58,7 @@ hull:
 
       metadata-object-info:
         provisioner: "local-volume"        
+    
+      metadata-stringify:
+        provisioner: "local-volume"  
 ###################################################

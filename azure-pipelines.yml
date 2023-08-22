@@ -15,6 +15,7 @@ pool:
 
 jobs:
 - job: RunTests
+  timeoutInMinutes: 0
   strategy: 
     maxParallel: 5
     matrix:
@@ -34,8 +35,8 @@ jobs:
         HelmVersion: "3.11.2"
       Helm_3_11_3: 
         HelmVersion: "3.11.3"  
-      Helm_3_12_1: 
-        HelmVersion: "3.12.1"  
+      Helm_3_12_3: 
+        HelmVersion: "3.12.3"  
         
   steps:
   - template: azure-pipelines-test.yml  # Template reference

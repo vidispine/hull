@@ -51,6 +51,9 @@ hull:
 
       metadata-object-info:
         limits: []
+      
+      metadata-stringify:
+        limits: []
 
       cpu:
         limits:
