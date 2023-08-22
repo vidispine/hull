@@ -17,6 +17,7 @@ pool:
     vmImage: 'ubuntu-20.04'
 jobs:
 - job: RunTests
+  timeoutInMinutes: 0
   strategy: 
     maxParallel: 100
     matrix:
