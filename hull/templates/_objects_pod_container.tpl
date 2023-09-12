@@ -101,7 +101,10 @@ image: {{ $baseName }}
 {{ if hasKey $spec "valueFrom" }}
 {{ include "hull.object.container.env.valueFrom" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "SPEC" $spec.valueFrom "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 }}
 {{ end }}
-{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "name" "valueFrom")) | indent 2 }}
+{{ if hasKey $spec "value" }}
+{{ printf "%s: %s" "value" ($spec.value | toString | quote) | indent 2 }}
+{{ end }}
+{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "name" "value" "valueFrom")) | indent 2 }}
 {{- end -}}
 {{- end -}}
 
