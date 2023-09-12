@@ -56,7 +56,7 @@ Definition of container images is split into multiple parts to allow better supp
 | --------  | -------------| ------- | --------
 | `registry` | Optional endpoint of the repository. If set will produce a prefix and appended `/`. | ` ` | `myregistry.azure.cr`
 | `repository` | Name/Repository of the container image | | `apps/videoeditor`
-| `tag` | Tag of the container image | | `20.1.3-pre.321`
+| `tag` | Tag of the container image. The value must be of string type on the Kubernetes side, but it is allowed to have integer or float type input on the HULL side. Any value will be automatically converted to string on rendering. | | `20.1.3-pre.321`<br>`"23.3"`<br>`23.3`<br>`"10"`<br>`10`
 
 ### The `hull.Env.v1` properties
 
@@ -71,6 +71,7 @@ However the properties listed below are overwritten or added by HULL:
 | Parameter | Description  | Default | Example 
 | --------  | -------------| ------- | --------
 `enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` |
+| `value` | Whereas the value must be of string type on the Kubernetes side, it is allowed to have boolean, integer or float type input on the HULL side. Any value will be automatically converted to string on rendering. | | `DB_TYPE`<br>`"false"`<br>`false`<br>`true`<br>`"123"`<br>`123`<br>`"3.14"`<br>`3.14`
 | `valueFrom.configMapKeyRef.staticName` | Specifies whether the `name` key of this `valueFrom.configMapKeyRef` refers to a fixed name of a ConfigMap in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `valueFrom.configMapKeyRef` references a key defined in this helm chart. | `false` | `true`
 | `valueFrom.configMapKeyRef.hashsumAnnotation` | If present and true, the contents of the referenced ConfigMap data key is automatically hashed and added as an annotation to the pod template metadata annotations (`templateAnnotations`). <br><br>If set to true, any change to the referenced content will trigger a pod restart on upgrade. | `false` | `true`
 | `valueFrom.secretKeyRef.staticName` | Specifies whether the `name` key of this `valueFrom.secretKeyRef` refers to a fixed name of a Secret in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `valueFrom.secretKeyRef` references a key defined in this helm chart. | `false` | `true`
