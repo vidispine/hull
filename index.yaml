@@ -109,6 +109,23 @@ entries:
     version: 1.27.0
   - apiVersion: v2
     appVersion: "1.26"
+    created: "2023-09-12T13:58:28.176478141Z"
+    description: HULL - Helm Uniform Layer Library
+    digest: 32f8c59a753ccca40a9eaff0cf0e81c8d38b7b9b19fc707c6187dafacc17f530
+    home: https://github.com/vidispine/hull
+    keywords:
+    - hull
+    - utility
+    maintainers:
+    - email: georgmartin.weber@bertelsmann.de
+      name: georg weber
+    name: hull
+    type: library
+    urls:
+    - https://github.com/vidispine/hull/releases/download/hull-1.26.6/hull-1.26.6.tgz
+    version: 1.26.6
+  - apiVersion: v2
+    appVersion: "1.26"
     created: "2023-08-22T11:39:23.902830725Z"
     description: HULL - Helm Uniform Layer Library
     digest: 08e4ec3f30186b120eb4872b5373ac7103be34b59447785656718525e6b5b7fa
@@ -2584,4 +2601,4 @@ entries:
     urls:
     - https://github.com/vidispine/hull/releases/download/hull-demo-1.24.12/hull-demo-1.24.12.tgz
     version: 1.24.12
-generated: "2023-08-22T22:07:56.305610441Z"
+generated: "2023-09-12T13:58:28.17700265Z"
