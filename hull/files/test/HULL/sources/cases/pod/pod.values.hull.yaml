@@ -8,6 +8,11 @@ hull:
   config:
     specific:
       pullPolicy: IfNotPresent
+      env_string: "this is some string used in testing"
+      env_bool: true
+      env_float: 9.8642
+      env_integer: 12345
+
 
   objects:
     
@@ -311,8 +316,7 @@ hull:
               command:
                 - run
               env:
-                ENV_VAR_VALUE:
-                  value: plain_value
+                
                 ENV_VAR_CONFIGMAP:
                   valueFrom:
                     configMapKeyRef:
@@ -325,6 +329,11 @@ hull:
                       name: env_configmap_name_static
                       staticName: true
                       optional: true
+                ENV_VAR_FIELD:
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: "metadata.field"
+                      apiVersion: "v1"
                 ENV_VAR_SECRET:
                   valueFrom:
                     secretKeyRef:
@@ -337,17 +346,28 @@ hull:
                       name: env_secret_name
                       staticName: true
                       optional: true
-                ENV_VAR_FIELD:
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: "metadata.field"
-                      apiVersion: "v1"
                 ENV_VAR_RESOURCE:
                   valueFrom:
                     resourceFieldRef:
                       resource: container
                       containerName: main_container
                       divisor: "5"
+                ENV_VAR_VALUE:
+                  value: plain_value
+                ENV_VAR_VALUE_BOOL: 
+                  value: true
+                ENV_VAR_VALUE_FLOAT: 
+                  value: 0.567
+                ENV_VAR_VALUE_INTEGER:
+                  value: 5555
+                ENV_VAR_VALUE_REFERENCE:
+                  value: _HT*hull.config.specific.env_string
+                ENV_VAR_VALUE_REFERENCE_BOOL: 
+                  value: _HT*hull.config.specific.env_bool
+                ENV_VAR_VALUE_REFERENCE_FLOAT: 
+                  value: _HT*hull.config.specific.env_float
+                ENV_VAR_VALUE_REFERENCE_INTEGER:
+                  value: _HT*hull.config.specific.env_integer
       
       envfrom-test:
         pod:
