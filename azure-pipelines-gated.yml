@@ -19,7 +19,7 @@ jobs:
 - job: RunTests
   timeoutInMinutes: 0
   strategy: 
-    maxParallel: 100
+    maxParallel: 5
     matrix:
       Helm_3_10_3: 
         HelmVersion: "3.10.3"
