@@ -1,7 +1,7 @@
 {{- /*
 | Purpose:  
 |   
-|   Merging function
+|   Global Merging function
 |
 */ -}}
 {{- define "hull.util.merge" -}}
@@ -20,22 +20,14 @@
 {{- end -}}
 {{- end -}}
 
-{{- define "hull.util.spec.merge.defaults" -}}
-{{- $parent := (index . "PARENT_CONTEXT") -}}
-{{- $spec := (index . "SPEC") -}}
-{{- $objectType := (index . "OBJECT_TYPE") -}}
-{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
-{{ $defaults := dict }}
-{{ if and $objectType $spec }}
-{{ if (and ((hasKey $parent.Values "hull") (hasKey (index $parent.Values $hullRootKey) "objects") (hasKey (index $parent.Values $hullRootKey).objects $objectType) (hasKey (index (index $parent.Values $hullRootKey).objects $objectType) "_HULL_OBJECT_TYPE_DEFAULT_"))) }}
-{{ $defaults = index (index (index $parent.Values $hullRootKey).objects $objectType) "_HULL_OBJECT_TYPE_DEFAULT_" }}
-{{ end }}
-{{ end }}
-{{ $merged := dict }}
-{{ $merged := merge $merged $spec $defaults }}
-{{ toYaml $merged }}
-{{ end }}  
 
+
+{{- /*
+| Purpose:  
+|   
+|   Helper for printing out a key value entry
+|
+*/ -}}
 {{- define "hull.util.field" -}}
 {{- $spec := (index . "SPEC") -}}
 {{- $field := (index . "FIELD") -}}
@@ -45,6 +37,14 @@
 {{- end }}
 {{- end }}
 
+
+
+{{- /*
+| Purpose:  
+|   
+|   Helper for printing out a key value entry on a given condition
+|
+*/ -}}
 {{- define "hull.util.field.oncondition" -}}
 {{- $condition := (index . "CONDITION") -}}
 {{- if $condition }}
@@ -52,6 +52,14 @@
 {{- end }}
 {{- end }}
 
+
+
+{{- /*
+| Purpose:  
+|   
+|   Helper for printing out a dict to YAML
+|
+*/ -}}
 {{- define "hull.util.yaml" -}}
 {{- $spec := (index . "SPEC") -}}
 {{- $field := (index . "FIELD") -}}
@@ -69,6 +77,15 @@
 {{- end }}
 {{- end }}
 
+
+
+{{- /*
+| Purpose:  
+|   
+|   Helper for printing out an object from the Kubernetes specification.
+|   Fields not to be rendered (because handled by HULL) are provided in HULL_OBJECT_KEYS
+|
+*/ -}}
 {{- define "hull.util.include.k8s" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $hullObjectBaseKeys := default (list "enabled" "labels" "annotations" "staticName") (index . "HULL_BASE_KEYS") }}
@@ -88,6 +105,15 @@
 {{- end -}}
 {{- end -}}
 
+
+
+{{- /*
+| Purpose:  
+|   
+|   Helper for printing out an HULL based key value dictionary to an Kubernetes array
+|   Handles defaulting before rendering.
+|
+*/ -}}
 {{- define "hull.util.include.object" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $defaultObjectSpec := default dict (index . "DEFAULT_SPEC") }}
@@ -98,9 +124,11 @@
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $keepHashsumAnnotations := default false (index . "KEEP_HASHSUM_ANNOTATIONS") -}}
 {{- $isDefined := false }}
+{{- if hasKey $spec (printf "%s" $objectKey) }}
 {{- range $key, $value := (index $spec (printf "%s" $objectKey)) }}
 {{ if ne $key "_HULL_OBJECT_TYPE_DEFAULT_" }}
 {{- $isDefined = true }}
+{{ end }}
 {{ end }}
 {{ end }}
 {{- if $isDefined -}}
@@ -119,6 +147,14 @@
 {{ end }}
 {{ end }}
 
+
+
+{{- /*
+| Purpose:  
+|   
+|   Create a selector dictionary
+|
+*/ -}}
 {{- define "hull.util.selector" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
@@ -131,4 +167,44 @@ selector:
 {{ include "hull.metadata.labels.selector" . | indent 4 }}
 {{ end }}
 {{ end }}
+{{ end }}
+
+
+
+{{- /*
+| Purpose:  
+|   
+|   Central function to determine defaults for an object instance
+|
+*/ -}}
+{{- define "hull.objects.defaults" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $lowerObjectType := (index . "OBJECT_TYPE") | lower -}}
+{{- $component := default "" (index . "COMPONENT") -}}
+{{- $spec := (index . "SPEC") -}}
+{{- $defaultSpec := dict }}
+{{- $defaultSpec = (index (index $parent.Values $hullRootKey).objects $lowerObjectType)._HULL_OBJECT_TYPE_DEFAULT_ }}
+{{- if (or (gt (len (keys (default dict $spec))) 0) (not (kindIs "invalid" $spec))) -}}
+{{- $defaultTemplates := dig "sources" list $spec }}
+{{- if (hasKey $spec "sources") -}}
+{{- $defaultSpec = dict -}}
+{{- range $defaultTemplate := $defaultTemplates -}}
+{{- if (regexMatch "^.*\\[.*$" $defaultTemplate) -}}
+{{- $lowerObjectType = (regexSplit "\\[" $defaultTemplate -1) | last | replace "]" "" | lower -}}
+{{- $defaultTemplate = (regexSplit "\\[" $defaultTemplate -1) | first | lower -}}
+{{- end -}}
+{{- if not (hasKey (index $parent.Values $hullRootKey).objects $lowerObjectType) -}}
+{{- fail (printf "No object type %s in hull.objects" $lowerObjectType) }}
+{{- end -}}
+{{- if not (hasKey (index (index $parent.Values $hullRootKey).objects $lowerObjectType) $defaultTemplate) -}}
+{{- fail (printf "No object instance %s in hull.objects %s" $defaultTemplate $lowerObjectType) }}
+{{- end -}}
+{{- $defaultSpec = (merge (omit (index (index (index $parent.Values $hullRootKey).objects $lowerObjectType) $defaultTemplate) "enabled") $defaultSpec) -}}
+{{- end -}}
+{{- else -}}
+{{- $defaultSpec = (merge (index (index (index $parent.Values $hullRootKey).objects $lowerObjectType) "_HULL_OBJECT_TYPE_DEFAULT_") $defaultSpec) -}}
+{{- end -}}
+{{- end -}}
+{{ toYaml $defaultSpec }}
 {{ end }}

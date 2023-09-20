@@ -37,6 +37,9 @@
                   {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $others "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey) -}}
                   {{- $combined = dict $key (merge $others (index $valDict $key)) }}
                 {{- end -}}
+                {{ if (and (hasKey $combined $key) (typeIs "string" (index $combined $key)) (hasPrefix "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE" (index $combined $key)) (not $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences)) }}
+                {{ fail (index $combined $key) }}
+                {{ end }}
                 {{- $source := unset $source $key -}}
                 {{- $source := merge $source $combined -}}
             {{- else -}}
@@ -66,6 +69,9 @@
             {{- if $params }}
                 {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "SOURCE_PATH" $sourcePathKey "HULL_ROOT_KEY" $hullRootKey) $params -}}
                 {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
+                {{ if (and (hasKey $valDict $key) (typeIs "string" (index $valDict $key)) (hasPrefix "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE" (index $valDict $key)) (not $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences)) }}
+                {{ fail (index $valDict $key) }}
+                {{ end }}
                 {{- $source := unset $source $key -}}
                 {{- $source := set $source $key (index $valDict $key) -}}  
             {{- end -}}
@@ -94,6 +100,9 @@
         {{- if $params }}
             {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" "key" "SOURCE_PATH" $sourcePath "HULL_ROOT_KEY" $hullRootKey) $params -}}
             {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
+            {{ if (and (hasKey $valDict "key") (typeIs "string" (index $valDict "key")) (hasPrefix "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE" (index $valDict "key")) (not $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences)) }}
+            {{ fail (index $valDict "key") }}
+            {{ end }}
             {{- $t2 := set $caller $callerKey (index $valDict "key") -}}
         {{- else -}}
             {{- range $listentry := $source -}}
@@ -149,18 +158,16 @@
 {{- range $pathElement := $path -}}
 {{- $pathElement = regexReplaceAll "§" $pathElement "." }}
 {{- if (not $skipBroken) -}}
-{{- if (or (not $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences) (hasKey $current $pathElement)) -}}
+{{- if (or (hasKey $current $pathElement)) -}}
 {{- $current = (index $current $pathElement) }}
 {{- else -}}
-{{- if $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences -}}
 {{- $skipBroken = true -}}
 {{- $brokenPart = $pathElement -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
-{{- end -}}
 {{- if $skipBroken }}
-{{ $key }}: BROKEN-HULL-GET-TRANSFORMATION-REFERENCE --> INVALID_PATH_ELEMENT {{ $brokenPart }} IN {{ $reference }}
+{{ $key }}: BROKEN-HULL-GET-TRANSFORMATION-REFERENCE --> INVALID_PATH_ELEMENT {{ $brokenPart }} IN {{ $reference }} NOT FOUND!
 {{- else -}}
 {{- if and (typeIs "string" $current) (not $current) }}
 {{ $key }}: ""

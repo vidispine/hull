@@ -25,6 +25,27 @@ hull:
       metadata-overwrite:
         limits: []
 
+      metadata-custom-template-merge:
+        limits: []
+
+      metadata-custom-template-overwrite:
+        limits: []
+
+      metadata-custom-template-multi-merge:
+        limits: []
+
+      metadata-custom-template-multi-overwrite:
+        limits: []
+
+      metadata-no-template:
+        limits: []
+
+      metadata-default-template-as-source:
+        limits: []
+
+      metadata-default-custom-overwrite:
+        limits: []
+
       disabled-transform:
         limits: []
 

@@ -14,11 +14,11 @@
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
-{{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
+{{- $enabledDefault := dig "enabled" true (index . "DEFAULT_COMPONENT") -}}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 {{ template "hull.metadata.header" . }}
 spec:
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (index $parent.Values $hullRootKey).objects.service._HULL_OBJECT_TYPE_DEFAULT_.ports._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "ports" "OBJECT_TEMPLATE" "hull.object.service.port") | indent 2 }}
+{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "ports" "_HULL_OBJECT_TYPE_DEFAULT_" dict (index . "DEFAULT_COMPONENT")) "SPEC" $spec "KEY" "ports" "OBJECT_TEMPLATE" "hull.object.service.port") | indent 2 }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "ports")) | indent 2 }}
   selector: 
 {{ include "hull.metadata.labels.selector" .  | indent 4 }}   

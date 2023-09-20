@@ -166,6 +166,114 @@ Overwriting metadata must work properly
 * Test Object has key "metadata§annotations§default_annotation_1" with value "Default Annotation 1"
 * Test Object has key "metadata§annotations§default_annotation_2" with value "Concrete Annotation 2"
 
+Stacking of Default Templates
+* Set test object to "release-name-hull-test-metadata-no-template"
+* Test Object has key "metadata§labels§concrete_label_1" with value "No Template Concrete Label 1"
+* Test Object has key "metadata§labels§concrete_label_2" with value "No Template Concrete Label 2"
+* Test Object has key "metadata§annotations§concrete_annotation_1" with value "No Template Concrete Annotation 1"
+* Test Object has key "metadata§annotations§concrete_annotation_2" with value "No Template Concrete Annotation 2"
+* Set test object to "release-name-hull-test-metadata-custom-template-merge"
+Component must be key name
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata-custom-template-merge"
+All labels and annotations from general metadata, defaults and object must be present
+* Test Object has key "metadata§labels§concrete_label_1" with value "Custom Default Template 1 Concrete Label 1"
+* Test Object has key "metadata§labels§concrete_label_2" with value "Custom Default Template 1 Concrete Label 2"
+* Test Object has key "metadata§labels§default_label_4" with value "Custom Default Template 1 Label 4"
+* Test Object has key "metadata§labels§default_label_5" with value "Custom Default Template 1 Label 5"
+* Test Object has key "metadata§labels§general_custom_label_1" with value "General Custom Label 1"
+* Test Object has key "metadata§labels§general_custom_label_2" with value "General Custom Label 2"
+* Test Object has key "metadata§labels§general_custom_label_3" with value "Custom Default Template 1 Label 3"
+* Test Object has key "metadata§annotations§concrete_annotation_1" with value "Custom Default Template 1 Concrete Annotation 1"
+* Test Object has key "metadata§annotations§concrete_annotation_2" with value "Custom Default Template 1 Concrete Annotation 2"
+* Test Object has key "metadata§annotations§default_annotation_4" with value "Custom Default Template 1 Annotation 4"
+* Test Object has key "metadata§annotations§default_annotation_5" with value "Custom Default Template 1 Annotation 5"
+* Test Object has key "metadata§annotations§general_custom_annotation_1" with value "General Custom Annotation 1"
+* Test Object has key "metadata§annotations§general_custom_annotation_2" with value "General Custom Annotation 2"
+* Test Object has key "metadata§annotations§general_custom_annotation_3" with value "Custom Default Template 1 Annotation 3"
+Overwriting metadata must work properly
+* Set test object to "release-name-hull-test-metadata-custom-template-overwrite"
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata-custom-template-overwrite"
+* Test Object has key "metadata§labels§concrete_label_1" with value "Custom Default Template 1 Concrete Label 1"
+* Test Object has key "metadata§labels§general_custom_label_1" with value "General Custom Label 1"
+* Test Object has key "metadata§labels§general_custom_label_2" with value "General Custom Label 2"
+* Test Object has key "metadata§labels§general_custom_label_3" with value "Custom Default Template 1 Concrete Label 3"
+* Test Object has key "metadata§labels§default_label_4" with value "Custom Default Template 1 Concrete Label 4"
+* Test Object has key "metadata§labels§default_label_5" with value "Custom Default Template 1 Label 5"
+* Test Object has key "metadata§annotations§concrete_annotation_1" with value "Custom Default Template 1 Concrete Annotation 1"
+* Test Object has key "metadata§annotations§general_custom_annotation_1" with value "General Custom Annotation 1"
+* Test Object has key "metadata§annotations§general_custom_annotation_2" with value "General Custom Annotation 2"
+* Test Object has key "metadata§annotations§general_custom_annotation_3" with value "Custom Default Template 1 Concrete Annotation 3"
+* Test Object has key "metadata§annotations§default_annotation_4" with value "Custom Default Template 1 Concrete Annotation 4"
+* Test Object has key "metadata§annotations§default_annotation_5" with value "Custom Default Template 1 Annotation 5"
+
+* Set test object to "release-name-hull-test-metadata-custom-template-multi-merge"
+
+Component must be key name
+
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata-custom-template-multi-merge"
+
+All labels and annotations from general metadata, defaults and object must be present
+
+* Test Object has key "metadata§labels§default_label_4" with value "Custom Default Template 1 Label 4"
+* Test Object has key "metadata§labels§default_label_5" with value "Custom Default Template 2 Label 5"
+* Test Object has key "metadata§labels§default_label_6" with value "Multi Merge Default Label 6"
+* Test Object has key "metadata§labels§concrete_label_1" with value "Custom Default Template 2 Concrete Label 1"
+* Test Object has key "metadata§labels§concrete_label_2" with value "Custom Default Template 2 Concrete Label 2"
+* Test Object has key "metadata§labels§general_custom_label_1" with value "General Custom Label 1"
+* Test Object has key "metadata§labels§general_custom_label_2" with value "General Custom Label 2"
+* Test Object has key "metadata§labels§general_custom_label_3" with value "Custom Default Template 2 Label 3"
+* Test Object has key "metadata§annotations§default_annotation_4" with value "Custom Default Template 1 Annotation 4"
+* Test Object has key "metadata§annotations§default_annotation_5" with value "Custom Default Template 2 Annotation 5"
+* Test Object has key "metadata§annotations§default_annotation_6" with value "Multi Merge Default Annotation 6"
+* Test Object has key "metadata§annotations§concrete_annotation_1" with value "Custom Default Template 2 Concrete Annotation 1"
+* Test Object has key "metadata§annotations§concrete_annotation_2" with value "Custom Default Template 2 Concrete Annotation 2"
+* Test Object has key "metadata§annotations§general_custom_annotation_1" with value "General Custom Annotation 1"
+* Test Object has key "metadata§annotations§general_custom_annotation_2" with value "General Custom Annotation 2"
+* Test Object has key "metadata§annotations§general_custom_annotation_3" with value "Custom Default Template 2 Annotation 3"
+
+Overwriting metadata must work properly
+
+* Set test object to "release-name-hull-test-metadata-custom-template-multi-overwrite"
+
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata-custom-template-multi-overwrite"
+
+* Test Object has key "metadata§labels§concrete_label_1" with value "Custom Default Template 2 Concrete Label 1"
+* Test Object has key "metadata§labels§general_custom_label_1" with value "General Custom Label 1"
+* Test Object has key "metadata§labels§general_custom_label_2" with value "General Custom Label 2"
+* Test Object has key "metadata§labels§general_custom_label_3" with value "Custom Default Template 2 Concrete Label 3"
+* Test Object has key "metadata§labels§default_label_4" with value "Custom Default Template 2 Concrete Label 4"
+* Test Object has key "metadata§labels§default_label_5" with value "Custom Default Template 2 Label 5"
+* Test Object has key "metadata§labels§default_label_6" with value "Multi Overwrite Default Label 6"
+* Test Object has key "metadata§annotations§concrete_annotation_1" with value "Custom Default Template 2 Concrete Annotation 1"
+* Test Object has key "metadata§annotations§general_custom_annotation_1" with value "General Custom Annotation 1"
+* Test Object has key "metadata§annotations§general_custom_annotation_2" with value "General Custom Annotation 2"
+* Test Object has key "metadata§annotations§general_custom_annotation_3" with value "Custom Default Template 2 Concrete Annotation 3"
+* Test Object has key "metadata§annotations§default_annotation_4" with value "Custom Default Template 2 Concrete Annotation 4"
+* Test Object has key "metadata§annotations§default_annotation_5" with value "Custom Default Template 2 Annotation 5"
+* Test Object has key "metadata§annotations§default_annotation_6" with value "Multi Overwrite Default Annotation 6"
+
+* Set test object to "release-name-hull-test-metadata-default-custom-overwrite"
+
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "metadata-default-custom-overwrite"
+
+* Test Object has key "metadata§labels§concrete_label_1" with value "Custom Default Template 2 Concrete Label 1"
+* Test Object has key "metadata§labels§general_custom_label_1" with value "General Custom Label 1"
+* Test Object has key "metadata§labels§general_custom_label_2" with value "General Custom Label 2"
+* Test Object has key "metadata§labels§general_custom_label_3" with value "Custom Default Template 2 Concrete Label 3"
+* Test Object has key "metadata§labels§default_label_1" with value "Default Label 1"
+* Test Object has key "metadata§labels§default_label_2" with value "Default Custom Template Overwrite Default Label 2"
+* Test Object has key "metadata§labels§default_label_4" with value "Custom Default Template 2 Concrete Label 4"
+* Test Object has key "metadata§labels§default_label_5" with value "Custom Default Template 2 Label 5"
+* Test Object has key "metadata§labels§default_label_6" with value "Multi Overwrite Default Label 6"
+* Test Object has key "metadata§annotations§concrete_annotation_1" with value "Custom Default Template 2 Concrete Annotation 1"
+* Test Object has key "metadata§annotations§general_custom_annotation_1" with value "General Custom Annotation 1"
+* Test Object has key "metadata§annotations§general_custom_annotation_2" with value "General Custom Annotation 2"
+* Test Object has key "metadata§annotations§general_custom_annotation_3" with value "Custom Default Template 2 Concrete Annotation 3"
+* Test Object has key "metadata§annotations§default_annotation_1" with value "Default Annotation 1"
+* Test Object has key "metadata§annotations§default_annotation_2" with value "Default Custom Template Overwrite Default Annotation 2"
+* Test Object has key "metadata§annotations§default_annotation_4" with value "Custom Default Template 2 Concrete Annotation 4"
+* Test Object has key "metadata§annotations§default_annotation_5" with value "Custom Default Template 2 Annotation 5"
+* Test Object has key "metadata§annotations§default_annotation_6" with value "Multi Overwrite Default Annotation 6"
 Enabling and Disabling
 
 * Test object "release-name-hull-test-disabled" does not exist
