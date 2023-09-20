@@ -37,18 +37,13 @@ steps:
   
 - script: |
     set -euo pipefail
-    echo starting gauge tests against helm version `helm version`
+    echo starting gauge test against helm version $(HelmVersion) and test type $(TestType)
     ls
-    echo make hull copy
-    cp -R hull hull-second
     cd hull/files/test/HULL
     ls
-    echo start single file run
-    gauge run --env single_file -p -l debug specs &
-    cd ../../../../hull-second/files/test/HULL
-    echo start multi file run
-    gauge run --env multi_file -p -l debug specs &
-    wait
+    echo no_lint: $(NoLint)
+    export no_lint=$(NoLint)
+    gauge run --env $(TestType)_file -p -l debug specs
   displayName: 'gauge test against helm v$(HelmVersion)'
   condition: and(ne(variables['HelmVersion'],''),eq('${{ parameters.RunTests }}','True'))
     
@@ -66,17 +61,12 @@ steps:
     
   - script: |
       set -euo pipefail
-      echo starting gauge tests against helm version `helm version`
+      echo starting gauge test against helm version $(HelmVersion) and test type $(TestType)
       ls
-      echo make hull copy
-      cp -R hull hull-second
       cd hull/files/test/HULL
       ls
-      echo start single file run
-      gauge run --env single_file -p -l debug specs &
-      cd ../../../../hull-second/files/test/HULL
-      echo start multi file run
-      gauge run --env multi_file -p -l debug specs &
-      wait
+      echo no_lint: $(NoLint)
+      export no_lint=$(NoLint)
+      gauge run --env $(TestType)_file -p -l debug specs
     displayName: 'gauge test against helm v${{ version.version }}'
     condition: and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','True'))
