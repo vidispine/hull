@@ -37,13 +37,16 @@ steps:
   
 - script: |
     set -euo pipefail
-    echo starting gauge test against helm version `helm version`
+    echo starting gauge tests against helm version `helm version`
     ls
+    echo make hull copy
+    cp -R hull hull-second
     cd hull/files/test/HULL
     ls
-    echo no_lint: $(NoLint)
-    export no_lint=$(NoLint)
+    echo start single file run
     gauge run --env single_file -p -l debug specs &
+    cd ../../../../hull-second/files/test/HULL
+    echo start multi file run
     gauge run --env multi_file -p -l debug specs &
     wait
   displayName: 'gauge test against helm v$(HelmVersion)'
@@ -65,11 +68,14 @@ steps:
       set -euo pipefail
       echo starting gauge tests against helm version `helm version`
       ls
+      echo make hull copy
       cp -R hull hull-second
       cd hull/files/test/HULL
       ls
+      echo start single file run
       gauge run --env single_file -p -l debug specs &
       cd ../../../../hull-second/files/test/HULL
+      echo start multi file run
       gauge run --env multi_file -p -l debug specs &
       wait
     displayName: 'gauge test against helm v${{ version.version }}'
