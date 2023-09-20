@@ -25,6 +25,27 @@ hull:
       metadata-overwrite:
         value: 100
 
+      metadata-custom-template-merge:
+        value: 100
+
+      metadata-custom-template-overwrite:
+        value: 100
+      
+      metadata-custom-template-multi-merge:
+        value: 100
+
+      metadata-custom-template-multi-overwrite:
+        value: 100
+
+      metadata-no-template:
+        value: 100
+
+      metadata-default-template-as-source:
+        value: 100
+
+      metadata-default-custom-overwrite:
+        value: 100
+
       minimal:
         value: 100
 

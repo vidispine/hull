@@ -132,6 +132,151 @@ hull:
           default_label_2:  Default Label 2
           general_custom_label_3: Default Label 3
       
+      custom-default-template-1:
+        enabled: false
+        annotations:
+          default_annotation_4:  Custom Default Template 1 Annotation 4
+          default_annotation_5:  Custom Default Template 1 Annotation 5
+          general_custom_annotation_3: Custom Default Template 1 Annotation 3
+        labels:
+          default_label_4: Custom Default Template 1 Label 4
+          default_label_5: Custom Default Template 1 Label 5
+          general_custom_label_3: Custom Default Template 1 Label 3
+      
+      custom-default-template-2:
+        enabled: false
+        annotations:
+          default_annotation_5:  Custom Default Template 2 Annotation 5
+          default_annotation_6:  Custom Default Template 2 Annotation 6
+          general_custom_annotation_3: Custom Default Template 2 Annotation 3
+        labels:
+          default_label_5: Custom Default Template 2 Label 5
+          default_label_6: Custom Default Template 2 Label 6
+          general_custom_label_3: Custom Default Template 2 Label 3
+
+      metadata-merge:
+        enabled: true
+        staticName: false
+        annotations:
+          concrete_annotation_1: "Concrete Annotation 1"
+          concrete_annotation_2: "Concrete Annotation 2"
+        labels:
+          concrete_label_1: "Concrete Label 1"
+          concrete_label_2: "Concrete Label 2"
+
+      metadata-overwrite:
+        enabled: true
+        staticName: false
+        annotations:
+          concrete_annotation_1: "Concrete Annotation 1"
+          default_annotation_2: "Concrete Annotation 2"
+          general_custom_annotation_3: "Concrete Annotation 3"
+        labels:
+          concrete_label_1: "Concrete Label 1"
+          default_label_2: "Concrete Label 2"
+          general_custom_label_3: "Concrete Label 3"
+
+      metadata-no-template:
+        sources: [] 
+        enabled: true
+        staticName: false
+        annotations:
+          concrete_annotation_1: "No Template Concrete Annotation 1"
+          concrete_annotation_2: "No Template Concrete Annotation 2"
+        labels:
+          concrete_label_1: "No Template Concrete Label 1"
+          concrete_label_2: "No Template Concrete Label 2"
+
+      metadata-default-template-as-source:
+        sources: 
+        - _HULL_OBJECT_TYPE_DEFAULT_
+        enabled: true
+        staticName: false
+        annotations:
+          concrete_annotation_1: "Default Template Concrete Annotation 1"
+          concrete_annotation_2: "Default Template Concrete Annotation 2"
+        labels:
+          concrete_label_1: "Default Template Concrete Label 1"
+          concrete_label_2: "Default Template Concrete Label 2"
+
+      metadata-custom-template-merge:
+        sources: 
+        - custom-default-template-1
+        enabled: true
+        staticName: false
+        annotations:
+          concrete_annotation_1: "Custom Default Template 1 Concrete Annotation 1"
+          concrete_annotation_2: "Custom Default Template 1 Concrete Annotation 2"
+        labels:
+          concrete_label_1: "Custom Default Template 1 Concrete Label 1"
+          concrete_label_2: "Custom Default Template 1 Concrete Label 2"
+
+      metadata-custom-template-overwrite:
+        enabled: true
+        staticName: false
+        sources: 
+        - custom-default-template-1
+        annotations:
+          concrete_annotation_1: "Custom Default Template 1 Concrete Annotation 1"
+          default_annotation_4: "Custom Default Template 1 Concrete Annotation 4"
+          general_custom_annotation_3: "Custom Default Template 1 Concrete Annotation 3"
+        labels:
+          concrete_label_1: "Custom Default Template 1 Concrete Label 1"
+          default_label_4: "Custom Default Template 1 Concrete Label 4"
+          general_custom_label_3: "Custom Default Template 1 Concrete Label 3"
+      
+      metadata-custom-template-multi-merge:
+        sources: 
+        - custom-default-template-1
+        - custom-default-template-2
+        enabled: true
+        staticName: false
+        annotations:
+          concrete_annotation_1: "Custom Default Template 2 Concrete Annotation 1"
+          concrete_annotation_2: "Custom Default Template 2 Concrete Annotation 2"
+          default_annotation_6: "Multi Merge Default Annotation 6"
+        labels:
+          concrete_label_1: "Custom Default Template 2 Concrete Label 1"
+          concrete_label_2: "Custom Default Template 2 Concrete Label 2"
+          default_label_6: "Multi Merge Default Label 6"
+
+      metadata-custom-template-multi-overwrite:
+        enabled: true
+        staticName: false
+        sources: 
+        - custom-default-template-1
+        - custom-default-template-2
+        annotations:
+          concrete_annotation_1: "Custom Default Template 2 Concrete Annotation 1"
+          default_annotation_4: "Custom Default Template 2 Concrete Annotation 4"
+          general_custom_annotation_3: "Custom Default Template 2 Concrete Annotation 3"
+          default_annotation_6: "Multi Overwrite Default Annotation 6"
+        labels:
+          concrete_label_1: "Custom Default Template 2 Concrete Label 1"
+          default_label_4: "Custom Default Template 2 Concrete Label 4"
+          general_custom_label_3: "Custom Default Template 2 Concrete Label 3"
+          default_label_6: "Multi Overwrite Default Label 6"
+
+      metadata-default-custom-overwrite:
+        enabled: true
+        staticName: false
+        sources: 
+        - _HULL_OBJECT_TYPE_DEFAULT_
+        - custom-default-template-1
+        - custom-default-template-2
+        annotations:
+          default_annotation_2: "Default Custom Template Overwrite Default Annotation 2"
+          concrete_annotation_1: "Custom Default Template 2 Concrete Annotation 1"
+          default_annotation_4: "Custom Default Template 2 Concrete Annotation 4"
+          general_custom_annotation_3: "Custom Default Template 2 Concrete Annotation 3"
+          default_annotation_6: "Multi Overwrite Default Annotation 6"
+        labels:
+          default_label_2: "Default Custom Template Overwrite Default Label 2"
+          concrete_label_1: "Custom Default Template 2 Concrete Label 1"
+          default_label_4: "Custom Default Template 2 Concrete Label 4"
+          general_custom_label_3: "Custom Default Template 2 Concrete Label 3"
+          default_label_6: "Multi Overwrite Default Label 6"
+
       disabled:
         enabled: false
       
@@ -185,28 +330,6 @@ hull:
         
       static-name:
         staticName: true
-
-      metadata-merge:
-        enabled: true
-        staticName: false
-        annotations:
-          concrete_annotation_1: "Concrete Annotation 1"
-          concrete_annotation_2: "Concrete Annotation 2"
-        labels:
-          concrete_label_1: "Concrete Label 1"
-          concrete_label_2: "Concrete Label 2"
-
-      metadata-overwrite:
-        enabled: true
-        staticName: false
-        annotations:
-          concrete_annotation_1: "Concrete Annotation 1"
-          default_annotation_2: "Concrete Annotation 2"
-          general_custom_annotation_3: "Concrete Annotation 3"
-        labels:
-          concrete_label_1: "Concrete Label 1"
-          default_label_2: "Concrete Label 2"
-          general_custom_label_3: "Concrete Label 3"
       
       metadata-name-override:
         metadataNameOverride: usethisfinename

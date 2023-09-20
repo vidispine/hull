@@ -31,7 +31,42 @@ hull:
         apiVersion: "dummyApi/v1"
         kind: "Dummy"
         spec: {}
+
+      metadata-custom-template-merge:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
       
+      metadata-custom-template-overwrite:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+
+      metadata-custom-template-multi-merge:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+      
+      metadata-custom-template-multi-overwrite:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+
+      metadata-no-template:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+
+      metadata-default-template-as-source:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+
+      metadata-default-custom-overwrite:
+        apiVersion: "dummyApi/v1"
+        kind: "Dummy"
+        spec: {}
+
       metadata-stringify:
         apiVersion: "dummyApi/v1"
         kind: "Dummy"

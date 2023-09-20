@@ -26575,7 +26575,8 @@
         "annotations",
         "labels",
         "staticName",
-        "metadataNameOverride"
+        "metadataNameOverride",
+        "sources"
       ]
     },
     "hull.ObjectBase.v1": {
@@ -26646,6 +26647,19 @@
               "type": "string"
             }
           ]
+        },
+        "sources": {
+          "title": "Sources",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "array"
+            }
+          ],
+          "required": [],
+          "properties": {}
         }
       },
       "required": []
@@ -28535,6 +28549,22 @@
       "$id": "#/definitions/namespace.v1",
       "title": "Namespace",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28555,11 +28585,28 @@
           }
         }
       ]
+      }
     },
     "configmap.v1": {
       "$id": "#/definitions/configmap.v1",
       "title": "Configmap",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28586,11 +28633,28 @@
           }
         }
       ]
+      }
     },
     "secret.v1": {
       "$id": "#/definitions/secret.v1",
       "title": "Secret",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28617,11 +28681,28 @@
           }
         }
       ]
+      }
     },
     "registry.v1": {
       "$id": "#/definitions/registry.v1",
       "title": "Registry",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28642,11 +28723,28 @@
           }
         }
       ]
+      }
     },
     "deployment.v1": {
       "$id": "#/definitions/deployment",
       "title": "Deployment",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28674,11 +28772,28 @@
         }
       ],
       "properties": {}
+      }
     },
     "job.v1": {
       "$id": "#/definitions/job",
       "title": "Job",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28706,11 +28821,28 @@
         }
       ],
       "properties": {}
+      }
     },
     "daemonset.v1": {
       "$id": "#/definitions/daemonset.v1",
       "title": "DaemonSet",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28737,11 +28869,28 @@
           }
         }
       ]
+      }
     },
     "statefulset.v1": {
       "$id": "#/definitions/statefulset.v1",
       "title": "StatefulSet",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28768,11 +28917,28 @@
           }
         }
       ]
+      }
     },
     "cronjob.v1": {
       "$id": "#/definitions/cronjob.v1",
       "title": "Cronjob",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28797,12 +28963,29 @@
         "job": {
           "$ref": "#/definitions/job.v1"
         }
+      }
       }
     },
     "cronjob.v2": {
       "$id": "#/definitions/cronjob.v2",
       "title": "Cronjob",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28828,11 +29011,28 @@
           "$ref": "#/definitions/job.v1"
         }
       }
+      }
     },
     "serviceaccount.v1": {
       "$id": "#/definitions/serviceaccount.v1",
       "title": "Serviceaccount",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28853,11 +29053,28 @@
           }
         }
       ]
+      }
     },
     "role.v1": {
       "$id": "#/definitions/role.v1",
       "title": "Role",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28884,11 +29101,28 @@
           }
         }
       ]
+      }
     },
     "rolebinding.v1": {
       "$id": "#/definitions/rolebinding.v1",
       "title": "Rolebinding",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28909,11 +29143,28 @@
           }
         }
       ]
+      }
     },
     "clusterrole.v1": {
       "$id": "#/definitions/root/objects/clusterrole.v1",
       "title": "Clusterrole",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28940,11 +29191,28 @@
           }
         }
       ]
+      }
     },
     "clusterrolebinding.v1": {
       "$id": "#/definitions/clusterrolebinding.v1",
       "title": "Clusterrolebinding",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28965,11 +29233,28 @@
           }
         }
       ]
+      }
     },
     "customresource.v1": {
       "$id": "#/definitions/customresource.v1",
       "title": "Customresource",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -28990,11 +29275,28 @@
           }
         }
       ]
+      }
     },
     "persistentvolumeclaim.v1": {
       "$id": "#/definitions/persistentvolumeclaim.v1",
       "title": "Persistentvolumeclaim",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29015,11 +29317,28 @@
           }
         }
       ]
+      }
     },
     "persistentvolume.v1": {
       "$id": "#/definitions/persistentvolume^.v1",
       "title": "Persistentvolume",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29040,11 +29359,28 @@
           }
         }
       ]
+      }
     },
     "storageclass.v1": {
       "$id": "#/definitions/root/objects/storageclass.v1",
       "title": "Storageclass",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29065,11 +29401,28 @@
           }
         }
       ]
+      }
     },
     "service.v1": {
       "$id": "#/definitions/service.v1",
       "title": "Service",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29096,11 +29449,28 @@
           }
         }
       ]
+      }
     },
     "ingress.v1": {
       "$id": "#/definitions/ingress.v1",
       "title": "Ingress",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29127,11 +29497,28 @@
           }
         }
       ]
+      }
     },
     "ingressclass.v1": {
       "$id": "#/definitions/ingressclass.v1",
       "title": "IngressClass",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29152,11 +29539,28 @@
           }
         }
       ]
+      }
     },
     "servicemonitor.v1": {
       "$id": "#/definitions/servicemonitors.v1",
       "title": "Servicemonitors",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29177,11 +29581,28 @@
           }
         }
       ]
+      }
     },
     "horizontalpodautoscaler.v1": {
       "$id": "#/definitions/horizontalpodautoscaler.v1",
       "title": "HorizontalPodAutoscaler",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29202,11 +29623,28 @@
           }
         }
       ]
+      }
     },
     "horizontalpodautoscaler.v2": {
       "$id": "#/definitions/horizontalpodautoscaler.v2",
       "title": "HorizontalPodAutoscaler",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29227,11 +29665,28 @@
           }
         }
       ]
+      }
     },
     "poddisruptionbudget.v1": {
       "$id": "#/definitions/poddisruptionbudget.v1",
       "title": "PodDisruptionBudget",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29252,11 +29707,28 @@
           }
         }
       ]
+      }
     },
     "poddisruptionbudget.v2": {
       "$id": "#/definitions/poddisruptionbudget.v2",
       "title": "PodDisruptionBudget",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29277,11 +29749,28 @@
           }
         }
       ]
+      }
     },
     "priorityclass.v1": {
       "$id": "#/definitions/priorityclass.v1",
       "title": "PriorityClass",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29302,11 +29791,28 @@
           }
         }
       ]
+      }
     },
     "endpoints.v1": {
       "$id": "#/definitions/endpoints.v1",
       "title": "Endpoints",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29327,11 +29833,28 @@
           }
         }
       ]
+      }
     },
     "endpointslice.v1": {
       "$id": "#/definitions/endpointslice.v1",
       "title": "EndpointSlice",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29352,11 +29875,28 @@
           }
         }
       ]
+      }
     },
     "limitrange.v1": {
       "$id": "#/definitions/limitrange.v1",
       "title": "LimitRange",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29377,11 +29917,28 @@
           }
         }
       ]
+      }
     },
     "mutatingwebhookconfiguration.v1": {
       "$id": "#/definitions/mutatingwebhookconfiguration.v1",
       "title": "MutatingWebhookConfiguration",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29402,11 +29959,28 @@
           }
         }
       ]
+      }
     },
     "validatingwebhookconfiguration.v1": {
       "$id": "#/definitions/validatingwebhookconfiguration.v1",
       "title": "ValidatingWebhookConfiguration",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29427,11 +30001,28 @@
           }
         }
       ]
+      }
     },
     "resourcequota.v1": {
       "$id": "#/definitions/resourcequota.v1",
       "title": "ResourceQuota",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29452,11 +30043,28 @@
           }
         }
       ]
+      }
     },
     "networkpolicy.v1": {
       "$id": "#/definitions/networkpolicy.v1",
       "title": "NetworkPolicy",
       "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
       "allOf": [
         {
           "$ref": "#/definitions/hull.ObjectBase.v1"
@@ -29477,6 +30085,7 @@
           }
         }
       ]
+      }
     },
     "root": {
       "$id": "#/definitions/root",

@@ -31,6 +31,8 @@ annotations:
 {{ toYaml $annotationsStringify | indent 2 }}
 {{- end -}}
 
+
+
 {{- /*
 | Purpose:  
 |   
@@ -109,7 +111,8 @@ annotations:
   {{ range $key, $spec := index (index $parent.Values $hullRootKey).objects $type }}
     {{ $fullName := include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "COMPONENT" $key) }}
     {{ if (hasKey $dict $fullName) }}
-      {{ $objectSpec := include (printf "hull.object.%s" $type) (dict "PARENT_CONTEXT" $parent "SPEC" $spec "OBJECT_TYPE" $type "COMPONENT" $key) | fromYaml }}
+      {{ $objectDefault := fromYaml (include "hull.objects.defaults" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $type) ) -}}
+      {{ $objectSpec := include (printf "hull.object.%s" $type) (dict "PARENT_CONTEXT" $parent "SPEC" $spec "OBJECT_TYPE" $type "COMPONENT" $key "DEFAULT_COMPONENT" $objectDefault) | fromYaml }}
       {{ if (hasKey (index $dict $objectSpec.metadata.name) "_ALL_") }}
         {{ range $dataKey,$dataValue := $objectSpec.data }}
           {{ $annotations = merge $annotations (dict (printf "%s/%s" (printf "hashsum.%s.%s" $type $objectSpec.metadata.name | trunc 253) ($dataKey | trunc 63)) (sha256sum $dataValue)) }}

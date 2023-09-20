@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "20" objects were rendered
+* Expected number of "27" objects were rendered
 * Validate
 
 ## Metadata
@@ -86,7 +86,7 @@ Test creation of objects and features.
 * Test Object has key "metadata§annotations§app.kubernetes.io/component" with value "overwritten_component"
 
 ## Debug options
-* Fail to render the templates for values file "values_broken_get_references.hull.yaml" to test execution folder because error contains "error calling index: index of untyped nil"
+* Fail to render the templates for values file "values_broken_get_references.hull.yaml" to test execution folder because error contains "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE"
 
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_broken_get_references.hull.yaml" including suites "renderbrokenhullgettransformationreferences"
 * Lint and Render values file "values_broken_get_references.hull.yaml"
@@ -95,10 +95,10 @@ Test creation of objects and features.
 * Test Object has key "metadata§labels§test" with value "trans"
 
 * Set test object to "release-name-hull-test-broken-parent-reference"
-* Test Object has key "metadata§labels§test" with value "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE --> INVALID_PATH_ELEMENT test IN hull.config.specific.test.value_to_resolve_1"
+* Test Object has key "metadata§labels§test" with value "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE --> INVALID_PATH_ELEMENT test IN hull.config.specific.test.value_to_resolve_1 NOT FOUND!"
 
 * Set test object to "release-name-hull-test-broken-leaf-reference"
-* Test Object has key "metadata§labels§test" with value "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE --> INVALID_PATH_ELEMENT value_to_resolve_3 IN hull.config.specific.value_to_resolve_3"
+* Test Object has key "metadata§labels§test" with value "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE --> INVALID_PATH_ELEMENT value_to_resolve_3 IN hull.config.specific.value_to_resolve_3 NOT FOUND!"
 
 * Prepare test case "secret" for kind "Secret" including suites "rendernilwheninlineisnil"
 * Lint and Render
