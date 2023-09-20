@@ -1,6 +1,11 @@
 # Changelog
 ------------------
-[1.28.2]
+[1.28.3]
 ------------------
+CHANGES:
+- introducing more flexible mechanism to populate default values for object intances. It is possible to opt to load default values from zero to multiple object instances by using new hull.base.v1 property sources. All referenced object instances are merged in the provided order to allow sharing definitions between object instances and object types. The default behavior to merge default values from _HULL_OBJECT_TYPE_DEFAULT_ remains intact.
+- add icon to Chart.yaml
+
 FIXES:
-- extend loosening of schema type to env fields. User input of type float, integer or boolean is now allowed and on rendering a late to string conversion is taking place to guarantee the Kubernetes schema is not violated demanding string values. 
+- added icon to Chart.yaml to fix linter warning
+- fail with speaking error message instead of hard to decode error message when path elements in get transformations are not found

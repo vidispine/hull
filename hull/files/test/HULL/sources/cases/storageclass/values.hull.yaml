@@ -24,6 +24,27 @@ hull:
       metadata-overwrite:
         provisioner: "local-volume"
 
+      metadata-custom-template-merge:
+        provisioner: "local-volume"
+
+      metadata-custom-template-overwrite:
+        provisioner: "local-volume"
+
+      metadata-custom-template-multi-merge:
+        provisioner: "local-volume"
+
+      metadata-custom-template-multi-overwrite:
+        provisioner: "local-volume"
+
+      metadata-no-template:
+        provisioner: "local-volume"
+
+      metadata-default-template-as-source:
+        provisioner: "local-volume"
+
+      metadata-default-custom-overwrite:
+        provisioner: "local-volume"
+
       simple:
         enabled: true
         allowVolumeExpansion: true
@@ -55,6 +76,7 @@ hull:
         
       metadata-name-override-static:
         provisioner: "local-volume"
+
 
       metadata-object-info:
         provisioner: "local-volume"        

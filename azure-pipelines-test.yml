@@ -43,8 +43,9 @@ steps:
     ls
     echo no_lint: $(NoLint)
     export no_lint=$(NoLint)
-    gauge run --env single_file -p -l debug specs
-    gauge run --env multi_file -p -l debug specs
+    gauge run --env single_file -p -l debug specs &
+    gauge run --env multi_file -p -l debug specs &
+    wait
   displayName: 'gauge test against helm v$(HelmVersion)'
   condition: and(ne(variables['HelmVersion'],''),eq('${{ parameters.RunTests }}','True'))
     
@@ -66,7 +67,8 @@ steps:
       ls
       cd hull/files/test/HULL
       ls
-      gauge run --env single_file -p -l debug specs
-      gauge run --env multi_file -p -l debug specs
+      gauge run --env single_file -p -l debug specs &
+      gauge run --env multi_file -p -l debug specs &
+      wait
     displayName: 'gauge test against helm v${{ version.version }}'
     condition: and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','True'))

@@ -19,14 +19,6 @@ jobs:
   strategy: 
     maxParallel: 5
     matrix:
-      Helm_3_10_0: 
-        HelmVersion: "3.10.0"
-      Helm_3_10_1: 
-        HelmVersion: "3.10.1"
-      Helm_3_10_2: 
-        HelmVersion: "3.10.2"
-      Helm_3_10_3: 
-        HelmVersion: "3.10.3"
       Helm_3_11_0: 
         HelmVersion: "3.11.0"
       Helm_3_11_1: 
@@ -35,6 +27,12 @@ jobs:
         HelmVersion: "3.11.2"
       Helm_3_11_3: 
         HelmVersion: "3.11.3"  
+      Helm_3_12_0: 
+        HelmVersion: "3.12.0"  
+      Helm_3_12_1: 
+        HelmVersion: "3.12.1"  
+      Helm_3_12_2: 
+        HelmVersion: "3.12.2"  
       Helm_3_12_3: 
         HelmVersion: "3.12.3"  
         

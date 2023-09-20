@@ -463,3 +463,20 @@
 * Test Object has key "spec§template§spec§volumes§4§name" with value "none_active_prefer_secret"
 * Test Object has key "spec§template§spec§volumes§4§secret§secretName" with value "release-name-hull-test-test_secret"
 * Test Object does not have key "spec§template§spec§volumes§4§emptyDir"
+
+
+
+* Prepare default test case for this kind including suites "pod/values_multiple_defaults"
+* Lint and Render
+
+* Set test object to "release-name-hull-test-metadata-default-custom-overwrite"
+* Test Object has key "spec§template§spec§containers§0§env§0§name" with value "CUSTOM_TEMPLATE_1"
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "This is from custom template 1"
+* Test Object has key "spec§template§spec§containers§0§env§1§name" with value "CUSTOM_TEMPLATE_2"
+* Test Object has key "spec§template§spec§containers§0§env§1§value" with value "This is from custom template 2"
+* Test Object has key "spec§template§spec§containers§0§env§2§name" with value "NO_OVERWRITE_DEFAULT_TEMPLATE"
+* Test Object has key "spec§template§spec§containers§0§env§2§value" with value "This is from the default template"
+* Test Object has key "spec§template§spec§containers§0§env§3§name" with value "OVERWRITE_ME_ONCE"
+* Test Object has key "spec§template§spec§containers§0§env§3§value" with value "Overwritten by custom template 1"
+* Test Object has key "spec§template§spec§containers§0§env§4§name" with value "OVERWRITE_ME_TWICE"
+* Test Object has key "spec§template§spec§containers§0§env§4§value" with value "Overwritten by custom template 2"

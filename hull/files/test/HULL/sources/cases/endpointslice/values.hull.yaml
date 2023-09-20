@@ -27,7 +27,35 @@ hull:
       metadata-overwrite:
         addressType: FQDN
         endpoints: []
+
+      metadata-custom-template-merge:
+        addressType: FQDN
+        endpoints: []
       
+      metadata-custom-template-overwrite:
+        addressType: FQDN
+        endpoints: []
+
+      metadata-custom-template-multi-merge:
+        addressType: FQDN
+        endpoints: []
+      
+      metadata-custom-template-multi-overwrite:
+        addressType: FQDN
+        endpoints: []
+      
+      metadata-no-template:
+        addressType: FQDN
+        endpoints: []
+
+      metadata-default-template-as-source:
+        addressType: FQDN
+        endpoints: []
+
+      metadata-default-custom-overwrite:
+        addressType: FQDN
+        endpoints: []
+
       minimal:
         addressType: FQDN
         endpoints: []

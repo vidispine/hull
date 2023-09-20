@@ -18,8 +18,8 @@
 {{- $component := default "" (index . "COMPONENT") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- if (index $parent.Values $hullRootKey).config.general.rbac }}
-{{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
-{{- $defaultRulesBasePath := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.rules._HULL_OBJECT_TYPE_DEFAULT_ }}
+{{- $enabledDefault := dig "enabled" true (index . "DEFAULT_COMPONENT") -}}
+{{- $defaultRulesBasePath := dig "rules" "_HULL_OBJECT_TYPE_DEFAULT_" dict (index . "DEFAULT_COMPONENT") }}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 {{ template "hull.metadata.header" . }}
 {{- if typeIs "map[string]interface {}" (index (index (index $parent.Values $hullRootKey).objects ($objectType | lower)) $component).rules -}}

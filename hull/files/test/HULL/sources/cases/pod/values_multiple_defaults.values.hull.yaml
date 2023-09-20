@@ -1,0 +1,66 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+  objects:
+    <OBJECT_TYPE>:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        pod:
+          containers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              env:
+                NO_OVERWRITE_DEFAULT_TEMPLATE:
+                  value: This is from the default template
+                OVERWRITE_ME_ONCE:
+                  value: To be overwritten by custom template 1
+                OVERWRITE_ME_TWICE:
+                  value: To be overwritten by custom template 2
+              volumeMounts:
+                test:
+                  mountPath: this/path/is/overwritten
+                  subPath: myconstantsubpath    
+  
+      custom-default-template-1:
+        pod:
+          containers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              env:
+                CUSTOM_TEMPLATE_1:
+                  value: This is from custom template 1
+                OVERWRITE_ME_ONCE:
+                  value: Overwritten by custom template 1
+              volumeMounts:
+                test:
+                  mountPath: this/path/is/overwritten/again
+      
+      custom-default-template-2:
+        pod:
+          containers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              env:
+                CUSTOM_TEMPLATE_2:
+                  value: This is from custom template 2
+                OVERWRITE_ME_TWICE:
+                  value: Overwritten by custom template 2
+              volumeMounts:
+                test:
+                  mountPath: this/path/is/in/all/mounts
+                  name: set-at-custom-template-1
+                
+      metadata-default-custom-overwrite:
+        enabled: true
+        sources: 
+        - _HULL_OBJECT_TYPE_DEFAULT_
+        - custom-default-template-1
+        - custom-default-template-2
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+                  
+                
