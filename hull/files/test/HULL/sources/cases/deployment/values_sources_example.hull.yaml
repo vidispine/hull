@@ -8,16 +8,6 @@ hull:
         username: user-abc
         password: pass-abc
   objects:
-    configmap:
-      _HULL_OBJECT_TYPE_DEFAULT_:
-        annotations:
-          helm.sh/hook: pre-install,pre-upgrade
-          helm.sh/hook-delete-policy: before-hook-creation
-          helm.sh/hook-weight: "-80"
-      appconfig:
-        data: 
-          config: 
-            inline: some configuration stuff
     deployment:
       app-python-direct:
         pod:
