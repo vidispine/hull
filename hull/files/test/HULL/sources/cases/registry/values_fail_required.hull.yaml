@@ -14,6 +14,17 @@ hull:
       metadata-overwrite:
         server: metadata-overwrite.cr.io
 
+      metadata-custom-template-merge:
+        server: metadata-custom-template-merge.cr.io
+
+      metadata-custom-template-overwrite:
+        server: metadata-custom-template-overwrite.cr.io
+
+      metadata-custom-template-multi-merge:
+        server: metadata-custom-template-multi-merge.cr.io
+
+      metadata-custom-template-multi-overwrite:
+        server: metadata-custom-template-multi-overwrite.cr.io
       disabled-transform:
         server: disabled-transform.cr.io
         

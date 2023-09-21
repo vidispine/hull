@@ -45,6 +45,48 @@ hull:
           kind: Role
           name: example_role
 
+      metadata-custom-template-merge:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+
+      metadata-custom-template-overwrite:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+
+      metadata-custom-template-multi-merge:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+
+      metadata-custom-template-multi-overwrite:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+
+      metadata-no-template:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+
+      metadata-default-template-as-source:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+
+      metadata-default-custom-overwrite:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+          
       metadata-object-info:
         roleRef:
           apiGroup: rbac.authorization.k8s.io

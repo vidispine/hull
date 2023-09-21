@@ -17,7 +17,7 @@
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $component := default "" (index . "COMPONENT") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
-{{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
+{{- $enabledDefault := dig "enabled" true (index . "DEFAULT_COMPONENT") -}}
 {{- $hullValues := (index $parent.Values $hullRootKey) -}}
 {{ $renderedHullValues := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $hullValues "HULL_ROOT_KEY" $hullRootKey) | fromYaml }}
 {{ $temp := dict "hull" $hullValues }}

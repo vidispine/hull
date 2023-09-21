@@ -16,8 +16,7 @@
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
-{{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
-{{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
+{{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled"))) -}}
 - {{ dict "name" $component | toYaml }}
 {{- if hasKey $spec "active" }}
 {{- if (eq $spec.active "configMap") }}
