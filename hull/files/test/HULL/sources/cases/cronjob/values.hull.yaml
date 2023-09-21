@@ -150,7 +150,97 @@ hull:
                 image:
                   repository: my/image/repo
                   tag: "99.9"
-      
+
+      metadata-merge:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-overwrite:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-custom-template-merge:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-custom-template-overwrite:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-custom-template-multi-merge:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-custom-template-multi-overwrite:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-no-template:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-default-template-as-source:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-default-custom-overwrite:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
       metadata-object-info:
         schedule: "* * 2"
         job:

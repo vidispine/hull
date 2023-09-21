@@ -15,12 +15,12 @@
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
-{{- $enabledDefault := (index (index $parent.Values $hullRootKey).objects ($objectType | lower))._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
+{{- $enabledDefault := dig "enabled" true (index . "DEFAULT_COMPONENT") -}}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 {{ template "hull.metadata.header" . }}
 spec:
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (index $parent.Values $hullRootKey).objects.ingress._HULL_OBJECT_TYPE_DEFAULT_.tls._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "tls" "OBJECT_TEMPLATE" "hull.object.ingress.tls" "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (index $parent.Values $hullRootKey).objects.ingress._HULL_OBJECT_TYPE_DEFAULT_.rules._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec "KEY" "rules" "OBJECT_TEMPLATE" "hull.object.ingress.rules" "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
+{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "tls" "_HULL_OBJECT_TYPE_DEFAULT_" dict (default dict (index . "DEFAULT_COMPONENT"))) "SPEC" $spec "KEY" "tls" "OBJECT_TEMPLATE" "hull.object.ingress.tls" "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
+{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "rules" "_HULL_OBJECT_TYPE_DEFAULT_" dict (default dict (index . "DEFAULT_COMPONENT"))) "SPEC" $spec "KEY" "rules" "OBJECT_TEMPLATE" "hull.object.ingress.rules" "HULL_ROOT_KEY" $hullRootKey) | indent 2 }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "rules" "tls")) | indent 2 }}
 {{- end -}}
 {{- end -}}
@@ -72,7 +72,7 @@ spec:
 - host: {{ $spec.host }}
   http:
     paths:
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (index $parent.Values $hullRootKey).objects.ingress._HULL_OBJECT_TYPE_DEFAULT_.rules._HULL_OBJECT_TYPE_DEFAULT_.http.paths._HULL_OBJECT_TYPE_DEFAULT_ "SPEC" $spec.http "KEY" "paths" "OBJECT_TEMPLATE" "hull.object.ingress.paths" "HULL_ROOT_KEY" $hullRootKey) | indent 4 }}
+{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "http" "paths" "_HULL_OBJECT_TYPE_DEFAULT_" dict (default dict (index . "DEFAULT_SPEC"))) "SPEC" $spec.http "KEY" "paths" "OBJECT_TEMPLATE" "hull.object.ingress.paths" "HULL_ROOT_KEY" $hullRootKey) | indent 4 }}
 {{ end }}
 {{ end }}
 
