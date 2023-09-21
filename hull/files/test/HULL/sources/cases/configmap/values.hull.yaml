@@ -35,6 +35,14 @@ hull:
             path: files/default_file_2.yaml
           non_existent:
             path: files/non_existent
+      
+      custom-default-template-1:
+        data:
+          default_inline_1:
+            inline: Default Inline 1
+          default_file_1.json:
+            path: files/default_file_1.json
+
 
       defaults-no-overwrite:
         enabled: true
@@ -204,4 +212,10 @@ hull:
           binary: "QÖÚ¼ˆ”¬µÖó¼ñƒ"
           test: _HT!{{ toString ((index . "PARENT").Files.Get "files/test.txt") | b64enc }}
 
+      metadata-no-template:
+        data:
+          default_inline_1:
+            inline: Default Inline 1
+          default_file_1.json:
+            path: files/default_file_1.json          
 ###################################################

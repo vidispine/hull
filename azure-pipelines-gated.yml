@@ -19,14 +19,27 @@ jobs:
 - job: RunTests
   timeoutInMinutes: 0
   strategy: 
-    maxParallel: 100
+    maxParallel: 5
     matrix:
-      Helm_3_10_3: 
+      Helm_3_10_3_single: 
         HelmVersion: "3.10.3"
-      Helm_3_11_0: 
+        TestType: single
+      Helm_3_10_3_multi: 
+        HelmVersion: "3.10.3"
+        TestType: multi
+      Helm_3_11_0_single: 
         HelmVersion: "3.11.3"
-      Helm_3_12_3: 
+        TestType: single
+      Helm_3_11_0_multi: 
+        HelmVersion: "3.11.3"
+        TestType: multi
+      Helm_3_12_3_single: 
         HelmVersion: "3.12.3"  
+        TestType: single
+      Helm_3_12_3_multi: 
+        HelmVersion: "3.12.3"  
+        TestType: multi
+
   steps:
   - template: azure-pipelines-test.yml  # Template reference
     parameters:

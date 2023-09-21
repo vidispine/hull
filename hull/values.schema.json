@@ -25951,7 +25951,8 @@
                 "annotations",
                 "labels",
                 "staticName",
-                "metadataNameOverride"
+        "metadataNameOverride",
+        "sources"
             ]
         },
         "hull.ObjectBase.v1": {
@@ -26022,6 +26023,19 @@
                             "type": "string"
                         }
                     ]
+        },
+        "sources": {
+          "title": "Sources",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "array"
+            }
+          ],
+          "required": [],
+          "properties": {}
                 }
             },
             "required": []
@@ -27907,953 +27921,1548 @@
             },
             "required": []
         },
-        "namespace.v1": {
-            "$id": "#/definitions/namespace.v1",
-            "title": "Namespace",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.core.v1.Namespace"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.core.v1.Namespace.Names"
-                            }
-                        ]
-                    }
-                }
+    "namespace.v1": {
+      "$id": "#/definitions/namespace.v1",
+      "title": "Namespace",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.core.v1.Namespace"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.core.v1.Namespace.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "configmap.v1": {
+      "$id": "#/definitions/configmap.v1",
+      "title": "Configmap",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "configmap.v1": {
-            "$id": "#/definitions/configmap.v1",
-            "title": "Configmap",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/hull.VirtualFolder.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.core.v1.ConfigMap"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.VirtualFolder.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.core.v1.ConfigMap.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/hull.VirtualFolder.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.core.v1.ConfigMap"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.VirtualFolder.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.core.v1.ConfigMap.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "secret.v1": {
+      "$id": "#/definitions/secret.v1",
+      "title": "Secret",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "secret.v1": {
-            "$id": "#/definitions/secret.v1",
-            "title": "Secret",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/hull.VirtualFolder.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.core.v1.Secret"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.VirtualFolder.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.core.v1.Secret.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/hull.VirtualFolder.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.core.v1.Secret"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.VirtualFolder.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.core.v1.Secret.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "registry.v1": {
+      "$id": "#/definitions/registry.v1",
+      "title": "Registry",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "registry.v1": {
-            "$id": "#/definitions/registry.v1",
-            "title": "Registry",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/hull.Registry.v1"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.Registry.v1.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/hull.Registry.v1"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.Registry.v1.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "deployment.v1": {
+      "$id": "#/definitions/deployment",
+      "title": "Deployment",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "deployment.v1": {
-            "$id": "#/definitions/deployment",
-            "title": "Deployment",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.apps.v1.DeploymentSpec"
-                },
-                {
-                    "$ref": "#/definitions/hull.PodTemplate.v1"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.apps.v1.DeploymentSpec.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.PodTemplate.v1.Names"
-                            }
-                        ]
-                    }
-                }
-            ],
-            "properties": {}
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
         },
-        "job.v1": {
-            "$id": "#/definitions/job",
-            "title": "Job",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.batch.v1.JobSpec"
-                },
-                {
-                    "$ref": "#/definitions/hull.PodTemplate.v1"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.batch.v1.JobSpec.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.PodTemplate.v1.Names"
-                            }
-                        ]
-                    }
-                }
-            ],
-            "properties": {}
+        {
+          "$ref": "#/definitions/io.k8s.api.apps.v1.DeploymentSpec"
         },
-        "daemonset.v1": {
-            "$id": "#/definitions/daemonset.v1",
-            "title": "DaemonSet",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.apps.v1.DaemonSetSpec"
-                },
-                {
-                    "$ref": "#/definitions/hull.PodTemplate.v1"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.apps.v1.DaemonSetSpec.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.PodTemplate.v1.Names"
-                            }
-                        ]
-                    }
-                }
+        {
+          "$ref": "#/definitions/hull.PodTemplate.v1"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.apps.v1.DeploymentSpec.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.PodTemplate.v1.Names"
+              }
             ]
+          }
+        }
+      ],
+      "properties": {}
+      }
+    },
+    "job.v1": {
+      "$id": "#/definitions/job",
+      "title": "Job",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "statefulset.v1": {
-            "$id": "#/definitions/statefulset.v1",
-            "title": "StatefulSet",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.apps.v1.StatefulSetSpec"
-                },
-                {
-                    "$ref": "#/definitions/hull.PodTemplate.v1"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.apps.v1.StatefulSetSpec.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.PodTemplate.v1.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.batch.v1.JobSpec"
+        },
+        {
+          "$ref": "#/definitions/hull.PodTemplate.v1"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.batch.v1.JobSpec.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.PodTemplate.v1.Names"
+              }
             ]
+          }
+        }
+      ],
+      "properties": {}
+      }
+    },
+    "daemonset.v1": {
+      "$id": "#/definitions/daemonset.v1",
+      "title": "DaemonSet",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "cronjob.v1": {
-            "$id": "#/definitions/cronjob.v1",
-            "title": "Cronjob",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.batch.v1.CronJobSpec"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.batch.v1.CronJobSpec.Names"
-                            }
-                        ]
-                    }
-                }
-            ],
-            "properties": {
-                "job": {
-                    "$ref": "#/definitions/job.v1"
-                }
-            }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
         },
-        "cronjob.v2": {
-            "$id": "#/definitions/cronjob.v2",
-            "title": "Cronjob",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.batch.v1.CronJobSpec"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.batch.v1.CronJobSpec.Names"
-                            }
-                        ]
-                    }
-                }
-            ],
-            "properties": {
-                "job": {
-                    "$ref": "#/definitions/job.v1"
-                }
-            }
+        {
+          "$ref": "#/definitions/io.k8s.api.apps.v1.DaemonSetSpec"
         },
-        "serviceaccount.v1": {
-            "$id": "#/definitions/serviceaccount.v1",
-            "title": "Serviceaccount",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.core.v1.ServiceAccount"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.core.v1.ServiceAccount.Names"
-                            }
-                        ]
-                    }
-                }
+        {
+          "$ref": "#/definitions/hull.PodTemplate.v1"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.apps.v1.DaemonSetSpec.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.PodTemplate.v1.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "statefulset.v1": {
+      "$id": "#/definitions/statefulset.v1",
+      "title": "StatefulSet",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "role.v1": {
-            "$id": "#/definitions/role.v1",
-            "title": "Role",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/hull.Role.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.rbac.v1.Role"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.Role.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.rbac.v1.Role.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.apps.v1.StatefulSetSpec"
+        },
+        {
+          "$ref": "#/definitions/hull.PodTemplate.v1"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.apps.v1.StatefulSetSpec.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.PodTemplate.v1.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "cronjob.v1": {
+      "$id": "#/definitions/cronjob.v1",
+      "title": "Cronjob",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "rolebinding.v1": {
-            "$id": "#/definitions/rolebinding.v1",
-            "title": "Rolebinding",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.rbac.v1.RoleBinding"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.rbac.v1.RoleBinding.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.batch.v1.CronJobSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.batch.v1.CronJobSpec.Names"
+              }
             ]
+          }
+        }
+      ],
+      "properties": {
+        "job": {
+          "$ref": "#/definitions/job.v1"
+        }
+      }
+      }
+    },
+    "cronjob.v2": {
+      "$id": "#/definitions/cronjob.v2",
+      "title": "Cronjob",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "clusterrole.v1": {
-            "$id": "#/definitions/root/objects/clusterrole.v1",
-            "title": "Clusterrole",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/hull.Role.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.rbac.v1.ClusterRole"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.Role.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.rbac.v1.ClusterRole.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.batch.v1.CronJobSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.batch.v1.CronJobSpec.Names"
+              }
             ]
+          }
+        }
+      ],
+      "properties": {
+        "job": {
+          "$ref": "#/definitions/job.v1"
+        }
+      }
+      }
+    },
+    "serviceaccount.v1": {
+      "$id": "#/definitions/serviceaccount.v1",
+      "title": "Serviceaccount",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "clusterrolebinding.v1": {
-            "$id": "#/definitions/clusterrolebinding.v1",
-            "title": "Clusterrolebinding",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.rbac.v1.ClusterRoleBinding"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.rbac.v1.ClusterRoleBinding.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.core.v1.ServiceAccount"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.core.v1.ServiceAccount.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "role.v1": {
+      "$id": "#/definitions/role.v1",
+      "title": "Role",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "customresource.v1": {
-            "$id": "#/definitions/customresource.v1",
-            "title": "Customresource",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/hull.CustomResource.v1"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.CustomResource.v1.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/hull.Role.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.rbac.v1.Role"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.Role.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.rbac.v1.Role.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "rolebinding.v1": {
+      "$id": "#/definitions/rolebinding.v1",
+      "title": "Rolebinding",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "persistentvolumeclaim.v1": {
-            "$id": "#/definitions/persistentvolumeclaim.v1",
-            "title": "Persistentvolumeclaim",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.core.v1.PersistentVolumeClaimSpec"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.core.v1.PersistentVolumeClaimSpec.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.rbac.v1.RoleBinding"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.rbac.v1.RoleBinding.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "clusterrole.v1": {
+      "$id": "#/definitions/root/objects/clusterrole.v1",
+      "title": "Clusterrole",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "persistentvolume.v1": {
-            "$id": "#/definitions/persistentvolume^.v1",
-            "title": "Persistentvolume",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.core.v1.PersistentVolumeSpec"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.core.v1.PersistentVolumeSpec.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/hull.Role.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.rbac.v1.ClusterRole"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.Role.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.rbac.v1.ClusterRole.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "clusterrolebinding.v1": {
+      "$id": "#/definitions/clusterrolebinding.v1",
+      "title": "Clusterrolebinding",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "storageclass.v1": {
-            "$id": "#/definitions/root/objects/storageclass.v1",
-            "title": "Storageclass",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.storage.v1.StorageClass"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.storage.v1.StorageClass.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.rbac.v1.ClusterRoleBinding"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.rbac.v1.ClusterRoleBinding.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "customresource.v1": {
+      "$id": "#/definitions/customresource.v1",
+      "title": "Customresource",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "service.v1": {
-            "$id": "#/definitions/service.v1",
-            "title": "Service",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.core.v1.ServiceSpec"
-                },
-                {
-                    "$ref": "#/definitions/hull.Service.v1"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.core.v1.ServiceSpec.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.Service.v1.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/hull.CustomResource.v1"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.CustomResource.v1.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "persistentvolumeclaim.v1": {
+      "$id": "#/definitions/persistentvolumeclaim.v1",
+      "title": "Persistentvolumeclaim",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "ingress.v1": {
-            "$id": "#/definitions/ingress.v1",
-            "title": "Ingress",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.networking.v1.IngressSpec"
-                },
-                {
-                    "$ref": "#/definitions/hull.Ingress.v1"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.networking.v1.IngressSpec.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.Ingress.v1.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.core.v1.PersistentVolumeClaimSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.core.v1.PersistentVolumeClaimSpec.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "persistentvolume.v1": {
+      "$id": "#/definitions/persistentvolume^.v1",
+      "title": "Persistentvolume",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "ingressclass.v1": {
-            "$id": "#/definitions/ingressclass.v1",
-            "title": "IngressClass",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.networking.v1.IngressClassSpec"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.networking.v1.IngressClassSpec.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.core.v1.PersistentVolumeSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.core.v1.PersistentVolumeSpec.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "storageclass.v1": {
+      "$id": "#/definitions/root/objects/storageclass.v1",
+      "title": "Storageclass",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "servicemonitor.v1": {
-            "$id": "#/definitions/servicemonitors.v1",
-            "title": "Servicemonitors",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/hull.ServiceMonitor.v1"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.ServiceMonitor.v1.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.storage.v1.StorageClass"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.storage.v1.StorageClass.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "service.v1": {
+      "$id": "#/definitions/service.v1",
+      "title": "Service",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "horizontalpodautoscaler.v1": {
-            "$id": "#/definitions/horizontalpodautoscaler.v1",
-            "title": "HorizontalPodAutoscaler",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerSpec"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerSpec.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.core.v1.ServiceSpec"
+        },
+        {
+          "$ref": "#/definitions/hull.Service.v1"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.core.v1.ServiceSpec.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.Service.v1.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "ingress.v1": {
+      "$id": "#/definitions/ingress.v1",
+      "title": "Ingress",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "horizontalpodautoscaler.v2": {
-            "$id": "#/definitions/horizontalpodautoscaler.v2",
-            "title": "HorizontalPodAutoscaler",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.autoscaling.v2.HorizontalPodAutoscalerSpec"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.autoscaling.v2.HorizontalPodAutoscalerSpec.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.networking.v1.IngressSpec"
+        },
+        {
+          "$ref": "#/definitions/hull.Ingress.v1"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.networking.v1.IngressSpec.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.Ingress.v1.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "ingressclass.v1": {
+      "$id": "#/definitions/ingressclass.v1",
+      "title": "IngressClass",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "poddisruptionbudget.v1": {
-            "$id": "#/definitions/poddisruptionbudget.v1",
-            "title": "PodDisruptionBudget",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.policy.v1.PodDisruptionBudgetSpec"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.policy.v1.PodDisruptionBudgetSpec.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.networking.v1.IngressClassSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.networking.v1.IngressClassSpec.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "servicemonitor.v1": {
+      "$id": "#/definitions/servicemonitors.v1",
+      "title": "Servicemonitors",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "poddisruptionbudget.v2": {
-            "$id": "#/definitions/poddisruptionbudget.v2",
-            "title": "PodDisruptionBudget",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.policy.v1.PodDisruptionBudgetSpec"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.policy.v1.PodDisruptionBudgetSpec.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/hull.ServiceMonitor.v1"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.ServiceMonitor.v1.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "horizontalpodautoscaler.v1": {
+      "$id": "#/definitions/horizontalpodautoscaler.v1",
+      "title": "HorizontalPodAutoscaler",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "priorityclass.v1": {
-            "$id": "#/definitions/priorityclass.v1",
-            "title": "PriorityClass",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.scheduling.v1.PriorityClass"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.scheduling.v1.PriorityClass.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerSpec.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "horizontalpodautoscaler.v2": {
+      "$id": "#/definitions/horizontalpodautoscaler.v2",
+      "title": "HorizontalPodAutoscaler",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "endpoints.v1": {
-            "$id": "#/definitions/endpoints.v1",
-            "title": "Endpoints",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.core.v1.Endpoints"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.core.v1.Endpoints.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.autoscaling.v2.HorizontalPodAutoscalerSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.autoscaling.v2.HorizontalPodAutoscalerSpec.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "poddisruptionbudget.v1": {
+      "$id": "#/definitions/poddisruptionbudget.v1",
+      "title": "PodDisruptionBudget",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "endpointslice.v1": {
-            "$id": "#/definitions/endpointslice.v1",
-            "title": "EndpointSlice",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.discovery.v1.EndpointSlice"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.discovery.v1.EndpointSlice.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.policy.v1.PodDisruptionBudgetSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.policy.v1.PodDisruptionBudgetSpec.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "poddisruptionbudget.v2": {
+      "$id": "#/definitions/poddisruptionbudget.v2",
+      "title": "PodDisruptionBudget",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "limitrange.v1": {
-            "$id": "#/definitions/limitrange.v1",
-            "title": "LimitRange",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.core.v1.LimitRangeSpec"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.core.v1.LimitRangeSpec.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.policy.v1.PodDisruptionBudgetSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.policy.v1.PodDisruptionBudgetSpec.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "priorityclass.v1": {
+      "$id": "#/definitions/priorityclass.v1",
+      "title": "PriorityClass",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "mutatingwebhookconfiguration.v1": {
-            "$id": "#/definitions/mutatingwebhookconfiguration.v1",
-            "title": "MutatingWebhookConfiguration",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/hull.MutatingWebhook.v1"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.Webhook.v1.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1.PriorityClass"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.scheduling.v1.PriorityClass.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "endpoints.v1": {
+      "$id": "#/definitions/endpoints.v1",
+      "title": "Endpoints",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "validatingwebhookconfiguration.v1": {
-            "$id": "#/definitions/validatingwebhookconfiguration.v1",
-            "title": "ValidatingWebhookConfiguration",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/hull.ValidatingWebhook.v1"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/hull.Webhook.v1.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.core.v1.Endpoints"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.core.v1.Endpoints.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "endpointslice.v1": {
+      "$id": "#/definitions/endpointslice.v1",
+      "title": "EndpointSlice",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "resourcequota.v1": {
-            "$id": "#/definitions/resourcequota.v1",
-            "title": "ResourceQuota",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.core.v1.ResourceQuotaSpec"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.core.v1.ResourceQuotaSpec.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.discovery.v1.EndpointSlice"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.discovery.v1.EndpointSlice.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "limitrange.v1": {
+      "$id": "#/definitions/limitrange.v1",
+      "title": "LimitRange",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
-        "networkpolicy.v1": {
-            "$id": "#/definitions/networkpolicy.v1",
-            "title": "NetworkPolicy",
-            "type": "object",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/hull.ObjectBase.v1"
-                },
-                {
-                    "$ref": "#/definitions/io.k8s.api.networking.v1.NetworkPolicySpec"
-                },
-                {
-                    "propertyNames": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                            },
-                            {
-                                "$ref": "#/definitions/io.k8s.api.networking.v1.NetworkPolicySpec.Names"
-                            }
-                        ]
-                    }
-                }
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.core.v1.LimitRangeSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.core.v1.LimitRangeSpec.Names"
+              }
             ]
+          }
+        }
+      ]
+      }
+    },
+    "mutatingwebhookconfiguration.v1": {
+      "$id": "#/definitions/mutatingwebhookconfiguration.v1",
+      "title": "MutatingWebhookConfiguration",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
         },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/hull.MutatingWebhook.v1"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.Webhook.v1.Names"
+              }
+            ]
+          }
+        }
+      ]
+      }
+    },
+    "validatingwebhookconfiguration.v1": {
+      "$id": "#/definitions/validatingwebhookconfiguration.v1",
+      "title": "ValidatingWebhookConfiguration",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/hull.ValidatingWebhook.v1"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/hull.Webhook.v1.Names"
+              }
+            ]
+          }
+        }
+      ]
+      }
+    },
+    "resourcequota.v1": {
+      "$id": "#/definitions/resourcequota.v1",
+      "title": "ResourceQuota",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.core.v1.ResourceQuotaSpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.core.v1.ResourceQuotaSpec.Names"
+              }
+            ]
+          }
+        }
+      ]
+      }
+    },
+    "networkpolicy.v1": {
+      "$id": "#/definitions/networkpolicy.v1",
+      "title": "NetworkPolicy",
+      "type": "object",
+      "if": {
+        "properties": 
+        { 
+          "enabled": 
+          { 
+            "const": false 
+          } 
+        },
+        "required": 
+        [
+          "enabled"
+        ]
+      },
+      "then": {        
+      },
+      "else": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/hull.ObjectBase.v1"
+        },
+        {
+          "$ref": "#/definitions/io.k8s.api.networking.v1.NetworkPolicySpec"
+        },
+        {
+          "propertyNames": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/hull.ObjectBase.v1.Names"
+              },
+              {
+                "$ref": "#/definitions/io.k8s.api.networking.v1.NetworkPolicySpec.Names"
+              }
+            ]
+          }
+        }
+      ]
+      }
+    },
         "root": {
             "$id": "#/definitions/root",
             "title": "Root",

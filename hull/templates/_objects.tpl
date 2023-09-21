@@ -135,17 +135,20 @@ metadata:
 {{- $noSelector = $objectTypeSpec.NO_SELECTOR }}
 {{- end }}
 
+
+{{- range $objectKey, $spec := (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType) }}
 {{- /*
 ### Get the default spec with key _HULL_OBJECT_TYPE_DEFAULT_ for the object to be merged with all instances
 */ -}}
-{{- $defaultSpec := dict }}
-{{- $defaultSpec = (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType)._HULL_OBJECT_TYPE_DEFAULT_ }}
 
-{{- range $objectKey, $spec := (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType) }}
-{{- if ne $objectKey "_HULL_OBJECT_TYPE_DEFAULT_" -}}
-{{ if (or (gt (len (keys (default dict $spec))) 0) (not (kindIs "invalid" $spec))) }}
-{{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
-{{ $spec = merge $spec $defaultSpec }}
+{{- if (or (ne $objectKey "_HULL_OBJECT_TYPE_DEFAULT_")) -}}
+{{- if (or (gt (len (keys (default dict $spec))) 0) (not (kindIs "invalid" $spec))) -}}
+{{- $defaultSpec := fromYaml (include "hull.objects.defaults" (dict "PARENT_CONTEXT" $rootContext "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) ) -}}
+{{- $enabledDefault = dig "enabled" true $defaultSpec -}}
+{{- $specDisabled := and (hasKey $spec "enabled") (not $spec.enabled) }}
+
+{{- if (and (not $specDisabled) (or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault))) -}}
+{{ $spec = merge (omit $spec "sources") $defaultSpec }}
 
 {{- /*
 ### Now render the result object instance
@@ -156,12 +159,23 @@ metadata:
 {{- $namingElement = $spec.metadataNameOverride -}}
 {{- $spec = unset $spec "metadataNameOverride" }}
 {{- end -}}
+{{- if true -}}
 {{- $objectSpec = include "hull.util.merge" (merge (dict "PARENT_CONTEXT" $rootContext "PARENT_TEMPLATE" $parentTemplate "API_VERSION" (default $apiVersion $spec.apiVersion) "API_KIND" (default $apiKind $spec.apiKind) "COMPONENT" $namingElement "SPEC" $spec "DEFAULT_COMPONENT" $defaultSpec "HULL_ROOT_KEY" $hullRootKey "NO_SELECTOR" $noSelector "OBJECT_TYPE" $objectType) (dict "LOCAL_TEMPLATE" (printf "%s" $hullTemplate))) | fromYaml }}
 {{- if (gt (len (keys (default dict $objectSpec))) 0) -}}
 {{ toYaml $objectSpec }}
 
+
 ---
 {{ end -}}
+{{- else -}}
+{{- /* 
+### DEBUG SPEC 
+*/ -}}
+{{ toYaml $spec }}
+
+
+---
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

@@ -32,6 +32,41 @@ hull:
           matchLabels:
             key: value
 
+      metadata-custom-template-merge:
+        podSelector: 
+          matchLabels:
+            key: value 
+
+      metadata-custom-template-overwrite:
+        podSelector: 
+          matchLabels:
+            key: value
+
+      metadata-custom-template-multi-merge:
+        podSelector: 
+          matchLabels:
+            key: value 
+
+      metadata-custom-template-multi-overwrite:
+        podSelector: 
+          matchLabels:
+            key: value
+
+      metadata-no-template:
+        podSelector: 
+          matchLabels:
+            key: value
+
+      metadata-default-template-as-source:
+        podSelector: 
+          matchLabels:
+            key: value 
+
+      metadata-default-custom-overwrite:
+        podSelector: 
+          matchLabels:
+            key: value
+
       minimal:
         podSelector: 
           matchLabels:

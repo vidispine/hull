@@ -84,7 +84,12 @@ def copy_the_test_suites_source_folders_to_TEST_EXECUTION_FOLDER():
 @step("Copy the suite source folder for case <case> and chart <chart> and suite <suite> to test execution folder")
 def copy_the_suite_source_folder_for_case_and_chart_and_suite_to_TEST_EXECUTION_FOLDER(case, chart, suite):
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    src_path = os.path.join(dir_path,'./../sources/cases/',suite, suite + '.values.hull.yaml')
+    suite_folder = suite
+    suite_file = suite
+    if '/' in suite:
+        suite_folder = suite.split('/')[0]
+        suite_file = suite.split('/')[1]
+    src_path = os.path.join(dir_path,'./../sources/cases/',suite_folder, suite_file + '.values.hull.yaml')
     dst_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart)
     try:
         with open(src_path, 'r') as file:
@@ -92,7 +97,7 @@ def copy_the_suite_source_folder_for_case_and_chart_and_suite_to_TEST_EXECUTION_
             data = data.replace("<OBJECT_TYPE>",case)
             if not os.path.isdir(dst_path):
                 os.makedirs(dst_path)
-            dst_file = open(os.path.join(dst_path, suite + ".values.hull.yaml"), "w")
+            dst_file = open(os.path.join(dst_path, suite_file + ".values.hull.yaml"), "w")
             dst_file.write(data)
             dst_file.close()
 
@@ -225,6 +230,15 @@ def test_object_has_key_with_array_value_that_has_items(key, value):
     else:
         assert False
 
+@step("Test Object has key <key> with dictionary value that has <count> items")
+def test_object_has_key_with_dictionary_value_that_has_items(key, value):
+    assert data_store.scenario.test_object != None
+    if isinstance(data_store.scenario.test_object[key], dict): 
+        for key in data_store.scenario.test_object[key].keys():            
+            print(f'Found key: {key}')
+        assert_values_equal(len(data_store.scenario.test_object[key].keys()), int(value), key)
+    else:
+        assert False
 @step("Test Object has key <key> with value <value>")
 def test_object_has_key_with_value(key, value):
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
@@ -392,7 +406,10 @@ def lint_chart(case, chart, values_file, namespace):
     
     suites = ()
     for suite in data_store.scenario.suites:
-        suites += ("-f", os.path.join(chart_path, suite + ".values.hull.yaml"))
+        suite_file = suite
+        if '/' in suite:
+            suite_file = suite.split('/')[1]
+        suites += ("-f", os.path.join(chart_path, suite_file + ".values.hull.yaml"))
     
     args = ("helm", "lint", chart_path, "--debug", "--strict", "--namespace", namespace) + suites + ("-f",  os.path.join(chart_path, values_file))
     
@@ -411,7 +428,10 @@ def render_chart(case, chart, values_file, namespace):
     
     suites = ()
     for suite in data_store.scenario.suites:
-        suites += ("-f", os.path.join(chart_path, suite + ".values.hull.yaml"))
+        suite_file = suite
+        if '/' in suite:
+            suite_file = suite.split('/')[1]
+        suites += ("-f", os.path.join(chart_path, suite_file + ".values.hull.yaml"))
     
     args = ("helm", "template", chart_path, "--name-template", "release-name", "--debug", "--output-dir", render_path, "--namespace", namespace) + ("-f",  os.path.join(chart_path, values_file)) + suites
     
