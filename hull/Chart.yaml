@@ -7,7 +7,7 @@ keywords:
 - hull
 - utility
 home: https://github.com/vidispine/hull
-icon: https://github.com/vidispine/hull/blob/gh-pages/hull.png
+icon: https://github.com/vidispine/hull/blob/gh-pages/hull.png?raw=true
 dependencies: []
 maintainers:
 - name: georg weber
