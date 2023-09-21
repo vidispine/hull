@@ -39,7 +39,7 @@ template:
 {{- if hasKey . "DEFAULT_POD_BASE_PATH" }}
 {{- $defaultPodBasePath = index . "DEFAULT_POD_BASE_PATH" }}
 {{- end }}
-{{- if (not (eq $spec.pod nil)) }}
+{{ if $spec.pod }}
 spec:
 {{- include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "pod" "containers" "_HULL_OBJECT_TYPE_DEFAULT_" dict $defaultPodBasePath) "SPEC" $spec.pod "KEY" "containers" "OBJECT_TEMPLATE" "hull.object.container" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 -}}
 {{- include "hull.object.pod.imagePullSecrets" . | indent 2 -}}
@@ -49,7 +49,6 @@ spec:
 {{- include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.pod "HULL_OBJECT_KEYS" (list "imagePullSecrets" "serviceAccountName" "containers" "initContainers" "volumes")) | indent 2 -}}
 {{- end -}}
 {{- end -}}
-
 
 
 
