@@ -1,0 +1,158 @@
+hull:
+  config:
+    specific:
+      database:
+        host: a.b.com
+        port: 9988
+        name: database-a-b-c
+        username: user-abc
+        password: pass-abc
+  objects:
+    deployment:
+      app-python-direct:
+        pod:
+          containers:
+            main:
+              image: 
+                repository: myrepo/app-python-direct
+                tag: 23.3.2
+      app-java-direct:
+        pod:
+          containers:
+            main:
+              image: 
+                repository: myrepo/app-java-direct
+                tag: 23.3.2
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        pod:
+          containers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              env:
+                DATABASE_HOST:
+                  value: _HT*hull.config.specific.database.host
+                DATABASE_PORT:
+                  value: _HT*hull.config.specific.database.port
+                DATABASE_NAME:
+                  value: _HT*hull.config.specific.database.name
+                DATABASE_USERNAME:
+                  value: _HT*hull.config.specific.database.username
+                DATABASE_PASSWORD:
+                  value: _HT*hull.config.specific.database.password
+                DATABASE_CONNECTIONSTRING:
+                  value: _HT!
+                    {{ printf "%s%s:%s;databaseName=%s;user=%s;password=%s;" 
+                      "jdbc:sqlserver://" 
+                      (index . "$").Values.hull.config.specific.database.host
+                      ((index . "$").Values.hull.config.specific.database.port | toString)
+                      (index . "$").Values.hull.config.specific.database.name
+                      (index . "$").Values.hull.config.specific.database.username
+                      (index . "$").Values.hull.config.specific.database.password
+                    }}
+              livenessProbe:
+                httpGet:
+                  path: /_health
+                  port: http
+                initialDelaySeconds: 60
+                failureThreshold: 20
+                successThreshold: 1
+                periodSeconds: 30
+                timeoutSeconds: 20
+              readinessProbe:
+                httpGet:
+                  path: /_health
+                  port: http
+                initialDelaySeconds: 30
+                successThreshold: 1
+                failureThreshold: 4
+                periodSeconds: 15
+                timeoutSeconds: 20                    
+      single-database-fields:
+        enabled: false
+        pod:
+          containers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              env:
+                DATABASE_HOST:
+                  value: _HT*hull.config.specific.database.host
+                DATABASE_PORT:
+                  value: _HT*hull.config.specific.database.port
+                DATABASE_NAME:
+                  value: _HT*hull.config.specific.database.name
+                DATABASE_USERNAME:
+                  value: _HT*hull.config.specific.database.username
+                DATABASE_PASSWORD:
+                  value: _HT*hull.config.specific.database.password
+            secondary:
+              env:
+                FROM_DEFAULT:
+                  value: target value
+      database-connection-string:
+        enabled: false
+        pod:
+          containers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              env:
+                DATABASE_CONNECTIONSTRING:
+                  value: _HT!
+                    {{ printf "%s%s:%s;databaseName=%s;user=%s;password=%s;" 
+                      "jdbc:sqlserver://" 
+                      (index . "$").Values.hull.config.specific.database.host
+                      ((index . "$").Values.hull.config.specific.database.port | toString)
+                      (index . "$").Values.hull.config.specific.database.name
+                      (index . "$").Values.hull.config.specific.database.username
+                      (index . "$").Values.hull.config.specific.database.password
+                    }}
+      app-python-1:
+        sources:
+        - single-database-fields
+        pod:
+          containers:
+            main:
+              image: 
+                repository: myrepo/app-python-1
+                tag: 23.3.2
+            secondary:
+              image: 
+                repository: myrepo/app-python-sec-1
+                tag: 23.3.2
+      
+      app-python-2:
+        sources:
+        - single-database-fields
+        pod:
+          containers:
+            main:
+              image: 
+                repository: myrepo/app-python-2
+                tag: 23.3.2
+      
+      app-java-1:
+        sources:
+        - database-connection-string
+        pod:
+          containers:
+            main:
+              image: 
+                repository: myrepo/app-java-1
+                tag: 23.3.2
+      
+      app-java-2:
+        sources:
+        - database-connection-string
+        - load-from-other-type[job]
+        pod:
+          containers:
+            main:
+              image: 
+                repository: myrepo/app-java-2
+                tag: 23.3.2
+    
+    job:
+      load-from-other-type:
+        enabled: false
+        pod:
+          containers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              env:
+                LOADED_FROM_JOB:
+                  value: external___loaded

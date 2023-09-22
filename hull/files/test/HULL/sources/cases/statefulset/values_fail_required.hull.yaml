@@ -54,6 +54,41 @@ hull:
         pod:
           containers: {}
 
+      metadata-custom-template-merge:
+        serviceName: metadata-custom-template-merge
+        pod:
+          containers: {}
+        
+      metadata-custom-template-overwrite:
+        serviceName: metadata-custom-template-overwrite
+        pod:
+          containers: {}
+
+      metadata-custom-template-multi-merge:
+        serviceName: metadata-custom-template-multi-merge
+        pod:
+          containers: {}
+        
+      metadata-custom-template-multi-overwrite:
+        serviceName: metadata-custom-template-multi-overwrite
+        pod:
+          containers: {}
+ 
+      metadata-no-template:
+        serviceName: metadata-no-template
+        pod:
+          containers: {}
+
+      metadata-default-template-as-source:
+        serviceName: metadata-default-template-as-source
+        pod:
+          containers: {}
+
+      metadata-default-custom-overwrite:
+        serviceName: metadata-default-custom-overwrite
+        pod:
+          containers: {}         
+      
       metadata-object-info:
         serviceName: metadata-object-info
         pod:

@@ -37,6 +37,48 @@ hull:
           kind: "Deployment"
         maxReplicas: 3
 
+      metadata-custom-template-merge:
+        scaleTargetRef:
+          name: metadata-custom-template-merge
+          kind: "Deployment"
+        maxReplicas: 3
+
+      metadata-custom-template-overwrite:
+        scaleTargetRef:
+          name: metadata-custom-template-overwrite
+          kind: "Deployment"
+        maxReplicas: 3
+
+      metadata-custom-template-multi-merge:
+        scaleTargetRef:
+          name: metadata-custom-template-multi-merge
+          kind: "Deployment"
+        maxReplicas: 3
+
+      metadata-custom-template-multi-overwrite:
+        scaleTargetRef:
+          name: metadata-custom-template-multi-overwrite
+          kind: "Deployment"
+        maxReplicas: 3
+
+      metadata-no-template:
+        scaleTargetRef:
+          name: metadata-no-template
+          kind: "Deployment"
+        maxReplicas: 3
+
+      metadata-default-template-as-source:
+        scaleTargetRef:
+          name: metadata-default-template-as-source
+          kind: "Deployment"
+        maxReplicas: 3
+
+      metadata-default-custom-overwrite:
+        scaleTargetRef:
+          name: metadata-default-custom-overwrite
+          kind: "Deployment"
+        maxReplicas: 3
+
       disabled-transform:
         scaleTargetRef:
           name: metadata-overwrite

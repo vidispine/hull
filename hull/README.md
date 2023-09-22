@@ -178,7 +178,11 @@ As highlighted above, when included in a Helm chart the HULL library chart can t
 
   For more details refer to the documentation on [ConfigMaps and Secrets](./doc/objects_configmaps_secrets.md).
 
-- For more complex scenarios where actual values in the target YAML are subject to configurations in the `values.yaml`, there is **support to dynamically populate values by injecting Go Templating expressions defined in place of the value in the `values.yaml`**. For example, if your concrete container arguments depend on various other settings in `values.yaml` you can inject the conditions into the calculation of the arguments.
+- Extensive defaulting capabilities for instantiating object instances. Whether you want to have all your object instances or groups of instances share certain aspects such as labels or annotations, container environment variables or mounted volumes, HULL provides support to efficiently define default values for object instance fields avoiding unnecessary configuration repetitions.
+
+  For more details refer to the [Chart Design](./doc/chart_design.md) advices.
+
+- For more complex scenarios where actual values in the target YAML are subject to configurations in the `values.yaml`, there is **support to dynamically populate values by injecting Go Templating expressions defined in place of the value in the `values.yaml`**. For example, if your concrete container arguments depend on various other settings in `values.yaml` you can inject the conditions into the calculation of the arguments or simply reference other fields in the `values.yaml`.
 
   For more details refer to the documentation on [Transformations](./doc/transformations.md).
 

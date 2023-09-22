@@ -122,7 +122,7 @@ hull:
         password: local_password
 
     <OBJECT_TYPE>:
-      
+        
       service-account:
         pod:
           containers:
@@ -316,7 +316,6 @@ hull:
               command:
                 - run
               env:
-                
                 ENV_VAR_CONFIGMAP:
                   valueFrom:
                     configMapKeyRef:
