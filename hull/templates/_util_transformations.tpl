@@ -234,7 +234,7 @@
 {{- $key := (index . "KEY") -}}
 {{ $content := (index . "CONTENT") }}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
-{{- $sourcePath := default nil (index . "SOURCE_PATH") -}}
+{{- $sourcePath := default list (index . "SOURCE_PATH") -}}
 {{- $objectType := "" -}}
 {{- $objectInstanceKey := "" -}}
 {{- if (gt (len $sourcePath) 3) -}}

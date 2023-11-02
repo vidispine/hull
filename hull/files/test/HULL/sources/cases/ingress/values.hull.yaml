@@ -217,8 +217,8 @@ hull:
                         number: 80
           test_enabled_transform:
             enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
-            {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
-            >>>"
+              {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+              >>>"
             host: test_enabled_transform.two.com
             http:
               paths:
