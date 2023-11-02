@@ -1,11 +1,7 @@
 # Changelog
 ------------------
-[1.27.5]
+[1.27.6]
 ------------------
-CHANGES:
-- introducing more flexible mechanism to populate default values for object intances. It is possible to opt to load default values from zero to multiple object instances by using new hull.base.v1 property sources. All referenced object instances are merged in the provided order to allow sharing definitions between object instances and object types. The default behavior to merge default values from _HULL_OBJECT_TYPE_DEFAULT_ remains intact.
-- add icon to Chart.yaml
-
 FIXES:
-- added icon to Chart.yaml to fix linter warning
-- fail with speaking error message instead of hard to decode error message when path elements in get transformations are not found
+- fix sources feature not properly working for non-pod based object types
+- fix OBJECT_INSTANCE_KEY handling causes error for calls to hull.util.transformation.tpl originating outside of hull.util.transformation
