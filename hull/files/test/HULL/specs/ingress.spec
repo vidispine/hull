@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "20" objects were rendered
+* Expected number of "26" objects were rendered
 * Validate
 
 ## Metadata
@@ -42,6 +42,11 @@ Test creation of objects and features.
 * Test Object has key "spec§rules§0§http§paths§0§path" with value "/test_enabled"
 * Test Object has key "spec§rules§0§http§paths§1§path" with value "/test_enabled_missing"
 * Test Object has key "spec§rules§0§http§paths§2§path" with value "/test_enabled_transform"
+
+## Test sources feature
+* Lint and Render
+* Set test object to "release-name-hull-test-stream"
+* Test Object has key "metadata§annotations§ingress.kubernetes.io/rewrite-target" with value "/dash"
 
 ___
 

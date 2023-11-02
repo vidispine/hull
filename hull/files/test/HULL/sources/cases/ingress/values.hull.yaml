@@ -217,8 +217,8 @@ hull:
                         number: 80
           test_enabled_transform:
             enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
-            {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
-            >>>"
+              {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
+              >>>"
             host: test_enabled_transform.two.com
             http:
               paths:
@@ -273,5 +273,153 @@ hull:
             secretName: test_enabled_missing
             hosts:
               - "host.two.com"
+      
+      vidistream:
+        enabled: false
+        annotations:
+          ingress.kubernetes.io/rewrite-target: /dash
+        rules:
+          _HULL_OBJECT_TYPE_DEFAULT_:
+            http:
+              paths:
+                dash:
+                  backend:
+                    service:
+                      port: 
+                        number: 4531
 
+      metrics:
+        enabled: false
+        annotations:
+          ingress.kubernetes.io/rewrite-target: /streaming/metrics
+        rules:
+          _HULL_OBJECT_TYPE_DEFAULT_:
+            http:
+              paths:
+                metrics:
+                  backend:
+                    service:
+                      port: 
+                        number: 9100
+
+      stream:
+        sources:
+        - vidistream
+        #enabled: _HT?gt (index (index . "$").Values.hull.config.specific.components.vidistream.custom.instances (index . "OBJECT_INSTANCE_KEY")) 0)
+        annotations:
+          ingress.kubernetes.io/config-backend: |
+            no option http-keep-alive
+            hash-type consistent
+            hash-balance-factor 200
+            http-response add-header X-App-Server %b/%s        
+        rules:
+          stream:
+            host: stream
+            http:
+              paths:
+                dash:
+                  path: stream
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: 'stream'
+
+      streammetrics:
+        #enabled: _HT?gt (index (index . "$").Values.hull.config.specific.components.vidistream.custom.instances ((index . "OBJECT_INSTANCE_KEY") | trimSuffix "metrics")) 0)
+        sources:
+        - stream
+        - metrics
+        rules:
+          stream:
+            http:
+              paths:
+                metrics:
+                  path: stream
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: 'stream'
+
+      ### Loadbalancer configuration for Rendering, stick to fixed servers
+      render:
+        #enabled: _HT?gt (index (index . "$").Values.hull.config.specific.components.vidistream.custom.instances (index . "OBJECT_INSTANCE_KEY")) 0)
+        annotations:
+          ingress.kubernetes.io/config-backend: |
+            no option http-keep-alive
+            no option redispatch
+            hash-type consistent
+            hash-balance-factor 0
+            http-response add-header X-App-Server %b/%s
+        rules:
+          render:
+            host: render
+            http:
+              paths:
+                dash:
+                  path: render
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: 'render'
+
+      rendermetrics:
+        #enabled: _HT?gt (index (index . "$").Values.hull.config.specific.components.vidistream.custom.instances ((index . "OBJECT_INSTANCE_KEY") | trimSuffix "metrics")) 0)
+        annotations:
+          ingress.kubernetes.io/config-backend: |
+            no option http-keep-alive
+            hash-type consistent
+            hash-balance-factor 200
+            http-response add-header X-App-Server %b/%s
+        rules:
+          render:
+            host: render
+            http:
+              paths:
+                metrics:
+                  path: render
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: 'render'
+
+      trickplay:
+        #enabled: _HT?gt (index (index . "$").Values.hull.config.specific.components.vidistream.custom.instances (index . "OBJECT_INSTANCE_KEY")) 0)
+        annotations:
+          ingress.kubernetes.io/config-backend: |
+            no option http-keep-alive
+            no option redispatch
+            hash-type consistent
+            hash-balance-factor 0
+            http-response add-header X-App-Server %b/%s
+        rules:
+          trickplay:
+            host: trickplay
+            http:
+              paths:
+                dash:
+                  path: trickplay
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: 'trickplay'
+
+      trickplaymetrics:
+        #enabled: _HT?gt (index (index . "$").Values.hull.config.specific.components.vidistream.custom.instances ((index . "OBJECT_INSTANCE_KEY") | trimSuffix "metrics")) 0)
+        annotations:
+          ingress.kubernetes.io/config-backend: |
+            no option http-keep-alive
+            hash-type consistent
+            hash-balance-factor 200
+            http-response add-header X-App-Server %b/%s
+        rules:
+          trickplay:
+            host: "trickplay"
+            http:
+              paths:
+                metrics:
+                  path: trickplay
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: 'trickplay'
 ###################################################
