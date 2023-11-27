@@ -8,7 +8,7 @@
 |
 */ -}}
 {{- define "hull.object.pod.template" -}}
-template:     
+template:
 {{ include "hull.metadata" (merge (dict "NO_NAME" true "MERGE_TEMPLATE_METADATA" true) . ) | indent 2 }}
 {{ include "hull.object.pod" . | indent 2 }}
 {{ end }}

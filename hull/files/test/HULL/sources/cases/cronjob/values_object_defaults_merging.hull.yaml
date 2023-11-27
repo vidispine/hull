@@ -1,0 +1,356 @@
+hull:
+  objects:
+    cronjob:
+
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        schedule: '* * * * *'
+        suspend: false
+        job:
+          parallelism: 3
+          pod:
+            restartPolicy: Never
+            containers:
+              _HULL_OBJECT_TYPE_DEFAULT_:
+                env: 
+                  'ELASTICSEARCH_USERNAME':
+                    valueFrom:
+                      secretKeyRef:
+                        name: auth
+                        key: AUTH_BASIC_INDEX_USERNAME
+                  'ELASTICSEARCH_PASSWORD':
+                    valueFrom:
+                      secretKeyRef:
+                        name: auth
+                        key: AUTH_BASIC_INDEX_PASSWORD
+                  'ELASTICSEARCH_URI':
+                    value: "https://es.uri.com"
+                resources:
+                  limits:
+                    cpu: 200m
+                    memory: 256Mi
+                  requests:
+                    cpu: 400m
+                    memory: 456Mi
+                volumeMounts:
+                  configmap:
+                    mountPath: /scripts
+                    name: configmap
+                    hashsumAnnotation: true
+                  etcssl:
+                    name: etcssl
+                    mountPath: /etc/ssl/certs
+
+      deletion-monitor-data-cleanup:
+        concurrencyPolicy: Forbid
+        schedule: "* * 2 *2 *"
+        job:
+          backoffLimit: 2
+          pod:
+            containers:
+              index-cleanup:
+                image:
+                  repository: vpms/cmdlinetools
+                  tag: "2.0"
+                command: [ "sh", "/scripts/cleanup-index.sh" ] 
+                env: 
+                  DAYS_TO_KEEP:
+                    value: "99"
+              metrics-cleanup:
+                image:
+                  repository: vpms/dbtools
+                  tag: "33"
+                command: [ "sh", "/scripts/cleanup-metrics.sh" ] 
+                env: 
+                  DAYS_TO_KEEP:
+                    value: "44"
+                  DBHOST:
+                    value: "dbhost.com"
+                  DBNAME:
+                    valueFrom:
+                      secretKeyRef:
+                        name: deletion-monitor-data-cleanup
+                        key: AUTH_BASIC_DATABASE_NAME
+                  DBUSER:
+                    valueFrom:
+                      secretKeyRef:
+                        name: deletion-monitor-data-cleanup
+                        key: AUTH_BASIC_DATABASE_USERNAME
+                  DBPASSWORD:
+                    valueFrom:
+                      secretKeyRef:
+                        name: deletion-monitor-data-cleanup
+                        key: AUTH_BASIC_DATABASE_PASSWORD
+                  DBPORT:
+                    value: "1453"
+                  DBTYPE:
+                    value: "mssql"
+                  DBUSERPOSTFIX:
+                    valueFrom:
+                      secretKeyRef:
+                        name: auth
+                        key: AUTH_BASIC_DATABASE_USERNAMESPOSTFIX
+                        optional: true
+                volumeMounts:
+                  configmap:
+                    name: other_configmap
+                    mountPath: /other/configmap
+            volumes: {}
+
+      _TEST_SOURCE_:
+        enabled: false
+        concurrencyPolicy: TestOverwrite
+        job:
+          backoffLimit: 20
+          pod:
+            restartPolicy: NeverEver
+            containers:
+              _HULL_OBJECT_TYPE_DEFAULT_:
+                env: 
+                  'ELASTICSEARCH_URI':
+                    value: "https://es.uri.com/changed"
+                  'ELASTICSEARCH_ZZZ':
+                    value: "ZZZ"
+                resources:
+                  limits:
+                    cpu: 9m
+                    memory: 9Mi
+  
+      sources-test:
+        sources:
+        - _HULL_OBJECT_TYPE_DEFAULT_
+        - _TEST_SOURCE_
+        schedule: "* * 2 3 *"
+        job:
+          pod:
+            containers:
+              test-source:
+                image:
+                  repository: vpms/cmdlinetools
+                  tag: "2.0"
+                command: [ "sh", "/scripts/cleanup-index.sh" ] 
+                env: 
+                  'ELASTICSEARCH_PASSWORD':
+                    valueFrom:
+                      secretKeyRef:
+                        name: auth
+                        key: AUTH_BASIC_INDEX_PASSWORD_NEW
+                  DAYS_TO_KEEP:
+                    value: "999"
+                resources:
+                  requests:
+                    cpu: 99m
+                    memory: 99Mi
+            volumes: {}
+
+      disabled:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+        
+      static-name:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+        
+        
+      metadata-merge:
+        schedule: "a"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+        
+        
+      metadata-overwrite:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-custom-template-merge:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-custom-template-overwrite:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-custom-template-multi-merge:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-custom-template-multi-overwrite:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-no-template:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-default-template-as-source:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-default-custom-overwrite:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+                  
+      disabled-transform:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+        
+      enabled-transform:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+        
+      disabled-transform-dict:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+        
+      enabled-transform-dict:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      disabled-transform-tpl-if:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      
+      enabled-transform-tpl-if:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-name-override:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+          
+      metadata-name-override-static:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
+      metadata-object-info:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+      
+      metadata-stringify:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
