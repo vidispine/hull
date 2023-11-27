@@ -23,7 +23,7 @@
 {{ template "hull.metadata.header" . }}
 spec:
 {{ $job := deepCopy $spec.job }}
-{{ $merger := merge (dict "SPEC" $job "NO_HEADER" true "NO_INCLUDE_K8S" true "NO_SELECTOR" true "DEFAULT_POD_BASE_PATH" (dig "job" "pod" dict (default dict (index . "DEFAULT_COMPONENT"))) ) . }}
+{{ $merger := merge (dict "SPEC" $job "NO_HEADER" true "NO_INCLUDE_K8S" true "NO_SELECTOR" true "DEFAULT_POD_BASE_PATH" (dig "job" dict (default dict (index . "DEFAULT_COMPONENT"))) ) . }}
 {{ include "hull.object.job.template" ($merger) | indent 2 }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "job" "templateLabels" "templateAnnotations")) | indent 2 }}
 {{- end -}}
@@ -40,6 +40,9 @@ spec:
 |
 */ -}}
 {{- define "hull.object.job.template" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $spec := default nil (index . "SPEC") -}}
 jobTemplate:
+{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.job "HULL_OBJECT_KEYS" (list "pod")) | indent 2 }}
 {{ include "hull.object.base.pod" . | indent 2 }}
 {{ end }}
