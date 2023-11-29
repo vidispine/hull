@@ -278,9 +278,9 @@ objects:
       enabled: true
       annotations: {}
       labels: {}
+      job:
       templateAnnotations: {}
       templateLabels: {}
-      job:
         pod:
           initContainers: 
             _HULL_OBJECT_TYPE_DEFAULT_:
