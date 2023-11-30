@@ -51,8 +51,8 @@ Test creation of objects and features.
 * Test Object has key "spec§concurrencyPolicy" with value "Forbid"
 * Test Object has key "spec§suspend" set to false
 
-* Test Object has key "spec§jobTemplate§parallelism" with integer value "3"
-* Test Object has key "spec§jobTemplate§backoffLimit" with integer value "2"
+* Test Object has key "spec§jobTemplate§spec§parallelism" with integer value "3"
+* Test Object has key "spec§jobTemplate§spec§backoffLimit" with integer value "2"
 
 * Test Object has key "spec§jobTemplate§spec§template§spec§restartPolicy" with value "Never"
 
@@ -120,7 +120,7 @@ Test creation of objects and features.
 
 * Test Object has key "spec§schedule" with value "* * 2 3 *"
 * Test Object has key "spec§concurrencyPolicy" with value "TestOverwrite"
-* Test Object has key "spec§jobTemplate§backoffLimit" with integer value "20"
+* Test Object has key "spec§jobTemplate§spec§backoffLimit" with integer value "20"
 * Test Object has key "spec§jobTemplate§spec§template§spec§restartPolicy" with value "NeverEver"
 * Test Object has key "spec§jobTemplate§spec§template§spec§containers§0§env§0§name" with value "DAYS_TO_KEEP"
 * Test Object has key "spec§jobTemplate§spec§template§spec§containers§0§env§0§value" with value "999"
