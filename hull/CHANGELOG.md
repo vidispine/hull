@@ -1,6 +1,7 @@
 # Changelog
 ------------------
-[1.28.6]
+[1.29.0]
 ------------------
-FIXES:
-- fix still broken CronJob rendering which is now in line with the rendering style of other object types 
+CHANGES:
+- initial K8S 1.29 release
+- deprecating 1.26 release

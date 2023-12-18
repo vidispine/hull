@@ -1,6 +1,6 @@
 apiVersion: v2
 name: hull
-version: "1.28.6"
+version: "1.29.0"
 description: HULL - Helm Uniform Layer Library
 type: library
 keywords:
@@ -12,4 +12,6 @@ dependencies: []
 maintainers:
 - name: georg weber
   email: georgmartin.weber@bertelsmann.de
-appVersion: "1.28"
+- name: michael baum
+  email: michael.baum@bertelsmann.de
+appVersion: "1.29"
