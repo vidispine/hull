@@ -1,10 +1,10 @@
 {
-  "description": "PriorityLevelConfigurationStatus represents the current state of a \"request-priority\".",
+  "description": "FlowSchemaStatus represents the current state of a FlowSchema.",
   "properties": {
     "conditions": {
-      "description": "`conditions` is the current state of \"request-priority\".",
+      "description": "`conditions` is a list of the current states of FlowSchema.",
       "items": {
-        "description": "PriorityLevelConfigurationCondition defines the condition of priority level.",
+        "description": "FlowSchemaCondition describes conditions for a FlowSchema.",
         "properties": {
           "lastTransitionTime": {
             "description": "Time is a wrapper around time.Time which supports correct marshaling to YAML and JSON.  Wrappers are provided for many of the factory methods that the time package offers.",
@@ -56,7 +56,9 @@
       "x-kubernetes-list-map-keys": [
         "type"
       ],
-      "x-kubernetes-list-type": "map"
+      "x-kubernetes-list-type": "map",
+      "x-kubernetes-patch-merge-key": "type",
+      "x-kubernetes-patch-strategy": "merge"
     }
   },
   "type": "object",

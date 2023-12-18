@@ -1,11 +1,11 @@
 # Basic chart description and version
 apiVersion: v2
-appVersion: 1.28.0
+appVersion: 1.29.0
 description: hull-test
 name: hull-test
 icon: https://github.com/vidispine/hull/blob/gh-pages/hull.png
-version: 1.28.0
+version: 1.29.0
 dependencies:
   - name: hull
-    version: "1.28.0"
+    version: "1.29.0"
     repository: "https://vidispine.github.io/hull"

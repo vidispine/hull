@@ -253,7 +253,7 @@
     {
       "group": "flowcontrol.apiserver.k8s.io",
       "kind": "DeleteOptions",
-      "version": "v1alpha1"
+      "version": "v1"
     },
     {
       "group": "flowcontrol.apiserver.k8s.io",

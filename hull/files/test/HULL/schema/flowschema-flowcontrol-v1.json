@@ -1,5 +1,5 @@
 {
-  "description": "ClusterCIDR represents a single configuration for per-Node Pod CIDR allocations when the MultiCIDRRangeAllocator is enabled (see the config for kube-controller-manager).  A cluster may have any number of ClusterCIDR resources, all of which will be considered when allocating a CIDR for a Node.  A ClusterCIDR is eligible to be used for a given Node when the node selector matches the node in question and has free CIDRs to allocate.  In case of multiple matching ClusterCIDR resources, the allocator will attempt to break ties using internal heuristics, but any ClusterCIDR whose node selector matches the Node may be used.",
+  "description": "FlowSchema defines the schema of a group of flows. Note that a flow is made up of a set of inbound API requests with similar attributes and is identified by a pair of strings: the name of the FlowSchema and a \"flow distinguisher\".",
   "properties": {
     "apiVersion": {
       "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -8,7 +8,7 @@
         "null"
       ],
       "enum": [
-        "networking.k8s.io/v1alpha1"
+        "flowcontrol.apiserver.k8s.io/v1"
       ]
     },
     "kind": {
@@ -18,7 +18,7 @@
         "null"
       ],
       "enum": [
-        "ClusterCIDR"
+        "FlowSchema"
       ]
     },
     "metadata": {
@@ -269,144 +269,350 @@
       "additionalProperties": false
     },
     "spec": {
-      "description": "ClusterCIDRSpec defines the desired state of ClusterCIDR.",
+      "description": "FlowSchemaSpec describes how the FlowSchema's specification looks like.",
       "properties": {
-        "ipv4": {
-          "description": "ipv4 defines an IPv4 IP block in CIDR notation(e.g. \"10.0.0.0/8\"). At least one of ipv4 and ipv6 must be specified. This field is immutable.",
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "ipv6": {
-          "description": "ipv6 defines an IPv6 IP block in CIDR notation(e.g. \"2001:db8::/64\"). At least one of ipv4 and ipv6 must be specified. This field is immutable.",
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "nodeSelector": {
-          "description": "A node selector represents the union of the results of one or more label queries over a set of nodes; that is, it represents the OR of the selectors represented by the node selector terms.",
+        "distinguisherMethod": {
+          "description": "FlowDistinguisherMethod specifies the method of a flow distinguisher.",
           "properties": {
-            "nodeSelectorTerms": {
-              "description": "Required. A list of node selector terms. The terms are ORed.",
-              "items": {
-                "description": "A null or empty node selector term matches no objects. The requirements of them are ANDed. The TopologySelectorTerm type implements a subset of the NodeSelectorTerm.",
-                "properties": {
-                  "matchExpressions": {
-                    "description": "A list of node selector requirements by node's labels.",
-                    "items": {
-                      "description": "A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values.",
-                      "properties": {
-                        "key": {
-                          "description": "The label key that the selector applies to.",
-                          "type": "string"
-                        },
-                        "operator": {
-                          "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.",
-                          "type": "string"
-                        },
-                        "values": {
-                          "description": "An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch.",
-                          "items": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
-                          },
-                          "type": [
-                            "array",
-                            "null"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "key",
-                        "operator"
-                      ],
-                      "type": [
-                        "object",
-                        "null"
-                      ],
-                      "additionalProperties": false
-                    },
-                    "type": [
-                      "array",
-                      "null"
-                    ]
-                  },
-                  "matchFields": {
-                    "description": "A list of node selector requirements by node's fields.",
-                    "items": {
-                      "description": "A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values.",
-                      "properties": {
-                        "key": {
-                          "description": "The label key that the selector applies to.",
-                          "type": "string"
-                        },
-                        "operator": {
-                          "description": "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.",
-                          "type": "string"
-                        },
-                        "values": {
-                          "description": "An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch.",
-                          "items": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
-                          },
-                          "type": [
-                            "array",
-                            "null"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "key",
-                        "operator"
-                      ],
-                      "type": [
-                        "object",
-                        "null"
-                      ],
-                      "additionalProperties": false
-                    },
-                    "type": [
-                      "array",
-                      "null"
-                    ]
-                  }
-                },
-                "type": [
-                  "object",
-                  "null"
-                ],
-                "x-kubernetes-map-type": "atomic",
-                "additionalProperties": false
-              },
-              "type": "array"
+            "type": {
+              "description": "`type` is the type of flow distinguisher method The supported types are \"ByUser\" and \"ByNamespace\". Required.",
+              "type": "string"
             }
           },
           "required": [
-            "nodeSelectorTerms"
+            "type"
           ],
           "type": [
             "object",
             "null"
           ],
-          "x-kubernetes-map-type": "atomic",
           "additionalProperties": false
         },
-        "perNodeHostBits": {
-          "description": "perNodeHostBits defines the number of host bits to be configured per node. A subnet mask determines how much of the address is used for network bits and host bits. For example an IPv4 address of 192.168.0.0/24, splits the address into 24 bits for the network portion and 8 bits for the host portion. To allocate 256 IPs, set this field to 8 (a /24 mask for IPv4 or a /120 for IPv6). Minimum value is 4 (16 IPs). This field is immutable.",
+        "matchingPrecedence": {
+          "description": "`matchingPrecedence` is used to choose among the FlowSchemas that match a given request. The chosen FlowSchema is among those with the numerically lowest (which we take to be logically highest) MatchingPrecedence.  Each MatchingPrecedence value must be ranged in [1,10000]. Note that if the precedence is not specified, it will be set to 1000 as default.",
           "format": "int32",
-          "type": "integer"
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "priorityLevelConfiguration": {
+          "description": "PriorityLevelConfigurationReference contains information that points to the \"request-priority\" being used.",
+          "properties": {
+            "name": {
+              "description": "`name` is the name of the priority level configuration being referenced Required.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object",
+          "additionalProperties": false
+        },
+        "rules": {
+          "description": "`rules` describes which requests will match this flow schema. This FlowSchema matches a request if and only if at least one member of rules matches the request. if it is an empty slice, there will be no requests matching the FlowSchema.",
+          "items": {
+            "description": "PolicyRulesWithSubjects prescribes a test that applies to a request to an apiserver. The test considers the subject making the request, the verb being requested, and the resource to be acted upon. This PolicyRulesWithSubjects matches a request if and only if both (a) at least one member of subjects matches the request and (b) at least one member of resourceRules or nonResourceRules matches the request.",
+            "properties": {
+              "nonResourceRules": {
+                "description": "`nonResourceRules` is a list of NonResourcePolicyRules that identify matching requests according to their verb and the target non-resource URL.",
+                "items": {
+                  "description": "NonResourcePolicyRule is a predicate that matches non-resource requests according to their verb and the target non-resource URL. A NonResourcePolicyRule matches a request if and only if both (a) at least one member of verbs matches the request and (b) at least one member of nonResourceURLs matches the request.",
+                  "properties": {
+                    "nonResourceURLs": {
+                      "description": "`nonResourceURLs` is a set of url prefixes that a user should have access to and may not be empty. For example:\n  - \"/healthz\" is legal\n  - \"/hea*\" is illegal\n  - \"/hea\" is legal but matches nothing\n  - \"/hea/*\" also matches nothing\n  - \"/healthz/*\" matches all per-component health checks.\n\"*\" matches all non-resource urls. if it is present, it must be the only entry. Required.",
+                      "items": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "type": "array",
+                      "x-kubernetes-list-type": "set"
+                    },
+                    "verbs": {
+                      "description": "`verbs` is a list of matching verbs and may not be empty. \"*\" matches all verbs. If it is present, it must be the only entry. Required.",
+                      "items": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "type": "array",
+                      "x-kubernetes-list-type": "set"
+                    }
+                  },
+                  "required": [
+                    "verbs",
+                    "nonResourceURLs"
+                  ],
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "additionalProperties": false
+                },
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "x-kubernetes-list-type": "atomic"
+              },
+              "resourceRules": {
+                "description": "`resourceRules` is a slice of ResourcePolicyRules that identify matching requests according to their verb and the target resource. At least one of `resourceRules` and `nonResourceRules` has to be non-empty.",
+                "items": {
+                  "description": "ResourcePolicyRule is a predicate that matches some resource requests, testing the request's verb and the target resource. A ResourcePolicyRule matches a resource request if and only if: (a) at least one member of verbs matches the request, (b) at least one member of apiGroups matches the request, (c) at least one member of resources matches the request, and (d) either (d1) the request does not specify a namespace (i.e., `Namespace==\"\"`) and clusterScope is true or (d2) the request specifies a namespace and least one member of namespaces matches the request's namespace.",
+                  "properties": {
+                    "apiGroups": {
+                      "description": "`apiGroups` is a list of matching API groups and may not be empty. \"*\" matches all API groups and, if present, must be the only entry. Required.",
+                      "items": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "type": "array",
+                      "x-kubernetes-list-type": "set"
+                    },
+                    "clusterScope": {
+                      "description": "`clusterScope` indicates whether to match requests that do not specify a namespace (which happens either because the resource is not namespaced or the request targets all namespaces). If this field is omitted or false then the `namespaces` field must contain a non-empty list.",
+                      "type": [
+                        "boolean",
+                        "null"
+                      ]
+                    },
+                    "namespaces": {
+                      "description": "`namespaces` is a list of target namespaces that restricts matches.  A request that specifies a target namespace matches only if either (a) this list contains that target namespace or (b) this list contains \"*\".  Note that \"*\" matches any specified namespace but does not match a request that _does not specify_ a namespace (see the `clusterScope` field for that). This list may be empty, but only if `clusterScope` is true.",
+                      "items": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "type": [
+                        "array",
+                        "null"
+                      ],
+                      "x-kubernetes-list-type": "set"
+                    },
+                    "resources": {
+                      "description": "`resources` is a list of matching resources (i.e., lowercase and plural) with, if desired, subresource.  For example, [ \"services\", \"nodes/status\" ].  This list may not be empty. \"*\" matches all resources and, if present, must be the only entry. Required.",
+                      "items": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "type": "array",
+                      "x-kubernetes-list-type": "set"
+                    },
+                    "verbs": {
+                      "description": "`verbs` is a list of matching verbs and may not be empty. \"*\" matches all verbs and, if present, must be the only entry. Required.",
+                      "items": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "type": "array",
+                      "x-kubernetes-list-type": "set"
+                    }
+                  },
+                  "required": [
+                    "verbs",
+                    "apiGroups",
+                    "resources"
+                  ],
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "additionalProperties": false
+                },
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "x-kubernetes-list-type": "atomic"
+              },
+              "subjects": {
+                "description": "subjects is the list of normal user, serviceaccount, or group that this rule cares about. There must be at least one member in this slice. A slice that includes both the system:authenticated and system:unauthenticated user groups matches every request. Required.",
+                "items": {
+                  "description": "Subject matches the originator of a request, as identified by the request authentication system. There are three ways of matching an originator; by user, group, or service account.",
+                  "properties": {
+                    "group": {
+                      "description": "GroupSubject holds detailed information for group-kind subject.",
+                      "properties": {
+                        "name": {
+                          "description": "name is the user group that matches, or \"*\" to match all user groups. See https://github.com/kubernetes/apiserver/blob/master/pkg/authentication/user/user.go for some well-known group names. Required.",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name"
+                      ],
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "kind": {
+                      "description": "`kind` indicates which one of the other fields is non-empty. Required",
+                      "type": "string"
+                    },
+                    "serviceAccount": {
+                      "description": "ServiceAccountSubject holds detailed information for service-account-kind subject.",
+                      "properties": {
+                        "name": {
+                          "description": "`name` is the name of matching ServiceAccount objects, or \"*\" to match regardless of name. Required.",
+                          "type": "string"
+                        },
+                        "namespace": {
+                          "description": "`namespace` is the namespace of matching ServiceAccount objects. Required.",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "namespace",
+                        "name"
+                      ],
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "user": {
+                      "description": "UserSubject holds detailed information for user-kind subject.",
+                      "properties": {
+                        "name": {
+                          "description": "`name` is the username that matches, or \"*\" to match all usernames. Required.",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name"
+                      ],
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "kind"
+                  ],
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "x-kubernetes-unions": [
+                    {
+                      "discriminator": "kind",
+                      "fields-to-discriminateBy": {
+                        "group": "Group",
+                        "serviceAccount": "ServiceAccount",
+                        "user": "User"
+                      }
+                    }
+                  ],
+                  "additionalProperties": false
+                },
+                "type": "array",
+                "x-kubernetes-list-type": "atomic"
+              }
+            },
+            "required": [
+              "subjects"
+            ],
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false
+          },
+          "type": [
+            "array",
+            "null"
+          ],
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "required": [
-        "perNodeHostBits"
+        "priorityLevelConfiguration"
       ],
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false
+    },
+    "status": {
+      "description": "FlowSchemaStatus represents the current state of a FlowSchema.",
+      "properties": {
+        "conditions": {
+          "description": "`conditions` is a list of the current states of FlowSchema.",
+          "items": {
+            "description": "FlowSchemaCondition describes conditions for a FlowSchema.",
+            "properties": {
+              "lastTransitionTime": {
+                "description": "Time is a wrapper around time.Time which supports correct marshaling to YAML and JSON.  Wrappers are provided for many of the factory methods that the time package offers.",
+                "format": "date-time",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "message": {
+                "description": "`message` is a human-readable message indicating details about last transition.",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "reason": {
+                "description": "`reason` is a unique, one-word, CamelCase reason for the condition's last transition.",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "status": {
+                "description": "`status` is the status of the condition. Can be True, False, Unknown. Required.",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "type": {
+                "description": "`type` is the type of the condition. Required.",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false
+          },
+          "type": [
+            "array",
+            "null"
+          ],
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map",
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        }
+      },
       "type": [
         "object",
         "null"
@@ -417,9 +623,9 @@
   "type": "object",
   "x-kubernetes-group-version-kind": [
     {
-      "group": "networking.k8s.io",
-      "kind": "ClusterCIDR",
-      "version": "v1alpha1"
+      "group": "flowcontrol.apiserver.k8s.io",
+      "kind": "FlowSchema",
+      "version": "v1"
     }
   ],
   "additionalProperties": false,
