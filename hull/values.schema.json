@@ -31441,7 +31441,9 @@
       "title": "Hull",
       "type": "object",
       "description": "Root element for all properties of the HULL library.",
-      "required": [],
+      "required": [
+        "hull"
+      ],
       "properties": {
         "hull": {
           "$ref": "#/definitions/root"
