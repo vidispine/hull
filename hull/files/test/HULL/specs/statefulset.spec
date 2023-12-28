@@ -16,9 +16,6 @@ Test creation of objects and features.
 * Lint and Render
 * Check pod functionality
 
-## Violate schema
-* Fail to render the templates for values file "values_fail_required.hull.yaml" to test execution folder because error contains "objects.statefulset.failing: serviceName is required"
-
 ___
 
 * Clean the test execution folder
