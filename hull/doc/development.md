@@ -210,7 +210,12 @@ General hints for doing this when starting comparing top to bottom:
     --> 
     "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "boolean" } ]
     ```
-  
+- the `required` properties need to be removed to improve defaulting capabilities. When you have `required` properties you would need to set them on each object instance's fields which defeats the purpose of efficient defaulting via `sources` or `_HULL_OBJECT_TYPE_DEFAULT_`. To remove all required properties the following regex search and replacement can be used. Note that the below syntax is guarenteed to be working with VSCode, it may need to be adapted when using other editors for the regex replacing.
+  - ```
+    ^(\s+)"required":\s\[(.|\S|\r|\n)*?\]
+    -->
+    $1"required": []
+    ```  
   This should eliminate more than 80% of the differences between current `values.schema.json` and the next one you compare with. The remaining differences are typically the following:
   - description changes
   - added `x-kubernetes` attributes on the Kubernetes side
@@ -247,11 +252,10 @@ Set the versions in `Chart.yaml`:
 
 - `version: 1.x.0` where x is the Kubernetes major version
 - `appVersion: 1.x.y` where x is the Kubernetes major version and y the patch version of the schema
-- `kubeVersion: ">= 1.x.0"` where x is the Kubernetes major version
 
-### Adapt `hull.yaml`
+### Adapt `templates\_objects.tpl`
 
-In case that API versions of objects have been updated with a new Kubernetes release it is necessary to update the respective `API_VERSION`s in the `hull.yaml` to reflect the update and keep up to date with the created objects.
+In case that API versions of objects have been updated with a new Kubernetes release it is necessary to update the respective `API_VERSION`s in the `_objects.tpl` to reflect the update and keep up to date with the created objects.
 
 For example, when `cronjob` migrated from `v1beta1` to `v1` with Kubernetes 1.21 the line:
 
@@ -270,7 +274,6 @@ Set the versions in `Chart.yaml` of the test chart at `hull/files/test/HULL/sour
 
 - `version: 1.x.0` where x is the Kubernetes major version
 - `appVersion: 1.x.y` where x is the Kubernetes major version and y the patch version of the schema
-- `kubeVersion: ">= 1.x.0"` where x is the Kubernetes major version
 - ```yaml
   dependencies:
   - name: hull
@@ -304,6 +307,9 @@ All tests need to run successfully.
 ### Update documentation
 
 Typically it should be enough to replace `/generated/kubernetes-api/v1.x` with `/generated/kubernetes-api/v1.y` where x is the preceding Kubernetes version and y the newly created release version. But also check other places where `1.y` is used if they need updating.
+### Update CHANGELOG.md and HISTORY.md
+Update the changelog with the information what was changed within the update.
+The changelog has just the most recent information, copy this entry over in to the history.
 
 ## Creating a new minor version
 

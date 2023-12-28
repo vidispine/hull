@@ -274,8 +274,49 @@
 * Test Object has key "spec§template§spec§containers§0§env§11§value" with value "true"
 * Test Object has key "spec§template§spec§containers§0§env§12§name" with value "ENV_VAR_VALUE_REFERENCE_FLOAT"
 * Test Object has key "spec§template§spec§containers§0§env§12§value" with value "9.8642"
-* Test Object has key "spec§template§spec§containers§0§env§13§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER"
-* Test Object has key "spec§template§spec§containers§0§env§13§value" with value "12345"
+* Test Object has key "spec§template§spec§containers§0§env§13§name" with value "ENV_VAR_VALUE_REFERENCE_GIT_COMMIT"
+* Test Object has key "spec§template§spec§containers§0§env§13§value" with value "1.1724e+32"
+* Test Object has key "spec§template§spec§containers§0§env§14§name" with value "ENV_VAR_VALUE_REFERENCE_GIT_COMMIT_IN_STRING"
+* Test Object has key "spec§template§spec§containers§0§env§14§value" with value "1.1724e+32"
+* Test Object has key "spec§template§spec§containers§0§env§15§name" with value "ENV_VAR_VALUE_REFERENCE_GIT_COMMIT_IN_STRING_JSON_HACK"
+* Test Object has key "spec§template§spec§containers§0§env§15§value" with value "11724e28"
+* Test Object has key "spec§template§spec§containers§0§env§16§name" with value "ENV_VAR_VALUE_REFERENCE_GIT_COMMIT_JSON_HACK"
+* Test Object has key "spec§template§spec§containers§0§env§16§value" with value "1.1724e+32"
+* Test Object has key "spec§template§spec§containers§0§env§17§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER"
+* Test Object has key "spec§template§spec§containers§0§env§17§value" with value "12345"
+* Test Object has key "spec§template§spec§containers§0§env§18§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_ALMOST_SEVEN_DIGITS"
+* Test Object has key "spec§template§spec§containers§0§env§18§value" with value "999999"
+* Test Object has key "spec§template§spec§containers§0§env§19§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_ALMOST_SEVEN_DIGITS_IN_STRING"
+* Test Object has key "spec§template§spec§containers§0§env§19§value" with value "999999"
+* Test Object has key "spec§template§spec§containers§0§env§20§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_ALMOST_SEVEN_DIGITS_IN_STRING_JSON_HACK"
+* Test Object has key "spec§template§spec§containers§0§env§20§value" with value "999999"
+* Test Object has key "spec§template§spec§containers§0§env§21§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_JUST_SEVEN_DIGITS"
+* Test Object has key "spec§template§spec§containers§0§env§21§value" with value "1e+06"
+* Test Object has key "spec§template§spec§containers§0§env§22§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_JUST_SEVEN_DIGITS_IN_STRING"
+* Test Object has key "spec§template§spec§containers§0§env§22§value" with value "1e+06"
+* Test Object has key "spec§template§spec§containers§0§env§23§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_JUST_SEVEN_DIGITS_IN_STRING_JSON_HACK"
+* Test Object has key "spec§template§spec§containers§0§env§23§value" with value "1000000"
+* Test Object has key "spec§template§spec§containers§0§env§24§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_JUST_SEVEN_DIGITS_TO_INT"
+* Test Object has key "spec§template§spec§containers§0§env§24§value" with value "1e+06"
+* Test Object has key "spec§template§spec§containers§0§env§25§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_JUST_SEVEN_DIGITS_TO_INT_QUOTE"
+* Test Object has key "spec§template§spec§containers§0§env§25§value" with value "1000000"
+* Test Object has key "spec§template§spec§containers§0§env§26§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_SEVEN_DIGITS"
+* Test Object has key "spec§template§spec§containers§0§env§26§value" with value "1.234567e+06"
+* Test Object has key "spec§template§spec§containers§0§env§27§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_SEVEN_DIGITS_IN_STRING"
+* Test Object has key "spec§template§spec§containers§0§env§27§value" with value "1.234567e+06"
+* Test Object has key "spec§template§spec§containers§0§env§28§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_SEVEN_DIGITS_IN_STRING_JSON_HACK"
+* Test Object has key "spec§template§spec§containers§0§env§28§value" with value "1234567"
+* Test Object has key "spec§template§spec§containers§0§env§29§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_SEVEN_DIGITS_TO_INT"
+* Test Object has key "spec§template§spec§containers§0§env§29§value" with value "1.234567e+06"
+* Test Object has key "spec§template§spec§containers§0§env§30§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_SEVEN_DIGITS_TO_INT_QUOTE"
+* Test Object has key "spec§template§spec§containers§0§env§30§value" with value "1234567"
+* Test Object has key "spec§template§spec§containers§0§env§31§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_SIX_DIGITS"
+* Test Object has key "spec§template§spec§containers§0§env§31§value" with value "123456"
+* Test Object has key "spec§template§spec§containers§0§env§32§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_SIX_DIGITS_IN_STRING"
+* Test Object has key "spec§template§spec§containers§0§env§32§value" with value "123456"
+* Test Object has key "spec§template§spec§containers§0§env§33§name" with value "ENV_VAR_VALUE_REFERENCE_INTEGER_SIX_DIGITS_IN_STRING_JSON_HACK"
+* Test Object has key "spec§template§spec§containers§0§env§33§value" with value "123456"
+* Test Object has key "spec§template§spec§activeDeadlineSeconds" with integer value "1000000"
 
 * Set test object to "release-name-hull-test-envfrom-test"
 * Test Object has key "spec§template§spec§containers§0§envFrom§0§configMapRef§name" with value "release-name-hull-test-a_configmap"
@@ -464,8 +505,54 @@
 * Test Object has key "spec§template§spec§volumes§4§secret§secretName" with value "release-name-hull-test-test_secret"
 * Test Object does not have key "spec§template§spec§volumes§4§emptyDir"
 
+* Set test object to "release-name-hull-test-pod-combine-values"
+* Test Object has key "spec§template§spec§containers§0§name" with value "main"
+* Test Object has key "spec§template§spec§containers§0§image" with value "somerepo:latest"
+* Test Object has key "spec§template§spec§activeDeadlineSeconds" with integer value "5"
+
+* Set test object to "release-name-hull-test-pull-secrets-override-empty-array"
+* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "0" items
+
+* Set test object to "release-name-hull-test-pull-secrets-override-nonempty-array"
+* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "2" items
+* Test Object has key "spec§template§spec§imagePullSecrets§0§name" with value "reg1"
+* Test Object has key "spec§template§spec§imagePullSecrets§1§name" with value "reg2"
+
+* Set test object to "release-name-hull-test-pull-secrets-tpl-empty-array"
+* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "0" items
+
+* Set test object to "release-name-hull-test-pull-secrets-tpl-nonempty-array"
+* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "2" items
+* Test Object has key "spec§template§spec§imagePullSecrets§0§name" with value "tpl1"
+* Test Object has key "spec§template§spec§imagePullSecrets§1§name" with value "tpl2"
+
+* Set test object to "release-name-hull-test-pull-secrets-include-empty-array"
+* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "0" items
+
+* Set test object to "release-name-hull-test-pull-secrets-include-nonempty-array"
+* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "2" items
+* Test Object has key "spec§template§spec§imagePullSecrets§0§name" with value "a"
+* Test Object has key "spec§template§spec§imagePullSecrets§1§name" with value "b"
+
+* Set test object to "release-name-hull-test-pull-secrets-include-empty-flow"
+* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "0" items
+
+* Set test object to "release-name-hull-test-pull-secrets-include-nonempty-flow"
+* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "2" items
+* Test Object has key "spec§template§spec§imagePullSecrets§0§name" with value "flowa"
+* Test Object has key "spec§template§spec§imagePullSecrets§1§name" with value "flowb"
+
+* Set test object to "release-name-hull-test-pull-secrets-include-empty-list"
+* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "0" items
+
+* Set test object to "release-name-hull-test-pull-secrets-include-nonempty-list"
+* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "2" items
+* Test Object has key "spec§template§spec§imagePullSecrets§0§name" with value "listreg1"
+* Test Object has key "spec§template§spec§imagePullSecrets§1§name" with value "listreg2"
+
 * Prepare default test case for this kind including suites "pod/values_multiple_defaults"
 * Lint and Render
+
 * Set test object to "release-name-hull-test-metadata-default-custom-overwrite"
 * Test Object has key "spec§template§spec§containers§0§env§0§name" with value "CUSTOM_TEMPLATE_1"
 * Test Object has key "spec§template§spec§containers§0§env§0§value" with value "This is from custom template 1"
