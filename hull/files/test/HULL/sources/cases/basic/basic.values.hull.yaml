@@ -55,6 +55,10 @@ hull:
       string_undefined: 
       number_defined: 999
       number_undefined: 
+      number_six_digits: 123456
+      number_almost_seven_digits: 999999
+      number_just_seven_digits: 1000000
+      number_seven_digits: 1234567
       bool_defined_true: true
       bool_defined_false: false
       bool_undefined: 

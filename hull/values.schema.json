@@ -12,10 +12,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "expression"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -150,12 +147,7 @@
               ]
         }
       },
-      "required": [
-        "name",
-        "clientConfig",
-        "sideEffects",
-        "admissionReviewVersions"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -250,9 +242,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -376,10 +366,7 @@
           ]
         }
       },
-      "required": [
-        "namespace",
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -509,12 +496,7 @@
           ]
         }
       },
-      "required": [
-        "name",
-        "clientConfig",
-        "sideEffects",
-        "admissionReviewVersions"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -609,9 +591,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -668,10 +648,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "key",
-        "valueExpression"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -694,10 +671,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "fieldRef",
-        "warning"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -719,10 +693,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "expression"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -1356,9 +1327,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "expression"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -1381,10 +1350,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "expression"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -1407,10 +1373,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "key",
-        "valueExpression"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -1433,10 +1396,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "fieldRef",
-        "warning"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -1459,10 +1419,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "expression"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -2096,9 +2053,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "expression"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -2121,10 +2076,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "expression"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -2215,10 +2167,7 @@
           "description": "API server instances report the version they can decode and the version they encode objects to when persisting objects in the backend."
         }
       },
-      "required": [
-        "spec",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -2272,11 +2221,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status",
-        "reason"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -2320,9 +2265,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -2440,9 +2383,7 @@
           ]
         }
       },
-      "required": [
-        "revision"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -2493,9 +2434,7 @@
           "description": "More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -2581,10 +2520,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -2628,9 +2564,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -2825,12 +2759,7 @@
           ]
         }
       },
-      "required": [
-        "currentNumberScheduled",
-        "numberMisscheduled",
-        "desiredNumberScheduled",
-        "numberReady"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -2935,10 +2864,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -2982,9 +2908,7 @@
           "description": "Standard list metadata."
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -3294,10 +3218,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -3341,9 +3262,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -3397,9 +3316,7 @@
           "description": "Template is the object that describes the pod that will be created if insufficient replicas are detected. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller#pod-template"
         }
       },
-      "required": [
-        "selector"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -3490,9 +3407,7 @@
           ]
         }
       },
-      "required": [
-        "replicas"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -3645,10 +3560,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -3692,9 +3604,7 @@
           "description": "Standard list's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -3847,9 +3757,7 @@
           ]
         }
       },
-      "required": [
-        "serviceName"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -3971,9 +3879,7 @@
           ]
         }
       },
-      "required": [
-        "replicas"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -4121,9 +4027,7 @@
           "description": "Status is filled in by the server and indicates whether the token can be authenticated."
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -4175,9 +4079,7 @@
           ]
         }
       },
-      "required": [
-        "audiences"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -4200,10 +4102,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "token",
-        "expirationTimestamp"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -4241,9 +4140,7 @@
           "description": "Status is filled in by the server and indicates whether the request can be authenticated."
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -4543,9 +4440,7 @@
           "description": "Status is filled in by the server and indicates whether the request is allowed or not"
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -4617,9 +4512,7 @@
           ]
         }
       },
-      "required": [
-        "verbs"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -4732,9 +4625,7 @@
           ]
         }
       },
-      "required": [
-        "verbs"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -4772,9 +4663,7 @@
           "description": "Status is filled in by the server and indicates whether the request is allowed or not"
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -4841,9 +4730,7 @@
           "description": "Status is filled in by the server and indicates the set of actions a user can perform."
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -4906,9 +4793,7 @@
           "description": "Status is filled in by the server and indicates whether the request is allowed or not"
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5028,9 +4913,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "allowed"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5088,11 +4971,7 @@
           ]
         }
       },
-      "required": [
-        "resourceRules",
-        "nonResourceRules",
-        "incomplete"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5130,10 +5009,7 @@
           ]
         }
       },
-      "required": [
-        "kind",
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5222,9 +5098,7 @@
           "description": "Standard list metadata."
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5294,10 +5168,7 @@
           ]
         }
       },
-      "required": [
-        "scaleTargetRef",
-        "maxReplicas"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5363,10 +5234,7 @@
           ]
         }
       },
-      "required": [
-        "currentReplicas",
-        "desiredReplicas"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5467,9 +5335,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "replicas"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5496,11 +5362,7 @@
           "description": "target specifies the target value for the given metric"
         }
       },
-      "required": [
-        "name",
-        "target",
-        "container"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5527,11 +5389,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "current",
-        "container"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5569,10 +5427,7 @@
           ]
         }
       },
-      "required": [
-        "kind",
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5595,10 +5450,7 @@
           "description": "target specifies the target value for the given metric"
         }
       },
-      "required": [
-        "metric",
-        "target"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5621,10 +5473,7 @@
           "description": "metric identifies the target metric by name and selector"
         }
       },
-      "required": [
-        "metric",
-        "current"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5667,11 +5516,7 @@
           ]
         }
       },
-      "required": [
-        "type",
-        "value",
-        "periodSeconds"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5817,10 +5662,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5864,9 +5706,7 @@
           "description": "metadata is the standard list metadata."
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -5944,10 +5784,7 @@
           "description": "scaleTargetRef points to the target resource to scale, and is used to the pods for which metrics should be collected, as well as to actually change the replica count."
         }
       },
-      "required": [
-        "scaleTargetRef",
-        "maxReplicas"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6036,9 +5873,7 @@
           ]
         }
       },
-      "required": [
-        "desiredReplicas"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6061,9 +5896,7 @@
           "description": "selector is the string-encoded form of a standard kubernetes label selector for the given metric When set, it is passed as an additional parameter to the metrics server for more specific metrics scoping. When unset, just the metricName will be used to gather metrics."
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6102,9 +5935,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6143,9 +5974,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6184,9 +6013,7 @@
           "description": "value is the target value of the metric (as a quantity)."
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6247,11 +6074,7 @@
           "description": "target specifies the target value for the given metric"
         }
       },
-      "required": [
-        "describedObject",
-        "target",
-        "metric"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6278,11 +6101,7 @@
           "description": "metric identifies the target metric by name and selector"
         }
       },
-      "required": [
-        "metric",
-        "current",
-        "describedObject"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6305,10 +6124,7 @@
           "description": "target specifies the target value for the given metric"
         }
       },
-      "required": [
-        "metric",
-        "target"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6331,10 +6147,7 @@
           "description": "metric identifies the target metric by name and selector"
         }
       },
-      "required": [
-        "metric",
-        "current"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6357,10 +6170,7 @@
           "description": "target specifies the target value for the given metric"
         }
       },
-      "required": [
-        "name",
-        "target"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6383,10 +6193,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "current"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6474,9 +6281,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6568,9 +6373,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "schedule"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6689,10 +6492,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -6736,9 +6536,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7061,9 +6859,7 @@
           "x-kubernetes-list-type": "atomic"
         }
       },
-      "required": [
-        "rules"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7109,10 +6905,7 @@
           "x-kubernetes-list-type": "set"
         }
       },
-      "required": [
-        "operator",
-        "values"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7135,10 +6928,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7176,10 +6966,7 @@
           "x-kubernetes-list-type": "atomic"
         }
       },
-      "required": [
-        "action",
-        "onPodConditions"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7260,9 +7047,7 @@
           "description": "status contains information about whether the request is approved or denied, and the certificate issued by the signer, or the failure condition indicating signer failure."
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7308,10 +7093,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7354,9 +7136,7 @@
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7462,10 +7242,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "request",
-        "signerName"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7537,9 +7314,7 @@
           "description": "spec contains the signer (if any) and trust anchors."
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7590,9 +7365,7 @@
           "description": "metadata contains the list metadata."
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7622,9 +7395,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "trustBundle"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7708,9 +7479,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7813,9 +7582,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "volumeID"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7864,10 +7631,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "devicePath"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7913,10 +7677,7 @@
           ]
         }
       },
-      "required": [
-        "diskName",
-        "diskURI"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7954,10 +7715,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "secretName",
-        "shareName"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -7991,10 +7749,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "secretName",
-        "shareName"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -8028,9 +7783,7 @@
           "description": "The target object that you want to bind to the standard object."
         }
       },
-      "required": [
-        "target"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -8109,10 +7862,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "driver",
-        "volumeHandle"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -8164,9 +7914,7 @@
           ]
         }
       },
-      "required": [
-        "driver"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -8264,9 +8012,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "monitors"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -8322,9 +8068,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "monitors"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -8362,9 +8106,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "volumeID"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -8402,9 +8144,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "volumeID"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -8483,10 +8223,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -8582,9 +8319,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -8772,9 +8507,7 @@
           ]
         }
       },
-      "required": [
-        "key"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -8819,9 +8552,7 @@
           "description": "More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -8863,11 +8594,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "namespace",
-        "name",
-        "kubeletConfigKey"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -9279,9 +9006,7 @@
           ]
         }
       },
-      "required": [
-        "containerPort"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -9303,10 +9028,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "resourceName",
-        "restartPolicy"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -9409,9 +9131,7 @@
           "description": "Time at which previous execution of the container started"
         }
       },
-      "required": [
-        "exitCode"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -9524,13 +9244,7 @@
           "description": "State holds details about the container's current condition."
         }
       },
-      "required": [
-        "name",
-        "ready",
-        "restartCount",
-        "image",
-        "imageID"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -9557,9 +9271,7 @@
           ]
         }
       },
-      "required": [
-        "Port"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -9626,9 +9338,7 @@
           "description": "Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, requests.cpu and requests.memory) are currently supported."
         }
       },
-      "required": [
-        "path"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -9721,9 +9431,7 @@
           "description": "Reference to object providing the endpoint."
         }
       },
-      "required": [
-        "ip"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -9763,9 +9471,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "port"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -9905,9 +9611,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -10283,9 +9987,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -10397,10 +10099,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "metadata",
-        "involvedObject"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -10451,9 +10150,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -10661,9 +10358,7 @@
           "description": "secretRef is Optional: SecretRef is reference to the secret object containing sensitive information to pass to the plugin scripts. This may be empty if no secret object is specified. If the secret object contains more than one secret, all secrets are passed to the plugin scripts."
         }
       },
-      "required": [
-        "driver"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -10715,9 +10410,7 @@
           "description": "secretRef is Optional: secretRef is reference to the secret object containing sensitive information to pass to the plugin scripts. This may be empty if no secret object is specified. If the secret object contains more than one secret, all secrets are passed to the plugin scripts."
         }
       },
-      "required": [
-        "driver"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -10785,9 +10478,7 @@
           ]
         }
       },
-      "required": [
-        "pdName"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -10817,9 +10508,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "port"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -10846,9 +10535,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "repository"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -10886,10 +10573,7 @@
           ]
         }
       },
-      "required": [
-        "endpoints",
-        "path"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -10923,10 +10607,7 @@
           ]
         }
       },
-      "required": [
-        "endpoints",
-        "path"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -10971,9 +10652,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "port"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -10996,10 +10675,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "value"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -11072,9 +10748,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "path"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -11172,11 +10846,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "targetPortal",
-        "iqn",
-        "lun"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -11274,11 +10944,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "targetPortal",
-        "iqn",
-        "lun"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -11313,10 +10979,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "key",
-        "path"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -11493,9 +11156,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -11539,9 +11200,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -11582,9 +11241,7 @@
           ]
         }
       },
-      "required": [
-        "limits"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -11690,9 +11347,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "path"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -11726,10 +11381,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "server",
-        "path"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -11810,10 +11462,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -11857,9 +11506,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -11995,10 +11642,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "address"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -12069,10 +11713,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -12182,9 +11823,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -12220,9 +11859,7 @@
           ]
         }
       },
-      "required": [
-        "nodeSelectorTerms"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -12260,10 +11897,7 @@
           ]
         }
       },
-      "required": [
-        "key",
-        "operator"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -12563,18 +12197,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "machineID",
-        "systemUUID",
-        "bootID",
-        "kernelVersion",
-        "osImage",
-        "containerRuntimeVersion",
-        "kubeletVersion",
-        "kubeProxyVersion",
-        "operatingSystem",
-        "architecture"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -12597,9 +12220,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "fieldPath"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -12768,10 +12389,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -12815,9 +12433,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -13005,9 +12621,7 @@
           "description": "The specification for the PersistentVolumeClaim. The entire content is copied unchanged into the PVC that gets created from this template. The same fields as in a PersistentVolumeClaim are also valid here."
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -13048,9 +12662,7 @@
           ]
         }
       },
-      "required": [
-        "claimName"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -13094,9 +12706,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -13354,9 +12964,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "pdID"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -13483,9 +13091,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "topologyKey"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -13566,10 +13172,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -13708,9 +13311,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -13736,9 +13337,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -13757,9 +13356,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "conditionType"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -13782,9 +13379,7 @@
           "description": "Source describes where to find the ResourceClaim."
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -13807,9 +13402,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -13828,9 +13421,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -14592,9 +14183,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -14657,10 +14246,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "port",
-        "protocol"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -14694,9 +14280,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "volumeID"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -14727,10 +14311,7 @@
           ]
         }
       },
-      "required": [
-        "weight",
-        "preference"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -14921,10 +14502,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "registry",
-        "volume"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -14988,10 +14566,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "monitors",
-        "image"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -15055,10 +14630,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "monitors",
-        "image"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -15137,10 +14709,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -15184,9 +14753,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -15341,9 +14908,7 @@
           ]
         }
       },
-      "required": [
-        "replicas"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -15362,9 +14927,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -15391,9 +14954,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "resource"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -15482,9 +15043,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -15744,11 +15303,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "gateway",
-        "system",
-        "secretRef"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -15817,11 +15372,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "gateway",
-        "system",
-        "secretRef"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -15887,10 +15438,7 @@
           ]
         }
       },
-      "required": [
-        "scopeName",
-        "operator"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -15913,9 +15461,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -16101,9 +15647,7 @@
           ]
         }
       },
-      "required": [
-        "key"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -16148,9 +15692,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -16562,9 +16104,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -16606,9 +16146,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "path"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -16652,9 +16190,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -16738,9 +16274,7 @@
           ]
         }
       },
-      "required": [
-        "port"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -17082,10 +16616,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "value"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -17108,9 +16639,7 @@
           "description": "Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
         }
       },
-      "required": [
-        "port"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -17141,10 +16670,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "key",
-        "effect"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -17219,10 +16745,7 @@
           ]
         }
       },
-      "required": [
-        "key",
-        "values"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -17325,11 +16848,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "maxSkew",
-        "topologyKey",
-        "whenUnsatisfiable"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -17356,10 +16875,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "kind",
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -17390,10 +16906,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "kind",
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -17599,10 +17112,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "devicePath"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -17682,10 +17192,7 @@
           ]
         }
       },
-      "required": [
-        "name",
-        "mountPath"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -17763,9 +17270,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "volumePath"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -17796,10 +17301,7 @@
           ]
         }
       },
-      "required": [
-        "weight",
-        "podAffinityTerm"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -17904,9 +17406,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "addresses"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -18092,10 +17592,7 @@
           "x-kubernetes-list-type": "atomic"
         }
       },
-      "required": [
-        "addressType",
-        "endpoints"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -18145,9 +17642,7 @@
           "description": "Standard list metadata."
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -18173,9 +17668,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -18269,9 +17762,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "eventTime"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -18322,9 +17813,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -18362,10 +17851,7 @@
           "description": "lastObservedTime is the time when last Event from the series was seen before last heartbeat."
         }
       },
-      "required": [
-        "count",
-        "lastObservedTime"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -18422,9 +17908,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -18546,9 +18030,7 @@
           "description": "`metadata` is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -18605,9 +18087,7 @@
           "x-kubernetes-list-type": "atomic"
         }
       },
-      "required": [
-        "priorityLevelConfiguration"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -18658,9 +18138,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -18683,9 +18161,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -18792,10 +18268,7 @@
           "x-kubernetes-list-type": "set"
         }
       },
-      "required": [
-        "verbs",
-        "nonResourceURLs"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -18855,9 +18328,7 @@
           "x-kubernetes-list-type": "atomic"
         }
       },
-      "required": [
-        "subjects"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -18979,9 +18450,7 @@
           "description": "`metadata` is the standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19007,9 +18476,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19036,9 +18503,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19215,11 +18680,7 @@
           "x-kubernetes-list-type": "set"
         }
       },
-      "required": [
-        "verbs",
-        "apiGroups",
-        "resources"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19242,10 +18703,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "namespace",
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19276,9 +18734,7 @@
           "description": "`user` matches based on username."
         }
       },
-      "required": [
-        "kind"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19307,9 +18763,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19366,9 +18820,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19490,9 +18942,7 @@
           "description": "`metadata` is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19549,9 +18999,7 @@
           "x-kubernetes-list-type": "atomic"
         }
       },
-      "required": [
-        "priorityLevelConfiguration"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19604,9 +19052,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19629,9 +19075,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19738,10 +19182,7 @@
           "x-kubernetes-list-type": "set"
         }
       },
-      "required": [
-        "verbs",
-        "nonResourceURLs"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19801,9 +19242,7 @@
           "x-kubernetes-list-type": "atomic"
         }
       },
-      "required": [
-        "subjects"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19925,9 +19364,7 @@
           "description": "`metadata` is the standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19953,9 +19390,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -19982,9 +19417,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -20163,11 +19596,7 @@
           "x-kubernetes-list-type": "set"
         }
       },
-      "required": [
-        "verbs",
-        "apiGroups",
-        "resources"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -20190,10 +19619,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "namespace",
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -20224,9 +19650,7 @@
           "description": "`user` matches based on username."
         }
       },
-      "required": [
-        "kind"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -20255,9 +19679,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -20303,9 +19725,7 @@
           ]
         }
       },
-      "required": [
-        "backend"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -20351,9 +19771,7 @@
           ]
         }
       },
-      "required": [
-        "cidr"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -20509,9 +19927,7 @@
           "description": "Standard list metadata."
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -20553,10 +19969,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "kind",
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -20627,9 +20040,7 @@
           "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -20736,10 +20147,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "port",
-        "protocol"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -20795,9 +20203,7 @@
           "description": "port of the referenced service. A port name or port number is required for a IngressServiceBackend."
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -21072,9 +20478,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -21210,9 +20614,7 @@
           ]
         }
       },
-      "required": [
-        "podSelector"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -21325,9 +20727,7 @@
           "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -21373,9 +20773,7 @@
           ]
         }
       },
-      "required": [
-        "perNodeHostBits"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -21459,9 +20857,7 @@
           "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -21590,9 +20986,7 @@
           "description": "scheduling holds the scheduling constraints to ensure that pods running with this RuntimeClass are scheduled to nodes that support it. If scheduling is nil, this RuntimeClass is assumed to be supported by all nodes."
         }
       },
-      "required": [
-        "handler"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -21643,9 +21037,7 @@
           "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -21824,9 +21216,7 @@
           "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -21980,12 +21370,7 @@
           ]
         }
       },
-      "required": [
-        "disruptionsAllowed",
-        "currentHealthy",
-        "desiredHealthy",
-        "expectedPods"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -22132,9 +21517,7 @@
           ]
         }
       },
-      "required": [
-        "roleRef"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -22184,9 +21567,7 @@
           "description": "Standard object's metadata."
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -22237,9 +21618,7 @@
           "description": "Standard object's metadata."
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -22352,9 +21731,7 @@
           ]
         }
       },
-      "required": [
-        "verbs"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -22467,9 +21844,7 @@
           ]
         }
       },
-      "required": [
-        "roleRef"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -22519,9 +21894,7 @@
           "description": "Standard object's metadata."
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -22572,9 +21945,7 @@
           "description": "Standard object's metadata."
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -22608,11 +21979,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "apiGroup",
-        "kind",
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -22644,10 +22011,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "kind",
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -22730,9 +22094,7 @@
           "description": "Status describes where resources for the Pod can be allocated."
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -22783,9 +22145,7 @@
           "description": "Standard list metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -22895,9 +22255,7 @@
           "description": "Status describes whether the resource is available and with which attributes."
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -22935,11 +22293,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "resource",
-        "name",
-        "uid"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -22983,9 +22337,7 @@
           "description": "Standard list metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23019,10 +22371,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "kind",
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23082,9 +22431,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "resourceClassName"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23169,9 +22516,7 @@
           "description": "Describes the ResourceClaim that is to be generated.\n\nThis field is immutable. A ResourceClaim will get created by the control plane for a Pod when needed and then not get updated anymore."
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23222,9 +22567,7 @@
           "description": "Standard list metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23254,9 +22597,7 @@
           "description": "Spec for the ResourceClaim. The entire content is copied unchanged into the ResourceClaim that gets created from this template. The same fields as in a ResourceClaim are also valid here."
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23298,9 +22639,7 @@
           "description": "Only nodes matching the selector will be considered by the scheduler when trying to find a Node that fits a Pod when that Pod uses a ResourceClaim that has not been allocated yet.\n\nSetting this field is optional. If null, all nodes are candidates."
         }
       },
-      "required": [
-        "driverName"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23351,9 +22690,7 @@
           "description": "Standard list metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23391,10 +22728,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "kind",
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23470,9 +22804,7 @@
           ]
         }
       },
-      "required": [
-        "value"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23522,9 +22854,7 @@
           "description": "Standard list metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23565,9 +22895,7 @@
           "description": "spec represents the specification of the CSI Driver."
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23618,9 +22946,7 @@
           "description": "Standard list metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23764,9 +23090,7 @@
           "description": "spec is the specification of CSINode"
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23814,10 +23138,7 @@
           ]
         }
       },
-      "required": [
-        "name",
-        "nodeID"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23861,9 +23182,7 @@
           "description": "Standard list metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23901,9 +23220,7 @@
           "x-kubernetes-patch-strategy": "merge"
         }
       },
-      "required": [
-        "drivers"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -23949,9 +23266,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "storageClassName"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24006,9 +23321,7 @@
           "description": "Standard list metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24122,9 +23435,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "provisioner"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24174,9 +23485,7 @@
           "description": "Standard list metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24214,9 +23523,7 @@
           ]
         }
       },
-      "required": [
-        "audience"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24254,9 +23561,7 @@
           "description": "status represents status of the VolumeAttachment request. Populated by the entity completing the attach or detach operation, i.e. the external-attacher."
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24307,9 +23612,7 @@
           "description": "Standard list metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24365,11 +23668,7 @@
           "description": "source represents the volume that should be attached."
         }
       },
-      "required": [
-        "attacher",
-        "source",
-        "nodeName"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24417,9 +23716,7 @@
           "description": "detachError represents the last error encountered during detach operation, if any. This field must only be set by the entity completing the detach operation, i.e. the external-attacher."
         }
       },
-      "required": [
-        "attached"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24514,11 +23811,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "type",
-        "jsonPath"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24541,9 +23834,7 @@
           "description": "webhook describes how to call the conversion webhook. Required when `strategy` is set to `\"Webhook\"`."
         }
       },
-      "required": [
-        "strategy"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24581,9 +23872,7 @@
           "description": "status indicates the actual state of the CustomResourceDefinition"
         }
       },
-      "required": [
-        "spec"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24625,10 +23914,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24672,9 +23958,7 @@
           "description": "Standard object's metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24740,10 +24024,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "plural",
-        "kind"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24799,12 +24080,7 @@
           ]
         }
       },
-      "required": [
-        "group",
-        "names",
-        "scope",
-        "versions"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24932,11 +24208,7 @@
           "description": "subresources specify what subresources this version of the defined custom resource have."
         }
       },
-      "required": [
-        "name",
-        "served",
-        "storage"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24963,10 +24235,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "specReplicasPath",
-        "statusReplicasPath"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -25480,10 +24749,7 @@
           ]
         }
       },
-      "required": [
-        "namespace",
-        "name"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -25518,9 +24784,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "rule"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -25580,9 +24844,7 @@
           ]
         }
       },
-      "required": [
-        "conversionReviewVersions"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -25661,10 +24923,7 @@
           ]
         }
       },
-      "required": [
-        "name",
-        "versions"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -25711,9 +24970,7 @@
           ]
         }
       },
-      "required": [
-        "groups"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -25812,13 +25069,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "singularName",
-        "namespaced",
-        "kind",
-        "verbs"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -25862,10 +25113,7 @@
           ]
         }
       },
-      "required": [
-        "groupVersion",
-        "resources"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -25926,10 +25174,7 @@
           ]
         }
       },
-      "required": [
-        "versions",
-        "serverAddressByClientCIDRs"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -25983,13 +25228,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status",
-        "lastTransitionTime",
-        "reason",
-        "message"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -26385,10 +25624,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "groupVersion",
-        "version"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -26468,10 +25704,7 @@
           ]
         }
       },
-      "required": [
-        "key",
-        "operator"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -26752,12 +25985,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "apiVersion",
-        "kind",
-        "name",
-        "uid"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -26814,10 +26042,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "clientCIDR",
-        "serverAddress"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -26995,10 +26220,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "object"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -27360,17 +26582,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "major",
-        "minor",
-        "gitVersion",
-        "gitCommit",
-        "gitTreeState",
-        "buildDate",
-        "goVersion",
-        "compiler",
-        "platform"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -27449,10 +26661,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "status"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -27496,9 +26705,7 @@
           "description": "Standard list metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -27573,10 +26780,7 @@
           ]
         }
       },
-      "required": [
-        "groupPriorityMinimum",
-        "versionPriority"
-      ],
+      "required": [],
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -27901,9 +27105,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "server"
-      ]
+      "required": []
     },
     "hull.Container.v1.Names": {
       "enum": [
@@ -28389,10 +27591,7 @@
           ]
         }
       },
-      "required": [
-        "apiVersion",
-        "kind"
-      ]
+      "required": []
     },
     "hull.Service.v1.Names": {
       "enum": [
@@ -28508,9 +27707,7 @@
           }
         }
       },
-      "required": [
-        "paths"
-      ]
+      "required": []
     },
     "hull.Ingress.Rule.v1.Names": {
       "enum": [
@@ -28689,9 +27886,7 @@
                 "properties": {
                   "password": {
                     "description": "The secret in the service monitor namespace that contains the password for authentication.",
-                    "required": [
-                      "key"
-                    ],
+                    "required": [],
                     "properties": {
                       "key": {
                         "description": "The key of the secret to select from.  Must be a valid secret key.",
@@ -28745,9 +27940,7 @@
                         ]
                       }
                     },
-                    "required": [
-                      "key"
-                    ],
+                    "required": [],
                     "anyOf": [
                       {
                         "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -28786,9 +27979,7 @@
                     ]
                   }
                 },
-                "required": [
-                  "key"
-                ],
+                "required": [],
                 "anyOf": [
                   {
                     "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -29056,9 +28247,7 @@
                             ]
                           }
                         },
-                        "required": [
-                          "key"
-                        ],
+                        "required": [],
                         "anyOf": [
                           {
                             "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -29091,9 +28280,7 @@
                             ]
                           }
                         },
-                        "required": [
-                          "key"
-                        ],
+                        "required": [],
                         "anyOf": [
                           {
                             "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -29143,9 +28330,7 @@
                             ]
                           }
                         },
-                        "required": [
-                          "key"
-                        ],
+                        "required": [],
                         "anyOf": [
                           {
                             "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -29178,9 +28363,7 @@
                             ]
                           }
                         },
-                        "required": [
-                          "key"
-                        ],
+                        "required": [],
                         "anyOf": [
                           {
                             "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -29242,9 +28425,7 @@
                         ]
                       }
                     },
-                    "required": [
-                      "key"
-                    ],
+                    "required": [],
                     "anyOf": [
                       {
                         "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -29386,10 +28567,7 @@
                     ]
                   }
                 },
-                "required": [
-                  "key",
-                  "operator"
-                ],
+                "required": [],
                 "anyOf": [
                   {
                     "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -32263,9 +31441,7 @@
       "title": "Hull",
       "type": "object",
       "description": "Root element for all properties of the HULL library.",
-      "required": [
-        "hull"
-      ],
+      "required": [],
       "properties": {
         "hull": {
           "$ref": "#/definitions/root"

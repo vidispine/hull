@@ -198,6 +198,8 @@ As highlighted above, when included in a Helm chart the HULL library chart can t
 
 - For more complex scenarios where actual values in the target YAML are subject to configurations in the `values.yaml`, there is **support to dynamically populate values by injecting Go Templating expressions defined in place of the value in the `values.yaml`**. For example, if your concrete container arguments depend on various other settings in `values.yaml` you can inject the conditions into the calculation of the arguments or simply reference other fields in the `values.yaml`.
 
+  For more details refer to the documentation on [Transformations](./hull/doc/transformations.md).
+
 - Enable automatic hashing of referenced ConfigMaps and Secrets to facilitate pod restarts on changes of configuration when required.
 
   For more details refer to the documentation on [Pods](./hull/doc/objects_pod.md).
