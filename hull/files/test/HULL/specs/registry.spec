@@ -12,8 +12,6 @@ Test creation of objects and features.
 ## Metadata
 * Check basic metadata functionality
 
-## Violate schema
-* Fail to render the templates for values file "values_fail_required.hull.yaml" to test execution folder because error contains "objects.registry.failing: server is required"
 
 ___
 

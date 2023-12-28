@@ -178,13 +178,14 @@ hull:
             inline: _HT*hull.config.specific.test_no_object_instance_key
           test_no_object_type:
             inline: _HT*hull.config.specific.test_no_object_type
-
+          test_dockerconfig: 
+            inline: _HT/hull.include.test.dockerconfigjson
       inline-precedence:
         data:
           test1:
             inline: Inline Content
             path: files/test.txt
-          test2:            
+          test2:
             path: files/test.txt
             inline: Inline Content
 
@@ -218,5 +219,5 @@ hull:
           default_inline_1:
             inline: Default Inline 1
           default_file_1.json:
-            path: files/default_file_1.json          
+            path: files/default_file_1.json
 ###################################################

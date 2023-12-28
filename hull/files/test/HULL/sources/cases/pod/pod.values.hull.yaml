@@ -12,7 +12,16 @@ hull:
       env_bool: true
       env_float: 9.8642
       env_integer: 12345
-
+      env_integer_six_digits: 123456
+      env_integer_almost_seven_digits: 999999
+      env_integer_just_seven_digits: 1000000
+      env_integer_seven_digits: 1234567
+      env_integer_six_digits_in_string: "123456"
+      env_integer_almost_seven_digits_in_string: "999999"
+      env_integer_just_seven_digits_in_string: "1000000"
+      env_integer_seven_digits_in_string: "1234567"
+      env_git_commit: 11724e28
+      env_git_commit_in_string: "11724e28"
 
   objects:
     
@@ -367,6 +376,47 @@ hull:
                   value: _HT*hull.config.specific.env_float
                 ENV_VAR_VALUE_REFERENCE_INTEGER:
                   value: _HT*hull.config.specific.env_integer
+                ENV_VAR_VALUE_REFERENCE_INTEGER_SIX_DIGITS:
+                  value: _HT*hull.config.specific.env_integer_six_digits
+                ENV_VAR_VALUE_REFERENCE_INTEGER_ALMOST_SEVEN_DIGITS:
+                  value: _HT*hull.config.specific.env_integer_almost_seven_digits
+                ENV_VAR_VALUE_REFERENCE_INTEGER_JUST_SEVEN_DIGITS:
+                  value: _HT*hull.config.specific.env_integer_just_seven_digits
+                ENV_VAR_VALUE_REFERENCE_INTEGER_SEVEN_DIGITS:
+                  value: _HT*hull.config.specific.env_integer_seven_digits
+                ENV_VAR_VALUE_REFERENCE_INTEGER_JUST_SEVEN_DIGITS_TO_INT:
+                  value: _HT!{{ (index . "$").Values.hull.config.specific.env_integer_just_seven_digits | int64 }}
+                ENV_VAR_VALUE_REFERENCE_INTEGER_SEVEN_DIGITS_TO_INT:
+                  value: _HT!{{ (index . "$").Values.hull.config.specific.env_integer_seven_digits | int64 }}
+                ENV_VAR_VALUE_REFERENCE_INTEGER_JUST_SEVEN_DIGITS_TO_INT_QUOTE:
+                  value: _HT!{{ (index . "$").Values.hull.config.specific.env_integer_just_seven_digits | int64 | quote }}
+                ENV_VAR_VALUE_REFERENCE_INTEGER_SEVEN_DIGITS_TO_INT_QUOTE:
+                  value: _HT!{{ (index . "$").Values.hull.config.specific.env_integer_seven_digits | int64 | quote }}
+                ENV_VAR_VALUE_REFERENCE_INTEGER_SIX_DIGITS_IN_STRING:
+                  value: _HT*hull.config.specific.env_integer_six_digits_in_string
+                ENV_VAR_VALUE_REFERENCE_INTEGER_ALMOST_SEVEN_DIGITS_IN_STRING:
+                  value: _HT*hull.config.specific.env_integer_almost_seven_digits_in_string
+                ENV_VAR_VALUE_REFERENCE_INTEGER_JUST_SEVEN_DIGITS_IN_STRING:
+                  value: _HT*hull.config.specific.env_integer_just_seven_digits_in_string
+                ENV_VAR_VALUE_REFERENCE_INTEGER_SEVEN_DIGITS_IN_STRING:
+                  value: _HT*hull.config.specific.env_integer_seven_digits_in_string
+                ENV_VAR_VALUE_REFERENCE_INTEGER_SIX_DIGITS_IN_STRING_JSON_HACK:
+                  value: _HT!{{ (index . "$").Values.hull.config.specific.env_integer_six_digits_in_string | toJson | trimAll "\"" | quote }}
+                ENV_VAR_VALUE_REFERENCE_INTEGER_ALMOST_SEVEN_DIGITS_IN_STRING_JSON_HACK:
+                  value: _HT!{{ (index . "$").Values.hull.config.specific.env_integer_almost_seven_digits_in_string | toJson | trimAll "\"" | quote }}
+                ENV_VAR_VALUE_REFERENCE_INTEGER_JUST_SEVEN_DIGITS_IN_STRING_JSON_HACK:
+                  value: _HT!{{ (index . "$").Values.hull.config.specific.env_integer_just_seven_digits_in_string | toJson | trimAll "\"" | quote }}
+                ENV_VAR_VALUE_REFERENCE_INTEGER_SEVEN_DIGITS_IN_STRING_JSON_HACK:
+                  value: _HT!{{ (index . "$").Values.hull.config.specific.env_integer_seven_digits_in_string | toJson | trimAll "\"" | quote }}
+                ENV_VAR_VALUE_REFERENCE_GIT_COMMIT:
+                  value: _HT*hull.config.specific.env_git_commit
+                ENV_VAR_VALUE_REFERENCE_GIT_COMMIT_IN_STRING:
+                  value: _HT*hull.config.specific.env_git_commit_in_string
+                ENV_VAR_VALUE_REFERENCE_GIT_COMMIT_JSON_HACK:
+                  value: _HT!{{ (index . "$").Values.hull.config.specific.env_git_commit | toJson | trimAll "\"" | quote }}
+                ENV_VAR_VALUE_REFERENCE_GIT_COMMIT_IN_STRING_JSON_HACK:
+                  value: _HT!{{ (index . "$").Values.hull.config.specific.env_git_commit_in_string | toJson | trimAll "\"" | quote }}
+          activeDeadlineSeconds: _HT!{{ (index . "$").Values.hull.config.specific.env_integer_just_seven_digits | int64 }}
       
       envfrom-test:
         pod:
@@ -1400,3 +1450,107 @@ hull:
                       name: secret-three
                       key: secret-three-inline-two.json
                       hashsumAnnotation: false
+
+      pod-partial-values:
+        enabled: false
+        pod: |-
+          _HT!{
+            "activeDeadlineSeconds": 5
+          }
+
+      pod-combine-values:
+        sources:
+        - pod-partial-values
+        pod:
+          containers:
+            main:
+              image:
+                repository: somerepo
+                tag: "latest"
+
+      pull-secrets-override-empty-array:
+        pod:
+          imagePullSecrets: []
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+
+      pull-secrets-override-nonempty-array:
+        pod:
+          imagePullSecrets: 
+          - name: reg1
+          - name: reg2
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+
+      pull-secrets-tpl-empty-array:
+        pod:
+          imagePullSecrets: |-
+            _HT![ ]
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+
+      pull-secrets-tpl-nonempty-array:
+        pod:
+          imagePullSecrets: |-
+            _HT![
+              { "name": "tpl1" },
+              { "name": "tpl2" },
+            ]
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+
+      pull-secrets-include-empty-array:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.emptyarray
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+
+      pull-secrets-include-nonempty-array:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.nonemptyarray
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+
+      pull-secrets-include-empty-flow:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.emptyflow
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+
+      pull-secrets-include-nonempty-flow:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.nonemptyflow
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+
+      pull-secrets-include-empty-list:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.emptylist
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+
+      pull-secrets-include-nonempty-list:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+          containers:
+            my-pod:
+              image:
+                repository: hello-world

@@ -434,12 +434,70 @@ hull:
                 staticName: true
 
       hashing-pod-volumemounts:
-        serviceName: envfrom-test
+        serviceName: hashing-pod-volumemounts
         pod:
           containers: {}
 
       hashing-pod-env:
-        serviceName: envfrom-test
+        serviceName: hashing-pod-env
         pod:
           containers: {}
+      
+      pod-combine-values:
+        serviceName: pod-combine-values
+        pod:
+          containers: {}
+
+      pull-secrets-override-empty-array:
+        serviceName: pull-secrets-override-empty-array
+        pod:
+          containers: {}
+
+      pull-secrets-override-nonempty-array:
+        serviceName: pull-secrets-override-nonempty-array
+        pod:
+          containers: {}
+
+      pull-secrets-tpl-empty-array:
+        serviceName: pull-secrets-tpl-empty-array
+        pod:
+          containers: {}
+
+      pull-secrets-tpl-nonempty-array:
+        serviceName: pull-secrets-tpl-nonempty-array
+        pod:
+          containers: {}
+
+      pull-secrets-include-empty-array:
+        serviceName: pull-secrets-include-empty-array
+        pod:
+          containers: {}
+
+      pull-secrets-include-nonempty-array:
+        serviceName: pull-secrets-include-nonempty-array
+        pod:
+          containers: {}
+
+      pull-secrets-include-empty-flow:
+        serviceName: pull-secrets-include-empty-flow
+        pod:
+          containers: {}
+
+      pull-secrets-include-nonempty-flow:
+        serviceName: pull-secrets-include-nonempty-flow
+        pod:
+          containers: {}
+
+      pull-secrets-include-empty-list:
+        serviceName: pull-secrets-include-empty-list
+        pod:
+          containers: {}
+
+      pull-secrets-include-nonempty-list:
+        serviceName: pull-secrets-include-nonempty-list
+        pod:
+          containers: {}
+
+
+      
   ###################################################
