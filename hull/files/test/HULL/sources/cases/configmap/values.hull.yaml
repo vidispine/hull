@@ -178,8 +178,7 @@ hull:
             inline: _HT*hull.config.specific.test_no_object_instance_key
           test_no_object_type:
             inline: _HT*hull.config.specific.test_no_object_type
-          test_dockerconfig: 
-            inline: _HT/hull.include.test.dockerconfigjson
+
       inline-precedence:
         data:
           test1:
