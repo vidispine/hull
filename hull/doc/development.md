@@ -210,7 +210,13 @@ General hints for doing this when starting comparing top to bottom:
     --> 
     "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "boolean" } ]
     ```
-  
+  - the `required` properties need to be removed to improve defaulting capabilities. When you have `required` properties you would need to set them on each object instance's fields which defeats the purpose of efficient defaulting via `sources` or `_HULL_OBJECT_TYPE_DEFAULT_`. To remove all required properties the following regex search and replacement can be used. Note that the below syntax is guarenteed to be working with VSCode, it may need to be adapted when using other editors for the regex replacing.
+  - ```
+    ^(\s+)"required":\s\[(.|\S|\r|\n)*?\]
+    -->
+    $1"required": []
+    ```  
+
   This should eliminate more than 80% of the differences between current `values.schema.json` and the next one you compare with. The remaining differences are typically the following:
   - description changes
   - added `x-kubernetes` attributes on the Kubernetes side
@@ -306,7 +312,7 @@ Typically it should be enough to replace `/generated/kubernetes-api/v1.x` with `
 ### Update CHANGELOG.md and HISTORY.md
 
 Update the changelog with the information what was changed within the update.
-The changelog has just the most recent information, copy these entry over in to the history.
+The changelog has just the most recent information, copy this entry over in to the history.
 
 ## Creating a new minor version
 

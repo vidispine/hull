@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "39" objects were rendered
+* Expected number of "50" objects were rendered
 * Validate
 
 ## Metadata
@@ -15,9 +15,6 @@ Test creation of objects and features.
 ## Pod
 * Lint and Render
 * Check pod functionality
-
-## Violate schema
-* Fail to render the templates for values file "values_fail_required.hull.yaml" to test execution folder because error contains "objects.statefulset.failing: serviceName is required"
 
 ___
 
