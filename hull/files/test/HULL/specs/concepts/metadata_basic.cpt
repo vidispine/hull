@@ -73,7 +73,6 @@ Overwriting metadata must work properly
 * Test Object has key "metadata§annotations§default_annotation_1" with value "Default Annotation 1"
 * Test Object has key "metadata§annotations§default_annotation_2" with value "Concrete Annotation 2"
 
-
 Run namespace set via argument test
 
 * Prepare default test case for this kind including suites ""
