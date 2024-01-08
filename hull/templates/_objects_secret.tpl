@@ -27,7 +27,7 @@
 {{ include "hull.object.secret.data" (dict "PARENT_CONTEXT" $parentClone "SPEC" $spec) }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parentClone "SPEC" $spec "HULL_OBJECT_KEYS" (list "data")) }}
 {{- end }}
-type: Opaque
+type: {{ default "Opaque" $spec.type }}
 {{ end }}
 
 
