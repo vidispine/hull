@@ -31,9 +31,9 @@
 {{- define "hull.util.field" -}}
 {{- $spec := (index . "SPEC") -}}
 {{- $field := (index . "FIELD") -}}
-{{- $indent := default 0 (index . "INDENT") -}}
-{{- if hasKey $spec $field }}
-{{ $field | indent $indent }}: {{ index $spec $field }}
+{{- $indent := (index . "INDENT") | default 0 -}}
+{{- if $field | hasKey $spec -}}
+{{- (dict $field (index $spec $field)) | toYaml | indent $indent -}}
 {{- end }}
 {{- end }}
 
