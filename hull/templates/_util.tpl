@@ -1,6 +1,6 @@
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Global Merging function
 |
 */ -}}
@@ -23,8 +23,8 @@
 
 
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Helper for printing out a key value entry
 |
 */ -}}
@@ -40,8 +40,8 @@
 
 
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Helper for printing out a key value entry on a given condition
 |
 */ -}}
@@ -55,8 +55,8 @@
 
 
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Helper for printing out a dict to YAML
 |
 */ -}}
@@ -67,7 +67,7 @@
 {{- $indent := default 0 (index . "INDENT") -}}
 {{- if hasKey $spec $field }}
 {{ if not $noKey }}
-{{ $field | indent $indent }}: 
+{{ $field | indent $indent }}:
 {{ end }}
 {{- if typeIs "[]interface {}" (index $spec $field) -}}
 {{ toYaml (index $spec $field) | indent ($indent | int) }}
@@ -80,8 +80,8 @@
 
 
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Helper for printing out an object from the Kubernetes specification.
 |   Fields not to be rendered (because handled by HULL) are provided in HULL_OBJECT_KEYS
 |
@@ -108,8 +108,8 @@
 
 
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Helper for printing out an HULL based key value dictionary to an Kubernetes array
 |   Handles defaulting before rendering.
 |
@@ -137,7 +137,7 @@
 {{ if ne $key "_HULL_OBJECT_TYPE_DEFAULT_" }}
 {{ if (gt (len (keys (default dict $value))) 0) }}
 {{ $merged := dict }}
-{{ $merged = merge $value $defaultObjectSpec }}  
+{{ $merged = merge $value $defaultObjectSpec }}
 {{ include (printf "%s" $objectTemplate) (dict "PARENT_CONTEXT" $parent "SPEC" $merged "ORIGIN_SPEC" $spec "COMPONENT" $key "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 0 }}
 {{ end }}
 {{ end }}
@@ -150,8 +150,8 @@
 
 
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Create a selector dictionary
 |
 */ -}}
@@ -172,8 +172,8 @@ selector:
 
 
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Central function to determine defaults for an object instance
 |
 */ -}}
