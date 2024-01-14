@@ -63,17 +63,15 @@
 {{- define "hull.util.yaml" -}}
 {{- $spec := (index . "SPEC") -}}
 {{- $field := (index . "FIELD") -}}
-{{- $noKey := default false (index . "NO_KEY") -}}
-{{- $indent := default 0 (index . "INDENT") -}}
-{{- if hasKey $spec $field }}
-{{ if not $noKey }}
-{{ $field | indent $indent }}:
-{{ end }}
-{{- if typeIs "[]interface {}" (index $spec $field) -}}
-{{ toYaml (index $spec $field) | indent ($indent | int) }}
-{{ else }}
-{{ toYaml (index $spec $field) | indent ($indent | add1 | add1 | int) }}
-{{- end }}
+{{- $noKey := (index . "NO_KEY") | default false -}}
+{{- $indent := (index . "INDENT") | default 0 -}}
+{{- $result := (dict) -}}
+{{- if $field | hasKey $spec -}}
+{{- $result = index $result $field
+{{- if eq $noKey true -}}
+{{- $result = dict $field $result -}}
+{{- end -}}
+{{- $result | toYaml | indent $indent -}}
 {{- end }}
 {{- end }}
 
