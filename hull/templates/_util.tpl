@@ -12,11 +12,11 @@
 {{- $component := (index . "COMPONENT") -}}
 {{- $spec := (index . "SPEC") -}}
 {{- $localTemplate := (index . "LOCAL_TEMPLATE") -}}
-{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
-{{- $overrides := fromYaml (include $template .) | default (dict ) -}}
-{{- $tpl := fromYaml (include $localTemplate .) | default (dict ) -}}
-{{- if (gt (len (keys $tpl)) 0) }}
-{{- toYaml (merge $overrides $tpl) -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") | default "hull" -}}
+{{- $overrides := (include $template .) | fromYaml | default (dict) -}}
+{{- $tpl := (include $localTemplate .) | fromYaml | default (dict) -}}
+{{- if gt ($tpl | keys | len) 0 -}}
+{{- (merge $overrides $tpl) | toYaml -}}
 {{- end -}}
 {{- end -}}
 
