@@ -86,20 +86,19 @@
 */ -}}
 {{- define "hull.util.include.k8s" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
-{{- $hullObjectBaseKeys := default (list "enabled" "labels" "annotations" "staticName" "metadataNameOverride" "sources") (index . "HULL_BASE_KEYS") }}
-{{- $hullObjectKeys := default list (index . "HULL_OBJECT_KEYS") }}
-{{- $spec := default nil (index . "SPEC") -}}
-{{- $k8sSpec := dict }}
+{{- $hullObjectBaseKeys := (index . "HULL_BASE_KEYS") | default (list "enabled" "labels" "annotations" "staticName" "metadataNameOverride" "sources") -}}
+{{- $hullObjectKeys := (index . "HULL_OBJECT_KEYS") | default (list) -}}
+{{- $spec := (index . "SPEC") | default nil -}}
+{{- $k8sSpec := (dict) }}
 {{- $fields := concat $hullObjectBaseKeys $hullObjectKeys -}}
-{{- range $key,$value := $spec -}}
-{{- $t := dict -}}
-{{- if has $key $fields -}}
-{{- else }}
-{{- $k8sSpec := set $k8sSpec $key $value -}}
+{{- range $key, $value := $spec -}}
+  {{- $t := (dict) -}}
+  {{- if $fields | has $key | not -}}
+    {{- $k8sSpec := set $k8sSpec $key $value -}}
+  {{- end -}}
 {{- end -}}
-{{- end -}}
-{{ if (gt (len (keys $k8sSpec)) 0) }}
-{{ toYaml $k8sSpec }}
+{{ if gt ($k8sSpec | keys | len) 0 }}
+  {{ $k8sSpec | toYaml }}
 {{- end -}}
 {{- end -}}
 
