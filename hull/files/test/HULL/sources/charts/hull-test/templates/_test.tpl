@@ -31,8 +31,22 @@ result:
 {{ dict "result" (list (dict "name" "listreg1") (dict "name" "listreg2")) | toYaml }}
 {{- end -}}
 
-{{- define "hull.include.test.dockerconfigjson" -}}
-{{ $reg := dict "my-registry" (dict "username" "username" "password" "password" "email" "email" "auth" "dXNlcm5hbWU6cGFzc3dvcmQ=") }}
-{{ $auths := dict "auths" $reg }}
-{{ printf "%s" ($auths | toPrettyJson) }}
+{{- define "hull.include.test.dockerconfigjson.flow" -}}
+{"auths":{"my-registry":{"username":"username","password":"password","email":"email","auth":"dXNlcm5hbWU6cGFzc3dvcmQ="}}}
+{{- end -}}
+
+{{- define "hull.include.test.dockerconfigjson.code" -}}
+{{- $reg := dict "my-registry" (dict "username" "username" "password" "password" "email" "email" "auth" "dXNlcm5hbWU6cGFzc3dvcmQ=") -}}
+{{- $auths := dict "auths" $reg -}}
+{{- $auths | toYaml -}}
+{{- end -}}
+
+{{- define "hull.include.test.dockerconfigjson.code.quote" -}}
+{{- $reg := dict "my-registry" (dict "username" "username" "password" "password" "email" "email" "auth" "dXNlcm5hbWU6cGFzc3dvcmQ=") -}}
+{{- $auths := dict "auths" $reg -}}
+{{- $auths | toYaml -}}
+{{- end -}}
+
+{{- define "hull.include.test.dockerconfigjson.flow.quote" -}}
+'{"auths":{"my-registry":{"username":"username","password":"password","email":"email","auth":"dXNlcm5hbWU6cGFzc3dvcmQ="}}}'
 {{- end -}}

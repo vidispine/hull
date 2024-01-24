@@ -103,7 +103,9 @@ The end to end process using HULL contains the following phases:
 
     2. The `hull.yaml` in the templates folder is processed. 
   
-        An iteration over all implemented object types and defined and enabled object instances hands over to the object instance definition to the appropriate rendering template. Different basic rendering templates are triggered for:
+        First the complete `values.yaml` dictionary is traversed and any [transformations](./transformations.md) provided are evaluated. This includes all objects including `_HULL_OBJECT_TYPE_DEFAULT_` instances and `sources` which are not rendered themselves.
+    
+        Next an iteration over all implemented object types and defined and enabled object instances hands over to the object instance definition to the appropriate rendering template. Different basic rendering templates are triggered for:
 
         - objects with a simple structure:
           - `serviceaccount`
@@ -144,8 +146,7 @@ The end to end process using HULL contains the following phases:
 
         Then each object is processed individually:
         
-        1. Apply object type defaults from the `_HULL_OBJECT_TYPE_DEFAULT_` instance. 
-        2. Preprocess the YAML and apply any [transformations](transformations.md) provided.
+        1. Apply object type defaults from the `_HULL_OBJECT_TYPE_DEFAULT_` instances and merge referenced `sources` into the object source specification. 
         2. Create the [metadata section](metadata.md) of the object
         3. Process all properties handled by HULL
         4. Add remaining Kubernetes API schema properties that were defined

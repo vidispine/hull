@@ -18,6 +18,39 @@ config:
     createImagePullSecretsFromRegistries: true
     globalImageRegistryServer: ""
     globalImageRegistryToFirstRegistrySecretServer: false
+    serialization:
+      configmap:
+        enabled: true
+        fileExtensions:
+          json: toPrettyJson
+          yml: toYaml
+          yaml: toYaml
+      secret:
+        enabled: true
+        fileExtensions:
+          json: toPrettyJson
+          yml: toYaml
+          yaml: toYaml
+    postRender:
+      globalStringReplacements:
+        instanceKey:
+          enabled: false
+          string: _HULL_OBJECT_TYPE_DEFAULT_
+          replacement: OBJECT_INSTANCE_KEY
+        instanceKeyResolved:
+          enabled: false
+          string: _HULL_OBJECT_TYPE_DEFAULT_
+          replacement: OBJECT_INSTANCE_KEY_RESOLVED
+        instanceName:
+          enabled: false
+          string: _HULL_OBJECT_TYPE_DEFAULT_
+          replacement: OBJECT_INSTANCE_NAME
+    errorChecks:
+      objectYamlValid: true
+      hullGetTransformationReferenceValid: true
+      containerImageValid: true
+      virtualFolderDataPathExists: true
+      virtualFolderDataInlineValid: false
     debug:
       renderBrokenHullGetTransformationReferences: false
       renderNilWhenInlineIsNil: false

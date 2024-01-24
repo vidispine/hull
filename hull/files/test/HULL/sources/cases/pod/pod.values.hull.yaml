@@ -28,96 +28,198 @@ hull:
     secret:
       secret-one:
         data:
-          secret-one-inline.txt: 
-            inline: |
-              i only exist so a sha256 sum can be calulated of this secret-one
           secret-one-inline-one.json:
-            inline: |
-              { "key": "inline json for hash sum calculation of this secret-one-subpath-one.json" }
+            inline: |-
+              { "key": "json for hash sum calculation of this secret-one-subpath-one.json" }
+          secret-one-inline-one.txt: 
+            inline: |-
+              i only exist so a sha256 sum can be calculated from an expression like secret-one-subpath-one
+          secret-one-inline-one.yaml:
+            inline: |-
+              key: "yaml for hash sum calculation of this secret-one-subpath-one.yaml"
           secret-one-inline-two.json:
-            inline: |
-              { "key": "inline json for hash sum calculation of this secret-one-subpath-two.json" }
+            inline: |-
+              key: "json for hash sum calculation of this secret-one-subpath-two.json"
+          secret-one-inline-two.txt: 
+            inline: |-
+              i only exist so a sha256 sum can be calculated from an expression like secret-one-subpath-two
+          secret-one-inline-two.yaml:
+            inline: |-
+              { "key": "yaml for hash sum calculation of this secret-one-subpath-two.yaml" }
+          secret-one-path-one.json:
+            path: files/secret-one-path-one.json
           secret-one-path-one.txt:
             path: files/secret-one-path-one.txt
+          secret-one-path-one.yaml:
+            path: files/secret-one-path-one.yaml
+          secret-one-path-two.json:
+            path: files/secret-one-path-two.json
           secret-one-path-two.txt:
             path: files/secret-one-path-two.txt
+          secret-one-path-two.yaml:
+            path: files/secret-one-path-two.yaml
       secret-two:
         data:
-          secret-two-inline.txt: 
-            inline: |
-              i only exist so a sha256 sum can be calulated of this secret-two
           secret-two-inline-one.json:
-            inline: |
-              { "key": "inline json for hash sum calculation of this secret-two-subpath-one.json" }
+            inline: |-
+              { "key": "json for hash sum calculation of this secret-two-subpath-one.json" }
+          secret-two-inline-one.txt: 
+            inline: |-
+              i only exist so a sha256 sum can be calculated from an expression like secret-two-subpath-one
+          secret-two-inline-one.yaml:
+            inline:
+              key: "yaml for hash sum calculation of this secret-two-subpath-one.yaml"
           secret-two-inline-two.json:
-            inline: |
-              { "key": "inline json for hash sum calculation of this secret-two-subpath-two.json" }
+            inline: |-
+              { "key": "json for hash sum calculation of this secret-two-subpath-two.json" }
+          secret-two-inline-two.txt: 
+            inline: |-
+              i only exist so a sha256 sum can be calculated from an expression like secret-two-subpath-two
+          secret-two-inline-two.yaml:
+            inline:
+              key: "yaml for hash sum calculation of this secret-two-subpath-two.yaml"
+          secret-two-path-one.json:
+            path: files/secret-two-path-one.json
           secret-two-path-one.txt:
             path: files/secret-two-path-one.txt
+          secret-two-path-one.yaml:
+            path: files/secret-two-path-one.yaml
+          secret-two-path-two.json:
+            path: files/secret-two-path-two.json
           secret-two-path-two.txt:
             path: files/secret-two-path-two.txt
+          secret-two-path-two.yaml:
+            path: files/secret-two-path-two.yaml
       secret-three:
         data:
-          secret-three-inline.txt: 
-            inline: |
-              i only exist so a sha256 sum can be calulated of this secret-three
           secret-three-inline-one.json:
-            inline: |
-              { "key": "inline json for hash sum calculation of this secret-three-subpath-one.json" }
+            inline: |-
+              { "key": "json for hash sum calculation of this secret-three-subpath-one.json" }
+          secret-three-inline-one.txt: 
+            inline: |-
+              i only exist so a sha256 sum can be calculated from an expression like secret-three-subpath-one
+          secret-three-inline-one.yaml:
+            inline:
+              key: "yaml for hash sum calculation of this secret-three-subpath-one.yaml"
           secret-three-inline-two.json:
-            inline: |
-              { "key": "inline json for hash sum calculation of this secret-three-subpath-two.json" }
+            inline: |-
+              { "key": "json for hash sum calculation of this secret-three-subpath-two.json" }
+          secret-three-inline-two.txt: 
+            inline: |-
+              i only exist so a sha256 sum can be calculated from an expression like secret-three-subpath-two
+          secret-three-inline-two.yaml:
+            inline:
+              key: "yaml for hash sum calculation of this secret-three-subpath-two.yaml"
+          secret-three-path-one.json:
+            path: files/secret-three-path-one.json
           secret-three-path-one.txt:
             path: files/secret-three-path-one.txt
+          secret-three-path-one.yaml:
+            path: files/secret-three-path-one.yaml
+          secret-three-path-two.json:
+            path: files/secret-three-path-two.json
           secret-three-path-two.txt:
             path: files/secret-three-path-two.txt
+          secret-three-path-two.yaml:
+            path: files/secret-three-path-two.yaml
       
     configmap:
       configmap-one:
         data:
-          configmap-one-inline.txt: 
-            inline: |
-              i only exist so a sha256 sum can be calulated of this configmap-one
           configmap-one-inline-one.json:
-            inline: |
-              { "key": "inline json for hash sum calculation of this configmap-one-subpath-one.json" }
+            inline: |-
+              { "key": "json for hash sum calculation of this configmap-one-subpath-one.json" }
+          configmap-one-inline-one.txt: 
+            inline: |-
+              i only exist so a sha256 sum can be calculated from an expression like configmap-one-subpath-one
+          configmap-one-inline-one.yaml:
+            inline:
+              key: yaml for hash sum calculation of this configmap-one-subpath-one.yaml
           configmap-one-inline-two.json:
-            inline: |
-              { "key": "inline json for hash sum calculation of this configmap-one-subpath-two.json" }
+            inline: |-
+              key: "json for hash sum calculation of this configmap-one-subpath-two.json"
+          configmap-one-inline-two.txt: 
+            inline: |-
+              i only exist so a sha256 sum can be calculated from an expression like configmap-one-subpath-two
+          configmap-one-inline-two.yaml:
+            inline: |-
+              { "key": "yaml for hash sum calculation of this configmap-one-subpath-two.yaml" }
+          configmap-one-path-one.json:
+            path: files/configmap-one-path-one.json
           configmap-one-path-one.txt:
             path: files/configmap-one-path-one.txt
+          configmap-one-path-one.yaml:
+            path: files/configmap-one-path-one.yaml
+          configmap-one-path-two.json:
+            path: files/configmap-one-path-two.json
           configmap-one-path-two.txt:
             path: files/configmap-one-path-two.txt
+          configmap-one-path-two.yaml:
+            path: files/configmap-one-path-two.yaml
       configmap-two:
         data:
-          configmap-two-inline.txt: 
-            inline: |
-              i only exist so a sha256 sum can be calulated of this configmap-two
           configmap-two-inline-one.json:
-            inline: |
-              { "key": "inline json for hash sum calculation of this configmap-two-subpath-one.json" }
+            inline: |-
+              { "key": "json for hash sum calculation of this configmap-two-subpath-one.json" }
+          configmap-two-inline-one.txt: 
+            inline: |-
+              i only exist so a sha256 sum can be calculated from an expression like configmap-two-subpath-one
+          configmap-two-inline-one.yaml:
+            inline:
+              key: "yaml for hash sum calculation of this configmap-two-subpath-one.yaml"
           configmap-two-inline-two.json:
-            inline: |
-              { "key": "inline json for hash sum calculation of this configmap-two-subpath-two.json" }
+            inline: |-
+              { "key": "json for hash sum calculation of this configmap-two-subpath-two.json" }
+          configmap-two-inline-two.txt: 
+            inline: |-
+              i only exist so a sha256 sum can be calculated from an expression like configmap-two-subpath-two
+          configmap-two-inline-two.yaml:
+            inline:
+              key: "yaml for hash sum calculation of this configmap-two-subpath-two.yaml"
+          configmap-two-path-one.json:
+            path: files/configmap-two-path-one.json
           configmap-two-path-one.txt:
             path: files/configmap-two-path-one.txt
+          configmap-two-path-one.yaml:
+            path: files/configmap-two-path-one.yaml
+          configmap-two-path-two.json:
+            path: files/configmap-two-path-two.json
           configmap-two-path-two.txt:
             path: files/configmap-two-path-two.txt
+          configmap-two-path-two.yaml:
+            path: files/configmap-two-path-two.yaml
       configmap-three:
         data:
-          configmap-three-inline.txt: 
-            inline: |
-              i only exist so a sha256 sum can be calulated of this configmap-three
           configmap-three-inline-one.json:
-            inline: |
-              { "key": "inline json for hash sum calculation of this configmap-three-subpath-one.json" }
+            inline: |-
+              { "key": "json for hash sum calculation of this configmap-three-subpath-one.json" }
+          configmap-three-inline-one.txt: 
+            inline: |-
+              i only exist so a sha256 sum can be calculated from an expression like configmap-three-subpath-one
+          configmap-three-inline-one.yaml:
+            inline:
+              key: "yaml for hash sum calculation of this configmap-three-subpath-one.yaml"
           configmap-three-inline-two.json:
-            inline: |
-              { "key": "inline json for hash sum calculation of this configmap-three-subpath-two.json" }
+            inline: |-
+              { "key": "json for hash sum calculation of this configmap-three-subpath-two.json" }
+          configmap-three-inline-two.txt: 
+            inline: |-
+              i only exist so a sha256 sum can be calculated from an expression like configmap-three-subpath-two
+          configmap-three-inline-two.yaml:
+            inline:
+              key: "yaml for hash sum calculation of this configmap-three-subpath-two.yaml"
+          configmap-three-path-one.json:
+            path: files/configmap-three-path-one.json
           configmap-three-path-one.txt:
             path: files/configmap-three-path-one.txt
+          configmap-three-path-one.yaml:
+            path: files/configmap-three-path-one.yaml
+          configmap-three-path-two.json:
+            path: files/configmap-three-path-two.json
           configmap-three-path-two.txt:
             path: files/configmap-three-path-two.txt
+          configmap-three-path-two.yaml:
+            path: files/configmap-three-path-two.yaml
     registry:
 
       example-registry:
@@ -263,6 +365,9 @@ hull:
           containers:
             remove: null
             keep:
+              image:
+                repository: quay.io/external_app
+                tag: "latest"
               ports:
                 remove: null
       
@@ -271,6 +376,9 @@ hull:
         pod:
           containers:
             main:
+              image:
+                repository: quay.io/external_app
+                tag: "latest"
               command:
                 - run
           volumes:
@@ -322,6 +430,9 @@ hull:
         pod:
           containers:
             main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               command:
                 - run
               env:
@@ -422,6 +533,9 @@ hull:
         pod:
           containers:
             main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               command:
                 - run
               envFrom:
@@ -456,11 +570,17 @@ hull:
         pod:
           containers:
             test_disabled:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               enabled: false
               command:
                 - test_disabled
             test_enabled:
               enabled: true
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               command:
                 - test_enabled
               envFrom:
@@ -563,6 +683,9 @@ hull:
               enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
                 {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
                 >>>"
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               command:
                 - test_enabled_transform
             test_disabled_transform:
@@ -572,6 +695,9 @@ hull:
               command:
                 - test_disabled_transform
             test_enabled_missing:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               command:
                 - test_enabled_missing
           initContainers:
@@ -581,6 +707,9 @@ hull:
                 - test_disabled
             test_enabled:
               enabled: true
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               command:
                 - test_enabled
               envFrom:
@@ -683,6 +812,9 @@ hull:
               enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
                 {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
                 >>>"
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               command:
                 - test_enabled_transform
             test_disabled_transform:
@@ -692,6 +824,9 @@ hull:
               command:
                 - test_disabled_transform
             test_enabled_missing:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               command:
                 - test_enabled_missing
           volumes:
@@ -728,6 +863,9 @@ hull:
                 - test_disabled
             test_enabled:
               enabled: true
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               command:
                 - _HT![ 'test_enabled' ]
               env:
@@ -782,6 +920,9 @@ hull:
                   protocol: SCTP
             test_enabled_transform:
               enabled: _HT?(index . "$").Values.hull.config.specific.switch_enabled_on
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               command:
               - _HT![ {{ (printf "%s_%s" "test_enabled" "transform") }} ]
             test_disabled_transform:
@@ -789,6 +930,9 @@ hull:
               command:
               - test_disabled_transform
             test_enabled_missing:
+              image:
+                repository: quay.io/external_app
+                tag: "latest"
               command:
               - _HT! [ {{ (printf "%s_%s" "test_enabled" "missing") }} ]
               
@@ -797,6 +941,9 @@ hull:
           containers:
             
             array_form:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               command: _HT![ 
                   {{ (index . "$").Values.hull.config.specific.some_referenced_value }}, 
                   "another_value",
@@ -804,6 +951,9 @@ hull:
                 ]
             
             bool_variants:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               env:
                 bool_field:
                   enabled: _HT?and (index . "$").Values.hull.config.specific.switch_one_enabled (index . "$").Values.hull.config.specific.switch_two_enabled
@@ -814,6 +964,9 @@ hull:
                 tag: "latest"
 
             full_example:
+              image:
+                repository: quay.io/external_app
+                tag: "latest"
               args: _HT![
                   {{ if (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}
                   "{{ (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}",
@@ -825,6 +978,9 @@ hull:
                 ]
 
             get_variants:
+              image:
+                repository: quay.io/external_app
+                tag: "latest"
               env:
                 string_defined:
                   enabled: true
@@ -870,11 +1026,17 @@ hull:
                 tag: "latest"
 
             makefullname_variants:
+              image:
+                repository: quay.io/external_app
+                tag: "latest"
               env:
                 fullname:
                   value: _HT^component-name
 
             tpl_variants:
+              image:
+                repository: quay.io/external_app
+                tag: "latest"
               env:
                 tpl_string:
                   value: _HT!{{ printf "%s-%s" (index . "$").Values.hull.config.specific.port_one (index . "$").Values.hull.config.specific.port_two }}
@@ -897,6 +1059,9 @@ hull:
         pod:
           containers:
             main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               livenessProbe: _HT*hull.config.specific.liveness_probe
               args: _HT*hull.config.specific.args_array
             deferred: _HT*hull.config.specific.deferred_container
@@ -909,6 +1074,9 @@ hull:
           containers:
             test:
               enabled: true
+              image:
+                repository: quay.io/external_app
+                tag: "latest"
               command:
                 - test_enabled
           volumes:
@@ -961,12 +1129,12 @@ hull:
                   name: configmap-one
                   mountPath: /one
                   hashsumAnnotation: true
-                configmap-one-inline-one:
+                configmap-one-inline-one.json:
                   name: configmap-one
                   mountPath: /one/subpath.json
                   subPath: configmap-one-inline-one.json
                   hashsumAnnotation: true
-                configmap-one-path-one:
+                configmap-one-path-one.txt:
                   name: configmap-one
                   mountPath: /one/subpath.txt
                   subPath: configmap-one-path-one.txt
@@ -976,14 +1144,14 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               volumeMounts:
-                configmap-two-inline-one:
+                configmap-two-inline-one.json:
                   name: configmap-two
                   mountPath: /two/subpath.json
                   subPath: configmap-two-inline-one.json
                   hashsumAnnotation: true
-                configmap-two-path-one:
+                configmap-two-path-one.txt:
                   name: configmap-two
-                  mountPath: /two/subpath.json
+                  mountPath: /two/subpath.txt
                   subPath: configmap-two-path-one.txt
                   hashsumAnnotation: false
             three-configmap:
@@ -991,21 +1159,21 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               volumeMounts:
-                configmap-three-path-one:
+                configmap-three-path-one.txt:
                   name: configmap-three
                   mountPath: /three/subpath.txt
                   subPath: configmap-three-path-one.txt
-                configmap-three-path-two:
+                configmap-three-path-two.txt:
                   name: configmap-three
                   mountPath: /three/subpath.txt
                   subPath: configmap-three-path-two.txt
                   hashsumAnnotation: false
-                configmap-three-inline-one:
+                configmap-three-inline-one.json:
                   name: configmap-three
                   mountPath: /three/subpath.txt
                   subPath: configmap-three-inline-one.json
                   hashsumAnnotation: true
-                configmap-three-inline-two:
+                configmap-three-inline-two.json:
                   name: configmap-three
                   mountPath: /three/subpath.txt
                   subPath: configmap-three-inline-two.json
@@ -1018,12 +1186,12 @@ hull:
                   name: secret-one
                   mountPath: /one
                   hashsumAnnotation: true
-                secret-one-inline-one:
+                secret-one-inline-one.json:
                   name: secret-one
                   mountPath: /one/subpath.json
                   subPath: secret-one-inline-one.json
                   hashsumAnnotation: true
-                secret-one-path-one:
+                secret-one-path-one.txt:
                   name: secret-one
                   mountPath: /one/subpath.txt
                   subPath: secret-one-path-one.txt
@@ -1033,14 +1201,14 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               volumeMounts:
-                secret-two-inline-one:
+                secret-two-inline-one.json:
                   name: secret-two
                   mountPath: /two/subpath.json
                   subPath: secret-two-inline-one.json
                   hashsumAnnotation: true
-                secret-two-path-one:
+                secret-two-path-one.txt:
                   name: secret-two
-                  mountPath: /two/subpath.json
+                  mountPath: /two/subpath.txt
                   subPath: secret-two-path-one.txt
                   hashsumAnnotation: false
             three-secret:
@@ -1048,21 +1216,21 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               volumeMounts:
-                secret-three-path-one:
+                secret-three-path-one.txt:
                   name: secret-three
                   mountPath: /three/subpath.txt
                   subPath: secret-three-path-one.txt
-                secret-three-path-two:
+                secret-three-path-two.txt:
                   name: secret-three
                   mountPath: /three/subpath.txt
                   subPath: secret-three-path-two.txt
                   hashsumAnnotation: false
-                secret-three-inline-one:
+                secret-three-inline-one.json:
                   name: secret-three
-                  mountPath: /three/subpath.txt
+                  mountPath: /three/subpath.json
                   subPath: secret-three-inline-one.json
                   hashsumAnnotation: true
-                secret-three-inline-two:
+                secret-three-inline-two.json:
                   name: secret-three
                   mountPath: /three/subpath.txt
                   subPath: secret-three-inline-two.json
@@ -1072,11 +1240,11 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               volumeMounts:
-                configmap-one-inline-two:
+                configmap-one-inline-two.json:
                   name: configmap-one
                   mountPath: /one/subpath.json
                   subPath: configmap-one-inline-two.json
-                configmap-one-path-two:
+                configmap-one-path-two.txt:
                   name: configmap-one
                   mountPath: /one/subpath.txt
                   subPath: configmap-one-path-two.txt
@@ -1085,38 +1253,38 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               volumeMounts:
-                configmap-two-inline-two:
+                configmap-two-inline-two.json:
                   name: configmap-two
                   mountPath: /two/subpath.json
                   subPath: configmap-two-inline-two.json
                   hashsumAnnotation: false
-                configmap-two-path-two:
+                configmap-two-path-two.txt:
                   name: configmap-two
-                  mountPath: /two/subpath.json
+                  mountPath: /two/subpath.txt
                   subPath: configmap-two-path-two.txt
                   hashsumAnnotation: true
             three-configmap:
               image:
                 repository: my/image/repo
                 tag: "99.9"
-              volumeMounts:                
-                configmap-three-path-one:
+              volumeMounts:
+                configmap-three-path-one.txt:
                   name: configmap-three
                   mountPath: /three/subpath.txt
                   subPath: configmap-three-path-one.txt
                   hashsumAnnotation: true
-                configmap-three-path-two:
+                configmap-three-path-two.txt:
                   name: configmap-three
                   mountPath: /three/subpath.txt
                   subPath: configmap-three-path-two.txt
                   hashsumAnnotation: false
-                configmap-three-inline-one:
+                configmap-three-inline-one.json:
                   name: configmap-three
-                  mountPath: /three/subpath.txt
+                  mountPath: /three/subpath.json
                   subPath: configmap-three-inline-one.json
-                configmap-three-inline-two:
+                configmap-three-inline-two.json:
                   name: configmap-three
-                  mountPath: /three/subpath.txt
+                  mountPath: /three/subpath.json
                   subPath: configmap-three-inline-two.json
                   hashsumAnnotation: false
             one-secret:
@@ -1124,11 +1292,11 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               volumeMounts:
-                secret-one-inline-two:
+                secret-one-inline-two.json:
                   name: secret-one
                   mountPath: /one/subpath.json
                   subPath: secret-one-inline-two.json
-                secret-one-path-two:
+                secret-one-path-two.txt:
                   name: secret-one
                   mountPath: /one/subpath.txt
                   subPath: secret-one-path-two.txt
@@ -1137,12 +1305,12 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               volumeMounts:
-                secret-two-inline-two:
+                secret-two-inline-two.json:
                   name: secret-two
                   mountPath: /two/subpath.json
                   subPath: secret-two-inline-two.json
                   hashsumAnnotation: false
-                secret-two-path-two:
+                secret-two-path-two.txt:
                   name: secret-two
                   mountPath: /two/subpath.json
                   subPath: secret-two-path-two.txt
@@ -1151,24 +1319,24 @@ hull:
               image:
                 repository: my/image/repo
                 tag: "99.9"
-              volumeMounts:                
-                secret-three-path-one:
+              volumeMounts:
+                secret-three-path-one.txt:
                   name: secret-three
                   mountPath: /three/subpath.txt
                   subPath: secret-three-path-one.txt
                   hashsumAnnotation: true
-                secret-three-path-two:
+                secret-three-path-two.txt:
                   name: secret-three
                   mountPath: /three/subpath.txt
                   subPath: secret-three-path-two.txt
                   hashsumAnnotation: false
-                secret-three-inline-one:
+                secret-three-inline-one.json:
                   name: secret-three
-                  mountPath: /three/subpath.txt
+                  mountPath: /three/subpath.json
                   subPath: secret-three-inline-one.json
-                secret-three-inline-two:
+                secret-three-inline-two.json:
                   name: secret-three
-                  mountPath: /three/subpath.txt
+                  mountPath: /three/subpath.json
                   subPath: secret-three-inline-two.json
                   hashsumAnnotation: false
           volumes:
@@ -1224,13 +1392,13 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               env:
-                configmap-two-inline-one:
+                configmap-two-inline-one.json:
                   valueFrom:
                     configMapKeyRef:
                       name: configmap-two
                       key: configmap-two-inline-one.json
                       hashsumAnnotation: true
-                configmap-two-path-one:
+                configmap-two-path-one.txt:
                   valueFrom:
                     configMapKeyRef:
                       name: configmap-two
@@ -1246,19 +1414,19 @@ hull:
                     configMapKeyRef:
                       name: configmap-three
                       key: configmap-three-path-one.txt
-                configmap-three-path-two:
+                configmap-three-path-two.txt:
                   valueFrom:
                     configMapKeyRef:
                       name: configmap-three
                       key: configmap-three-path-two.txt
                       hashsumAnnotation: false
-                configmap-three-inline-one:
+                configmap-three-inline-one.json:
                   valueFrom:
                     configMapKeyRef:
                       name: configmap-three
                       key: configmap-three-inline-one.json
                       hashsumAnnotation: true
-                configmap-three-inline-two:
+                configmap-three-inline-two.json:
                   valueFrom:
                     configMapKeyRef:
                       name: configmap-three
@@ -1273,13 +1441,13 @@ hull:
                     name: secret-one
                     hashsumAnnotation: true
               env:
-                secret-one-inline-one:
+                secret-one-inline-one.json:
                   valueFrom:
                     secretKeyRef:
                       name: secret-one
                       key: secret-one-inline-one.json
                       hashsumAnnotation: true
-                secret-one-path-one:
+                secret-one-path-one.json:
                   valueFrom:
                     secretKeyRef:
                       name: secret-one
@@ -1290,13 +1458,13 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               env:
-                secret-two-inline-one:
+                secret-two-inline-one.json:
                   valueFrom:
                     secretKeyRef:
                       name: secret-two
                       key: secret-two-inline-one.json
                       hashsumAnnotation: true
-                secret-two-path-one:
+                secret-two-path-one.txt:
                   valueFrom:
                     secretKeyRef:
                       name: secret-two
@@ -1307,24 +1475,24 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               env:
-                secret-three-path-one:
+                secret-three-path-one.txt:
                   valueFrom:
                     secretKeyRef:
                       name: secret-three
                       key: secret-three-path-one.txt
-                secret-three-path-two:
+                secret-three-path-two.txt:
                   valueFrom:
                     secretKeyRef:
                       name: secret-three
                       key: secret-three-path-two.txt
                       hashsumAnnotation: false
-                secret-three-inline-one:
+                secret-three-inline-one.json:
                   valueFrom:
                     secretKeyRef:
                       name: secret-three
                       key: secret-three-inline-one.json
                       hashsumAnnotation: true
-                secret-three-inline-two:
+                secret-three-inline-two.json:
                   valueFrom:
                     secretKeyRef:
                       name: secret-three
@@ -1335,12 +1503,12 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               env:
-                configmap-one-inline-two:
+                configmap-one-inline-two.json:
                   valueFrom:
                     configMapKeyRef:
                       name: configmap-one
                       key: configmap-one-inline-two.json
-                configmap-one-path-two:
+                configmap-one-path-two.txt:
                   valueFrom:
                     configMapKeyRef:
                       name: configmap-one
@@ -1350,13 +1518,13 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               env:
-                configmap-two-inline-two:
+                configmap-two-inline-two.json:
                   valueFrom:
                     configMapKeyRef:
                       name: configmap-two
                       key: configmap-two-inline-two.json
                       hashsumAnnotation: false
-                configmap-two-path-two:
+                configmap-two-path-two.txt:
                   valueFrom:
                     configMapKeyRef:
                       name: configmap-two
@@ -1367,24 +1535,24 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               env:                
-                configmap-three-path-one:
+                configmap-three-path-one.txt:
                   valueFrom:
                     configMapKeyRef:
                       name: configmap-three
                       key: configmap-three-path-one.txt
                       hashsumAnnotation: true
-                configmap-three-path-two:
+                configmap-three-path-two.txt:
                   valueFrom:
                     configMapKeyRef:
                       name: configmap-three
                       key: configmap-three-path-two.txt
                       hashsumAnnotation: false
-                configmap-three-inline-one:
+                configmap-three-inline-one.json:
                   valueFrom:
                     configMapKeyRef:
                       name: configmap-three
                       key: configmap-three-inline-one.json
-                configmap-three-inline-two:
+                configmap-three-inline-two.json:
                   valueFrom:
                     configMapKeyRef:
                       name: configmap-three
@@ -1395,12 +1563,12 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               env:
-                secret-one-inline-two:
+                secret-one-inline-two.json:
                   valueFrom:
                     secretKeyRef:
                       name: secret-one
                       key: secret-one-inline-two.json
-                secret-one-path-two:
+                secret-one-path-two.txt:
                   valueFrom:
                     secretKeyRef:
                       name: secret-one
@@ -1410,13 +1578,13 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               env:
-                secret-two-inline-two:
+                secret-two-inline-two.json:
                   valueFrom:
                     secretKeyRef:
                       name: secret-two
                       key: secret-two-inline-two.json
                       hashsumAnnotation: false
-                secret-two-path-two:
+                secret-two-path-two.txt:
                   valueFrom:
                     secretKeyRef:
                       name: secret-two
@@ -1427,24 +1595,24 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
               env:                
-                secret-three-path-one:
+                secret-three-path-one.txt:
                   valueFrom:
                     secretKeyRef:
                       name: secret-three
                       key: secret-three-path-one.txt
                       hashsumAnnotation: true
-                secret-three-path-two:
+                secret-three-path-two.txt:
                   valueFrom:
                     secretKeyRef:
                       name: secret-three
                       key: secret-three-path-two.txt
                       hashsumAnnotation: false
-                secret-three-inline-one:
+                secret-three-inline-one.json:
                   valueFrom:
                     secretKeyRef:
                       name: secret-three
                       key: secret-three-inline-one.json
-                secret-three-inline-two:
+                secret-three-inline-two.json:
                   valueFrom:
                     secretKeyRef:
                       name: secret-three
@@ -1554,3 +1722,87 @@ hull:
             my-pod:
               image:
                 repository: hello-world
+
+      test-serializing:
+        pod:
+          containers:
+            my-pod:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              env:
+                test-include-code-list-empty: 
+                  value: _HT/result/hull.include.test.imagepullsecrets.emptylist
+                test-include-code-list-empty-json: 
+                  value: _HT/toJson|result/hull.include.test.imagepullsecrets.emptylist
+                test-include-code-list-empty-prettyjson: 
+                  value: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.emptylist
+                test-include-code-list-empty-rawjson: 
+                  value: _HT/toRawJson|result/hull.include.test.imagepullsecrets.emptylist
+                test-include-code-list-empty-yaml: 
+                  value: _HT/toYaml|result/hull.include.test.imagepullsecrets.emptylist
+                test-include-code-list-empty-string: 
+                  value: _HT/toString|result/hull.include.test.imagepullsecrets.emptylist
+                test-include-code-list-non-empty: 
+                  value: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+                test-include-code-list-non-empty-json: 
+                  value: _HT/toJson|result/hull.include.test.imagepullsecrets.nonemptylist
+                test-include-code-list-non-empty-prettyjson: 
+                  value: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.nonemptylist
+                test-include-code-list-non-empty-rawjson: 
+                  value: _HT/toRawJson|result/hull.include.test.imagepullsecrets.nonemptylist
+                test-include-code-list-non-empty-yaml: 
+                  value: _HT/toYaml|result/hull.include.test.imagepullsecrets.nonemptylist
+                test-include-code-list-non-empty-string: 
+                  value: _HT/toString|result/hull.include.test.imagepullsecrets.nonemptylist
+                test-include-flow-dict: 
+                  value: _HT/hull.include.test.dockerconfigjson.flow
+                test-include-code-dict: 
+                  value: _HT/hull.include.test.dockerconfigjson.code
+                test-include-code-dict-json: 
+                  value: _HT/toJson|hull.include.test.dockerconfigjson.code
+                test-include-code-dict-prettyjson: 
+                  value: _HT/toPrettyJson|hull.include.test.dockerconfigjson.code
+                test-include-code-dict-rawjson: 
+                  value: _HT/toRawJson|hull.include.test.dockerconfigjson.code
+                test-include-code-dict-yaml: 
+                  value: _HT/toYaml|hull.include.test.dockerconfigjson.code
+                test-include-code-dict-string: 
+                  value: _HT/toString|hull.include.test.dockerconfigjson.code
+                test-include-code-dict-quote: 
+                  value: _HT/hull.include.test.dockerconfigjson.code
+                test-include-code-dict-quote-json: 
+                  value: _HT/toJson|hull.include.test.dockerconfigjson.code.quote
+                test-include-code-dict-quote-prettyjson: 
+                  value: _HT/toPrettyJson|hull.include.test.dockerconfigjson.code.quote
+                test-include-code-dict-quote-rawjson: 
+                  value: _HT/toRawJson|hull.include.test.dockerconfigjson.code.quote
+                test-include-code-dict-quote-yaml: 
+                  value: _HT/toYaml|hull.include.test.dockerconfigjson.code.quote
+                test-include-code-dict-quote-string: 
+                  value: _HT/toString|hull.include.test.dockerconfigjson.code.quote
+                test-get-dict: 
+                  value: _HT*hull.config.specific.dict_mixed_content
+                test-get-dict-json: 
+                  value: _HT*toJson|hull.config.specific.dict_mixed_content
+                test-get-dict-prettyjson: 
+                  value: _HT*toPrettyJson|hull.config.specific.dict_mixed_content
+                test-get-dict-rawjson: 
+                  value: _HT*toRawJson|hull.config.specific.dict_mixed_content
+                test-get-dict-yaml: 
+                  value: _HT*toYaml|hull.config.specific.dict_mixed_content
+                test-get-dict-string: 
+                  value: _HT*toString|hull.config.specific.dict_mixed_content
+                test-get-list: 
+                  value: _HT*hull.config.specific.dict_mixed_content.list
+                test-get-list-json: 
+                  value: _HT*toJson|hull.config.specific.dict_mixed_content.list
+                test-get-list-prettyjson: 
+                  value: _HT*toPrettyJson|hull.config.specific.dict_mixed_content.list
+                test-get-list-rawjson: 
+                  value: _HT*toRawJson|hull.config.specific.dict_mixed_content.list
+                test-get-list-yaml: 
+                  value: _HT*toYaml|hull.config.specific.dict_mixed_content.list
+                test-get-list-string: 
+                  value: _HT*toString|hull.config.specific.dict_mixed_content.list
+                

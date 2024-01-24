@@ -1,5 +1,7 @@
 hull:
   config:
     general:
+      errorChecks:
+        virtualFolderDataPathExists: false
       debug:
         renderPathMissingWhenPathIsNonExistent: true
