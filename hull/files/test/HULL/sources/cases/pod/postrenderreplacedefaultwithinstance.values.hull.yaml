@@ -1,0 +1,32 @@
+hull:
+  config:
+    general:
+      postRender:
+        globalStringReplacements:
+          instanceKey:
+            enabled: true
+          instanceName:
+            enabled: true
+            string: ___INSTANCE_NAME___
+  
+  objects:
+    <OBJECT_TYPE>:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations:
+          instance-key-from-string: _HULL_OBJECT_TYPE_DEFAULT_
+          instance-key-embedded-in-string: abc_HULL_OBJECT_TYPE_DEFAULT_def
+          instance-name-from-string: ___INSTANCE_NAME___
+          instance-key-from-transformation: _HT!{{ printf "%s" (index . "OBJECT_INSTANCE_KEY") }}
+
+        pod:
+          containers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              image:
+                tag: _HULL_OBJECT_TYPE_DEFAULT_
+      
+      post-rendering-tag:
+        pod:
+          containers:
+            main:
+              image:
+                repository: tagisinstancekey

@@ -1,0 +1,20 @@
+hull:
+  config:
+    general:
+      errorChecks:
+        virtualFolderDataPathExists: false
+        virtualFolderDataInlineValid: false
+  objects:
+    <OBJECT_TYPE>:
+      virtual-folder-inline-invalid:
+        data: 
+          invalid:
+            inline:
+      virtual-folder-inline-null:
+        data: 
+          nothing:
+            inline: null
+      virtual-folder-path-invalid:
+        data: 
+          invalid:
+            path: files/nothing-here

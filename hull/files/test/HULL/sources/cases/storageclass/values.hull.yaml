@@ -82,5 +82,9 @@ hull:
         provisioner: "local-volume"        
     
       metadata-stringify:
-        provisioner: "local-volume"  
+        provisioner: "local-volume"
+
+      test-serializing:
+        provisioner: "local-volume"
+
 ###################################################
