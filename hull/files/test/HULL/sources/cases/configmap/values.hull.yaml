@@ -5,16 +5,6 @@
 ###################################################
 ### CONFIG
 hull:
-  config:
-    specific: # Here you can put all that is particular configuration for your app
-      value_to_resolve_1: trans
-      value_to_resolve_2: formation
-      resolve_me: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
-        {{ printf \"%s%s\" (index . \"PARENT\").Values.hull.config.specific.value_to_resolve_1 (index . \"PARENT\").Values.hull.config.specific.value_to_resolve_2 }}
-        >>>"
-      test_no_object_instance_key: _HT!{{ (index . "OBJECT_INSTANCE_KEY") }}
-      test_no_object_type: _HT!{{ (index . "OBJECT_TYPE") }}
-      
   ###################################################
 
   ###################################################
@@ -24,179 +14,7 @@ hull:
 
   # CONFIGMAPS
     configmap:
-      _HULL_OBJECT_TYPE_DEFAULT_:
-        data:
-          default_inline_1:
-            inline: Default Inline 1
-          default_inline_2:
-            inline: Default Inline 2
-          default_file_1.json:
-            path: files/default_file_1.json
-          default_file_2.yaml:
-            path: files/default_file_2.yaml
-          non_existent:
-            path: files/non_existent
-      
-      custom-default-template-1:
-        data:
-          default_inline_1:
-            inline: Default Inline 1
-          default_file_1.json:
-            path: files/default_file_1.json
-
-
-      defaults-no-overwrite:
-        enabled: true
-        staticName: false
-
-      defaults-overwrite:
-        enabled: true
-        staticName: false
-        data:
-          concrete_inline_1:
-            inline: |-
-              Concrete Inline 1
-          default_inline_2:
-            inline: Concrete Inline 2
-          concrete_file_1.json:
-            path: files/concrete_file_1.json
-          default_file_2.yaml:
-            path: files/concrete_file_2.yaml
-
-      no-templating:
-        enabled: true
-        staticName: false
-        data:
-          concrete_file_3_templated.yaml:
-            path: files/concrete_file_3.yaml
-          concrete_file_3_untemplated.yaml:
-            path: files/concrete_file_3.yaml
-            noTemplating: true
-          inline_templated.txt:
-            inline: |-
-              This is an inline with a pointer to a {{ .Values.hull.config.specific.resolve_me }}.
-          inline_untemplated.txt: 
-            inline: |-
-              This is an inline with a pointer to a {{ .Values.hull.config.specific.resolve_me }}.
-            noTemplating: true
-          an_inline_secret.txt: # ... an inline specified content or ...
-            inline: |- 
-              Top secret contents
-              spread over 
-              multiple lines...
-          contents_from_an_external_file.txt: # ... something from an external file.
-            path: files/my_secret.txt 
-
-      transformation-resolved:
-        enabled: true
-        staticName: false
-        data:
-          concrete_file_4_resolved.txt:
-            path: files/concrete_file_4.txt
-          equal_sign_preservation:
-            inline: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
-              transformation = {{ (index . \"PARENT\").Values.hull.config.specific.value_to_resolve_1 }}{{ (index . \"PARENT\").Values.hull.config.specific.value_to_resolve_2 }}
-              >>>"
-
-      transformation-resolved-short:
-        enabled: true
-        staticName: false
-        data:
-          concrete_file_4_resolved.txt:
-            path: files/concrete_file_4.txt
-          equal_sign_preservation:
-            inline: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
-              transformation = {{ (index . \"$\").Values.hull.config.specific.value_to_resolve_1 }}{{ (index . \"$\").Values.hull.config.specific.value_to_resolve_2 }}
-              >>>"
-      
-      data-enabled-false-true:
-        enabled: true
-        staticName: false
-        data:
-          test_disabled:
-            enabled: false
-            inline: "This shall not appear in ConfigMap because it is disabled."
-          test_enabled:
-            enabled: true
-            inline: "This shall appear in ConfigMap because enabled property is true"
-          test_disabled_transform:
-            enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
-              {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}
-              >>>"
-            inline: "This shall not appear in ConfigMap because enabled property is false via transformation"
-          test_enabled_transform:
-            enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
-              {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_on }}
-              >>>"
-            inline: "This shall appear in ConfigMap because enabled property is true via transformation"
-          test_enabled_missing:
-            inline: "This shall appear in ConfigMap because enabled property is missing"
-
-      test-get-variants:
-        data:
-          bool_defined_true:
-            inline: _HT*hull.config.specific.bool_defined_true
-            noTemplating: true
-          bool_defined_false:
-            inline: _HT*hull.config.specific.bool_defined_false
-          bool_undefined:
-            inline: _HT*hull.config.specific.bool_undefined
-          string_defined:
-            inline: _HT*hull.config.specific.string_defined
-          string_empty:
-            inline: _HT*hull.config.specific.string_empty
-          string_undefined:
-            inline: _HT*hull.config.specific.string_undefined
-          number_defined:
-            inline: _HT*hull.config.specific.number_defined
-          number_undefined:
-            inline: _HT*hull.config.specific.number_undefined
-          key_with_dots_in_it: 
-            inline: _HT*hull.config.specific.key§with§dots§in§it
-          
-      test-include-transformation:
-        labels: _HT/labels/hull.metadata.labels:COMPONENT:"overwritten_component"
-        annotations: _HT/hull.metadata.labels.selector:COMPONENT:"overwritten_component"
-        data:
-          include_name:
-            inline: _HT/hull.metadata.name:COMPONENT:"test"
-          include_name_with_parent:
-            inline: _HT/hull.metadata.name:PARENT_CONTEXT:(index . "$"):COMPONENT:"test"
-          escape:
-            inline: _HT/hull.metadata.name:COMPONENT:"split§by§colon"
-          chart_ref:
-            inline: _HT/hull.metadata.chartref
-          object_instance_key:
-            inline: _HT!{{ (index . "OBJECT_INSTANCE_KEY") }}
-          object_type:
-            inline: _HT!{{ (index . "OBJECT_TYPE") }}
-          object_instance_key_include:
-            inline: _HT/hull.metadata.name:COMPONENT:(index . "OBJECT_INSTANCE_KEY")
-          object_type_include:
-            inline: _HT/hull.metadata.name:COMPONENT:(index . "OBJECT_TYPE")
-          test_no_object_instance_key:
-            inline: _HT*hull.config.specific.test_no_object_instance_key
-          test_no_object_type:
-            inline: _HT*hull.config.specific.test_no_object_type
-
-      inline-precedence:
-        data:
-          test1:
-            inline: Inline Content
-            path: files/test.txt
-          test2:            
-            path: files/test.txt
-            inline: Inline Content
-
-      special-cases:
-        data:
-          empty:
-            inline: ""
-          nothing:
-            inline: 
-          nil: 
-            inline: _HT!{{ default nil nil }}
-
+    
       binary-data-hull:
         binaryData:
           binary_from_file:
@@ -218,5 +36,7 @@ hull:
           default_inline_1:
             inline: Default Inline 1
           default_file_1.json:
-            path: files/default_file_1.json          
+            path: files/default_file_1.json
+      
+
 ###################################################

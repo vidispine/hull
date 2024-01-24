@@ -1,6 +1,6 @@
 apiVersion: v2
 name: hull
-version: "1.27.9"
+version: "1.27.10"
 description: HULL - Helm Uniform Layer Library
 type: library
 keywords:

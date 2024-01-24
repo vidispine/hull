@@ -1,0 +1,56 @@
+hull:
+  config:
+    general:
+      postRender:
+        globalStringReplacements:
+          instanceKey:
+            enabled: true
+            string: _HULL_OBJECT_TYPE_DEFAULT_
+            replacement: OBJECT_INSTANCE_KEY
+          instanceKeyResolved:
+            enabled: true
+            string: $$$OBJECT_INSTANCE_KEY_RESOLVED$$$
+            replacement: OBJECT_INSTANCE_KEY_RESOLVED
+          instanceName:
+            enabled: true
+            string: $$$OBJECT_INSTANCE_NAME$$$
+            replacement: OBJECT_INSTANCE_NAME
+  objects:
+    deployment:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        pod:
+          containers:
+            $$$OBJECT_INSTANCE_KEY_RESOLVED$$$:
+              image:
+                repository: somerepo
+                tag: _HT!{{ (index . "OBJECT_INSTANCE_KEY") }}
+              env:
+                OBJECT_INSTANCE_KEY:
+                  value: _HULL_OBJECT_TYPE_DEFAULT_
+                OBJECT_INSTANCE_KEY_RESOLVED:
+                  value: $$$OBJECT_INSTANCE_KEY_RESOLVED$$$
+                OBJECT_INSTANCE_NAME:
+                  value: $$$OBJECT_INSTANCE_NAME$$$
+      source:
+        enabled: false
+        pod:
+          containers:
+            $$$CONTAINER$$$:
+              image:
+                repository: somerepo
+                tag: _HT!{{ (index . "OBJECT_INSTANCE_KEY") }}
+              env:
+                OBJECT_INSTANCE_KEY:
+                  value: _HULL_OBJECT_TYPE_DEFAULT_
+                OBJECT_INSTANCE_KEY_RESOLVED:
+                  value: $$$OBJECT_INSTANCE_KEY_RESOLVED$$$
+                OBJECT_INSTANCE_NAME:
+                  value: $$$OBJECT_INSTANCE_NAME$$$
+      a: {}
+      b: {}
+      c: {}
+      d:  
+        staticName: true
+      e: 
+        metadataNameOverride: overwrite-old-name
+

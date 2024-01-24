@@ -103,6 +103,10 @@ hull:
       metadata-stringify:
         addressType: FQDN
         endpoints: []
+      
+      test-serializing:
+        addressType: FQDN
+        endpoints: []
 
       test-one:
         addressType: FQDN

@@ -1,0 +1,7 @@
+hull:
+  objects:
+    <OBJECT_TYPE>:
+      virtual-folder-path-invalid:
+        data: 
+          invalid:
+            path: files/nothing-here
