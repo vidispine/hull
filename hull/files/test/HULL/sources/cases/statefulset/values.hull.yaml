@@ -498,6 +498,10 @@ hull:
         pod:
           containers: {}
 
+      test-serializing:
+        serviceName: pull-secrets-include-nonempty-list
+        pod:
+          containers: {}
 
       
   ###################################################

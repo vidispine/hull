@@ -1,10 +1,15 @@
 # Changelog
 ------------------
-[1.28.7]
+[1.28.8]
 ------------------
 CHANGES:
-- removed all required field definitions from values.schema.json. Required fields are helpful on the output side because they indicate which fields are important in the rendered output but on input side side they block the full potential of efficient defaulting. When present, The JSON schema demands that they are added to all individual instances of an object - even when a source or _HULL_OBJECT_TYPE_DEFAULT_ has already set them appropriately and concisely. This leads to unnecessary bloat and complexity in the values.yaml and therefore the usage of required fields in the JSON schema was dropped favor of cleaner chart design.
-- added tests to solidify expectations on workarounds for YAML parser issues with large numbers (unwanted rendering in scientific notation, unwanted interpretation of strings as scientific notation). The issues mentioned [in this report](https://github.com/vidispine/hull/issues/262) cannot be solved in HULL but the ests should from now on indicate if something has changed in Helm about the applicability of the workarounds, thanks [seniorquico](https://github.com/seniorquico)
+- removed hardcoded `type: Opaque` and allow to freely set type of Secrets, thanks [khmarochos](https://github.com/khmarochos) for [PR](https://github.com/vidispine/hull/pull/275)
+- enabled specification of `configmap` and `secret` `data` inline` fields as dictionaries or lists and added implicit and explicit serialization to `configmap` and `secret` `data` entries. Implicit and automatic serialization takes place for files ending with `.json` (`toPrettyJson`) and files ending with `.yaml` and `.yml` (`toYaml`) if the `inline` content is a dictionary or a list. Explicit serialization is possible using the new `serialization` property for `data` elements and can be applied to dictionary, list and string `inline` entries and string `path` contents. Thanks [khmarochos](https://github.com/khmarochos) for the idea [in this report](https://github.com/vidispine/hull/issues/267)
+- added optional serialization arguments to `_HT/` and `_HT*` to serialize dictioanry and lists `toJson`, `toPrettyJson`, `toRawJson`, `toString` or `toYaml`, also thanks [khmarochos](https://github.com/khmarochos) for the idea [in this report](https://github.com/vidispine/hull/issues/267)
+- added optional `postRender` option to inject object instance key or object name strings into rendered object YAML. This enables very efficient specification of multiple identical object instances via the `sources` and `_HULL_OBJECT_TYPE_DEFAULT_` feature and last-minute insertion of the actual object instance key or name into the rendered YAML string. Handle with caution since this can invalidate the YAML structure!
+- added error checks in HULL to prevent common configuration errors by failing the Helm command. By default verify `image` specifications exist and are valid for all `containers`, files pointed to via `path` physically exist and all tree elements in a `_HT*` references are resolvable
 
 FIXES:
-- fixed bug where imagePullSecrets cannot be overwritten with empty list, thanks [khmarochos](https://github.com/khmarochos)
+- fixed hashsumAnnotation calculation of secrets incorrectly being done on Base64 encoded value instead of decoded value
+- centralized `configmap` and `secret` functionality and tests to guarantee exact same handling whether content is defined `inline` or in a file with `path`. Code difference between `secret` and `configmap` reduced to only late base64 value encoding in the case of secrets.
+- improved code in helper functions, thanks [JuryA](https://github.com/JuryA) for [PR](https://github.com/vidispine/hull/pull/277)

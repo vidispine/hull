@@ -1,5 +1,16 @@
 hull:
   config:
     general:
+      errorChecks:
+        virtualFolderDataPathExists: false
+        virtualFolderDataInlineValid: false
       debug:
         renderNilWhenInlineIsNil: true
+  objects:
+    <OBJECT_TYPE>:
+      special-cases:
+        data:
+          nothing:
+            inline: 
+          nil: 
+            inline: _HT!{{ default nil nil }}

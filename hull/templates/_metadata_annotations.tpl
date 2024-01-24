@@ -66,7 +66,10 @@ annotations:
 {{ $configmaps := dict }}
 {{ $secrets := dict }}
 {{ $annotations := dict }}
-{{ range $container := default list (concat (dig "spec" "initContainers" list $pod) (dig "spec" "containers" list $pod)) }}
+{{ if (not (kindIs "invalid" $pod)) }}
+{{ $containers := default list (dig "spec" "containers" list $pod) }}
+{{ $initContainers := default list (dig "spec" "initContainers" list $pod) }}
+{{ range $container := concat $containers $initContainers }}
   {{ range $mount := dig "volumeMounts" list $container }}
     {{ range $volume := dig "spec" "volumes" list $pod }}
       {{ if (or (hasKey $volume "secret") (hasKey $volume "configMap")) }}
@@ -115,15 +118,24 @@ annotations:
       {{ $objectSpec := include (printf "hull.object.%s" $type) (dict "PARENT_CONTEXT" $parent "SPEC" $spec "OBJECT_TYPE" $type "COMPONENT" $key "DEFAULT_COMPONENT" $objectDefault) | fromYaml }}
       {{ if (hasKey (index $dict $objectSpec.metadata.name) "_ALL_") }}
         {{ range $dataKey,$dataValue := $objectSpec.data }}
-          {{ $annotations = merge $annotations (dict (printf "%s/%s" (printf "hashsum.%s.%s" $type $objectSpec.metadata.name | trunc 253) ($dataKey | trunc 63)) (sha256sum $dataValue)) }}
+          {{- $decodedValue := $dataValue -}}
+          {{- if eq $type "secret" -}}
+            {{- $decodedValue = b64dec $decodedValue -}}
+          {{- end -}}
+          {{ $annotations = merge $annotations (dict (printf "%s/%s" (printf "hashsum.%s.%s" $type $objectSpec.metadata.name | trunc 253) ($dataKey | trunc 63)) (sha256sum $decodedValue)) }}
         {{ end }}
       {{ else }}
         {{ range $dataKey,$dataValue := (index $dict $objectSpec.metadata.name) }}
-          {{ $annotations = merge $annotations (dict (printf "%s/%s" (printf "hashsum.%s.%s" $type $objectSpec.metadata.name | trunc 253) ($dataKey | trunc 63)) (sha256sum (index $objectSpec.data $dataKey))) }}  
+          {{- $decodedValue := index $objectSpec.data $dataKey -}}
+          {{- if eq $type "secret" -}}
+            {{- $decodedValue = b64dec $decodedValue -}}
+          {{- end -}}
+          {{ $annotations = merge $annotations (dict (printf "%s/%s" (printf "hashsum.%s.%s" $type $objectSpec.metadata.name | trunc 253) ($dataKey | trunc 63)) (sha256sum $decodedValue)) }}  
         {{ end }}
       {{ end }}        
     {{ end }}          
   {{ end }}      
+{{ end }}
 {{ end }}
 {{ toYaml $annotations }}
 {{- end -}}

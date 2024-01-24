@@ -1,0 +1,11 @@
+hull:
+  config:
+    general:
+      errorChecks:
+        virtualFolderDataInlineValid: true
+  objects:
+    <OBJECT_TYPE>:
+      virtual-folder-inline-null:
+        data: 
+          nothing:
+            inline: null

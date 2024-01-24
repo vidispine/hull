@@ -1,6 +1,6 @@
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Global Merging function
 |
 */ -}}
@@ -12,36 +12,36 @@
 {{- $component := (index . "COMPONENT") -}}
 {{- $spec := (index . "SPEC") -}}
 {{- $localTemplate := (index . "LOCAL_TEMPLATE") -}}
-{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
-{{- $overrides := fromYaml (include $template .) | default (dict ) -}}
-{{- $tpl := fromYaml (include $localTemplate .) | default (dict ) -}}
-{{- if (gt (len (keys $tpl)) 0) }}
-{{- toYaml (merge $overrides $tpl) -}}
+{{- $hullRootKey := (index . "HULL_ROOT_KEY") | default "hull" -}}
+{{- $overrides := (include $template .) | fromYaml | default (dict ) -}}
+{{- $tpl := (include $localTemplate .) | fromYaml | default (dict ) -}}
+{{- if gt ($tpl | keys | len) 0 }}
+{{- (merge $overrides $tpl) | toYaml -}}
 {{- end -}}
 {{- end -}}
 
 
 
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Helper for printing out a key value entry
 |
 */ -}}
 {{- define "hull.util.field" -}}
 {{- $spec := (index . "SPEC") -}}
 {{- $field := (index . "FIELD") -}}
-{{- $indent := default 0 (index . "INDENT") -}}
-{{- if hasKey $spec $field }}
-{{ $field | indent $indent }}: {{ index $spec $field }}
+{{- $indent := (index . "INDENT") | default 0 -}}
+{{- if $field | hasKey $spec }}
+{{- (dict $field (index $spec $field)) | toYaml | indent $indent -}}
 {{- end }}
 {{- end }}
 
 
 
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Helper for printing out a key value entry on a given condition
 |
 */ -}}
@@ -63,53 +63,49 @@
 {{- define "hull.util.yaml" -}}
 {{- $spec := (index . "SPEC") -}}
 {{- $field := (index . "FIELD") -}}
-{{- $noKey := default false (index . "NO_KEY") -}}
-{{- $indent := default 0 (index . "INDENT") -}}
-{{- if hasKey $spec $field }}
-{{ if not $noKey }}
-{{ $field | indent $indent }}: 
-{{ end }}
-{{- if typeIs "[]interface {}" (index $spec $field) -}}
-{{ toYaml (index $spec $field) | indent ($indent | int) }}
-{{ else }}
-{{ toYaml (index $spec $field) | indent ($indent | add1 | add1 | int) }}
-{{- end }}
+{{- $noKey := (index . "NO_KEY") | default false -}}
+{{- $indent := (index . "INDENT") | default 0 -}}
+{{- $result := (dict) -}}
+{{- if $field | hasKey $spec -}}
+{{- $result = index $result $field -}}
+{{- if eq $noKey true -}}
+{{- $result = dict $field $result -}}
+{{- end -}}
+{{- $result | toYaml | indent $indent -}}
 {{- end }}
 {{- end }}
 
 
 
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Helper for printing out an object from the Kubernetes specification.
 |   Fields not to be rendered (because handled by HULL) are provided in HULL_OBJECT_KEYS
 |
 */ -}}
 {{- define "hull.util.include.k8s" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
-{{- $hullObjectBaseKeys := default (list "enabled" "labels" "annotations" "staticName" "metadataNameOverride" "sources") (index . "HULL_BASE_KEYS") }}
-{{- $hullObjectKeys := default list (index . "HULL_OBJECT_KEYS") }}
-{{- $spec := default nil (index . "SPEC") -}}
-{{- $k8sSpec := dict }}
+{{- $hullObjectBaseKeys := (index . "HULL_BASE_KEYS") | default (list "enabled" "labels" "annotations" "staticName" "metadataNameOverride" "sources") -}}
+{{- $hullObjectKeys := (index . "HULL_OBJECT_KEYS") | default (list) -}}
+{{- $spec := (index . "SPEC") | default nil -}}
+{{- $k8sSpec := (dict) -}}
 {{- $fields := concat $hullObjectBaseKeys $hullObjectKeys -}}
-{{- range $key,$value := $spec -}}
-{{- $t := dict -}}
-{{- if has $key $fields -}}
-{{- else }}
-{{- $k8sSpec := set $k8sSpec $key $value -}}
+{{- range $key, $value := $spec -}}
+  {{- if $fields | has $key | not -}}
+    {{- $k8sSpec = set $k8sSpec $key $value -}}
+  {{- end -}}
 {{- end -}}
-{{- end -}}
-{{ if (gt (len (keys $k8sSpec)) 0) }}
-{{ toYaml $k8sSpec }}
+{{ if gt ($k8sSpec | keys | len) 0 }}
+{{ $k8sSpec | toYaml }}
 {{- end -}}
 {{- end -}}
 
 
 
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Helper for printing out an HULL based key value dictionary to an Kubernetes array
 |   Handles defaulting before rendering.
 |
@@ -123,6 +119,8 @@
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $keepHashsumAnnotations := default false (index . "KEEP_HASHSUM_ANNOTATIONS") -}}
+{{- $objectInstanceKey := (index . "OBJECT_INSTANCE_KEY") -}}
+{{- $containerType := default "" (index . "CONTAINER_TYPE") -}}
 {{- $isDefined := false }}
 {{- if hasKey $spec (printf "%s" $objectKey) }}
 {{- range $key, $value := (index $spec (printf "%s" $objectKey)) }}
@@ -137,8 +135,8 @@
 {{ if ne $key "_HULL_OBJECT_TYPE_DEFAULT_" }}
 {{ if (gt (len (keys (default dict $value))) 0) }}
 {{ $merged := dict }}
-{{ $merged = merge $value $defaultObjectSpec }}  
-{{ include (printf "%s" $objectTemplate) (dict "PARENT_CONTEXT" $parent "SPEC" $merged "ORIGIN_SPEC" $spec "COMPONENT" $key "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 0 }}
+{{ $merged = merge $value $defaultObjectSpec }}
+{{ include (printf "%s" $objectTemplate) (dict "PARENT_CONTEXT" $parent "SPEC" $merged "ORIGIN_SPEC" $spec "COMPONENT" $key "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "CONTAINER_TYPE" $containerType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 0 }}
 {{ end }}
 {{ end }}
 {{ end }}
@@ -150,8 +148,8 @@
 
 
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Create a selector dictionary
 |
 */ -}}
@@ -172,8 +170,8 @@ selector:
 
 
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
 |   Central function to determine defaults for an object instance
 |
 */ -}}
@@ -208,3 +206,58 @@ selector:
 {{- end -}}
 {{ toYaml $defaultSpec }}
 {{ end }}
+
+
+
+{{- /*
+| Purpose:  
+|   
+|   Create an error with message
+|
+*/ -}}
+{{- define "hull.util.error.message" -}}
+{{- $errorType := default "" (index . "ERROR_TYPE") -}}
+{{- $errorMessage := default "" (index . "ERROR_MESSAGE") -}}
+{{- $hullRootKey := default "" (index . "ERROR_MESSAGE") -}}
+{{- printf "°%s:%s:%s°" "_HULL_ERROR_" $errorType $errorMessage -}}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:  
+|   
+|   Error checking
+*/ -}}
+{{- define "hull.util.error.check" -}}
+{{- $object := default "" (index . "OBJECT") -}}
+{{- $errorMessage := "" -}}
+{{- if typeIs "map[string]interface {}" $object -}}
+  {{- range $key,$value := $object -}}
+    {{- if typeIs "map[string]interface {}" $value -}}
+       {{- include "hull.util.error.check" (dict "OBJECT" $value) -}}
+    {{- end -}}
+    {{- if typeIs "[]interface {}" $value -}}
+      {{- include "hull.util.error.check" (dict "OBJECT" $value) -}}
+    {{- end -}}
+    {{- if typeIs "string" $value -}}
+      {{- if hasPrefix "°_HULL_ERROR_" $value -}}
+        {{- $error := regexSplit ":" (trimAll "°" $value) -1}}
+        {{- $errorMessage = printf "%s\n[%s %s: %s]" $errorMessage "HULL failed with error" (index $error 1) (index $error 2) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if typeIs "[]interface {}" $object -}}
+   {{- range $value := $object -}}
+    {{- include "hull.util.error.check" (dict "OBJECT" $value) -}}
+  {{- end -}}
+{{- end -}}
+{{- if typeIs "string" $object -}}
+  {{- if hasPrefix "°_HULL_ERROR_" $object -}}
+    {{- $error = regexSplit ":" (trimAll "°" $object) -1}}
+    {{- $errorMessage = printf "%s\n[%s %s: %s]" $errorMessage "HULL failed with error" (index $error 1) (index $error 2) -}}
+  {{- end -}}
+{{- end -}}
+{{ $errorMessage }}
+{{- end -}}

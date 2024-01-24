@@ -97,6 +97,19 @@ hull:
             path: /
             scheme: HTTP
             port: 765
+      dict_mixed_content:
+        number: 45
+        boolean: true
+        dict:
+          key: value
+        list:
+        - 54
+        - false
+        - subdict:
+            a: b
+            c: d
+            int: 398
+            boolish: false
       pod_spec:
         initContainers:
           init:
@@ -366,4 +379,81 @@ hull:
           an_integer_value: 123
           a_float_value: 1.23
           a_boolean_value: true
-      
+
+      test-serializing:
+        annotations:
+          test-include-code-list-empty: _HT/result/hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-json: _HT/toJson|result/hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-prettyjson: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-rawjson: _HT/toRawJson|result/hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-yaml: _HT/toYaml|result/hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-string: _HT/toString|result/hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-non-empty: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-json: _HT/toJson|result/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-prettyjson: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-rawjson: _HT/toRawJson|result/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-yaml: _HT/toYaml|result/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-string: _HT/toString|result/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-flow-dict: _HT/hull.include.test.dockerconfigjson.flow
+          test-include-code-dict: _HT/hull.include.test.dockerconfigjson.code
+          test-include-code-dict-json: _HT/toJson|hull.include.test.dockerconfigjson.code
+          test-include-code-dict-prettyjson: _HT/toPrettyJson|hull.include.test.dockerconfigjson.code
+          test-include-code-dict-rawjson: _HT/toRawJson|hull.include.test.dockerconfigjson.code
+          test-include-code-dict-yaml: _HT/toYaml|hull.include.test.dockerconfigjson.code
+          test-include-code-dict-string: _HT/toString|hull.include.test.dockerconfigjson.code
+          test-include-code-dict-quote: _HT/hull.include.test.dockerconfigjson.code
+          test-include-code-dict-quote-json: _HT/toJson|hull.include.test.dockerconfigjson.code.quote
+          test-include-code-dict-quote-prettyjson: _HT/toPrettyJson|hull.include.test.dockerconfigjson.code.quote
+          test-include-code-dict-quote-rawjson: _HT/toRawJson|hull.include.test.dockerconfigjson.code.quote
+          test-include-code-dict-quote-yaml: _HT/toYaml|hull.include.test.dockerconfigjson.code.quote
+          test-include-code-dict-quote-string: _HT/toString|hull.include.test.dockerconfigjson.code.quote
+          test-get-dict: _HT*hull.config.specific.dict_mixed_content
+          test-get-dict-json: _HT*toJson|hull.config.specific.dict_mixed_content
+          test-get-dict-prettyjson: _HT*toPrettyJson|hull.config.specific.dict_mixed_content
+          test-get-dict-rawjson: _HT*toRawJson|hull.config.specific.dict_mixed_content
+          test-get-dict-yaml: _HT*toYaml|hull.config.specific.dict_mixed_content
+          test-get-dict-string: _HT*toString|hull.config.specific.dict_mixed_content
+          test-get-list: _HT*hull.config.specific.dict_mixed_content.list
+          test-get-list-json: _HT*toJson|hull.config.specific.dict_mixed_content.list
+          test-get-list-prettyjson: _HT*toPrettyJson|hull.config.specific.dict_mixed_content.list
+          test-get-list-rawjson: _HT*toRawJson|hull.config.specific.dict_mixed_content.list
+          test-get-list-yaml: _HT*toYaml|hull.config.specific.dict_mixed_content.list
+          test-get-list-string: _HT*toString|hull.config.specific.dict_mixed_content.list
+        labels:
+          test-include-code-list-empty: _HT/result/hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-json: _HT/toJson|result/hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-prettyjson: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-rawjson: _HT/toRawJson|result/hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-yaml: _HT/toYaml|result/hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-string: _HT/toString|result/hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-non-empty: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-json: _HT/toJson|result/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-prettyjson: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-rawjson: _HT/toRawJson|result/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-yaml: _HT/toYaml|result/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-string: _HT/toString|result/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-flow-dict: _HT/hull.include.test.dockerconfigjson.flow
+          test-include-code-dict: _HT/hull.include.test.dockerconfigjson.code
+          test-include-code-dict-json: _HT/toJson|hull.include.test.dockerconfigjson.code
+          test-include-code-dict-prettyjson: _HT/toPrettyJson|hull.include.test.dockerconfigjson.code
+          test-include-code-dict-rawjson: _HT/toRawJson|hull.include.test.dockerconfigjson.code
+          test-include-code-dict-yaml: _HT/toYaml|hull.include.test.dockerconfigjson.code
+          test-include-code-dict-string: _HT/toString|hull.include.test.dockerconfigjson.code
+          test-include-code-dict-quote: _HT/hull.include.test.dockerconfigjson.code
+          test-include-code-dict-quote-json: _HT/toJson|hull.include.test.dockerconfigjson.code.quote
+          test-include-code-dict-quote-prettyjson: _HT/toPrettyJson|hull.include.test.dockerconfigjson.code.quote
+          test-include-code-dict-quote-rawjson: _HT/toRawJson|hull.include.test.dockerconfigjson.code.quote
+          test-include-code-dict-quote-yaml: _HT/toYaml|hull.include.test.dockerconfigjson.code.quote
+          test-include-code-dict-quote-string: _HT/toString|hull.include.test.dockerconfigjson.code.quote
+          test-get-dict: _HT*hull.config.specific.dict_mixed_content
+          test-get-dict-json: _HT*toJson|hull.config.specific.dict_mixed_content
+          test-get-dict-prettyjson: _HT*toPrettyJson|hull.config.specific.dict_mixed_content
+          test-get-dict-rawjson: _HT*toRawJson|hull.config.specific.dict_mixed_content
+          test-get-dict-yaml: _HT*toYaml|hull.config.specific.dict_mixed_content
+          test-get-dict-string: _HT*toString|hull.config.specific.dict_mixed_content
+          test-get-list: _HT*hull.config.specific.dict_mixed_content.list
+          test-get-list-json: _HT*toJson|hull.config.specific.dict_mixed_content.list
+          test-get-list-prettyjson: _HT*toPrettyJson|hull.config.specific.dict_mixed_content.list
+          test-get-list-rawjson: _HT*toRawJson|hull.config.specific.dict_mixed_content.list
+          test-get-list-yaml: _HT*toYaml|hull.config.specific.dict_mixed_content.list
+          test-get-list-string: _HT*toString|hull.config.specific.dict_mixed_content.list

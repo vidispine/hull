@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "51" objects were rendered
+* Expected number of "52" objects were rendered
 * Validate
 
 ## Metadata
@@ -40,7 +40,7 @@ Test creation of objects and features.
 ## Short Demo - Debug true
 * Prepare test case "Deployment" for kind "Deployment" and values file "values_short_demo.hull.yaml"
 * Lint and Render values file "values_short_demo.hull.yaml"
-* Expected number of "19" objects were rendered
+* Expected number of "20" objects were rendered
 * Set test object to "release-name-hull-test-myapp-frontend"
 * Test Object has key "spec§template§spec§containers§0§image" with value "mycompany/myapp-frontend:v23.1"
 * Test Object has key "spec§template§spec§containers§0§env§0§value" with value "release-name-hull-test-myapp-backend"
@@ -70,7 +70,7 @@ Test creation of objects and features.
 
 * Prepare test case "Deployment" for kind "Deployment" and values file "values_short_demo.hull.yaml" including suites "debugswitch"
 * Lint and Render values file "values_short_demo.hull.yaml"
-* Expected number of "19" objects were rendered
+* Expected number of "20" objects were rendered
 * Set test object to "release-name-hull-test-myapp-frontend"
 * Test Object has key "spec§template§spec§containers§0§image" with value "mycompany/myapp-frontend:v23.1"
 * Test Object has key "spec§template§spec§containers§0§env§0§value" with value "release-name-hull-test-myapp-backend"
@@ -101,7 +101,7 @@ Test creation of objects and features.
 ## Sources Example
 * Prepare test case "Deployment" for kind "Deployment" and values file "values_sources_example.hull.yaml"
 * Lint and Render values file "values_sources_example.hull.yaml"
-* Expected number of "23" objects were rendered
+* Expected number of "24" objects were rendered
 
 * Set test object to "release-name-hull-test-app-python-direct"
 * Test Object has key "spec§template§spec§containers§0§image" with value "myrepo/app-python-direct:23.3.2"
@@ -224,6 +224,66 @@ Test creation of objects and features.
 * Test Object has key "spec§template§spec§containers§0§env§1§value" with value "external___loaded"
 * Test Object does not have key "spec§template§spec§containers§0§livenessProbe"
 * Test Object does not have key "spec§template§spec§containers§0§readinessProbe"
+
+## Error Checking
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error MISSING-IMAGE-SPEC: Deployment/invalid-container-images/containers/no-image"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error MISSING-IMAGE-REPOSITORY: Deployment/invalid-container-images/containers/no-repository"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid_disabled.hull.yaml"
+* Lint and Render values file "values_error_handling_image_invalid_disabled.hull.yaml"
+
+## Post Render
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_postrender.hull.yaml"
+* Lint and Render values file "values_postrender.hull.yaml"
+
+* Set test object to "release-name-hull-test-a"
+* Test Object has key "spec§template§spec§containers§0§image" with value "somerepo:a"
+* Test Object has key "spec§template§spec§containers§0§env§0§name" with value "OBJECT_INSTANCE_KEY"
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "a"
+* Test Object has key "spec§template§spec§containers§0§env§1§name" with value "OBJECT_INSTANCE_KEY_RESOLVED"
+* Test Object has key "spec§template§spec§containers§0§env§1§value" with value "a"
+* Test Object has key "spec§template§spec§containers§0§env§2§name" with value "OBJECT_INSTANCE_NAME"
+* Test Object has key "spec§template§spec§containers§0§env§2§value" with value "release-name-hull-test-a"
+
+* Set test object to "release-name-hull-test-b"
+* Test Object has key "spec§template§spec§containers§0§image" with value "somerepo:b"
+* Test Object has key "spec§template§spec§containers§0§env§0§name" with value "OBJECT_INSTANCE_KEY"
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "b"
+* Test Object has key "spec§template§spec§containers§0§env§1§name" with value "OBJECT_INSTANCE_KEY_RESOLVED"
+* Test Object has key "spec§template§spec§containers§0§env§1§value" with value "b"
+* Test Object has key "spec§template§spec§containers§0§env§2§name" with value "OBJECT_INSTANCE_NAME"
+* Test Object has key "spec§template§spec§containers§0§env§2§value" with value "release-name-hull-test-b"
+
+* Set test object to "release-name-hull-test-c"
+* Test Object has key "spec§template§spec§containers§0§image" with value "somerepo:c"
+* Test Object has key "spec§template§spec§containers§0§env§0§name" with value "OBJECT_INSTANCE_KEY"
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "c"
+* Test Object has key "spec§template§spec§containers§0§env§1§name" with value "OBJECT_INSTANCE_KEY_RESOLVED"
+* Test Object has key "spec§template§spec§containers§0§env§1§value" with value "c"
+* Test Object has key "spec§template§spec§containers§0§env§2§name" with value "OBJECT_INSTANCE_NAME"
+* Test Object has key "spec§template§spec§containers§0§env§2§value" with value "release-name-hull-test-c"
+
+* Set test object to "d"
+* Test Object has key "spec§template§spec§containers§0§image" with value "somerepo:d"
+* Test Object has key "spec§template§spec§containers§0§env§0§name" with value "OBJECT_INSTANCE_KEY"
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "d"
+* Test Object has key "spec§template§spec§containers§0§env§1§name" with value "OBJECT_INSTANCE_KEY_RESOLVED"
+* Test Object has key "spec§template§spec§containers§0§env§1§value" with value "d"
+* Test Object has key "spec§template§spec§containers§0§env§2§name" with value "OBJECT_INSTANCE_NAME"
+* Test Object has key "spec§template§spec§containers§0§env§2§value" with value "d"
+
+* Set test object to "release-name-hull-test-overwrite-old-name"
+* Test Object has key "spec§template§spec§containers§0§image" with value "somerepo:e"
+* Test Object has key "spec§template§spec§containers§0§env§0§name" with value "OBJECT_INSTANCE_KEY"
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "e"
+* Test Object has key "spec§template§spec§containers§0§env§1§name" with value "OBJECT_INSTANCE_KEY_RESOLVED"
+* Test Object has key "spec§template§spec§containers§0§env§1§value" with value "overwrite-old-name"
+* Test Object has key "spec§template§spec§containers§0§env§2§name" with value "OBJECT_INSTANCE_NAME"
+* Test Object has key "spec§template§spec§containers§0§env§2§value" with value "release-name-hull-test-overwrite-old-name"
+
 ___
 
 * Clean the test execution folder

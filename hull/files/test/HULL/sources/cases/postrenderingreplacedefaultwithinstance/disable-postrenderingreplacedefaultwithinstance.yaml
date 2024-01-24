@@ -1,0 +1,13 @@
+hull:
+  config:
+    general:
+      postRender:
+        replace_HULL_OBJECT_TYPE_DEFAULT_WithInstanceKey: false
+  objects:
+    <OBJECT_TYPE>:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        pod:
+          containers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              image:
+                tag: _HT!{{ (index . "OBJECT_INSTANCE_KEY") }}
