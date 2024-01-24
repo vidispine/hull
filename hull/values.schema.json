@@ -25904,7 +25904,8 @@
         "enabled",
         "inline",
         "path",
-        "noTemplating"
+        "noTemplating",
+        "serialization"
       ]
     },
     "hull.VirtualFolderData.v1": {
@@ -25936,6 +25937,12 @@
             },
             {
               "type": "null"
+            },
+            {
+              "type": "object"
+            },
+            {
+              "type": "array"
             }
           ],
           "properties": {}
@@ -25961,6 +25968,27 @@
             },
             {
               "type": "boolean"
+            }
+          ],
+          "properties": {},
+          "required": []
+        },
+        "serialization": {
+          "title": "HullVirtualFolderSerialization",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "string",
+              "enum": [
+                "none",
+                "toJson",
+                "toPrettyJson",
+                "toRawJson",
+                "toYaml",
+                "toString"
+              ]
             }
           ],
           "properties": {},
@@ -30126,6 +30154,176 @@
                         false
                       ],
                       "default": false
+                    }
+                  }
+                },
+                "errorChecks": {
+                  "$id": "#/definitions/root/config/general/errorchecks",
+                  "description": "Error Check Settings",
+                  "title": "errorChecks",
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "objectYamlValid": {
+                      "$id": "#/definitions/root/config/general/debug/objectyamlvalid",
+                      "title": "objectYamlValid",
+                      "description": "Checks if YAML of any object  only consists of an Error entry.",
+                      "type": "boolean",
+                      "examples": [
+                        true,
+                        false
+                      ],
+                      "default": true
+                    },
+                    "hullGetTransformationReferenceValid": {
+                      "$id": "#/definitions/root/config/general/debug/hullGetTransformationReferencesValid",
+                      "title": "hullGetTransformationReferencesValid",
+                      "description": "Checks if all HULL get references can be fully resolved.",
+                      "type": "boolean",
+                      "examples": [
+                        true,
+                        false
+                      ],
+                      "default": true
+                    },                    
+                    "containerImageValid": {
+                      "$id": "#/definitions/root/config/general/debug/containerimagevalid",
+                      "title": "containerImageValid",
+                      "description": "Checks if all containers have an image defined with at least an repository.",
+                      "type": "boolean",
+                      "examples": [
+                        true,
+                        false
+                      ],
+                      "default": true
+                    },
+                    "virtualFolderDataInlineValid": {
+                      "$id": "#/definitions/root/config/general/debug/virtualfolderdatainlinevalid",
+                      "title": "containerImageValid",
+                      "description": "Validates that an inline entry in ConfigMap or Secret data has no null value",
+                      "type": "boolean",
+                      "examples": [
+                        true,
+                        false
+                      ],
+                      "default": true
+                    },
+                    "virtualFolderDataPathExists": {
+                      "$id": "#/definitions/root/config/general/debug/virtualFolderDataPathExists",
+                      "title": "virtualFolderDataPathExists",
+                      "description": "Validates that a path entry in ConfigMap or Secret data points to an existing physical file.",
+                      "type": "boolean",
+                      "examples": [
+                        true,
+                        false
+                      ],
+                      "default": true
+                    }
+                  }
+                },
+                "postRender": {
+                  "$id": "#/definitions/root/config/general/postrender",
+                  "description": "Post Rendering",
+                  "title": "Post Rendering",
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "globalStringReplacements": {
+                      "$id": "#/definitions/root/config/general/postrender/globalStringReplacements",
+                      "title": "globalStringReplacements",
+                      "description": "Replace source strings with target strings after rendering",
+                      "type": "object",
+                      "patternProperties": {
+                        "^[^_].*$": {
+                          "type": [
+                            "object"
+                          ],
+                          "properties": {
+                            "enabled": {
+                              "$id": "#/definitions/root/config/general/postrender/globalReplacements/enabled",
+                              "description": "Enable or disable this replacement",
+                              "title": "Enabled",
+                              "type": "boolean",
+                              "examples": [
+                                true,
+                                false
+                              ],
+                              "default": false
+                            },
+                            "string": {
+                              "$id": "#/definitions/root/config/general/general/postrender/globalReplacements/string",
+                              "description": "Source string value which shall be replaced.",
+                              "title": "string",
+                              "type": "string"
+                            },
+                            "replacement": {
+                              "$id": "#/definitions/root/config/general/general/postrender/globalReplacements/replacement",
+                              "description": "Replacement of source value.",
+                              "title": "replacement",
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "serialization": {
+                  "$id": "#/definitions/root/config/general/serialization",
+                  "description": "Serialization Settings",
+                  "title": "Serialization",
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "configmap": {
+                      "$id": "#/definitions/root/config/general/serialization/configmap",
+                      "title": "configmap",
+                      "description": "Serialization Settings for ConfigMaps.",
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "$id": "#/definitions/root/config/general/serialization/configmap/enabled",
+                          "title": "enable",
+                          "description": "Enable automatic serialization for ConfigMap content",
+                          "type": "boolean",
+                          "examples": [
+                            true,
+                            false
+                          ],
+                          "default": false
+                        },
+                        "fileExtensions": {
+                          "$id": "#/definitions/root/config/general/serialization/configmap/fileExtensions",
+                          "title": "fileExtensions",
+                          "description": "Serialization Settings for ConfigMap data by file extension.",
+                          "type": "object"
+                          }
+                        }
+                    },
+                    "secret": {
+                      "$id": "#/definitions/root/config/general/serialization/secret",
+                      "title": "secret",
+                      "description": "Serialization Settings for Secrets.",
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "$id": "#/definitions/root/config/general/serialization/secret/enabled",
+                          "title": "enable",
+                          "description": "Enable automatic serialization for Secret content",
+                          "type": "boolean",
+                          "examples": [
+                            true,
+                            false
+                          ],
+                          "default": false
+                        },
+                        "fileExtensions": {
+                          "$id": "#/definitions/root/config/general/serialization/secret/fileExtensions",
+                          "title": "fileExtensions",
+                          "description": "Serialization Settings for Secret data by file extension.",
+                          "type": "object"
+                          }
+                        }
                     }
                   }
                 },

@@ -152,8 +152,14 @@ hull:
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
-          
+      
       metadata-stringify:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
+      
+      test-serializing:
         roleRef:
           apiGroup: rbac.authorization.k8s.io
           kind: Role

@@ -1,1 +1,1 @@
-i too only exist so a sha256 sum can be calulated from an external file like this configmap-one-path-two
+i only exist so a sha256 sum can be calculated from an expression like configmap-one-subpath-two

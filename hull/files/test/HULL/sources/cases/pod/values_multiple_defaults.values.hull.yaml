@@ -21,7 +21,7 @@ hull:
               volumeMounts:
                 test:
                   mountPath: this/path/is/overwritten
-                  subPath: myconstantsubpath    
+                  subPath: myconstantsubpath
   
       custom-default-template-1:
         pod:

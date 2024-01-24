@@ -50,7 +50,7 @@ hull: # HULL is configured via subchart key
               {
                 "rate-limit": {{ .Values.hull.config.specific.myapp.rate_limit }}, 
                 "max-connections": {{ .Values.hull.config.specific.myapp.max_connections }}, 
-                "debug-log": {{ if .Values.hull.config.specific.debug }}true{{ else }}false{{ end }}
+                "debug-log": {{ if .Values.hull.config.specific.debug -}}true{{- else -}}false{{- end -}}
               }
     service: # create services
       myapp-frontend: # frontend service, automatically matches pods with identical parent object's key name

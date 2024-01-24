@@ -15,6 +15,7 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
+{{- $objectInstanceKey := (index . "OBJECT_INSTANCE_KEY") -}}
 {{- $component := default "" (index . "COMPONENT") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $enabledDefault := dig "enabled" true (index . "DEFAULT_COMPONENT") -}}
@@ -25,7 +26,7 @@
 {{ $parentClone = set $parentClone "Values" $temp }}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 {{ template "hull.metadata.header" . }}
-{{ include "hull.object.configmap.data" (dict "PARENT_CONTEXT" $parentClone "SPEC" $spec) }}
+{{ include "hull.object.configmap.data" (dict "PARENT_CONTEXT" $parentClone "SPEC" $spec "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey ) }}
 {{ include "hull.object.configmap.binarydata" (dict "PARENT_CONTEXT" $parentClone "SPEC" $spec) }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parentClone "SPEC" $spec "HULL_OBJECT_KEYS" (list "data" "binaryData")) }}
 {{- end -}}
@@ -44,43 +45,9 @@
 |
 */ -}}
 {{- define "hull.object.configmap.data" -}}
-{{- $parent := (index . "PARENT_CONTEXT") -}}
-{{- $spec := default nil (index . "SPEC") -}}
-data:
-{{ range $innerKey, $innerValue := $spec.data }}
-{{- if or (and (hasKey $innerValue "enabled") $innerValue.enabled) (not (hasKey $innerValue "enabled")) -}}
-{{ if hasKey $innerValue "inline" }}
-{{ $innerValueString := "" }}
-{{ if (or (not (kindIs "invalid" $innerValue.inline)) $parent.Values.hull.config.general.debug.renderNilWhenInlineIsNil) }}
-{{ $innerValueString = toString $innerValue.inline }}
-{{ end }}
-{{ $innerKey | indent 2 }}: |-
-{{ if $innerValue.noTemplating -}}
-{{ default "" $innerValueString | indent 4 }}
-{{ else -}}
-{{ default "" (tpl (printf "%s" $innerValueString) $parent) | indent 4 }}
-{{ end }}
-{{ else }}
-{{ if hasKey $innerValue "path" }}
-{{ $pathExists := false }}
-{{ range $path, $_ := $parent.Files.Glob $innerValue.path }}
-{{ $pathExists = true }}
-{{ end }}
-{{ base $innerKey | indent 2 }}: |-
-{{ if (and (not $pathExists) ($parent.Values.hull.config.general.debug.renderPathMissingWhenPathIsNonExistent)) -}}
-{{ printf "<path missing: %s>" $innerValue.path | indent 4 }}
-{{- else -}}
-{{- if $innerValue.noTemplating -}}
-{{ toString ($parent.Files.Get (printf "%s" $innerValue.path) ) | indent 4 }}
-{{- else -}}
-{{ print (tpl (toString ($parent.Files.Get (printf "%s" $innerValue.path) ) ) $parent) | indent 4 }}
+{{- include "hull.object.virtualfolder.data" (merge (dict "VIRTUAL_FOLDER_TYPE" "configmap") .) }}
 {{- end -}}
-{{ end }}
-{{ end }}
-{{ end }}
-{{ end }}
-{{ end }}
-{{ end }}
+
 
 {{- /*
 | Purpose:  

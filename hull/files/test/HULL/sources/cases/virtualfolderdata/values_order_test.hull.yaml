@@ -1,0 +1,24 @@
+hull:
+  config:
+    specific:
+      test: {}
+  objects:
+    <OBJECT_TYPE>:
+      aaddheaders:
+        enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+          {{ if (index . \"PARENT\").Values.hull.objects.<OBJECT_TYPE>.aaddheaders.data }}true{{ else }}false{{ end }}>>>"
+        data: {}
+      baddheaders:
+        enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+          {{ if (index . \"PARENT\").Values.hull.objects.<OBJECT_TYPE>.baddheaders.data }}true{{ else }}false{{ end }}>>>"
+        data: {}
+      caddheaders:
+        enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+          {{ if (index . \"PARENT\").Values.hull.objects.<OBJECT_TYPE>.caddheaders.data }}true{{ else }}false{{ end }}>>>"
+        data: 
+          here:
+            inline: some data
+      daddheaders:
+        enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
+          {{ if (index . \"PARENT\").Values.hull.objects.<OBJECT_TYPE>.daddheaders.data }}true{{ else }}false{{ end }}>>>"
+        data: {}

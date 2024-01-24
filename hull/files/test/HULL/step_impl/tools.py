@@ -15,8 +15,8 @@ from getgauge.python import Messages, before_scenario, before_step, data_store, 
 from jsonschema import validate
 
 TEST_EXECUTION_FOLDER = "./../test_execution"
-WINDOWS_LINE_ENDING = b'\r\n'
-UNIX_LINE_ENDING = b'\n'
+WINDOWS_LINE_ENDING = '\r\n'
+UNIX_LINE_ENDING = '\n'
 
 @step("Fill data store with kind <kind>")
 def fill_data_store_with_kind(kind):
@@ -72,8 +72,19 @@ def copy_the_test_chart_folders_to(case, chart):
         copytree(src_path_case, dst_path)
         copytree(src_path_chart, dst_path)
     except Exception as e:
-        print("Oops!", e.__str__, "occurred.")
+        print(f"Failed to copy {src_path_case} and {src_path_chart} to {dst_path}", e.__str__, "occurred.")
         assert False
+    
+    expected = os.path.join(src_path_case, 'expected.yaml')
+    if os.path.exists(expected):
+        try:
+            if not "expected" in data_store.scenario:
+                data_store.scenario["expected"] = {}
+            data_store.scenario["expected"][case] = yaml.load(os.path.open(expected,newline='\n'))
+        except Exception as e:
+            print(f"Failed to read {expected}", e.__str__, "occurred.")
+            assert False
+    
     assert True
 
 @step("Copy the suites source folders to test execution folder")
@@ -89,21 +100,18 @@ def copy_the_suite_source_folder_for_case_and_chart_and_suite_to_TEST_EXECUTION_
     if '/' in suite:
         suite_folder = suite.split('/')[0]
         suite_file = suite.split('/')[1]
-    src_path = os.path.join(dir_path,'./../sources/cases/',suite_folder, suite_file + '.values.hull.yaml')
-    dst_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart)
-    try:
-        with open(src_path, 'r') as file:
-            data = file.read()
-            data = data.replace("<OBJECT_TYPE>",case)
-            if not os.path.isdir(dst_path):
-                os.makedirs(dst_path)
-            dst_file = open(os.path.join(dst_path, suite_file + ".values.hull.yaml"), "w")
-            dst_file.write(data)
-            dst_file.close()
 
-        files = os.path.join(dir_path,'./../sources/cases/',suite, 'files')
-        if os.path.isdir(files):
-            copytree(files, os.path.join(dst_path, 'files'))
+    src_path = os.path.join(dir_path,'./../sources/cases/',suite_folder)
+    dst_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart)
+    
+    try:
+        copytree(src_path, dst_path, 'files')
+        
+        expected = os.path.join(dir_path,'./../sources/cases/',suite_folder, 'expected.yaml')
+        if os.path.exists(expected):
+            if not "expected" in data_store.scenario:
+                data_store.scenario["expected"] = {}
+            data_store.scenario["expected"][suite] = yaml.safe_load(open(expected, newline='\r\n'))
     except Exception as e:
         print("Oops!", e.__str__, "occurred.")
         assert False
@@ -179,14 +187,6 @@ def render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file, n
     #            Messages.write_message(line)
     assert render.returncode == 0, "Rendering failed with ExitCode " + str(render.returncode) + " STDOUT was:\n\n" + str(render.stdout) + "\n\n and STDERR\n\n: " + str(render.stderr)
 
-@step("Lint and render the templates for values file <values_file> to test execution folder")
-def lint_and_render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file):
-    if os.environ.get("no_lint") == 'true':
-        print('Skipping Linting')
-    else:
-        lint_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file)
-    render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file)
-
 @step("Fill data store with rendered objects")
 def fill_data_store_with_rendered_objects():
     get_objects(data_store.scenario.case, data_store.scenario.chart)
@@ -202,11 +202,17 @@ def check_that_expected_number_of_objects_was_rendered(count):
 
 @step("Set test object to <name> of kind <kind>")
 def set_test_object_to_of_kind(name, kind):
-    data_store.scenario.test_object = data_store.scenario["objects_" + kind][name]    
+    objects_of_kind = "objects_" + kind
+    assert name in data_store.scenario[objects_of_kind], f"Object with name {name} not found in objects of kind {kind}!"
+    data_store.scenario.test_object = data_store.scenario[objects_of_kind][name]
+    data_store.scenario.name = name
+
 
 @step("Set test object to <name>")
 def set_test_object_to(name):
-    data_store.scenario.test_object = data_store.scenario["objects_" + data_store.scenario.kind][name]    
+    objects_of_kind = "objects_" + data_store.scenario.kind
+    assert objects_of_kind in data_store.scenario, f"No object kind set!"
+    return set_test_object_to_of_kind(name, data_store.scenario.kind)
 
 @step("Test object <name> of kind <kind> does not exist")
 def test_object_of_kind_does_not_exist(name, kind):
@@ -236,20 +242,56 @@ def test_object_has_key_with_dictionary_value_that_has_items(key, value):
     if isinstance(data_store.scenario.test_object[key], dict): 
         for key in data_store.scenario.test_object[key].keys():            
             print(f'Found key: {key}')
+            
         assert_values_equal(len(data_store.scenario.test_object[key].keys()), int(value), key)
     else:
         assert False
+
 @step("Test Object has key <key> with value <value>")
 def test_object_has_key_with_value(key, value):
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert_values_equal(data_store.scenario.test_object[key], value, key)
 
+@step("Test Object has key <key> with value of key <expectedkey> from expected.yaml")
+def test_object_has_key_with_value_of_key_from_expected_yaml(key, expectedkey):
+    return test_object_has_key_with_value_of_key_from_expected_yaml_of_suite(key, expectedkey, data_store.scenario.case)
+
+@step("Test Object has key <key> with value of key <expectedkey> from expected.yaml of suite <suite>")
+def test_object_has_key_with_value_of_key_from_expected_yaml_of_suite(key, expectedkey, suite):
+    assert "test_object" in data_store.scenario != None, "No Test Object set!"
+    assert data_store.scenario.test_object != None, "Test Object set to None!"
+    assert key in data_store.scenario.test_object, f"Key {key} not found in Test Object!"
+    assert 'expected' in  data_store.scenario, f"No expected entries found in Test Scenario"
+    assert suite in data_store.scenario.expected, f"Suite {suite} not found in expected.yaml!"
+    assert expectedkey in data_store.scenario.expected[suite], f"Expected Key {expectedkey} not found in Suite {suite} in expected.yaml!"
+    assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.expected[suite][expectedkey], key)
+
+@step("Test Object has key <key> with Base64 encoded value of key <expectedkey> from expected.yaml of suite <suite>")
+def test_object_has_key_with_base64_encoded_value_of_key_from_expected_yaml_of_suite(key, expectedkey, suite):
+    assert "test_object" in data_store.scenario != None, "No Test Object set!"
+    assert data_store.scenario.test_object != None, "Test Object set to None!"
+    decoded = base64.b64decode(data_store.scenario.test_object[key]).decode()
+    assert_values_equal(
+        data_store.scenario.expected[suite][expectedkey], decoded, key)
+
 @step("Test Object has key <key> with value equaling object type")
 def test_object_has_key_with_value_equaling_object_type(key):
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.case.lower(), key)
+
+@step("Test Object has key <key> with value equaling object instance name")
+def test_object_has_key_with_value_equaling_object_instance_name(key):
+    assert "test_object" in data_store.scenario != None, "No Test Object set!"
+    assert data_store.scenario.test_object != None, "Test Object set to None!"
+    assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.name, key)
+
+@step("Test Object has key <key> with value equaling object instance key")
+def test_object_has_key_with_value_equaling_object_instance_key(key):
+    assert "test_object" in data_store.scenario != None, "No Test Object set!"
+    assert data_store.scenario.test_object != None, "Test Object set to None!"
+    assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.name.removeprefix("release-name-hull-test-"), key)
 
 @step("Test Object has key <key> with value matching regex <regex>")
 def test_object_has_key_with_value_matching_regex(key, regex):
@@ -309,10 +351,9 @@ def test_object_has_key_with_null_value(key):
 @step("Test Object has key <key> with Base64 encoded value of <value>")
 def test_object_has_key_with_base64_encoded_value(key, value):
     assert data_store.scenario.test_object != None
-    decoded = base64.b64decode(data_store.scenario.test_object[key])
+    decoded = base64.b64decode(data_store.scenario.test_object[key]).decode()
     assert_values_equal(
-        value.encode('UTF-8').replace(WINDOWS_LINE_ENDING, UNIX_LINE_ENDING), 
-        decoded.replace(WINDOWS_LINE_ENDING, UNIX_LINE_ENDING), key)
+        value, decoded, key)
     
 @step("Test Object has key <key> with value <value> of key <scenario_key> from scenario data_store")
 def test_object_has_key_with_value_of_key_from_scenario_data_store(key, scenario_key):
@@ -346,6 +387,20 @@ def all_test_objects_have_key_with_base64_value(key, value):
         set_test_object_to(i)
         test_object_has_key_with_base64_encoded_value(key, value)
 
+@step("All test objects have key <key> with Base64 encoded value of key <expectedkey> from expected.yaml of suite <suite>")
+def all_test_objects_have_key_with_base64_encoded_value_of_key_from_expected_yaml_of_suite(key, expectedkey, suite):
+    test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
+    for i in test_objects:
+        set_test_object_to(i)
+        test_object_has_key_with_base64_encoded_value(key, data_store.scenario.expected[suite][expectedkey])
+
+@step("All test objects have key <key> with value of key <expectedkey> from expected.yaml of suite <suite>")
+def all_test_objects_have_key_with_value_of_key_from_expected_yaml_of_suite(key, expectedkey, suite):
+    test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
+    for i in test_objects:
+        set_test_object_to(i)
+        test_object_has_key_with_value(key, data_store.scenario.expected[suite][expectedkey])
+
 @step("Validate")
 def validate():
     test_objects = data_store.scenario.objects
@@ -372,6 +427,14 @@ def validate_test_object_against_json_schema(test_object):
 ### non-steps
 
 def assert_values_equal(actual, expected, key=None):
+    if expected != actual:
+        stop_debug = ""
+    if (type(expected) == str and type(actual) == str ):
+        expected = expected.replace(WINDOWS_LINE_ENDING, UNIX_LINE_ENDING)
+        actual = actual.replace(WINDOWS_LINE_ENDING, UNIX_LINE_ENDING)
+        if expected != actual:
+            stop_debug = ""
+        
     assert expected == actual, "For key '"+ key + "' there was expected value:\n\n" + str(expected) + "\n\nbut found:\n\n" + str(actual) + "\n\n"
 
 def validateJson(test_object):
@@ -451,12 +514,26 @@ def copytree(src, dst, symlinks=False, ignore=None):
             copytree(s, d, symlinks, ignore)
         else:
             if not os.path.exists(d) or os.stat(s).st_mtime - os.stat(d).st_mtime > 1:
-                shutil.copy2(s, d)
+                copyfile(os.path.dirname(s), os.path.basename(s), os.path.dirname(d))
+
+def copy_yaml(src_path, dst_path):
+    with open(src_path, 'r', encoding='utf8') as file:
+        data = file.read()
+        if data_store.scenario.case != "":
+            data = data.replace("<OBJECT_TYPE>", data_store.scenario.case)
+        if not os.path.isdir(os.path.dirname(dst_path)):
+            os.makedirs(os.path.dirname(dst_path))
+        dst_file = open(dst_path, "w", encoding='utf8')
+        dst_file.write(data)
+        dst_file.close()
 
 def copyfile(src_dir, src_filename, dst_dir):
-    if not os.path.isdir(dst_dir):
-        os.makedirs(dst_dir)
-    shutil.copyfile(os.path.join(src_dir, src_filename), os.path.join(dst_dir, src_filename))
+    if not os.path.isdir(os.path.dirname(dst_dir)):
+        os.makedirs(os.path.dirname(dst_dir))
+    if  os.path.splitext(src_filename)[1] == ".yaml":
+        copy_yaml(os.path.join(src_dir, src_filename),  os.path.join(dst_dir, src_filename))
+    else:
+        shutil.copy2(os.path.join(src_dir, src_filename), os.path.join(dst_dir, src_filename))
 
 def get_objects(case, chart):
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -465,7 +542,7 @@ def get_objects(case, chart):
 
     items = []
     for file in os.listdir(rendered_files_folder):
-        with open(os.path.join(rendered_files_folder, file), encoding='utf-8') as file_in:
+        with open(os.path.join(rendered_files_folder, file), encoding='utf-8', newline='\n') as file_in:
             
             item = None
             itemIndex = -1
