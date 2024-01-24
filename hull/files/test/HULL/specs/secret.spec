@@ -49,10 +49,10 @@ Test creation of objects and features.
 * Lint and Render
 * Set test object to "release-name-hull-test-data-enabled-false-true"
 * Test Object does not have key "data§test_disabled"
-* Test Object has key "data§test_enabled" with Base64 encoded value of "This shall appear in Secret because enabled property is true"
+* Test Object has key "data§test_enabled" with Base64 encoded value of "This shall appear in secret because enabled property is true"
 * Test Object does not have key "data§test_disabled_transform"
-* Test Object has key "data§test_enabled_transform" with Base64 encoded value of "This shall appear in Secret because enabled property is true via transformation"
-* Test Object has key "data§test_enabled_missing" with Base64 encoded value of "This shall appear in Secret because enabled property is missing"
+* Test Object has key "data§test_enabled_transform" with Base64 encoded value of "This shall appear in secret because enabled property is true via transformation"
+* Test Object has key "data§test_enabled_missing" with Base64 encoded value of "This shall appear in secret because enabled property is missing"
 
 ## Ordering
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_order_test.hull.yaml" including suites "virtualfolderdata"
@@ -125,6 +125,7 @@ Test creation of objects and features.
 * Lint and Render
 * Set test object to "release-name-hull-test-special-cases"
 * Test Object has key "data§empty" with Base64 encoded value of ""
+
 
 ## Secret Types
 * Lint and Render

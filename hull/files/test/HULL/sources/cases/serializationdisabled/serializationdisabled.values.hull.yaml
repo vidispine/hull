@@ -1,0 +1,8 @@
+hull:
+  config:
+    general:
+      serialization:
+        configmap:
+          enabled: false
+        secret:
+          enabled: false
