@@ -1,0 +1,310 @@
+default_file_1.json: |-
+  {"name":"i am default_file_1.json"}
+concrete_file_3_untemplated.yaml: |-
+  name: i am concrete_file_3.yaml
+  templating: {{ .Values.hull.config.general.metadata.labels.custom.general_custom_label_1 }}
+test-get-dict: map[boolean:true dict:map[key:value] list:[54 false map[subdict:map[a:b
+  boolish:false c:d int:398]]] number:45]
+test-get-dict-json: '{"boolean":true,"dict":{"key":"value"},"list":[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","int":398}}],"number":45}'
+test-get-dict-none: map[boolean:true dict:map[key:value] list:[54 false map[subdict:map[a:b
+    boolish:false c:d int:398]]] number:45]
+test-get-dict-prettyjson: |-
+  {
+    "boolean": true,
+    "dict": {
+      "key": "value"
+    },
+    "list": [
+      54,
+      false,
+      {
+        "subdict": {
+          "a": "b",
+          "boolish": false,
+          "c": "d",
+          "int": 398
+        }
+      }
+    ],
+    "number": 45
+  }
+test-get-dict-rawjson: '{"boolean":true,"dict":{"key":"value"},"list":[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","int":398}}],"number":45}'
+test-get-dict-string: map[boolean:true dict:map[key:value] list:[54 false map[subdict:map[a:b
+  boolish:false c:d int:398]]] number:45]
+test-get-dict-yaml: |-
+  boolean: true
+  dict:
+    key: value
+  list:
+  - 54
+  - false
+  - subdict:
+      a: b
+      boolish: false
+      c: d
+      int: 398
+  number: 45
+test-get-list: '[54 false map[subdict:map[a:b boolish:false c:d int:398]]]'
+test-get-list-json: '[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","int":398}}]'
+test-get-list-none: '[54 false map[subdict:map[a:b boolish:false c:d int:398]]]'
+test-get-list-prettyjson: |-
+  [
+    54,
+    false,
+    {
+      "subdict": {
+        "a": "b",
+        "boolish": false,
+        "c": "d",
+        "int": 398
+      }
+    }
+  ]
+test-get-list-rawjson: '[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","int":398}}]'
+test-get-list-string: '[54 false map[subdict:map[a:b boolish:false c:d int:398]]]'
+test-get-list-yaml: |-
+  - 54
+  - false
+  - subdict:
+      a: b
+      boolish: false
+      c: d
+      int: 398
+test-include-code-dict: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvcmQ=
+  email:email password:password username:username]]]
+test-include-code-dict-json: '{"auths":{"my-registry":{"auth":"dXNlcm5hbWU6cGFzc3dvcmQ=","email":"email","password":"password","username":"username"}}}'
+test-include-code-dict-none: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvcmQ=
+    email:email password:password username:username]]]
+test-include-code-dict-prettyjson: |-
+  {
+    "auths": {
+      "my-registry": {
+        "auth": "dXNlcm5hbWU6cGFzc3dvcmQ=",
+        "email": "email",
+        "password": "password",
+        "username": "username"
+      }
+    }
+  }
+test-include-code-dict-quote: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvcmQ=
+  email:email password:password username:username]]]
+test-include-code-dict-quote-json: '{"auths":{"my-registry":{"auth":"dXNlcm5hbWU6cGFzc3dvcmQ=","email":"email","password":"password","username":"username"}}}'
+test-include-code-dict-quote-none: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvcmQ=
+    email:email password:password username:username]]]
+test-include-code-dict-quote-prettyjson: |-
+  {
+    "auths": {
+      "my-registry": {
+        "auth": "dXNlcm5hbWU6cGFzc3dvcmQ=",
+        "email": "email",
+        "password": "password",
+        "username": "username"
+      }
+    }
+  }
+test-include-code-dict-quote-rawjson: '{"auths":{"my-registry":{"auth":"dXNlcm5hbWU6cGFzc3dvcmQ=","email":"email","password":"password","username":"username"}}}'
+test-include-code-dict-quote-string: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvcmQ=
+  email:email password:password username:username]]]
+test-include-code-dict-quote-yaml: |-
+  auths:
+    my-registry:
+      auth: dXNlcm5hbWU6cGFzc3dvcmQ=
+      email: email
+      password: password
+      username: username
+test-include-code-dict-rawjson: '{"auths":{"my-registry":{"auth":"dXNlcm5hbWU6cGFzc3dvcmQ=","email":"email","password":"password","username":"username"}}}'
+test-include-code-dict-string: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvcmQ=
+  email:email password:password username:username]]]
+test-include-code-dict-yaml: |-
+  auths:
+    my-registry:
+      auth: dXNlcm5hbWU6cGFzc3dvcmQ=
+      email: email
+      password: password
+      username: username
+test-include-code-list-empty: '[]'
+test-include-code-list-empty-json: '[]'
+test-include-code-list-empty-none: '[]'
+test-include-code-list-empty-prettyjson: '[]'
+test-include-code-list-empty-rawjson: '[]'
+test-include-code-list-empty-string: '[]'
+test-include-code-list-empty-yaml: '[]'
+test-include-code-list-non-empty: '[map[name:listreg1] map[name:listreg2]]'
+test-include-code-list-non-empty-json: '[{"name":"listreg1"},{"name":"listreg2"}]'
+test-include-code-list-non-empty-none: '[map[name:listreg1] map[name:listreg2]]'
+test-include-code-list-non-empty-prettyjson: |-
+  [
+    {
+      "name": "listreg1"
+    },
+    {
+      "name": "listreg2"
+    }
+  ]
+test-include-code-list-non-empty-rawjson: '[{"name":"listreg1"},{"name":"listreg2"}]'
+test-include-code-list-non-empty-string: '[map[name:listreg1] map[name:listreg2]]'
+test-include-code-list-non-empty-yaml: |-
+  - name: listreg1
+  - name: listreg2
+test-include-flow-dict: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvcmQ=
+  email:email password:password username:username]]]
+test-serialize-from-dict-json: '{"a":"dict","bool":true,"keys":"and a","this":"is","with":5}'
+test-serialize-from-dict-none: map[a:dict bool:true keys:and a this:is with:5]
+test-serialize-from-dict-prettyjson: |-
+  {
+    "a": "dict",
+    "bool": true,
+    "keys": "and a",
+    "this": "is",
+    "with": 5
+  }
+test-serialize-from-dict-rawjson: '{"a":"dict","bool":true,"keys":"and a","this":"is","with":5}'
+test-serialize-from-dict-string: map[a:dict bool:true keys:and a this:is with:5]
+test-serialize-from-dict-yaml: |-
+  a: dict
+  bool: true
+  keys: and a
+  this: is
+  with: 5
+test-serialize-from-json-json: '{"a":"json","b":7,"c":false,"d":{"dd":"ee"}}'
+test-serialize-from-json-none: '{ "b": 7 , "a": "json", "c": false, "d":
+    {"dd": "ee"} }'
+test-serialize-from-json-prettyjson: |-
+  {
+    "a": "json",
+    "b": 7,
+    "c": false,
+    "d": {
+      "dd": "ee"
+    }
+  }
+test-serialize-from-json-rawjson: '{"a":"json","b":7,"c":false,"d":{"dd":"ee"}}'
+test-serialize-from-json-string: map[a:json b:7 c:false d:map[dd:ee]]
+test-serialize-from-json-yaml: |-
+  a: json
+  b: 7
+  c: false
+  d:
+    dd: ee
+test-serialize-from-list-json: '["a","list","with",7,{"keys":"and"},{"a":"boolean"},{"value":false}]'
+test-serialize-from-list-none: '[a list with 7 map[keys:and] map[a:boolean]
+    map[value:false]]'
+test-serialize-from-list-prettyjson: |-
+  [
+    "a",
+    "list",
+    "with",
+    7,
+    {
+      "keys": "and"
+    },
+    {
+      "a": "boolean"
+    },
+    {
+      "value": false
+    }
+  ]
+test-serialize-from-list-rawjson: '["a","list","with",7,{"keys":"and"},{"a":"boolean"},{"value":false}]'
+test-serialize-from-list-string: '[a list with 7 map[keys:and] map[a:boolean] map[value:false]]'
+test-serialize-from-list-yaml: |-
+  - a
+  - list
+  - with
+  - 7
+  - keys: and
+  - a: boolean
+  - value: false
+test-serialize-from-yaml-json: '{"a":"json","b":7,"c":false,"d":{"dd":"ee"}}'
+test-serialize-from-yaml-none: |-
+    b: 7
+    a: json
+    c: false
+    d:
+      dd: ee
+test-serialize-from-yaml-prettyjson: |-
+  {
+    "a": "json",
+    "b": 7,
+    "c": false,
+    "d": {
+      "dd": "ee"
+    }
+  }
+test-serialize-from-yaml-rawjson: '{"a":"json","b":7,"c":false,"d":{"dd":"ee"}}'
+test-serialize-from-yaml-string: map[a:json b:7 c:false d:map[dd:ee]]
+test-serialize-from-yaml-yaml: |-
+  a: json
+  b: 7
+  c: false
+  d:
+    dd: ee
+test-serialize-from-json-auto.json: '{ "b2": 77, "a1": "jsonjson", "c3": true, "d4": {"dd": "eegghh"} }'
+test-serialize-from-json-auto.yaml: '{ "b2": 77, "a1": "jsonjson", "c3": true, "d4": {"dd": "eegghh"} }'
+test-serialize-from-json-auto.yml: '{ "b2": 77, "a1": "jsonjson", "c3": true, "d4": {"dd": "eegghh"} }'
+test-serialize-from-yaml-auto.json: |-
+  b2: 77
+  a1: jsonjson
+  c3: true
+  d4:
+    dd: eegghh
+test-serialize-from-yaml-auto.yaml: |-
+  b2: 77
+  a1: jsonjson
+  c3: true
+  d4:
+    dd: eegghh
+test-serialize-from-yaml-auto.yml: |-
+  b2: 77
+  a1: jsonjson
+  c3: true
+  d4:
+    dd: eegghh
+test-serialize-from-json-auto-disabled.json: |-
+  { "b2": 77, "a1": "jsonjson", "c3": true, "d4": {"dd": "eegghh"} }
+test-serialize-from-json-auto-disabled.yaml: |-
+  { "b2": 77, "a1": "jsonjson", "c3": true, "d4": {"dd": "eegghh"} }
+test-serialize-from-json-auto-disabled.yml: |-
+  { "b2": 77, "a1": "jsonjson", "c3": true, "d4": {"dd": "eegghh"} }
+test-serialize-from-yaml-auto-disabled.json: "b2: 77\na1: jsonjson\nc3: true\nd4:\n
+    \ dd: eegghh"
+test-serialize-from-yaml-auto-disabled.yaml: "b2: 77\na1: jsonjson\nc3: true\nd4:\n
+    \ dd: eegghh"
+test-serialize-from-yaml-auto-disabled.yml: "b2: 77\na1: jsonjson\nc3: true\nd4:\n
+    \ dd: eegghh"
+doc-json-serialization-examples-serialized.json: |-
+  {
+    "a": "number",
+    "an": "example",
+    "of": 4,
+    "serialization": "options",
+    "this": "is",
+    "to": "show"
+  }
+doc-json-serialization-examples-unchanged.json: |-
+  { 
+    "this": "is", 
+    "an": "example", 
+    "to": "show", 
+    "a": "number", 
+    "of": 4, 
+    "serialization": "options" 
+  }
+app-configuration-yaml: |-
+  number: 333
+  some-value: imagine some text
+  subdict:
+    key1: a key
+    key2: another key
+  true-or-false: true
+app-configuration-json: |-
+  {
+    "number": 333,
+    "some-value": "imagine some text",
+    "subdict": {
+      "key1": "a key",
+      "key2": "another key"
+    },
+    "true-or-false": true
+  }
+simple-string: This is a simple string to be written to a ConfigMap

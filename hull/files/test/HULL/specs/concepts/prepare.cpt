@@ -55,12 +55,11 @@
 * Prepare default test case for this kind with test chart "hull-test" and values file "values.hull.yaml" including suites <suites>
 
 # Lint and Render to namespace <namespace>
-* Lint to namespace <namespace>
-* Render to namespace <namespace>
+* Lint and Render values file "values.hull.yaml" to namespace <namespace>
+
 
 # Lint and Render
-* Lint to namespace "default"
-* Render to namespace "default"
+* Lint and Render to namespace "default"
 
 # Lint and Render values file <values_file>
 * Lint the templates for values file <values_file> to namespace "default"

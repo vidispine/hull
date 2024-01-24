@@ -1,0 +1,2 @@
+name: i am concrete_file_3.yaml
+templating: {{ .Values.hull.config.general.metadata.labels.custom.general_custom_label_1 }}

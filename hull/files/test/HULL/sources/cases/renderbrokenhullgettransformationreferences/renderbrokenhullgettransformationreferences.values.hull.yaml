@@ -1,5 +1,7 @@
 hull:
   config:
     general:
+      errorChecks:
+        hullGetTransformationReferenceValid: false
       debug:
         renderBrokenHullGetTransformationReferences: true

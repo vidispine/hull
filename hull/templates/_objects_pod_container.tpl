@@ -16,13 +16,15 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
+{{- $objectInstanceKey := (index . "OBJECT_INSTANCE_KEY") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $component := default "" (index . "COMPONENT") -}}
 {{- $defaultSpec := default dict (index . "DEFAULT_SPEC") -}}
+{{- $containerType := (index . "CONTAINER_TYPE") -}}
 {{- $keepHashsumAnnotations := (index . "KEEP_HASHSUM_ANNOTATIONS") -}}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled"))) -}}
 - {{ dict "name" $component | toYaml }}
-{{ include "hull.object.container.image" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.image "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) | indent 2 }}
+{{ include "hull.object.container.image" (dict "PARENT_CONTEXT" $parent "SPEC" $spec.image "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "COMPONENT" $component "CONTAINER_TYPE" $containerType) | indent 2 }}
 {{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "env" dict (default dict $defaultSpec)) "SPEC" $spec "KEY" "env" "OBJECT_TEMPLATE" "hull.object.container.env" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 }}
 {{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "envFrom" dict (default dict $defaultSpec)) "SPEC" $spec "KEY" "envFrom" "OBJECT_TEMPLATE" "hull.object.container.envFrom" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 }}
 {{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "ports" dict (default dict $defaultSpec)) "SPEC" $spec "KEY" "ports" "OBJECT_TEMPLATE" "hull.object.container.ports" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) | indent 2 }}
@@ -47,8 +49,21 @@
 {{- define "hull.object.container.image" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
+{{- $component := default "" (index . "COMPONENT") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
-{{- $baseName := $spec.repository }}
+{{- $baseName := "" }}
+{{- if (index $parent.Values $hullRootKey).config.general.errorChecks.containerImageValid -}}
+{{- $details := printf "%s/%s/%s/%s" (index . "OBJECT_TYPE") (index . "OBJECT_INSTANCE_KEY") (index . "CONTAINER_TYPE") (index . "COMPONENT") }}
+{{- if not $spec -}}
+{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-IMAGE-SPEC" "ERROR_MESSAGE" $details) -}}
+{{- else -}}
+{{- if (not (hasKey $spec "repository")) -}}
+{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-IMAGE-REPOSITORY" "ERROR_MESSAGE" $details) -}}
+{{- else -}}
+{{- $baseName = $spec.repository }}
+{{- end -}}
+{{- end -}}
+{{- end -}}
 {{ if (ne (default "" (index $parent.Values $hullRootKey).config.general.globalImageRegistryServer) "") }}
 {{- $baseName = printf "%s/%s" (index $parent.Values $hullRootKey).config.general.globalImageRegistryServer $baseName }}
 {{- else -}}

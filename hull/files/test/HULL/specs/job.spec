@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "53" objects were rendered
+* Expected number of "54" objects were rendered
 * Validate
 
 ## Metadata
@@ -37,7 +37,7 @@ Test creation of objects and features.
 
 ## Certificates
 * Prepare default test case for this kind including suites "pod,customcacertificates"
-* Render
+* Lint and Render
 
 * Set test object to "release-name-hull-test-mixed-key-transformations"
 

@@ -308,6 +308,9 @@ hull:
         pod:
           containers:
             mixed-key-transformations:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
               volumeMounts:
                 etcssl:
                   enabled: _HT?(index . "$").Values.hull.config.general.data.installation.config.customCaCertificates

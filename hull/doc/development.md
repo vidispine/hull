@@ -343,5 +343,19 @@ Add or modify test cases so that the new changes are covered adequately.
 
 All tests need to run successfully to create a new release.
 
+## Run tests
+
+HULL has a large number of test cases aiming to cover a large amount of usage scenarios. The testing framework in use is [Gauge](https://gauge.org/index.html). To run the tests it is advised to use VisualStudio Code or the `gauge` CLI.
+
+Before any tests can be executed you need to have `Python` and `pip` installed, preferrably in the latest version. Then run `pip install -r requirements.txt` when in the `hull/files/test/HULL` folder. This installs the necessary Python libraries for test execution. 
+
+Now you should be able to run a first test suite, for example on the `job` scenario:
+
+```
+gauge run --hide-suggestion --simple-console hull\files\test\HULL\specs\job.spec
+```
+
+After the tests have run you can see how many tests failed and were successful. Additionally you will be provided with a link to a local HTML file giving you an overview of all executed test cases.
+
 ---
 Back to [README.md](./../README.md)

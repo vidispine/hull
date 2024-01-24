@@ -27,6 +27,9 @@ hull:
         pod:
           containers:
             _HULL_OBJECT_TYPE_DEFAULT_:
+              image: 
+                repository: myrepo/app-java-direct
+                tag: 23.3.2
               env:
                 DATABASE_HOST:
                   value: _HT*hull.config.specific.database.host
@@ -83,6 +86,9 @@ hull:
                 DATABASE_PASSWORD:
                   value: _HT*hull.config.specific.database.password
             secondary:
+              image: 
+                repository: myrepo/app-java-direct
+                tag: 23.3.2
               env:
                 FROM_DEFAULT:
                   value: target value
