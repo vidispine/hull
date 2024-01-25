@@ -84,4 +84,7 @@ hull:
       
       metadata-stringify:
         value: 100
+      
+      test-serializing:
+        value: 100
 ###################################################

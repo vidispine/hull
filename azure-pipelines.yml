@@ -11,7 +11,7 @@ trigger: none
 pr: none
 
 pool:
-    vmImage: 'ubuntu-20.04'
+    vmImage: 'ubuntu-22.04'
 
 jobs:
 - job: RunTests
@@ -19,30 +19,6 @@ jobs:
   strategy: 
     maxParallel: 5
     matrix:
-      Helm_3_12_0_single: 
-        HelmVersion: "3.12.0" 
-        TestType: single 
-      Helm_3_12_0_multi: 
-        HelmVersion: "3.12.0"  
-        TestType: multi
-      Helm_3_12_1_single: 
-        HelmVersion: "3.12.1" 
-        TestType: single 
-      Helm_3_12_1_multi: 
-        HelmVersion: "3.12.1"  
-        TestType: multi
-      Helm_3_12_2_single: 
-        HelmVersion: "3.12.2"  
-        TestType: single
-      Helm_3_12_2_multi: 
-        HelmVersion: "3.12.2"  
-        TestType: multi
-      Helm_3_12_3_single: 
-        HelmVersion: "3.12.3"  
-        TestType: single
-      Helm_3_12_3_multi: 
-        HelmVersion: "3.12.3"  
-        TestType: multi
       Helm_3_13_0_single: 
         HelmVersion: "3.13.0" 
         TestType: single 
@@ -60,6 +36,18 @@ jobs:
         TestType: single
       Helm_3_13_2_multi: 
         HelmVersion: "3.13.2"  
+        TestType: multi
+      Helm_3_13_3_single: 
+        HelmVersion: "3.13.3"  
+        TestType: single
+      Helm_3_13_3_multi: 
+        HelmVersion: "3.13.3"  
+        TestType: multi
+      Helm_3_14_0_single: 
+        HelmVersion: "3.14.0"  
+        TestType: single
+      Helm_3_14_0_multi: 
+        HelmVersion: "3.14.0"  
         TestType: multi
 
   steps:

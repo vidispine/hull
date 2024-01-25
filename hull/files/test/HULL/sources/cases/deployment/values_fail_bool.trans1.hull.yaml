@@ -33,6 +33,9 @@ hull:
         pod:
           initContainers: 
             fail:
+              image: 
+                repository: docker.io/example-docker-container
+                tag: "1.0"
               envFrom:
                 fail:
                   secretRef:

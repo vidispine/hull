@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "19" objects were rendered
+* Expected number of "20" objects were rendered
 * Validate
 
 ## Metadata
@@ -26,12 +26,12 @@ Test creation of objects and features.
 
 ## Defaulting
 * Lint and Render values file "values_disable_default.hull.yaml"
-* Expected number of "19" objects were rendered
+* Expected number of "20" objects were rendered
 * Validate
 
 ## Test enable disabled and disable default
 * Lint and Render values file "values_disable_default_enable_disabled.hull.yaml"
-* Expected number of "19" objects were rendered
+* Expected number of "20" objects were rendered
 * Validate
 ___
 

@@ -37,11 +37,6 @@
                   {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $others "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey) -}}
                   {{- $combined = dict $key (merge $others (index $valDict $key)) }}
                 {{- end -}}
-                {{ if (typeIs "string" (index $combined $key)) }}                
-                {{ if (and (hasKey $combined $key) (hasPrefix "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE" (index $combined $key)) (not $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences)) }}
-                {{ fail (index $combined $key) }}
-                {{ end }}
-                {{ end }}
                 {{- $source := unset $source $key -}}
                 {{- $source := merge $source $combined -}}
             {{- else -}}
@@ -71,11 +66,6 @@
             {{- if $params }}
                 {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "SOURCE_PATH" $sourcePathKey "HULL_ROOT_KEY" $hullRootKey) $params -}}
                 {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
-                {{ if (typeIs "string" (index $valDict $key)) }}
-                {{ if (and (hasKey $valDict $key) (hasPrefix "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE" (index $valDict $key)) (not $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences)) }}
-                {{ fail (index $valDict $key) }}
-                {{ end }}
-                {{ end }}
                 {{- $source := unset $source $key -}}
                 {{- $source := set $source $key (index $valDict $key) -}}  
             {{- end -}}
@@ -104,11 +94,6 @@
         {{- if $params }}
             {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" "key" "SOURCE_PATH" $sourcePath "HULL_ROOT_KEY" $hullRootKey) $params -}}
             {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
-            {{ if (typeIs "string" (index $valDict "key")) }}
-            {{ if (and (hasKey $valDict "key") (hasPrefix "BROKEN-HULL-GET-TRANSFORMATION-REFERENCE" (index $valDict "key")) (not $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences)) }}
-            {{ fail (index $valDict "key") }}
-            {{ end }}
-            {{ end }}
             {{- $t2 := set $caller $callerKey (index $valDict "key") -}}
         {{- else -}}
             {{- range $listentry := $source -}}
@@ -145,6 +130,73 @@
 {{- /*
 | Purpose:  
 |   
+|   Determine additional parameters
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   REFERENCE: The key in dot-notation for which the value should be retrieved
+|
+*/ -}}
+{{- define "hull.util.transformation.serialize.get" -}}
+{{- $value := (index . "VALUE") -}}
+{{- $serialize := false -}}
+{{- $result := dict -}}
+{{- range $serializer := list "none" "toJson" "toPrettyJson" "toRawJson" "toYaml" "toString" -}}
+{{- if (hasPrefix (printf "%s|" $serializer) $value ) -}}
+{{- $serialize = true -}}
+{{- $result = set $result "serializer" $serializer -}}
+{{- $result = set $result "remainder" ($value | trimPrefix (printf "%s|" $serializer)) -}}
+{{- end -}}
+{{- end -}}
+{{- $result = set $result "serialize" $serialize -}}
+{{- $result | toYaml -}}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:  
+|   
+|   Determince Conversion Type if present
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   REFERENCE: The key in dot-notation for which the value should be retrieved
+|
+*/ -}}
+{{- define "hull.util.transformation.serialize" -}}
+{{- $value := (index . "VALUE") -}}
+{{- $serializer := (index . "SERIALIZER") -}}
+{{- if (eq $serializer "toJson") -}}
+{{- $value | toJson -}}
+{{- else -}}
+{{- if (eq $serializer "toPrettyJson") -}}
+{{- $value | toPrettyJson -}}
+{{- else -}}
+{{- if (eq $serializer "toRawJson") -}}
+{{- $value | toRawJson -}}
+{{- else -}}
+{{- if (eq $serializer "toYaml") -}}
+{{- $value | toYaml -}}
+{{- else -}}
+{{- if (eq $serializer "toString") -}}
+{{- $value | toString -}}
+{{- else -}}
+{{- $value -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:  
+|   
 |   Gets the value from a key in values.yaml given dot-notation.
 |
 | Interface:
@@ -157,6 +209,12 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $key := (index . "KEY") -}}
 {{- $reference := (index . "REFERENCE") -}}
+{{- $serializer := "" }}
+{{- $getValue := include "hull.util.transformation.serialize.get" (dict "VALUE" $reference) | fromYaml -}}
+{{- if $getValue.serialize -}}
+{{- $reference = $getValue.remainder -}}
+{{- $serializer = $getValue.serializer -}}
+{{- end -}}
 {{- $path := splitList "." $reference -}}
 {{- $current := $parent.Values }}
 {{- $skipBroken := false}}
@@ -172,13 +230,22 @@
 {{- end -}}
 {{- end -}}
 {{- end -}}
-{{- if $skipBroken }}
-{{ $key }}: BROKEN-HULL-GET-TRANSFORMATION-REFERENCE --> INVALID_PATH_ELEMENT {{ $brokenPart }} IN {{ $reference }} NOT FOUND!
+{{- if $skipBroken -}}
+{{- if $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences -}}
+{{ $key }}: BROKEN-HULL-GET-TRANSFORMATION-REFERENCE:Element {{ $brokenPart }} in path {{ $reference }} was not found
+{{- else }}
+{{- if $parent.Values.hull.config.general.errorChecks.hullGetTransformationReferenceValid -}}
+{{- $details := printf "Element %s in path %s was not found" $brokenPart $reference -}}
+{{- $key }}: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details) -}}
+{{- else -}}
+{{- $key }}: ""
+{{- end -}}
+{{- end -}}
 {{- else -}}
 {{- if and (typeIs "string" $current) (not $current) }}
 {{ $key }}: ""
 {{- else -}}
-{{ $key }}: {{ (include "hull.util.transformation.convert" (dict "SOURCE" $current "KEY" $key)) }}
+{{ $key }}: {{ (include "hull.util.transformation.convert" (dict "SOURCE" $current "KEY" $key "SERIALIZER" $serializer)) }}
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -198,19 +265,28 @@
 */ -}}
 {{- define "hull.util.transformation.convert" -}}
 {{- $source := (index . "SOURCE") -}}
+{{- $serializer := default "" (index . "SERIALIZER") -}}
 {{- if typeIs "map[string]interface {}" $source -}}
+{{- if (and (ne $serializer "") (ne $serializer "none")) -}}
+{{- include "hull.util.transformation.serialize" (dict "VALUE" ($source) "SERIALIZER" $serializer) | toYaml -}}
+{{- else -}}
 { 
   {{- range $k,$value := $source -}}
   {{ $k }}: {{ include "hull.util.transformation.convert" (dict "SOURCE" $value) -}},
   {{- end -}}
 }
+{{- end -}}
 {{- else -}}
 {{- if typeIs "[]interface {}" $source -}}
+{{- if (and (ne $serializer "") (ne $serializer "none")) -}}
+{{- include "hull.util.transformation.serialize" (dict "VALUE" ($source) "SERIALIZER" $serializer) | toYaml -}}
+{{- else -}}
 [
   {{- range $value := $source -}}
   {{- include "hull.util.transformation.convert" (dict "SOURCE" $value) -}},
   {{- end -}}
 ]
+{{- end -}}
 {{- else -}}
 {{ $source }}
 {{- end -}}
@@ -240,9 +316,7 @@
 {{- if (gt (len $sourcePath) 3) -}}
 {{  if (eq (index $sourcePath 1) "objects") -}}
 {{- $objectType = index $sourcePath 2 -}}
-{{- if (ne (index $sourcePath 3) "_HULL_OBJECT_TYPE_DEFAULT_") -}}
 {{- $objectInstanceKey = index $sourcePath 3 -}}
-{{- end -}}
 {{- end -}}
 {{- end -}}
 {{ $key }}: {{ tpl  $content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) }}
@@ -309,6 +383,7 @@
 {{- $content := (index . "CONTENT") -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $sourcePath := default nil (index . "SOURCE_PATH") -}}
+{{- $serializer := "" -}}
 {{- $objectType := "" -}}
 {{- $objectInstanceKey := "" -}}
 {{- if (gt (len $sourcePath) 3) -}}
@@ -323,9 +398,14 @@
 {{- $parentContextSubmitted := false -}}
 {{- $resultKey := "" -}}
 {{- $includeName := ($parts | first) -}}
-{{- if (gt (len (regexSplit "/" ($parts | first) -1)) 1) -}}
-{{- $resultKey = (regexSplit "/" ($parts | first) -1) | first -}}
-{{- $includeName = (regexSplit "/" ($parts | first) -1) | last -}}
+{{- $includeNameParts := include "hull.util.transformation.serialize.get" (dict "VALUE" $includeName) | fromYaml -}}
+{{- if $includeNameParts.serialize -}}
+{{- $includeName = $includeNameParts.remainder -}}
+{{- $serializer = $includeNameParts.serializer -}}
+{{- end -}}
+{{- if (gt (len (regexSplit "/" $includeName -1)) 1) -}}
+{{- $resultKey = (regexSplit "/" $includeName -1) | first -}}
+{{- $includeName = (regexSplit "/" $includeName -1) | last -}}
 {{- end -}}
 {{- $call := printf "{{ include %s (dict " ($includeName | quote) -}}
 {{- $isKey := true -}}
@@ -347,13 +427,23 @@
 {{- end -}}
 {{- $call = printf "%s) }}" ($call | trim) -}}
 {{- $tpl := tpl $call (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType ) .) -}}
-{{- $result := $tpl | fromYaml -}}
+{{- $result := dict -}}
+{{- if (or (eq $serializer "") (eq $serializer "none")) -}}
+{{- $result = $tpl | fromYaml -}}
 {{- if (hasKey $result "Error")  -}}
 {{- $result = $tpl -}}
 {{- else -}}
 {{- if (ne $resultKey "") -}}
 {{- $result = index $result $resultKey -}}
 {{- end -}}
+{{- end -}}
+{{- else -}}
+{{- if (ne $resultKey "") -}}
+{{- $result = index ($tpl | fromYaml) $resultKey -}}
+{{- else -}}
+{{- $result = $tpl | fromYaml -}}
+{{- end -}}
+{{- $result = include "hull.util.transformation.serialize" (dict "VALUE" $result "SERIALIZER" $serializer) -}}
 {{- end -}}
 {{ (dict $key $result) | toYaml }}
 {{- end -}}

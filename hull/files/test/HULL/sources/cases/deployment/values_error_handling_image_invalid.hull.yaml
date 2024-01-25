@@ -1,0 +1,11 @@
+hull:
+  objects:
+    deployment:
+      invalid-container-images:
+        pod:
+          containers:
+            no-image:
+              env: {}
+            no-repository:
+              image:
+                tag: 1dwfe
