@@ -31,170 +31,103 @@ hull:
 
       service-account:
         serviceName: service-account
-        pod:
-          containers: {}
     
       disabled:
         serviceName: disabled
-        pod:
-          containers: {}
         
       static-name:
         serviceName: static-name
-        pod:
-          containers: {}
-        
       metadata-merge:
         serviceName: metadata-merge
-        pod:
-          containers: {}
-        
       metadata-overwrite:
         serviceName: metadata-overwrite
-        pod:
-          containers: {}
 
       metadata-custom-template-merge:
         serviceName: metadata-custom-template-merge
-        pod:
-          containers: {}
         
       metadata-custom-template-overwrite:
         serviceName: metadata-custom-template-overwrite
-        pod:
-          containers: {}
 
       metadata-custom-template-multi-merge:
         serviceName: metadata-custom-template-multi-merge
-        pod:
-          containers: {}
         
       metadata-custom-template-multi-overwrite:
         serviceName: metadata-custom-template-multi-overwrite
-        pod:
-          containers: {}
 
       metadata-no-template:
         serviceName: metadata-no-template
-        pod:
-          containers: {}
-
+      
       metadata-default-template-as-source:
         serviceName: metadata-default-template-as-source
-        pod:
-          containers: {}
-
+        
       metadata-default-custom-overwrite:
         serviceName: metadata-default-custom-overwrite
-        pod:
-          containers: {}
+        
       metadata-object-info:
-        serviceName: metadata-overwrite
-        pod:
-          containers: {}
+        serviceName: metadata-object-info
 
       disabled-transform:
         serviceName: disabled-transform
-        pod:
-          containers: {}
         
       enabled-transform:
         serviceName: enabled-transform
-        pod:
-          containers: {}
         
       disabled-transform-dict:
         serviceName: disabled-transform-dict
-        pod:
-          containers: {}
         
       enabled-transform-dict:
         serviceName: enabled-transform-dict
-        pod:
-          containers: {}
       
       disabled-transform-tpl-if:
         serviceName: enabled-transform-dict
-        pod:
-          containers: {}
       
       transformation-shortforms:
         serviceName: transformation-shortforms
-        pod:
-          containers: {}
 
       transformation-doc-examples:
         serviceName: transformation-doc-examples
-        pod:
-          containers: {}
 
       enabled-transform-tpl-if:
         serviceName: enabled-transform-tpl-if
-        pod:
-          containers: {}
 
       metadata-name-override:
         serviceName: metadata-name-override
-        pod:
-          containers: {}
 
       metadata-name-override-static:
         serviceName: metadata-name-override-static
-        pod:
-          containers: {}
       
       metadata-stringify:
         serviceName: metadata-stringify
-        pod:
-          containers: {}
 
       complex-gets:
         serviceName: complex-gets
-        pod:
-          containers: {}
 
       pod-get:
         serviceName: pod-get
 
       imagepullsecrets-custom:
         serviceName: image-name-empty-registry
-        pod:
-          containers: {}
 
       imagepullsecrets-add-all:
         serviceName: image-name-empty-registry
-        pod:
-          containers: {}
           
       image-name-empty-registry:
         serviceName: image-name-empty-registry
-        pod:
-          containers: {}
         
       image-name-registry:
         serviceName: image-name-registry
-        pod:
-          containers: {}
         
       image-name-tag:
         serviceName: image-name-tag
-        pod:
-          containers: {}
 
       image-pull-policy:
         serviceName: image-pull-policy
-        pod:
-          containers: {}
 
       custom-args:
         serviceName: custom-args
-        pod:
-          containers: {}
 
       int-bool-dict-array-ht:
         serviceName: custom-args_as_string
-        pod:
-          containers: {}
 
       removal-test:
         serviceName: removal-test
@@ -216,29 +149,18 @@ hull:
                 
       volume-test:
         serviceName: volume-test
-        pod:
-          volumes:
-            to_be_removed:
-              persistentVolumeClaim:
-                claimName: remove_me
       
       env-test:
         serviceName: env-test
-        pod:
-          containers: {}
 
       envfrom-test:
         serviceName: envfrom-test
-        pod:
-          containers: {}
 
       enabled-true-false:
         serviceName: enabled-true-false
                 
       volume-active-selection:
         serviceName: volume-active-selection
-        pod:
-          containers: {}
 
       full-example-deployment:
         serviceName: disabled
@@ -434,73 +356,53 @@ hull:
 
       hashing-pod-volumemounts:
         serviceName: hashing-pod-volumemounts
-        pod:
-          containers: {}
 
       hashing-pod-env:
         serviceName: hashing-pod-env
-        pod:
-          containers: {}
-      
+        
       pod-combine-values:
         serviceName: pod-combine-values
-        pod:
-          containers: {}
-
+        
       pull-secrets-override-empty-array:
         serviceName: pull-secrets-override-empty-array
-        pod:
-          containers: {}
-
+        
       pull-secrets-override-nonempty-array:
         serviceName: pull-secrets-override-nonempty-array
-        pod:
-          containers: {}
-
+        
       pull-secrets-tpl-empty-array:
         serviceName: pull-secrets-tpl-empty-array
-        pod:
-          containers: {}
-
+        
       pull-secrets-tpl-nonempty-array:
         serviceName: pull-secrets-tpl-nonempty-array
-        pod:
-          containers: {}
-
+        
       pull-secrets-include-empty-array:
         serviceName: pull-secrets-include-empty-array
-        pod:
-          containers: {}
-
+        
       pull-secrets-include-nonempty-array:
         serviceName: pull-secrets-include-nonempty-array
-        pod:
-          containers: {}
-
+        
       pull-secrets-include-empty-flow:
         serviceName: pull-secrets-include-empty-flow
-        pod:
-          containers: {}
-
+        
       pull-secrets-include-nonempty-flow:
         serviceName: pull-secrets-include-nonempty-flow
-        pod:
-          containers: {}
-
+        
       pull-secrets-include-empty-list:
         serviceName: pull-secrets-include-empty-list
-        pod:
-          containers: {}
-
+        
       pull-secrets-include-nonempty-list:
         serviceName: pull-secrets-include-nonempty-list
-        pod:
-          containers: {}
-
+        
       test-serializing:
-        serviceName: pull-secrets-include-nonempty-list
-        pod:
-          containers: {}
+        serviceName: test-serializing
 
+      no-annotations:
+        serviceName: no-annotations
       
+      no-template-annotations:
+        serviceName: no-template-annotations
+
+      no-imagepullsecrets:
+        serviceName: no-imagepullsecrets
+
   ###################################################

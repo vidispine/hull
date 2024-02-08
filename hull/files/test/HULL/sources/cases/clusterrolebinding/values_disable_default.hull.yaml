@@ -164,4 +164,10 @@ hull:
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
+
+      no-annotations:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
 ###################################################

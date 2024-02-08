@@ -30221,6 +30221,70 @@
                     }
                   }
                 },
+                "render": {
+                  "$id": "#/definitions/root/config/general/render",
+                  "description": "Render Options",
+                  "title": "Render Options",
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "emptyAnnotations": {
+                      "$id": "#/definitions/root/config/general/render/emptyannotations",
+                      "title": "emptyAnnotations",
+                      "description": "Render empty annotations as empty dictionary.",
+                      "type": "boolean",
+                      "examples": [
+                        true,
+                        false
+                      ],
+                      "default": false
+                    },
+                    "emptyLabels": {
+                      "$id": "#/definitions/root/config/general/render/emptylabels",
+                      "title": "emptyLabels",
+                      "description": "Render empty labels as empty dictionary.",
+                      "type": "boolean",
+                      "examples": [
+                        true,
+                        false
+                      ],
+                      "default": false
+                    },
+                    "emptyTemplateAnnotations": {
+                      "$id": "#/definitions/root/config/general/render/emptytemplateannotations",
+                      "title": "emptyTemplateAnnotations",
+                      "description": "Render empty pod template annotations as empty dictionary.",
+                      "type": "boolean",
+                      "examples": [
+                        true,
+                        false
+                      ],
+                      "default": false
+                    },
+                    "emptyTemplateLabels": {
+                      "$id": "#/definitions/root/config/general/render/emptytemplatelabels",
+                      "title": "emptyTemplateLabels",
+                      "description": "Render empty pod template labels as empty dictionary.",
+                      "type": "boolean",
+                      "examples": [
+                        true,
+                        false
+                      ],
+                      "default": false
+                    },
+                    "emptyHullObjects": {
+                      "$id": "#/definitions/root/config/general/render/emptyhullobjects",
+                      "title": "emptyHullObjects",
+                      "description": "Render empty hull.object's as empty arrays.",
+                      "type": "boolean",
+                      "examples": [
+                        true,
+                        false
+                      ],
+                      "default": false
+                    }
+                  }
+                },
                 "postRender": {
                   "$id": "#/definitions/root/config/general/postrender",
                   "description": "Post Rendering",

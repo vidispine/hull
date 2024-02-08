@@ -121,6 +121,7 @@
 {{- $keepHashsumAnnotations := default false (index . "KEEP_HASHSUM_ANNOTATIONS") -}}
 {{- $objectInstanceKey := (index . "OBJECT_INSTANCE_KEY") -}}
 {{- $containerType := default "" (index . "CONTAINER_TYPE") -}}
+{{- $renderEmptyArray := default (index $parent.Values $hullRootKey).config.general.render.emptyHullObjects (index . "RENDER_EMPTY_ARRAY")}}
 {{- $isDefined := false }}
 {{- if hasKey $spec (printf "%s" $objectKey) }}
 {{- range $key, $value := (index $spec (printf "%s" $objectKey)) }}
@@ -141,7 +142,9 @@
 {{ end }}
 {{ end }}
 {{ else }}
+{{ if $renderEmptyArray }}
 {{ $objectKey }}: []
+{{ end }}
 {{ end }}
 {{ end }}
 
