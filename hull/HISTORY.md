@@ -1,5 +1,10 @@
 # History
 ------------------
+[1.28.9]
+------------------
+CHANGES:
+- avoid rendering of empty collections. All `annotations`, `labels` and several other fields, which are explicitly handled by HULL, now are fully omitted if they resolve to empty dictionaries or arrays. This changed behaviour can be reverted by individually choosing to render `emptyAnnotations`, `emptyLabels`, `emptyTemplateAnnotations`, `emptyTemplateLabels` and/or `emptyHullObjects` under `config.global.render`. This default behavior change is in favor of improving compatibility with tools that potentially auto-prune empty collection fields like ArgoCD and thus may have syncing issues with empty collections. In terms of severity this change is considered non-breaking. Down the line, Kubernetes treats missing and empty collection fields in the same way. Note that per the schema, some collection fields are required (`containers` in `pod` and `paths` in `ingress` `rules`) and omitting them or leaving them empty now violates the Kubernetes schema. However, in these cases Kubernetes also verifies that at least one element is in the collection on deployment so the problem only shows earlier. Thanks [alexrimlin](https://github.com/alexrimlin) for the suggestion!
+------------------
 [1.28.8]
 ------------------
 CHANGES:

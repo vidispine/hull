@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "52" objects were rendered
+* Expected number of "55" objects were rendered
 * Validate
 
 ## Metadata
@@ -40,7 +40,7 @@ Test creation of objects and features.
 ## Short Demo - Debug true
 * Prepare test case "Deployment" for kind "Deployment" and values file "values_short_demo.hull.yaml"
 * Lint and Render values file "values_short_demo.hull.yaml"
-* Expected number of "20" objects were rendered
+* Expected number of "21" objects were rendered
 * Set test object to "release-name-hull-test-myapp-frontend"
 * Test Object has key "spec§template§spec§containers§0§image" with value "mycompany/myapp-frontend:v23.1"
 * Test Object has key "spec§template§spec§containers§0§env§0§value" with value "release-name-hull-test-myapp-backend"
@@ -70,7 +70,7 @@ Test creation of objects and features.
 
 * Prepare test case "Deployment" for kind "Deployment" and values file "values_short_demo.hull.yaml" including suites "debugswitch"
 * Lint and Render values file "values_short_demo.hull.yaml"
-* Expected number of "20" objects were rendered
+* Expected number of "21" objects were rendered
 * Set test object to "release-name-hull-test-myapp-frontend"
 * Test Object has key "spec§template§spec§containers§0§image" with value "mycompany/myapp-frontend:v23.1"
 * Test Object has key "spec§template§spec§containers§0§env§0§value" with value "release-name-hull-test-myapp-backend"
@@ -101,7 +101,7 @@ Test creation of objects and features.
 ## Sources Example
 * Prepare test case "Deployment" for kind "Deployment" and values file "values_sources_example.hull.yaml"
 * Lint and Render values file "values_sources_example.hull.yaml"
-* Expected number of "24" objects were rendered
+* Expected number of "25" objects were rendered
 
 * Set test object to "release-name-hull-test-app-python-direct"
 * Test Object has key "spec§template§spec§containers§0§image" with value "myrepo/app-python-direct:23.3.2"

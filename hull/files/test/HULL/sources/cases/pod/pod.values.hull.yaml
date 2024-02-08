@@ -252,6 +252,15 @@ hull:
                 tag: "99.9"
           imagePullSecrets:
           - name: some-custom-imagepull-secret
+      
+      no-imagepullsecrets:
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+          imagePullSecrets: []
 
       imagepullsecrets-add-all:
         pod:
@@ -853,6 +862,142 @@ hull:
             test_enabled_missing:
               secret:
                 secretName: test_enabled_missing
+
+      enabled-transform:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      enabled-transform-dict:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      enabled-transform-tpl-if:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      metadata-custom-template-multi-merge:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      metadata-custom-template-multi-overwrite:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      metadata-custom-template-merge:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      metadata-custom-template-overwrite:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      metadata-default-custom-overwrite:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      metadata-default-template-as-source:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      metadata-merge:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      metadata-name-override:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      metadata-name-override-static:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      metadata-no-template:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      metadata-object-info:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      metadata-overwrite:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+      
+      metadata-stringify:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
+      static-name:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
 
       transformation-shortforms:
         pod:
@@ -1805,4 +1950,18 @@ hull:
                   value: _HT*toYaml|hull.config.specific.dict_mixed_content.list
                 test-get-list-string: 
                   value: _HT*toString|hull.config.specific.dict_mixed_content.list
-                
+
+      no-annotations:
+        pod:
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+      
+      no-template-annotations:
+        pod:
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+      
