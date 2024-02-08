@@ -40,14 +40,6 @@ hull:
         pod:
           containers: {}
         
-      static-name:
-        pod:
-          containers: {}
-        
-      metadata-merge:
-        pod:
-          containers: {}
-        
       metadata-overwrite:
         pod:
           containers: {}
@@ -298,11 +290,19 @@ hull:
           matchLabels:
             test_label: test_value
         pod:
-          containers: {}
+          containers: 
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
 
       no-selector-provided:
         pod:
-          containers: {}
+          containers: 
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
 
       mixed-key-transformations:
         pod:
@@ -351,59 +351,4 @@ hull:
               secret:
                 secretName: "custom-ca-certificates"
 
-      metadata-default-template-as-source:
-        pod:
-          containers:
-            main:
-              image:
-                repository: my/image/repo
-                tag: "99.9"
-
-      metadata-no-template:
-        pod:
-          containers:
-            main:
-              image:
-                repository: my/image/repo
-                tag: "99.9"
-
-      metadata-custom-template-merge:
-        pod:
-          containers:
-            main:
-              image:
-                repository: my/image/repo
-                tag: "99.9"
-
-      metadata-default-custom-overwrite:
-        pod:
-          containers:
-            main:
-              image:
-                repository: my/image/repo
-                tag: "99.9"
-        
-      metadata-custom-template-overwrite:
-        pod:
-          containers:
-            main:
-              image:
-                repository: my/image/repo
-                tag: "99.9"
-
-      metadata-custom-template-multi-merge:
-        pod:
-          containers:
-            main:
-              image:
-                repository: my/image/repo
-                tag: "99.9"
-        
-      metadata-custom-template-multi-overwrite:
-        pod:
-          containers:
-            main:
-              image:
-                repository: my/image/repo
-                tag: "99.9"
-  ###################################################
+###################################################
