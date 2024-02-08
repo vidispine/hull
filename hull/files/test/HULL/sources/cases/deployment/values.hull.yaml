@@ -32,54 +32,6 @@ hull:
       disabled:
         pod:
           containers: {}
-        
-      static-name:
-        pod:
-          containers: {}
-        
-      metadata-merge:
-        pod:
-          containers: {}
-        
-      metadata-overwrite:
-        pod:
-          containers: {}
-      
-      metadata-custom-template-merge:
-        pod:
-          containers: {}
-
-      metadata-custom-template-overwrite:
-        pod:
-          containers: {}
-
-      metadata-custom-template-multi-merge:
-        pod:
-          containers: {}
-
-      metadata-custom-template-multi-overwrite:
-        pod:
-          containers: {}
-
-      metadata-no-template:
-        pod:
-          containers: {}
-
-      metadata-default-template-as-source:
-        pod:
-          containers: {}
-
-      metadata-default-custom-overwrite:
-        pod:
-          containers: {}
-
-      metadata-object-info:
-        pod:
-          containers: {}
-      
-      metadata-stringify:
-        pod:
-          containers: {}
 
       image-name-empty-registry:
         pod:

@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "25" objects were rendered
+* Expected number of "27" objects were rendered
 * Validate
 
 ## Metadata
@@ -58,6 +58,17 @@ Test creation of objects and features.
 * Test Object has key "spec§ports" with array value that has "2" items
 * Test Object has key "spec§ports§0§name" with value "dynamic_one"
 * Test Object has key "spec§ports§1§name" with value "dynamic_two"
+
+## Empty HullObject rendering
+* Lint and Render
+* Set test object to "release-name-hull-test-no-ports"
+* Test Object does not have key "spec§ports"
+
+* Prepare default test case for this kind including suites "service/renderemptyhullobjects"
+* Lint and Render
+* Set test object to "release-name-hull-test-no-ports"
+* Test Object has key "spec§ports" with array value that has "0" items
+
 ___
 
 * Clean the test execution folder

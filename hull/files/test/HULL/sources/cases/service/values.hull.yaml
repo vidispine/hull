@@ -97,3 +97,5 @@ hull:
           dynamic_one: {enabled: true, port: 30, targetPort: 3030, nodePort: 303030 },
           dynamic_two: {enabled: true, port: 40, targetPort: 4040, nodePort: 404040 }
           }
+
+      no-ports: {}

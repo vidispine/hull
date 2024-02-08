@@ -31,6 +31,12 @@ config:
           json: toPrettyJson
           yml: toYaml
           yaml: toYaml
+    render:
+      emptyLabels: false
+      emptyAnnotations: false
+      emptyTemplateLabels: false
+      emptyTemplateAnnotations: false
+      emptyHullObjects: false
     postRender:
       globalStringReplacements:
         instanceKey:

@@ -1,0 +1,21 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+  objects:
+
+    # OBJECT TYPE
+    <OBJECT_TYPE>:
+      
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations:
+          default_annotation_1:  Default Annotation 1
+          default_annotation_2:  Default Annotation 2
+          general_custom_annotation_3: Default Annotation 3
+        labels:
+          default_label_1:  Default Label 1
+          default_label_2:  Default Label 2
+          general_custom_label_3: Default Label 3

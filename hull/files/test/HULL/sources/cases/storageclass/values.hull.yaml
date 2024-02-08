@@ -44,6 +44,7 @@ hull:
 
       metadata-default-custom-overwrite:
         provisioner: "local-volume"
+
       simple:
         enabled: true
         allowVolumeExpansion: true
@@ -86,4 +87,6 @@ hull:
       test-serializing:
         provisioner: "local-volume"
 
+      no-annotations:
+        provisioner: "local-volume"
 ###################################################

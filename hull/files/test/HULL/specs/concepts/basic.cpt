@@ -1,13 +1,13 @@
 # Check basic metadata functionality
 
-* Prepare default test case for this kind including suites "namespaceoverride"
+* Prepare default test case for this kind including suites "namespaceoverride,globalmetadata,objecttypemetadata"
 * Lint and Render
 
 Namespace must be set and overriden
 
 * All test objects have key "metadata§namespace" with value "a-namespace-to-render"
 
-* Prepare default test case for this kind including suites "namingoverride"
+* Prepare default test case for this kind including suites "namingoverride,globalmetadata,objecttypemetadata"
 * Lint and Render
 
 General label section must be populated with overriden names
@@ -75,7 +75,7 @@ Overwriting metadata must work properly
 
 Run namespace set via argument test
 
-* Prepare default test case for this kind including suites ""
+* Prepare default test case for this kind including suites "globalmetadata,objecttypemetadata"
 * Lint and Render to namespace "namespace-provided-as-arg"
 * All test objects have key "metadata§namespace" with value "namespace-provided-as-arg"
 
@@ -83,7 +83,7 @@ Run namespace set via argument test
 
 Run non-name override tests
 
-* Prepare default test case for this kind including suites ""
+* Prepare default test case for this kind including suites "globalmetadata,objecttypemetadata"
 * Lint and Render
 
 Namespace must be set to default
@@ -110,7 +110,7 @@ Check explicit name override
 * Test Object has key "metadata§name" with value "usethisfinestaticname"
 * Test Object has key "metadata§labels§app.kubernetes.io/component" with value "usethisfinestaticname"
 
-* Prepare default test case for this kind including suites ""
+* Prepare default test case for this kind including suites "globalmetadata,objecttypemetadata"
 * Lint and Render
 
 General label section must be populated
@@ -399,3 +399,15 @@ Test serialization functions
 * Test Object has key "metadata§labels§test-include-code-list-non-empty-yaml" with value of key "test-include-code-list-non-empty-yaml" from expected.yaml of suite "basic"
 * Test Object has key "metadata§labels§test-include-code-list-non-empty-string" with value of key "test-include-code-list-non-empty-string" from expected.yaml of suite "basic"
 * Test Object has key "metadata§labels§test-include-flow-dict" with value of key "test-include-flow-dict" from expected.yaml of suite "basic"
+
+Test annotation rendering
+
+* Prepare default test case for this kind including suites ""
+* Lint and Render
+* Set test object to "release-name-hull-test-no-annotations"
+* Test Object does not have key "metadata§annotations"
+
+* Prepare default test case for this kind with test chart "hull-test" and values file "values.hull.yaml" including suites "basic/renderemptyannotations"
+* Lint and Render
+* Set test object to "release-name-hull-test-no-annotations"
+* Test Object has key "metadata§annotations" with dictionary value that has "0" items

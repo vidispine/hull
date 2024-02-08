@@ -185,4 +185,10 @@ hull:
           kind: "Deployment"
           name: target_deployment
           staticName: true
+      
+      no-annotations:
+        scaleTargetRef:
+          name: metadata-overwrite
+          kind: "Deployment"
+        maxReplicas: 3
 ###################################################
