@@ -31,6 +31,11 @@ hull:
 
       fail:
         pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
           initContainers: 
             fail:
               image: 
@@ -41,40 +46,6 @@ hull:
                   secretRef:
                     name: full_example_secret
                     optional: _HT!"true"
-                    
-      metadata-merge:
-        pod:
-          containers: {}
-        
-      metadata-overwrite:
-        pod:
-          containers: {}
       
-      metadata-custom-template-merge:
-        pod:
-          containers: {}
 
-      metadata-custom-template-overwrite:
-        pod:
-          containers: {}
-
-      metadata-custom-template-multi-merge:
-        pod:
-          containers: {}
-
-      metadata-custom-template-multi-overwrite:
-        pod:
-          containers: {}
-
-      metadata-no-template:
-        pod:
-          containers: {}
-
-      metadata-default-template-as-source:
-        pod:
-          containers: {}
-
-      metadata-default-custom-overwrite:
-        pod:
-          containers: {}          
-  ###################################################
+###################################################

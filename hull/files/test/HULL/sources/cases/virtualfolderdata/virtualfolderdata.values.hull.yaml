@@ -699,4 +699,6 @@ hull:
           app-configuration-json:
             serialization: toPrettyJson
             inline: _HT*hull.config.specific.app-configuration
+
+      no-data: {}
 ###################################################

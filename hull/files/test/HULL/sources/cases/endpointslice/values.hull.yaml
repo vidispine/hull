@@ -163,4 +163,8 @@ hull:
           port: 88
           protocol: UDP
 
+      no-annotations:
+        addressType: FQDN
+        endpoints: []
+
 ###################################################

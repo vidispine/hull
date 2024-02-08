@@ -3,11 +3,11 @@
 Test creation of objects and features.
 
 * Prepare default test case for kind "Secret"
-* Prepare default test case for this kind including suites "virtualfolderdata"
+* Prepare default test case for this kind including suites "virtualfolderdata,globalmetadata,objecttypemetadata"
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "34" objects were rendered
+* Expected number of "36" objects were rendered
 * Validate
 
 ## Metadata
@@ -39,8 +39,6 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-transformation-resolved"
 * Test Object has key "data§concrete_file_4_resolved.txt" with Base64 encoded value of "This is a text file with a pointer to a transformation."
 * Test Object has key "data§equal_sign_preservation" with Base64 encoded value of "transformation = transformation"
-
-* Lint and Render
 * Set test object to "release-name-hull-test-transformation-resolved-short"
 * Test Object has key "data§concrete_file_4_resolved.txt" with Base64 encoded value of "This is a text file with a pointer to a transformation."
 * Test Object has key "data§equal_sign_preservation" with Base64 encoded value of "transformation = transformation"

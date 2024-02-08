@@ -74,8 +74,14 @@ spec:
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{ if hasKey $spec.pod "imagePullSecrets" }}
+{{ if (gt (len (default list $spec.pod.imagePullSecrets)) 0) }}
 imagePullSecrets: 
 {{ $spec.pod.imagePullSecrets | toYaml | indent 2 }}
+{{- else -}}
+{{- if (index $parent.Values $hullRootKey).config.general.render.emptyHullObjects -}}
+imagePullSecrets: []
+{{- end }}
+{{- end }}
 {{- else -}}
 {{ if (index $parent.Values $hullRootKey).config.general.createImagePullSecretsFromRegistries }}
 {{ if (gt (len (keys (default dict (index $parent.Values $hullRootKey).objects.registry))) 1) }}
@@ -86,7 +92,9 @@ imagePullSecrets:
 {{- end }}
 {{- end }}
 {{- else }}
+{{- if (index $parent.Values $hullRootKey).config.general.render.emptyHullObjects -}}
 imagePullSecrets: []
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}

@@ -207,6 +207,9 @@ Combinations of hashsumAnotation set to true false, missing etc on multiple cont
 * Set test object to "release-name-hull-test-imagepullsecrets-custom"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
 
+* Set test object to "release-name-hull-test-no-imagepullsecrets"
+* Test Object does not have key "spec§template§spec§imagePullSecrets"
+
 * Set test object to "release-name-hull-test-imagepullsecrets-add-all"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
 
@@ -624,7 +627,7 @@ Combinations of hashsumAnotation set to true false, missing etc on multiple cont
 * Test Object has key "spec§template§spec§activeDeadlineSeconds" with integer value "5"
 
 * Set test object to "release-name-hull-test-pull-secrets-override-empty-array"
-* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "0" items
+* Test Object does not have key "spec§template§spec§imagePullSecrets"
 
 * Set test object to "release-name-hull-test-pull-secrets-override-nonempty-array"
 * Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "2" items
@@ -632,7 +635,7 @@ Combinations of hashsumAnotation set to true false, missing etc on multiple cont
 * Test Object has key "spec§template§spec§imagePullSecrets§1§name" with value "reg2"
 
 * Set test object to "release-name-hull-test-pull-secrets-tpl-empty-array"
-* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "0" items
+* Test Object does not have key "spec§template§spec§imagePullSecrets"
 
 * Set test object to "release-name-hull-test-pull-secrets-tpl-nonempty-array"
 * Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "2" items
@@ -640,7 +643,7 @@ Combinations of hashsumAnotation set to true false, missing etc on multiple cont
 * Test Object has key "spec§template§spec§imagePullSecrets§1§name" with value "tpl2"
 
 * Set test object to "release-name-hull-test-pull-secrets-include-empty-array"
-* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "0" items
+* Test Object does not have key "spec§template§spec§imagePullSecrets"
 
 * Set test object to "release-name-hull-test-pull-secrets-include-nonempty-array"
 * Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "2" items
@@ -648,7 +651,7 @@ Combinations of hashsumAnotation set to true false, missing etc on multiple cont
 * Test Object has key "spec§template§spec§imagePullSecrets§1§name" with value "b"
 
 * Set test object to "release-name-hull-test-pull-secrets-include-empty-flow"
-* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "0" items
+* Test Object does not have key "spec§template§spec§imagePullSecrets"
 
 * Set test object to "release-name-hull-test-pull-secrets-include-nonempty-flow"
 * Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "2" items
@@ -656,7 +659,7 @@ Combinations of hashsumAnotation set to true false, missing etc on multiple cont
 * Test Object has key "spec§template§spec§imagePullSecrets§1§name" with value "flowb"
 
 * Set test object to "release-name-hull-test-pull-secrets-include-empty-list"
-* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "0" items
+* Test Object does not have key "spec§template§spec§imagePullSecrets"
 
 * Set test object to "release-name-hull-test-pull-secrets-include-nonempty-list"
 * Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "2" items
@@ -741,6 +744,15 @@ Test serialization functions
 * Test Object has key "spec§template§spec§containers§0§env§35§value" with value of key "test-include-code-list-non-empty-yaml" from expected.yaml of suite "pod"
 * Test Object has key "spec§template§spec§containers§0§env§36§name" with value "test-include-flow-dict"
 * Test Object has key "spec§template§spec§containers§0§env§36§value" with value of key "test-include-flow-dict" from expected.yaml of suite "pod"
+
+* Set test object to "release-name-hull-test-no-template-annotations"
+* Test Object does not have key "spec§template§metadata§annotations"
+
+* Prepare default test case for this kind including suites "pod,pod/renderemptytemplateannotations"
+* Lint and Render
+
+* Set test object to "release-name-hull-test-no-template-annotations"
+* Test Object has key "spec§template§metadata§annotations" with dictionary value that has "0" items
 
 * Prepare default test case for this kind including suites "pod/values_multiple_defaults"
 * Lint and Render

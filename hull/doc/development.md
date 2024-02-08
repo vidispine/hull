@@ -289,7 +289,7 @@ Replace the files for the Kubernetes JSON schema in `hull/files/test/HULL/schema
 
 ### Adapt tests
 
-In the `specs/concepts/metadata_basic.cpt` change the version that is tested against:
+In the `specs/concepts/basic.cpt` change the version that is tested against:
 
 - `* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.x.y"` where x is the Kubernetes major version and y the patch version of the schema
 
