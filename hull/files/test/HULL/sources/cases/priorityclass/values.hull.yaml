@@ -87,4 +87,7 @@ hull:
       
       test-serializing:
         value: 100
+      
+      no-annotations:
+        value: 100
 ###################################################

@@ -87,4 +87,6 @@ hull:
       test-serializing:
         provisioner: "local-volume"
 
+      no-annotations:
+        provisioner: "local-volume"
 ###################################################
