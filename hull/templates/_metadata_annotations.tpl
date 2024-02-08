@@ -27,8 +27,18 @@
 {{- range $annotationKey, $annotationValue := $annotations -}}
 {{- $_ := set $annotationsStringify $annotationKey ($annotationValue | toString) -}}
 {{- end -}}
+{{ if (gt (len (keys (default dict $annotationsStringify))) 0) }}
 annotations:
 {{ toYaml $annotationsStringify | indent 2 }}
+{{- else -}}
+{{ if (and (default false (index . "MERGE_TEMPLATE_METADATA")) (index $parent.Values $hullRootKey).config.general.render.emptyTemplateAnnotations) }}
+annotations: {}
+{{- else -}}
+{{- if (index $parent.Values $hullRootKey).config.general.render.emptyAnnotations -}}
+annotations: {}
+{{- end -}}
+{{- end -}}
+{{- end -}}
 {{- end -}}
 
 

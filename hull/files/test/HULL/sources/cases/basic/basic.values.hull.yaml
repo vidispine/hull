@@ -8,17 +8,6 @@ hull:
   config:
     general:  
       data: {} 
-      metadata:
-        labels:
-          custom: 
-            general_custom_label_1: General Custom Label 1
-            general_custom_label_2: General Custom Label 2
-            general_custom_label_3: General Custom Label 3
-        annotations: 
-          custom:
-            general_custom_annotation_1: General Custom Annotation 1
-            general_custom_annotation_2: General Custom Annotation 2
-            general_custom_annotation_3: General Custom Annotation 3
     specific: 
       globalRegistry: local.registry
       switch_enabled_off: false
@@ -111,6 +100,11 @@ hull:
             int: 398
             boolish: false
       pod_spec:
+        containers:
+          single:
+            image:
+              repository: my/image/repo
+              tag: "99.9"
         initContainers:
           init:
             args:
@@ -138,17 +132,7 @@ hull:
 
     # OBJECT TYPE
     <OBJECT_TYPE>:
-      
-      _HULL_OBJECT_TYPE_DEFAULT_:
-        annotations:
-          default_annotation_1:  Default Annotation 1
-          default_annotation_2:  Default Annotation 2
-          general_custom_annotation_3: Default Annotation 3
-        labels:
-          default_label_1:  Default Label 1
-          default_label_2:  Default Label 2
-          general_custom_label_3: Default Label 3
-      
+
       custom-default-template-1:
         enabled: false
         annotations:
@@ -457,3 +441,7 @@ hull:
           test-get-list-rawjson: _HT*toRawJson|hull.config.specific.dict_mixed_content.list
           test-get-list-yaml: _HT*toYaml|hull.config.specific.dict_mixed_content.list
           test-get-list-string: _HT*toString|hull.config.specific.dict_mixed_content.list
+
+      no-annotations:
+        enabled: true
+        annotations: {}

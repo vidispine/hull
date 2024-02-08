@@ -29,8 +29,18 @@
 {{- range $labelKey, $labelValue := $labels -}}
 {{- $_ := set $labelsStringify $labelKey ($labelValue | toString) -}}
 {{- end -}}
+{{ if (gt (len (keys (default dict $labelsStringify))) 0) }}
 labels:
 {{ toYaml $labelsStringify | indent 2 }}
+{{- else -}}
+{{ if (and (default false (index . "MERGE_TEMPLATE_METADATA")) (index $parent.Values $hullRootKey).config.general.render.emptyTemplateLabels) }}
+labels: {}
+{{- else -}}
+{{- if (index $parent.Values $hullRootKey).config.general.render.emptyLabels -}}
+labels: {}
+{{- end -}}
+{{- end -}}
+{{- end -}}
 {{- end -}}
 
 
