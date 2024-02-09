@@ -162,7 +162,7 @@ metadata:
 {{- if true -}}
 {{- $objectSpec = include "hull.util.merge" (merge (dict "PARENT_CONTEXT" $rootContext "PARENT_TEMPLATE" $parentTemplate "API_VERSION" (default $apiVersion $spec.apiVersion) "API_KIND" (default $apiKind $spec.apiKind) "COMPONENT" $namingElement "SPEC" $spec "DEFAULT_COMPONENT" $defaultSpec "HULL_ROOT_KEY" $hullRootKey "NO_SELECTOR" $noSelector "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectKey) (dict "LOCAL_TEMPLATE" (printf "%s" $hullTemplate))) | fromYaml }}
 {{- if (gt (len (keys (default dict $objectSpec))) 0) -}}
-{{- $errorMessage := include "hull.util.error.check" (dict "OBJECT" $objectSpec) -}}
+{{- $errorMessage := include "hull.util.error.check" (dict "OBJECT" $objectSpec "OBJECT_TYPE" $lowerObjectType) -}}
 {{- if (and (hasKey $objectSpec "Error") (eq (len (keys ($objectSpec))) 1)) -}}
 {{- if (index $rootContext.Values $hullRootKey).config.general.errorChecks.objectYamlValid -}}
 {{- $errorMessage = printf "%s [%s %s: %s]" $errorMessage "HULL failed with error" "BROKEN-OBJECT-YAML" "A broken object YAML was encountered" -}}
