@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "36" objects were rendered
+* Expected number of "37" objects were rendered
 * Validate
 
 ## Metadata
@@ -298,17 +298,50 @@ Test creation of objects and features.
 * Test Object has key "data§app-configuration-json" with Base64 encoded value of key "app-configuration-json" from expected.yaml of suite "virtualfolderdata"
 
 ## Error Checking
-* Prepare test case "configmap" for kind "ConfigMap" with test chart "hull-test" and values file "values_error_handling_missing_path.hull.yaml" including suites "virtualfolderdata"
-* Fail to render the templates for values file "values_error_handling_missing_path.hull.yaml" to test execution folder because error contains "HULL failed with error VIRTUAL-FOLDER-DATA-PATH-NOT-EXISTING: ConfigMap/virtual-folder-path-invalid/path/invalid(files/nothing-here)"
+* Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_missing_path.hull.yaml" including suites "virtualfolderdata"
+* Fail to render the templates for values file "values_error_handling_missing_path.hull.yaml" to test execution folder because error contains "HULL failed with error VIRTUAL-FOLDER-DATA-PATH-NOT-EXISTING: Secret/virtual-folder-path-invalid/path/invalid(files/nothing-here)"
 
-* Prepare test case "configmap" for kind "ConfigMap" with test chart "hull-test" and values file "values_error_handling_invalid_inline.hull.yaml" including suites "virtualfolderdata"
-* Fail to render the templates for values file "values_error_handling_invalid_inline.hull.yaml" to test execution folder because error contains "HULL failed with error VIRTUAL-FOLDER-DATA-INLINE-INVALID: ConfigMap/virtual-folder-inline-invalid/inline/invalid"
+* Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_invalid_inline.hull.yaml" including suites "virtualfolderdata"
+* Fail to render the templates for values file "values_error_handling_invalid_inline.hull.yaml" to test execution folder because error contains "HULL failed with error VIRTUAL-FOLDER-DATA-INLINE-INVALID: Secret/virtual-folder-inline-invalid/inline/invalid"
 
-* Prepare test case "configmap" for kind "ConfigMap" with test chart "hull-test" and values file "values_error_handling_null_inline.hull.yaml" including suites "virtualfolderdata"
-* Fail to render the templates for values file "values_error_handling_null_inline.hull.yaml" to test execution folder because error contains "HULL failed with error VIRTUAL-FOLDER-DATA-INLINE-INVALID: ConfigMap/virtual-folder-inline-null/inline/nothing"
+* Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_null_inline.hull.yaml" including suites "virtualfolderdata"
+* Fail to render the templates for values file "values_error_handling_null_inline.hull.yaml" to test execution folder because error contains "HULL failed with error VIRTUAL-FOLDER-DATA-INLINE-INVALID: Secret/virtual-folder-inline-null/inline/nothing"
 
-* Prepare test case "configmap" for kind "ConfigMap" with test chart "hull-test" and values file "values_error_handling_disabled.hull.yaml" including suites "virtualfolderdata"
+* Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_disabled.hull.yaml" including suites "virtualfolderdata"
 * Lint and Render values file "values_error_handling_disabled.hull.yaml"
+
+## Non-Hull Values access
+* Prepare default test case for this kind including suites "virtualfolderdata"
+* Lint and Render
+* Set test object to "release-name-hull-test-non-hull-values-access"
+
+* Test Object has key "data§inline-issue-288-ht-tpl" with Base64 encoded value of key "issue-288-ht-tpl" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-ht-tpl" with Base64 encoded value of key "subdict-access-ht-tpl" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-issue-288-ht-get" with Base64 encoded value of key "issue-288-ht-get" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-ht-get" with Base64 encoded value of key "subdict-access-ht-get" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-ht-get-json" with Base64 encoded value of key "subdict-access-ht-get-json" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-ht-get-prettyjson" with Base64 encoded value of key "subdict-access-ht-get-prettyjson" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-ht-get-rawjson" with Base64 encoded value of key "subdict-access-ht-get-rawjson" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-ht-get-yaml" with Base64 encoded value of key "subdict-access-ht-get-yaml" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-ht-get-string" with Base64 encoded value of key "subdict-access-ht-get-string" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-issue-288-dollar" with Base64 encoded value of key "issue-288-dollar" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-dollar" with Base64 encoded value of key "subdict-access-dollar" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-issue-288-dot" with Base64 encoded value of key "issue-288-dot" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-dot" with Base64 encoded value of key "subdict-access-dot" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-issue-288-ht-tpl" with Base64 encoded value of key "issue-288-ht-tpl" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-ht-tpl" with Base64 encoded value of key "subdict-access-ht-tpl" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-issue-288-ht-get" with Base64 encoded value of key "issue-288-ht-get" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-ht-get" with Base64 encoded value of key "subdict-access-ht-get" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-ht-get-json" with Base64 encoded value of key "subdict-access-ht-get-json" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-ht-get-prettyjson" with Base64 encoded value of key "subdict-access-ht-get-prettyjson" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-ht-get-rawjson" with Base64 encoded value of key "subdict-access-ht-get-rawjson" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-ht-get-yaml" with Base64 encoded value of key "subdict-access-ht-get-yaml" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-ht-get-string" with Base64 encoded value of key "subdict-access-ht-get-string" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-issue-288-dollar" with Base64 encoded value of key "issue-288-dollar" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-dollar" with Base64 encoded value of key "subdict-access-dollar" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-issue-288-dot" with Base64 encoded value of key "issue-288-dot" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-dot" with Base64 encoded value of key "subdict-access-dot" from expected.yaml of suite "virtualfolderdata"
+
 ___
 
 * Clean the test execution folder

@@ -93,9 +93,13 @@
       {{- else -}}
         {{- $value = $parent.Files.Get (printf "%s" $innerValue.path) -}}
         {{- if not $innerValue.noTemplating -}}
-          {{- $pathContentTransformation := dict "content" (tpl $value $parent) -}}
-          {{- $renderedHullValues := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $pathContentTransformation "HULL_ROOT_KEY" $hullRootKey) | fromYaml -}}
-          {{- $value = index $pathContentTransformation "content" -}}
+          {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $value) (hasPrefix "_HT?" $value) (hasPrefix "_HT*" $value) (hasPrefix "_HT!" $value) (hasPrefix "_HT^" $value) (hasPrefix "_HT&" $value) (hasPrefix "_HT/" $value)) -}}
+            {{- $pathContentTransformation := dict "content" $value -}}
+            {{- $renderedHullValues := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $pathContentTransformation "HULL_ROOT_KEY" $hullRootKey) | fromYaml -}}
+            {{- $value = index $pathContentTransformation "content" -}}
+          {{- else -}}
+            {{- $value = (tpl $value $parent) -}}
+          {{- end -}}
         {{- end -}}
       {{- end -}}
     {{- end -}}
