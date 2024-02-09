@@ -308,3 +308,19 @@ app-configuration-json: |-
     "true-or-false": true
   }
 simple-string: This is a simple string to be written to a ConfigMap
+issue-288-dollar: Hello, world! My name is Some Name.
+issue-288-dot: Hello, world! My name is Some Name.
+issue-288-ht-get: Some Name
+issue-288-ht-tpl: Hello, world! My name is Some Name.
+subdict-access-dollar: Some Other Name
+subdict-access-dot: Some Other Name
+subdict-access-ht-get: Some Other Name
+subdict-access-ht-get-json: '{"myName":"Some Other Name"}'
+subdict-access-ht-get-prettyjson: |-
+  {
+    "myName": "Some Other Name"
+  }
+subdict-access-ht-get-rawjson: '{"myName":"Some Other Name"}'
+subdict-access-ht-get-string: map[myName:Some Other Name]
+subdict-access-ht-get-yaml: 'myName: Some Other Name'
+subdict-access-ht-tpl: Some Other Name
