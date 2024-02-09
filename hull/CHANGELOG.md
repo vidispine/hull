@@ -1,6 +1,8 @@
 # Changelog
 ------------------
-[1.29.3]
+[1.29.4]
 ------------------
-CHANGES:
-- avoid rendering of empty collections. All `annotations`, `labels` and several other fields, which are explicitly handled by HULL, now are fully omitted if they resolve to empty dictionaries or arrays. This changed behaviour can be reverted by individually choosing to render `emptyAnnotations`, `emptyLabels`, `emptyTemplateAnnotations`, `emptyTemplateLabels` and/or `emptyHullObjects` under `config.global.render`. This default behavior change is in favor of improving compatibility with tools that potentially auto-prune empty collection fields like ArgoCD and thus may have syncing issues with empty collections. In terms of severity this change is considered non-breaking. Down the line, Kubernetes treats missing and empty collection fields in the same way. Note that per the schema, some collection fields are required (`containers` in `pod` and `paths` in `ingress` `rules`) and omitting them or leaving them empty now violates the Kubernetes schema. However, in these cases Kubernetes also verifies that at least one element is in the collection on deployment so the problem only shows earlier. Thanks [alexrimlin](https://github.com/alexrimlin) for the suggestion!
+FIXES:
+- fixed problem with running both HULL transformations and `tpl` on `path` content in ConfigMaps and Secrets. After loading the external files content, decide whether to run HULL transformations or `tpl` based on HULL transformation prefix presence
+- fixed checks for `virtualFolderDataPathExists` and `virtualFolderDataInlineValid` in the case of Secrets. Due to the Base64 encoding of data any error signaling strings weren't properly detected. With added Base64 decoding of the content for secrets the error checks now work for both ConfigMaps and Secrets
+- make all keys within `.Values` available for reference in Secret and ConfigMap `data` `inline` and `path` content templating. Due to obsolete code, all other keys than `hull` were removed from the parent charts `.Values` context when being passed to ConfigMap and Secret for template processing. Thanks again [khmarochos](https://github.com/khmarochos) for pointing out the problem [in this isue](https://github.com/vidispine/hull/issues/288)
