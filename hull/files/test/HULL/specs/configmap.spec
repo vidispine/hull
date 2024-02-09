@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "34" objects were rendered
+* Expected number of "35" objects were rendered
 * Validate
 
 ## Metadata
@@ -314,6 +314,39 @@ Test creation of objects and features.
 
 * Prepare test case "configmap" for kind "ConfigMap" with test chart "hull-test" and values file "values_error_handling_disabled.hull.yaml" including suites "virtualfolderdata"
 * Lint and Render values file "values_error_handling_disabled.hull.yaml"
+
+## Non-Hull Values access
+* Prepare default test case for this kind including suites "virtualfolderdata"
+* Lint and Render
+* Set test object to "release-name-hull-test-non-hull-values-access"
+
+* Test Object has key "data§inline-issue-288-ht-tpl" with value of key "issue-288-ht-tpl" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-ht-tpl" with value of key "subdict-access-ht-tpl" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-issue-288-ht-get" with value of key "issue-288-ht-get" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-ht-get" with value of key "subdict-access-ht-get" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-ht-get-json" with value of key "subdict-access-ht-get-json" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-ht-get-prettyjson" with value of key "subdict-access-ht-get-prettyjson" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-ht-get-rawjson" with value of key "subdict-access-ht-get-rawjson" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-ht-get-yaml" with value of key "subdict-access-ht-get-yaml" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-ht-get-string" with value of key "subdict-access-ht-get-string" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-issue-288-dollar" with value of key "issue-288-dollar" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-dollar" with value of key "subdict-access-dollar" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-issue-288-dot" with value of key "issue-288-dot" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§inline-subdict-access-dot" with value of key "subdict-access-dot" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-issue-288-ht-tpl" with value of key "issue-288-ht-tpl" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-ht-tpl" with value of key "subdict-access-ht-tpl" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-issue-288-ht-get" with value of key "issue-288-ht-get" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-ht-get" with value of key "subdict-access-ht-get" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-ht-get-json" with value of key "subdict-access-ht-get-json" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-ht-get-prettyjson" with value of key "subdict-access-ht-get-prettyjson" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-ht-get-rawjson" with value of key "subdict-access-ht-get-rawjson" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-ht-get-yaml" with value of key "subdict-access-ht-get-yaml" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-ht-get-string" with value of key "subdict-access-ht-get-string" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-issue-288-dollar" with value of key "issue-288-dollar" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-dollar" with value of key "subdict-access-dollar" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-issue-288-dot" with value of key "issue-288-dot" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§path-subdict-access-dot" with value of key "subdict-access-dot" from expected.yaml of suite "virtualfolderdata"
+
 ___
 
 * Clean the test execution folder

@@ -234,16 +234,20 @@ selector:
 */ -}}
 {{- define "hull.util.error.check" -}}
 {{- $object := default "" (index . "OBJECT") -}}
+{{- $lowerObjectType := default "" (index . "OBJECT_TYPE") -}}
 {{- $errorMessage := "" -}}
 {{- if typeIs "map[string]interface {}" $object -}}
   {{- range $key,$value := $object -}}
     {{- if typeIs "map[string]interface {}" $value -}}
-       {{- include "hull.util.error.check" (dict "OBJECT" $value) -}}
+       {{- include "hull.util.error.check" (dict "OBJECT" $value "OBJECT_TYPE" $lowerObjectType) -}}
     {{- end -}}
     {{- if typeIs "[]interface {}" $value -}}
-      {{- include "hull.util.error.check" (dict "OBJECT" $value) -}}
+      {{- include "hull.util.error.check" (dict "OBJECT" $value "OBJECT_TYPE" $lowerObjectType) -}}
     {{- end -}}
     {{- if typeIs "string" $value -}}
+      {{- if (and $value (eq $lowerObjectType "secret") (regexMatch "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$" $value)) -}}
+        {{- $value = $value | b64dec -}}
+      {{- end -}}
       {{- if hasPrefix "°_HULL_ERROR_" $value -}}
         {{- $error := regexSplit ":" (trimAll "°" $value) -1}}
         {{- $errorMessage = printf "%s\n[%s %s: %s]" $errorMessage "HULL failed with error" (index $error 1) (index $error 2) -}}
@@ -253,7 +257,7 @@ selector:
 {{- end -}}
 {{- if typeIs "[]interface {}" $object -}}
    {{- range $value := $object -}}
-    {{- include "hull.util.error.check" (dict "OBJECT" $value) -}}
+    {{- include "hull.util.error.check" (dict "OBJECT" $value "OBJECT_TYPE" $lowerObjectType) -}}
   {{- end -}}
 {{- end -}}
 {{- if typeIs "string" $object -}}

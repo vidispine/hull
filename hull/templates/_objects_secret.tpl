@@ -15,17 +15,15 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
+{{- $objectInstanceKey := (index . "OBJECT_INSTANCE_KEY") -}}
+{{- $component := default "" (index . "COMPONENT") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $enabledDefault := dig "enabled" true (index . "DEFAULT_COMPONENT") -}}
 {{- $hullValues := (index $parent.Values $hullRootKey) -}}
-{{ $renderedHullValues := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $hullValues "HULL_ROOT_KEY" $hullRootKey) | fromYaml }}
-{{ $temp := dict "hull" $hullValues }}
-{{ $parentClone := deepCopy $parent }}
-{{ $parentClone = set $parentClone "Values" $temp }}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
 {{ template "hull.metadata.header" . }}
-{{ include "hull.object.secret.data" (dict "PARENT_CONTEXT" $parentClone "SPEC" $spec) }}
-{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parentClone "SPEC" $spec "HULL_OBJECT_KEYS" (list "data")) }}
+{{ include "hull.object.secret.data" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey) }}
+{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "data")) }}
 {{- end }}
 type: {{ default "Opaque" $spec.type }}
 {{ end }}
