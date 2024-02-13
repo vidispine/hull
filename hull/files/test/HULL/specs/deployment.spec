@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "55" objects were rendered
+* Expected number of "57" objects were rendered
 * Validate
 
 ## Metadata
@@ -247,6 +247,9 @@ Test creation of objects and features.
 * Test Object has key "spec§template§spec§containers§0§env§1§value" with value "a"
 * Test Object has key "spec§template§spec§containers§0§env§2§name" with value "OBJECT_INSTANCE_NAME"
 * Test Object has key "spec§template§spec§containers§0§env§2§value" with value "release-name-hull-test-a"
+* Test Object has key "spec§template§spec§volumes§0§name" with value "instance"
+* Test Object has key "spec§template§spec§volumes§0§configMap§name" with value "release-name-hull-test-a"
+
 
 * Set test object to "release-name-hull-test-b"
 * Test Object has key "spec§template§spec§containers§0§image" with value "somerepo:b"
@@ -256,6 +259,8 @@ Test creation of objects and features.
 * Test Object has key "spec§template§spec§containers§0§env§1§value" with value "b"
 * Test Object has key "spec§template§spec§containers§0§env§2§name" with value "OBJECT_INSTANCE_NAME"
 * Test Object has key "spec§template§spec§containers§0§env§2§value" with value "release-name-hull-test-b"
+* Test Object has key "spec§template§spec§volumes§0§name" with value "instance"
+* Test Object has key "spec§template§spec§volumes§0§configMap§name" with value "release-name-hull-test-b"
 
 * Set test object to "release-name-hull-test-c"
 * Test Object has key "spec§template§spec§containers§0§image" with value "somerepo:c"
@@ -265,6 +270,8 @@ Test creation of objects and features.
 * Test Object has key "spec§template§spec§containers§0§env§1§value" with value "c"
 * Test Object has key "spec§template§spec§containers§0§env§2§name" with value "OBJECT_INSTANCE_NAME"
 * Test Object has key "spec§template§spec§containers§0§env§2§value" with value "release-name-hull-test-c"
+* Test Object has key "spec§template§spec§volumes§0§name" with value "instance"
+* Test Object has key "spec§template§spec§volumes§0§configMap§name" with value "release-name-hull-test-c"
 
 * Set test object to "d"
 * Test Object has key "spec§template§spec§containers§0§image" with value "somerepo:d"
@@ -274,6 +281,8 @@ Test creation of objects and features.
 * Test Object has key "spec§template§spec§containers§0§env§1§value" with value "d"
 * Test Object has key "spec§template§spec§containers§0§env§2§name" with value "OBJECT_INSTANCE_NAME"
 * Test Object has key "spec§template§spec§containers§0§env§2§value" with value "d"
+* Test Object has key "spec§template§spec§volumes§0§name" with value "instance"
+* Test Object has key "spec§template§spec§volumes§0§configMap§name" with value "release-name-hull-test-d"
 
 * Set test object to "release-name-hull-test-overwrite-old-name"
 * Test Object has key "spec§template§spec§containers§0§image" with value "somerepo:e"
@@ -283,7 +292,7 @@ Test creation of objects and features.
 * Test Object has key "spec§template§spec§containers§0§env§1§value" with value "overwrite-old-name"
 * Test Object has key "spec§template§spec§containers§0§env§2§name" with value "OBJECT_INSTANCE_NAME"
 * Test Object has key "spec§template§spec§containers§0§env§2§value" with value "release-name-hull-test-overwrite-old-name"
-
+* Test Object has key "spec§template§spec§volumes§0§configMap§name" with value "release-name-hull-test-e"
 ___
 
 * Clean the test execution folder
