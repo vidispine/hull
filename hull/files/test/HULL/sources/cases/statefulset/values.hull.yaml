@@ -405,4 +405,9 @@ hull:
       no-imagepullsecrets:
         serviceName: no-imagepullsecrets
 
-  ###################################################
+      object-instance-key-and-type-true:
+        serviceName: object-instance-key-and-type-true
+
+      object-instance-key-and-type-false:
+        serviceName: object-instance-key-and-type-false
+###################################################

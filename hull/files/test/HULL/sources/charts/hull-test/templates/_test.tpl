@@ -50,3 +50,10 @@ result:
 {{- define "hull.include.test.dockerconfigjson.flow.quote" -}}
 '{"auths":{"my-registry":{"username":"username","password":"password","email":"email","auth":"dXNlcm5hbWU6cGFzc3dvcmQ="}}}'
 {{- end -}}
+
+{{- define "hull.include.test.volumes.postrender" -}}
+{{- $instance := (index . "INSTANCE") -}}
+instance:
+  configMap:
+    name: {{ $instance }}
+{{- end -}}

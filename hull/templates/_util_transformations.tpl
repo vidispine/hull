@@ -339,7 +339,16 @@
 {{- $key := (index . "KEY") -}}
 {{ $content := (index . "CONDITION") }}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
-{{ $key }}: {{ tpl  (printf "{{ if %s }}true{{ else }}false{{ end }}" $content) (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent) .) }}
+{{- $sourcePath := default nil (index . "SOURCE_PATH") -}}
+{{- $objectType := "" -}}
+{{- $objectInstanceKey := "" -}}
+{{- if (gt (len $sourcePath) 3) -}}
+{{  if (eq (index $sourcePath 1) "objects") -}}
+{{- $objectType = index $sourcePath 2 -}}
+{{- $objectInstanceKey = index $sourcePath 3 -}}
+{{- end -}}
+{{- end -}}
+{{ $key }}: {{ tpl  (printf "{{ if %s }}true{{ else }}false{{ end }}" $content) (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) }}
 {{- end -}}
 
 
@@ -389,9 +398,7 @@
 {{- if (gt (len $sourcePath) 3) -}}
 {{  if (eq (index $sourcePath 1) "objects") -}}
 {{- $objectType = index $sourcePath 2 -}}
-{{- if (ne (index $sourcePath 3) "_HULL_OBJECT_TYPE_DEFAULT_") -}}
 {{- $objectInstanceKey = index $sourcePath 3 -}}
-{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- $parts := regexSplit ":" ($content | trim) -1 -}}
