@@ -310,8 +310,22 @@ Use Object Type and Instance Key
 * Set test object to "release-name-hull-test-metadata-object-info"
 * Test Object has key "metadata§annotations§annotation_object_instance_key" with value "metadata-object-info"
 * Test Object has key "metadata§annotations§annotation_object_type" with value equaling object type
+* Test Object has key "metadata§annotations§annotation_bool_true" with value "true"
+* Test Object has key "metadata§annotations§annotation_bool_false" with value "false"
+* Test Object has key "metadata§annotations§annotation_bool_object_instance_key_true" with value "true"
+* Test Object has key "metadata§annotations§annotation_bool_object_instance_key_false" with value "false"
+* Test Object has key "metadata§annotations§annotation_bool_object_type_true" with value "true"
+* Test Object has key "metadata§annotations§annotation_bool_object_type_false" with value "false"
+
 * Test Object has key "metadata§labels§label_object_instance_key" with value "metadata-object-info"
 * Test Object has key "metadata§labels§label_object_type" with value equaling object type
+* Test Object has key "metadata§labels§label_bool_true" with value "true"
+* Test Object has key "metadata§labels§label_bool_false" with value "false"
+* Test Object has key "metadata§labels§label_bool_object_instance_key_true" with value "true"
+* Test Object has key "metadata§labels§label_bool_object_instance_key_false" with value "false"
+* Test Object has key "metadata§labels§label_bool_object_type_true" with value "true"
+* Test Object has key "metadata§labels§label_bool_object_type_false" with value "false"
+
 
 Force Strings as annotation and label values
 * Set test object to "release-name-hull-test-metadata-stringify"
