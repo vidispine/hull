@@ -1,8 +1,7 @@
 # Changelog
 ------------------
-[1.28.10]
+[1.28.11]
 ------------------
 FIXES:
-- fixed problem with running both HULL transformations and `tpl` on `path` content in ConfigMaps and Secrets. After loading the external files content, decide whether to run HULL transformations or `tpl` based on HULL transformation prefix presence
-- fixed checks for `virtualFolderDataPathExists` and `virtualFolderDataInlineValid` in the case of Secrets. Due to the Base64 encoding of data any error signaling strings weren't properly detected. With added Base64 decoding of the content for secrets the error checks now work for both ConfigMaps and Secrets
-- make all keys within `.Values` available for reference in Secret and ConfigMap `data` `inline` and `path` content templating. Due to obsolete code, all other keys than `hull` were removed from the parent charts `.Values` context when being passed to ConfigMap and Secret for template processing. Thanks again [khmarochos](https://github.com/khmarochos) for pointing out the problem [in this isue](https://github.com/vidispine/hull/issues/288)
+- fixed `OBJECT_INSTANCE_KEY` and `OBJECT_TYPE` not existing in context of `_HT?` boolean transformations. Access to `OBJECT_INSTANCE_KEY` and `OBJECT_TYPE` is now provided same as in context of `_HT!` and `_HT/` transformations
+- fixed inability to use `OBJECT_INSTANCE_KEY` and `OBJECT_TYPE` for `_HULL_OBJECT_TYPE_DEFAULT_` instances in context of `_HT/` include transformations. This fix allows to combine `postRender` replacements in content created by `_HT/` transformations on a `_HULL_OBJECT_TYPE_DEFAULT_` instance
