@@ -748,6 +748,12 @@ Test serialization functions
 * Set test object to "release-name-hull-test-no-template-annotations"
 * Test Object does not have key "spec§template§metadata§annotations"
 
+* Set test object to "release-name-hull-test-object-instance-key-and-type-true"
+* Test Object has key "spec§template§spec§shareProcessNamespace" set to true
+
+* Set test object to "release-name-hull-test-object-instance-key-and-type-false"
+* Test Object has key "spec§template§spec§shareProcessNamespace" set to false
+
 * Prepare default test case for this kind including suites "pod,pod/renderemptytemplateannotations"
 * Lint and Render
 
