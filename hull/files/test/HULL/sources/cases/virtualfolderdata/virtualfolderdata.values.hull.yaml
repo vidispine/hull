@@ -1,7 +1,10 @@
 ################################ 
 ### Example values.yaml with all features applied
 ################################
-
+alpha: "bet"
+myName: Some Name
+subdict:
+  myName: Some Other Name
 ###################################################
 ### CONFIG
 hull:
@@ -701,4 +704,59 @@ hull:
             inline: _HT*hull.config.specific.app-configuration
 
       no-data: {}
+
+      non-hull-values-access:
+        data:
+          inline-issue-288-ht-tpl:
+            inline: _HT!{{ printf "Hello, world! My name is %s." (index . "$").Values.myName }}
+          inline-subdict-access-ht-tpl:
+            inline: _HT!{{ (index . "$").Values.subdict.myName }}
+          inline-issue-288-ht-get:
+            inline: _HT*myName
+          inline-subdict-access-ht-get:
+            inline: _HT*subdict.myName
+          inline-subdict-access-ht-get-json:
+            inline: _HT*toJson|subdict
+          inline-subdict-access-ht-get-prettyjson:
+            inline: _HT*toPrettyJson|subdict
+          inline-subdict-access-ht-get-rawjson:
+            inline: _HT*toRawJson|subdict
+          inline-subdict-access-ht-get-yaml:
+            inline: _HT*toYaml|subdict
+          inline-subdict-access-ht-get-string:
+            inline: _HT*toString|subdict
+          inline-issue-288-dollar:
+            inline: Hello, world! My name is {{ $.Values.myName }}.
+          inline-subdict-access-dollar:
+            inline: "{{ $.Values.subdict.myName }}"
+          inline-issue-288-dot:
+            inline: Hello, world! My name is {{ .Values.myName }}.
+          inline-subdict-access-dot:
+            inline: "{{ .Values.subdict.myName }}"
+          path-issue-288-ht-tpl:
+            path: files/issue-288-ht-tpl
+          path-subdict-access-ht-tpl:
+            path: files/subdict-access-ht-tpl
+          path-issue-288-ht-get:
+            path: files/issue-288-ht-get
+          path-subdict-access-ht-get:
+            path: files/subdict-access-ht-get
+          path-subdict-access-ht-get-json:
+            path: files/subdict-access-ht-get-json
+          path-subdict-access-ht-get-prettyjson:
+            path: files/subdict-access-ht-get-prettyjson
+          path-subdict-access-ht-get-rawjson:
+            path: files/subdict-access-ht-get-rawjson
+          path-subdict-access-ht-get-yaml:
+            path: files/subdict-access-ht-get-yaml
+          path-subdict-access-ht-get-string:
+            path: files/subdict-access-ht-get-string
+          path-issue-288-dollar:
+            path: files/issue-288-dollar
+          path-subdict-access-dollar:
+            path: files/subdict-access-dollar
+          path-issue-288-dot:
+            path: files/issue-288-dot
+          path-subdict-access-dot:
+            path: files/subdict-access-dot
 ###################################################
