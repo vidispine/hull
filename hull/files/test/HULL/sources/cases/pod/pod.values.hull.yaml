@@ -22,6 +22,14 @@ hull:
       env_integer_seven_digits_in_string: "1234567"
       env_git_commit: 11724e28
       env_git_commit_in_string: "11724e28"
+      components:
+        <OBJECT_TYPE>:
+          object-instance-key-and-type-true:
+            value_true: true
+            value_false: false
+          object-instance-key-and-type-false:
+            value_true: true
+            value_false: false
 
   objects:
     
@@ -1963,4 +1971,20 @@ hull:
             my-pod:
               image:
                 repository: hello-world
+
+      object-instance-key-and-type-true:
+        pod:
+          shareProcessNamespace: _HT?(index (index (index . "$").Values.hull.config.specific.components (index . "OBJECT_TYPE")) (index . "OBJECT_INSTANCE_KEY")).value_true
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
       
+      object-instance-key-and-type-false:
+        pod:
+          shareProcessNamespace: _HT?(index (index (index . "$").Values.hull.config.specific.components (index . "OBJECT_TYPE")) (index . "OBJECT_INSTANCE_KEY")).value_false
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+

@@ -7,6 +7,10 @@ hull:
             enabled: true
             string: _HULL_OBJECT_TYPE_DEFAULT_
             replacement: OBJECT_INSTANCE_KEY
+          instanceKeyLower:
+            enabled: true
+            string: _hull_object_type_default_
+            replacement: OBJECT_INSTANCE_KEY
           instanceKeyResolved:
             enabled: true
             string: $$$OBJECT_INSTANCE_KEY_RESOLVED$$$
@@ -31,6 +35,7 @@ hull:
                   value: $$$OBJECT_INSTANCE_KEY_RESOLVED$$$
                 OBJECT_INSTANCE_NAME:
                   value: $$$OBJECT_INSTANCE_NAME$$$
+          volumes: _HT/hull.include.test.volumes.postrender:INSTANCE:(index . "OBJECT_INSTANCE_KEY")
       source:
         enabled: false
         pod:
