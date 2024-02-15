@@ -479,6 +479,47 @@ but this can be achieved with less effort by writing a reguler Helm `function` a
 
   `_HT*hull.config.specific.key§with§dots§in§it`
 
+  Addionally, if used in a field beneath `hull.objects.<object_type>.<object_instance_key>`, it also possible to reference the current contexts `OBJECT_TYPE` and `OBJECT_INSTANCE_KEY` via special static keys: 
+  
+  - `§OBJECT_TYPE§` and 
+  - `§OBJECT_INSTANCE_KEY§` 
+  
+  in the dotted path. The keys must be exactly written like this and if such a key is found, the replacing of `§` for `.` is of course not performed for this value. 
+  
+  To give an example, with this `values.yaml`:
+
+  ```yaml
+  hull:
+    config:
+      specific:
+        components:
+          deployment:
+            ht-get-object-type-example-doc: "Just some demo value to be referenced ..."
+    objects:
+      deployment:
+        ht-get-object-type-example-doc: 
+          pod:
+            containers:
+              main:
+                image:
+                  repository: app-repository
+                  tag: "1.0"
+                env:
+                  GET_FROM_HULL_CONFIG:
+                    value: _HT*hull.config.specific.components.§OBJECT_TYPE§.§OBJECT_INSTANCE_KEY§
+  ```
+  
+  you get a rendered result containing:
+
+  ```yaml
+  containers:
+  - env:
+    - name: GET_FROM_HULL_CONFIG
+      value: Just some demo value to be referenced ...
+    image: app-repository:1.0
+    name: main
+  ```
+
 #### __Produces__
 
 The value of the referenced key within `values.yaml`. 

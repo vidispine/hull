@@ -405,9 +405,18 @@ hull:
       no-imagepullsecrets:
         serviceName: no-imagepullsecrets
 
-      object-instance-key-and-type-true:
-        serviceName: object-instance-key-and-type-true
+      object-instance-key-and-type-bool-true:
+        serviceName: object-instance-key-and-type-bool-true
 
-      object-instance-key-and-type-false:
-        serviceName: object-instance-key-and-type-false
+      object-instance-key-and-type-bool-false:
+        serviceName: object-instance-key-and-type-bool-false
+
+      object-instance-key-and-type-get-true:
+        serviceName: object-instance-key-and-type-get-true
+
+      object-instance-key-and-type-get-false:
+        serviceName: object-instance-key-and-type-get-false
+
+      ht-get-object-type-example-doc:
+        serviceName: ht-get-object-type-example-doc
 ###################################################
