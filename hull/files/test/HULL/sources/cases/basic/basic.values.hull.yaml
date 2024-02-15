@@ -358,6 +358,10 @@ hull:
           annotation_bool_object_instance_key_false: _HT?(index (index . "$").Values.hull.config.specific.components (index . "OBJECT_INSTANCE_KEY")).value_false
           annotation_bool_object_type_true: _HT?(index (index . "$").Values.hull.config.specific.components (index . "OBJECT_TYPE")).value_true
           annotation_bool_object_type_false: _HT?(index (index . "$").Values.hull.config.specific.components (index . "OBJECT_TYPE")).value_false
+          annotation_get_object_instance_key_true: _HT*hull.config.specific.components.§OBJECT_INSTANCE_KEY§.value_true
+          annotation_get_object_instance_key_false: _HT*hull.config.specific.components.§OBJECT_INSTANCE_KEY§.value_false
+          annotation_get_object_type_true: _HT*hull.config.specific.components.§OBJECT_TYPE§.value_true
+          annotation_get_object_type_false: _HT*hull.config.specific.components.§OBJECT_TYPE§.value_false
         labels:
           label_object_instance_key: _HT!{{ (index . "OBJECT_INSTANCE_KEY") }}
           label_object_type: _HT!{{ (index . "OBJECT_TYPE") }}
@@ -367,7 +371,11 @@ hull:
           label_bool_object_instance_key_false: _HT?(index (index . "$").Values.hull.config.specific.components (index . "OBJECT_INSTANCE_KEY")).value_false
           label_bool_object_type_true: _HT?(index (index . "$").Values.hull.config.specific.components (index . "OBJECT_TYPE")).value_true
           label_bool_object_type_false: _HT?(index (index . "$").Values.hull.config.specific.components (index . "OBJECT_TYPE")).value_false
-
+          label_get_object_instance_key_true: _HT*hull.config.specific.components.§OBJECT_INSTANCE_KEY§.value_true
+          label_get_object_instance_key_false: _HT*hull.config.specific.components.§OBJECT_INSTANCE_KEY§.value_false
+          label_get_object_type_true: _HT*hull.config.specific.components.§OBJECT_TYPE§.value_true
+          label_get_object_type_false: _HT*hull.config.specific.components.§OBJECT_TYPE§.value_false
+          
 
       metadata-stringify:
         enabled: true

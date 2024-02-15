@@ -221,8 +221,7 @@ selector:
 {{- define "hull.util.error.message" -}}
 {{- $errorType := default "" (index . "ERROR_TYPE") -}}
 {{- $errorMessage := default "" (index . "ERROR_MESSAGE") -}}
-{{- $hullRootKey := default "" (index . "ERROR_MESSAGE") -}}
-{{- printf "°%s:%s:%s°" "_HULL_ERROR_" $errorType $errorMessage -}}
+{{- printf "°%s:%s:%s" "_HULL_ERROR_" $errorType $errorMessage -}}
 {{- end -}}
 
 
