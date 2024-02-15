@@ -747,11 +747,22 @@ Test serialization functions
 * Set test object to "release-name-hull-test-no-template-annotations"
 * Test Object does not have key "spec§template§metadata§annotations"
 
-* Set test object to "release-name-hull-test-object-instance-key-and-type-true"
+* Set test object to "release-name-hull-test-object-instance-key-and-type-bool-true"
 * Test Object has key "spec§template§spec§shareProcessNamespace" set to true
 
-* Set test object to "release-name-hull-test-object-instance-key-and-type-false"
+* Set test object to "release-name-hull-test-object-instance-key-and-type-bool-false"
 * Test Object has key "spec§template§spec§shareProcessNamespace" set to false
+
+* Set test object to "release-name-hull-test-object-instance-key-and-type-get-true"
+* Test Object has key "spec§template§spec§shareProcessNamespace" set to true
+
+* Set test object to "release-name-hull-test-object-instance-key-and-type-get-false"
+* Test Object has key "spec§template§spec§shareProcessNamespace" set to false
+
+* Set test object to "release-name-hull-test-ht-get-object-type-example-doc"
+* Test Object has key "spec§template§spec§containers§0§env§0§name" with value "GET_FROM_HULL_CONFIG"
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "Just some demo value to be referenced ..."
+
 
 * Prepare default test case for this kind including suites "pod,pod/renderemptytemplateannotations"
 * Lint and Render
