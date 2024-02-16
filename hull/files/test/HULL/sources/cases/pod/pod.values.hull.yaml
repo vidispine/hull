@@ -24,13 +24,20 @@ hull:
       env_git_commit_in_string: "11724e28"
       components:
         <OBJECT_TYPE>:
-          object-instance-key-and-type-true:
+          object-instance-key-and-type-bool-true:
             value_true: true
             value_false: false
-          object-instance-key-and-type-false:
+          object-instance-key-and-type-bool-false:
             value_true: true
             value_false: false
-
+          object-instance-key-and-type-get-false:
+            value_true: true
+            value_false: false
+          object-instance-key-and-type-get-true:
+            value_true: true
+            value_false: false
+          ht-get-object-type-example-doc: "Just some demo value to be referenced ..."
+  
   objects:
     
     secret:
@@ -1972,7 +1979,7 @@ hull:
               image:
                 repository: hello-world
 
-      object-instance-key-and-type-true:
+      object-instance-key-and-type-bool-true:
         pod:
           shareProcessNamespace: _HT?(index (index (index . "$").Values.hull.config.specific.components (index . "OBJECT_TYPE")) (index . "OBJECT_INSTANCE_KEY")).value_true
           containers:
@@ -1980,7 +1987,7 @@ hull:
               image:
                 repository: hello-world
       
-      object-instance-key-and-type-false:
+      object-instance-key-and-type-bool-false:
         pod:
           shareProcessNamespace: _HT?(index (index (index . "$").Values.hull.config.specific.components (index . "OBJECT_TYPE")) (index . "OBJECT_INSTANCE_KEY")).value_false
           containers:
@@ -1988,3 +1995,29 @@ hull:
               image:
                 repository: hello-world
 
+      object-instance-key-and-type-get-true:
+        pod:
+          shareProcessNamespace: _HT*hull.config.specific.components.§OBJECT_TYPE§.§OBJECT_INSTANCE_KEY§.value_true
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+      
+      object-instance-key-and-type-get-false:
+        pod:
+          shareProcessNamespace: _HT*hull.config.specific.components.§OBJECT_TYPE§.§OBJECT_INSTANCE_KEY§.value_false
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+      
+      ht-get-object-type-example-doc: 
+        pod:
+          containers:
+            main:
+              image:
+                repository: app-repository
+                tag: "1.0"
+              env:
+                GET_FROM_HULL_CONFIG:
+                  value: _HT*hull.config.specific.components.§OBJECT_TYPE§.§OBJECT_INSTANCE_KEY§

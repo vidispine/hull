@@ -215,12 +215,42 @@
 {{- $reference = $getValue.remainder -}}
 {{- $serializer = $getValue.serializer -}}
 {{- end -}}
+{{- $sourcePath := default list (index . "SOURCE_PATH") -}}
+{{- $objectType := "" -}}
+{{- $objectInstanceKey := "" -}}
+{{- if (gt (len $sourcePath) 3) -}}
+{{  if (eq (index $sourcePath 1) "objects") -}}
+{{- $objectType = index $sourcePath 2 -}}
+{{- $objectInstanceKey = index $sourcePath 3 -}}
+{{- end -}}
+{{- end -}}
 {{- $path := splitList "." $reference -}}
 {{- $current := $parent.Values }}
 {{- $skipBroken := false}}
 {{- $brokenPart := "" }}
+{{- $details := "" -}}
 {{- range $pathElement := $path -}}
-{{- $pathElement = regexReplaceAll "§" $pathElement "." }}
+{{- if eq $pathElement "§OBJECT_TYPE§" -}}
+  {{- if ne $objectType "" -}}
+    {{- $pathElement = $objectType -}}
+  {{- else -}}
+    {{- $skipBroken = true -}}
+    {{- $brokenPart = $pathElement -}}
+    {{- $details = printf "OBJECT_TYPE not set in current calling context, cannot get path %s" $reference }}
+  {{- end -}}
+{{- else -}}
+  {{- if eq $pathElement "§OBJECT_INSTANCE_KEY§" -}}
+    {{- if ne $objectInstanceKey "" -}}
+      {{- $pathElement = $objectInstanceKey -}}
+    {{- else -}}
+      {{- $skipBroken = true -}}
+      {{- $brokenPart = $pathElement -}}
+      {{- $details = printf "OBJECT_INSTANCE_KEY not set in current calling context, cannot get path %s" $reference }}
+    {{- end -}}
+  {{- else -}}
+    {{- $pathElement = regexReplaceAll "§" $pathElement "." }}
+  {{- end -}}
+{{- end -}}
 {{- if (not $skipBroken) -}}
 {{- if (or (hasKey $current $pathElement)) -}}
 {{- $current = (index $current $pathElement) }}
@@ -235,7 +265,9 @@
 {{ $key }}: BROKEN-HULL-GET-TRANSFORMATION-REFERENCE:Element {{ $brokenPart }} in path {{ $reference }} was not found
 {{- else }}
 {{- if $parent.Values.hull.config.general.errorChecks.hullGetTransformationReferenceValid -}}
-{{- $details := printf "Element %s in path %s was not found" $brokenPart $reference -}}
+{{- if eq $details "" -}}
+{{- $details = printf "Element %s in path %s was not found" $brokenPart $reference -}}
+{{- end -}}
 {{- $key }}: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details) -}}
 {{- else -}}
 {{- $key }}: ""
