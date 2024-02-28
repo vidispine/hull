@@ -422,6 +422,33 @@ Test serialization functions
 * Test Object has key "metadata§labels§test-include-code-list-non-empty-string" with value of key "test-include-code-list-non-empty-string" from expected.yaml of suite "basic"
 * Test Object has key "metadata§labels§test-include-flow-dict" with value of key "test-include-flow-dict" from expected.yaml of suite "basic"
 
+Test get transformation on root level
+
+* Set test object to "release-name-hull-test-test-get-transformation-on-root"
+
+* Test Object has key "metadata§labels§test-get-chart-apiversion" with value of key "test-get-chart-apiversion" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-name-lowercase" with value of key "test-get-chart-name" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-name-uppercase" with value of key "test-get-chart-name" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-version-lowercase" with value of key "test-get-chart-version" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-version-capitalcase" with value of key "test-get-chart-version" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-version-with-transformation" with value of key "test-get-chart-version" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-kubeversion" with value of key "test-get-chart-kubeversion" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-description" with value of key "test-get-chart-description" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-type" with value of key "test-get-chart-type" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-home" with value of key "test-get-chart-home" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-dependencies" with value of key "test-get-chart-dependencies" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-maintainers" with value of key "test-get-chart-maintainers" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-icon" with value of key "test-get-chart-icon" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-appversion" with value of key "test-get-chart-appversion" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-deprecated" with value of key "test-get-chart-deprecated" from expected.yaml of suite "basic"
+
+* Test Object has key "metadata§labels§test-get-release-name" with value of key "test-get-release-name" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-release-namespace" with value of key "test-get-release-namespace" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-release-isupgrade" with value of key "test-get-release-isupgrade" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-release-isinstall" with value of key "test-get-release-isinstall" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-release-revision" with value of key "test-get-release-revision" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-release-service" with value of key "test-get-release-service" from expected.yaml of suite "basic"
+
 Test annotation rendering
 
 * Prepare default test case for this kind including suites ""

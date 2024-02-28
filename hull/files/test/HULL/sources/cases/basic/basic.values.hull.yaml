@@ -470,6 +470,31 @@ hull:
           test-get-list-yaml: _HT*toYaml|hull.config.specific.dict_mixed_content.list
           test-get-list-string: _HT*toString|hull.config.specific.dict_mixed_content.list
 
+      test-get-transformation-on-root:
+        labels:
+          test-get-chart-apiversion: _HT**Chart.apiVersion
+          test-get-chart-name-lowercase: _HT**Chart.name
+          test-get-chart-name-uppercase: _HT**Chart.Name
+          test-get-chart-version-lowercase: _HT**Chart.version
+          test-get-chart-version-capitalcase: _HT**Chart.Version
+          test-get-chart-version-with-transformation: _HT*toYaml|*Chart.version
+          test-get-chart-kubeversion: _HT**Chart.kubeVersion
+          test-get-chart-description: _HT**Chart.description
+          test-get-chart-type: _HT**Chart.type
+          test-get-chart-home: _HT**Chart.home
+          test-get-chart-dependencies: _HT**Chart.dependencies
+          test-get-chart-maintainers: _HT**Chart.maintainers
+          test-get-chart-icon: _HT**Chart.icon
+          test-get-chart-appversion: _HT**Chart.appVersion
+          test-get-chart-deprecated: _HT**Chart.deprecated
+
+          test-get-release-name: _HT**Release.Name
+          test-get-release-namespace: _HT**Release.Namespace
+          test-get-release-isupgrade: _HT**Release.IsUpgrade
+          test-get-release-isinstall: _HT**Release.IsInstall
+          test-get-release-revision: _HT**Release.Revision
+          test-get-release-service: _HT**Release.Service
+
       no-annotations:
         enabled: true
         annotations: {}

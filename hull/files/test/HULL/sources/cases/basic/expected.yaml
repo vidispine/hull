@@ -134,3 +134,23 @@ test-include-code-list-non-empty-yaml: |-
   - name: listreg2
 test-include-flow-dict: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvcmQ=
   email:email password:password username:username]]]
+
+test-get-chart-apiversion: v2
+test-get-chart-name: hull-test
+test-get-chart-version: 1.29.0
+test-get-chart-kubeversion: 1.27.0 - 1.29.0
+test-get-chart-description: hull-test
+test-get-chart-type: application
+test-get-chart-home: https://vidispine.github.io/hull
+test-get-chart-dependencies: '[map[enabled:true name:hull repository:https://vidispine.github.io/hull version:1.29.0]]'
+test-get-chart-maintainers: '[map[email:person1@test.com name:testperson1 url:https://person1.com] map[email:person2@test.com name:testperson2 url:https://person2.com]]'
+test-get-chart-icon: https://github.com/vidispine/hull/blob/gh-pages/hull.png
+test-get-chart-appversion: 1.29.0
+test-get-chart-deprecated: "true"
+
+test-get-release-name: release-name
+test-get-release-namespace: default
+test-get-release-isupgrade: "false"
+test-get-release-isinstall: "true"
+test-get-release-revision: "1"
+test-get-release-service: Helm
