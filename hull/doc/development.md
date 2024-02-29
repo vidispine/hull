@@ -305,47 +305,6 @@ and do the same for `specs/secret.cpt` line:
 
 All tests need to run successfully.
 
-### Update documentation
-
-Typically it should be enough to replace `/generated/kubernetes-api/v1.x` with `/generated/kubernetes-api/v1.y` where x is the preceding Kubernetes version and y the newly created release version. But also check other places where `1.y` is used if they need updating.
-
-### Update CHANGELOG.md and HISTORY.md
-
-Update the changelog with the information what was changed within the update.
-The changelog has just the most recent information, copy this entry over in to the history.
-
-## Creating a new minor version
-
-### Adapt the JSON schema (if needed)
-
-Make the changes required for the version update.
-
-### Adapt `Chart.yaml`
-
-Set the versions in `Chart.yaml`:
-
-- `version: 1.x.z` where x is the Kubernetes major version and z the increased minor version
-
-### Adapt test chart
-Set the versions in `Chart.yaml` of the test chart at `hull/files/test/HULL/sources/charts/hull-test`:
-
-- `version: 1.x.z` where x is the Kubernetes major version and z the increased minor version
-- ```yaml
-  dependencies:
-  - name: hull
-    version: "1.x.z"
-    repository: "https://vidispine.github.io/hull"
-  ```
-  where x is the Kubernetes major version and z the increased minor version
-
-### Adapt tests
-
-Add or modify test cases so that the new changes are covered adequately.
-
-### Run tests
-
-All tests need to run successfully to create a new release.
-
 ## Run tests
 
 HULL has a large number of test cases aiming to cover a large amount of usage scenarios. The testing framework in use is [Gauge](https://gauge.org/index.html). To run the tests it is advised to use VisualStudio Code or the `gauge` CLI.
@@ -359,6 +318,84 @@ gauge run --hide-suggestion --simple-console hull\files\test\HULL\specs\job.spec
 ```
 
 After the tests have run you can see how many tests failed and were successful. Additionally you will be provided with a link to a local HTML file giving you an overview of all executed test cases.
+
+### Update documentation
+
+Typically it should be enough to replace `/generated/kubernetes-api/v1.x` with `/generated/kubernetes-api/v1.y` where x is the preceding Kubernetes version and y the newly created release version. But also check other places where `1.y` is used if they need updating.
+
+### Update CHANGELOG.md and HISTORY.md
+
+Update the changelog with the information what was changed within the update.
+The changelog has just the most recent information, copy this entry over in to the history.
+
+## Creating a new minor version
+
+Creating regular releases for bugfixes and added features requires several actions to be performed. Most of of them are covered already in the Kubernetes release update documentation so these step will not be explained in detail again.
+
+A tried and tested practice for doing minor release updates is this:
+
+- checkout the three latest `fixes-1.x` branches of HULL via `git worktree` so you can do comparisons on a folder level (eg. using BeyondCompare)
+- start implementation in the most recent of the `fixes-1.x` branches and make sure everything listed below is done in terms of implementation
+- on a folder level, apply same functional changes to other two `fixes-x` branches. **Take care to respect the differences between release branches such as different Kubernetes versions mentioned and sometimes changed APIs!**
+- Once all three `fixes-1.x` branches are ready they can be commited.
+- Issue PRs in GitHub for all three `fixes-1.x` branches to merge the matching `fixes-1.x` branch to the respective `release-1.x` branch. **When creating the PRs make sure to click "Update Branch" directly so the Gated tests don't need to run twice in case you missed this early on!**
+- Once gated Tests and thus PRs are successfully reviewed (the gated tests run against all latest version of each supported Helm minor release), the PRs can be completed. 
+- The HULL release creation process itself requires external action by a HULL maintainer with access to the release pipeline! 
+
+  _As a note to people creating releases, sometimes the last stage of publishing the Helm chart fails due to GitHub authentication issues and potentially timing. If so, retrying this failed step a couple of times resolves the problem usually._
+- After all three new releases have been successfully created, make sure to mark the release of `hull-demo` in the latest branch in GitHub as the current release. This is to foster download of the demo chart to start local testing of it. Marking the `hull` release itself has no added benefit since in almost all cases you would not download it from GitHub directly but pull it in via `helm dep update`.
+- Create closing PR to merge from latest `release-1.x` branch to `main` and complete the PR. This concludes the release process.
+
+Below an overview of the implementation steps is given for a minor release:
+
+### Make the code changes
+
+This typically involves work on files in the `templates` folder and maybe on files in the root folder such as the `values.schema.json` and the `values.yaml`
+
+### Adapt the JSON schema (if needed)
+
+Make the changes required for the version update.
+
+### Adapt `Chart.yaml`
+
+Set the versions in `Chart.yaml`:
+
+- `version: 1.x.z` where x is the Kubernetes major version and z the increased minor version
+
+### Adapt test chart
+
+Set the versions in `Chart.yaml` of the test chart at `hull/files/test/HULL/sources/charts/hull-test`:
+
+- `version: 1.x.z` where x is the Kubernetes major version and z the increased minor version
+- ```yaml
+  dependencies:
+  - name: hull
+    version: "1.x.z"
+    repository: "https://vidispine.github.io/hull"
+    ```
+  
+  where x is the Kubernetes major version and z the increased minor version
+
+### Adapt tests
+
+Add or modify test cases so that the new changes are covered adequately.
+
+### Run tests
+
+All tests need to run successfully to create a new release.
+
+### Update documentation 
+
+Document the new feature or effects of a bug fix in the respective places. There are two `README.md` which have for the most part identical content (one is embedded in the chart and one represents the git repositories `README.md`) which may require an update. Also the remaining documentation is to be found in the `doc` folder, please check if one of the covered aspects has changed and update the documentation therefore.
+
+### Update CHANGELOG.md and HISTORY.md
+
+Update the changelog with the information what was changed within the update.
+The changelog has just the most recent information, copy this entry over in to the history.
+
+### Update Helm Release compatibility
+
+Check whether a new release of Helm has been published since the last release(s). If so, update the pipeline code in `azure-pipelines-gated.yaml` and `azure-pipelines.yaml` to include the new release in the tests. For `azure-pipelines-gated.yaml` it is sufficient to replace the latest minor version with the newly released one since the gated tests run only on the latest minor versions on each supported Helm branch. For `azure-pipelines.yaml` extend the list of Helm versions to test against with the new Helm release version.
 
 ---
 Back to [README.md](./../README.md)
