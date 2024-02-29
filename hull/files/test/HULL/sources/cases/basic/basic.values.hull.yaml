@@ -472,6 +472,7 @@ hull:
 
       test-get-transformation-on-root:
         labels:
+          test-get-chart-raw: _HT**Chart
           test-get-chart-apiversion: _HT**Chart.apiVersion
           test-get-chart-name-lowercase: _HT**Chart.name
           test-get-chart-name-uppercase: _HT**Chart.Name
@@ -481,19 +482,33 @@ hull:
           test-get-chart-kubeversion: _HT**Chart.kubeVersion
           test-get-chart-description: _HT**Chart.description
           test-get-chart-type: _HT**Chart.type
+          test-get-chart-keywords: _HT**Chart.keywords
           test-get-chart-home: _HT**Chart.home
+          test-get-chart-sources: _HT**Chart.sources
           test-get-chart-dependencies: _HT**Chart.dependencies
           test-get-chart-maintainers: _HT**Chart.maintainers
           test-get-chart-icon: _HT**Chart.icon
           test-get-chart-appversion: _HT**Chart.appVersion
           test-get-chart-deprecated: _HT**Chart.deprecated
+          test-get-chart-annotations: _HT**Chart.annotations
 
+          test-get-release-raw: _HT**Release
           test-get-release-name: _HT**Release.Name
           test-get-release-namespace: _HT**Release.Namespace
           test-get-release-isupgrade: _HT**Release.IsUpgrade
           test-get-release-isinstall: _HT**Release.IsInstall
           test-get-release-revision: _HT**Release.Revision
           test-get-release-service: _HT**Release.Service
+
+          test-get-capabilities-raw: _HT**Capabilities
+          test-get-capabilities-apiversions: _HT**Capabilities.APIVersions
+          test-get-capabilities-kubeversion: _HT**Capabilities.KubeVersion
+          test-get-capabilities-helmversion: _HT**Capabilities.HelmVersion
+
+          test-get-template-raw: _HT**Template
+          test-get-template-name: _HT**Template.Name
+          test-get-template-basepath: _HT**Template.BasePath
+
 
       no-annotations:
         enabled: true

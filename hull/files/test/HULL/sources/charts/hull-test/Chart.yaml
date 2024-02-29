@@ -5,7 +5,13 @@ version: 1.29.0
 kubeVersion: "1.27.0 - 1.29.0"
 description: hull-test
 type: application
+keywords:
+  - "hull"
+  - "test"
 home: https://vidispine.github.io/hull
+sources:
+  - https://vidispine.github.io/hull
+  - https://github.com/vidispine/hull/blob/gh-pages/hull.png
 dependencies:
   - name: hull
     version: "1.29.0"
@@ -20,3 +26,6 @@ maintainers:
 icon: https://github.com/vidispine/hull/blob/gh-pages/hull.png
 appVersion: 1.29.0
 deprecated: True
+annotations:
+  test1: test1
+  test2: test2
