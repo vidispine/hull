@@ -1,6 +1,6 @@
 # Changelog
 ------------------
-[1.29.6]
+[1.29.7]
 ------------------
 CHANGES:
-- added possibility to access the current object instance key and object type in `_HT*` transformations by using special keys `§OBJECT_INSTANCE_KEY§` and `§OBJECT_TYPE§` in the dotted path
+- added possibility to get values from the charts root with notation _HT**
