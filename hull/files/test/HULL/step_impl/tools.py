@@ -247,6 +247,19 @@ def test_object_has_key_with_dictionary_value_that_has_items(key, value):
     else:
         assert False
 
+@step("Test Object has key <key> with map value that has <count> items which are not empty")
+def test_object_has_key_with_map_value_that_has_non_empty_items(key, value):
+    assert data_store.scenario.test_object != None
+    dictionary = yaml.safe_load(data_store.scenario.test_object[key])
+    if isinstance(dictionary, dict):
+        for key in dictionary.keys():
+            print(f'Found key: {key}')
+            if not dictionary[key]:
+                assert False, f"Key '{key}' has an empty value!"
+        assert_values_equal(len(dictionary.keys()), int(value), key)
+    else:
+        assert False
+
 @step("Test Object has key <key> with value <value>")
 def test_object_has_key_with_value(key, value):
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
