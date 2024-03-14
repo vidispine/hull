@@ -459,7 +459,6 @@ Test get transformation on root level
 * Test Object has key "metadata§labels§test-get-capabilities-kubeversion-major" with value of key "test-get-capabilities-kubeversion-major" from expected.yaml of suite "basic"
 * Test Object has key "metadata§labels§test-get-capabilities-helmversion" with map value that has "4" items which are not empty
 
-* Test Object has key "metadata§labels§test-get-template-name" with value of key "test-get-template-name" from expected.yaml of suite "basic"
 * Test Object has key "metadata§labels§test-get-template-basepath" with value of key "test-get-template-basepath" from expected.yaml of suite "basic"
 
 
