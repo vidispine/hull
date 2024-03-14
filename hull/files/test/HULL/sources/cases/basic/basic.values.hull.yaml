@@ -506,7 +506,7 @@ hull:
           test-get-capabilities-apiversions: _HT**Capabilities.APIVersions
           test-get-capabilities-kubeversion: _HT*toYaml|*Capabilities.KubeVersion
           test-get-capabilities-kubeversion-major: _HT**Capabilities.KubeVersion.Major
-          test-get-capabilities-helmversion: _HT**Capabilities.HelmVersion
+          test-get-capabilities-helmversion: _HT*toYaml|*Capabilities.HelmVersion
 
           test-get-template-raw: _HT**Template
           test-get-template-name: _HT**Template.Name
