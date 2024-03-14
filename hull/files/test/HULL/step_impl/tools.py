@@ -260,6 +260,17 @@ def test_object_has_key_with_map_value_that_has_non_empty_items(key, value):
     else:
         assert False
 
+@step("Test Object has key <key> with list value that has count of items greater than <count>")
+def test_object_has_key_with_list_value_that_has_count_greater(key, value):
+    assert data_store.scenario.test_object != None
+    yamlList = yaml.safe_load(data_store.scenario.test_object[key])
+    if isinstance(yamlList, list):
+        for item in yamlList:
+            print(f'Found item: {item}')
+        assert len(yamlList) > int(value)
+    else:
+        assert False
+
 @step("Test Object has key <key> with value <value>")
 def test_object_has_key_with_value(key, value):
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
