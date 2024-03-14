@@ -444,6 +444,8 @@ Test get transformation on root level
 * Test Object has key "metadata§labels§test-get-chart-appversion" with value of key "test-get-chart-appversion" from expected.yaml of suite "basic"
 * Test Object has key "metadata§labels§test-get-chart-deprecated" with value of key "test-get-chart-deprecated" from expected.yaml of suite "basic"
 * Test Object has key "metadata§labels§test-get-chart-annotations" with value of key "test-get-chart-annotations" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-annotations-test1" with value of key "test-get-chart-annotations-test1" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-annotations-test2" with value of key "test-get-chart-annotations-test2" from expected.yaml of suite "basic"
 
 * Test Object has key "metadata§labels§test-get-release-name" with value of key "test-get-release-name" from expected.yaml of suite "basic"
 * Test Object has key "metadata§labels§test-get-release-namespace" with value of key "test-get-release-namespace" from expected.yaml of suite "basic"

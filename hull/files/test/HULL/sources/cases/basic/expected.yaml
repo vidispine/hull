@@ -150,6 +150,8 @@ test-get-chart-icon: https://github.com/vidispine/hull/blob/gh-pages/hull.png
 test-get-chart-appversion: 1.29.0
 test-get-chart-deprecated: "true"
 test-get-chart-annotations: map[test1:test1 test2:test2]
+test-get-chart-annotations-test1: test1
+test-get-chart-annotations-test2: test2
 
 test-get-release-name: release-name
 test-get-release-namespace: default

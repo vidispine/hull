@@ -491,6 +491,8 @@ hull:
           test-get-chart-appversion: _HT**Chart.appVersion
           test-get-chart-deprecated: _HT**Chart.deprecated
           test-get-chart-annotations: _HT**Chart.annotations
+          test-get-chart-annotations-test1: _HT**Chart.annotations.test1
+          test-get-chart-annotations-test2: _HT**Chart.annotations.test2
 
           test-get-release-raw: _HT**Release
           test-get-release-name: _HT**Release.Name
