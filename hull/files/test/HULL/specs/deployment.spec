@@ -2,12 +2,11 @@
 
 Test creation of objects and features.
 
-* Set kind "Deployment"
 * Prepare default test case for kind "Deployment" including suites "pod"
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "61" objects were rendered
+* Expected number of "41" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -40,7 +39,7 @@ Test creation of objects and features.
 ## Short Demo - Debug true
 * Prepare test case "Deployment" for kind "Deployment" and values file "values_short_demo.hull.yaml"
 * Lint and Render values file "values_short_demo.hull.yaml"
-* Expected number of "22" objects were rendered
+* Expected number of "2" objects were rendered on top of basic objects count
 * Set test object to "release-name-hull-test-myapp-frontend"
 * Test Object has key "spec§template§spec§containers§0§image" with value "mycompany/myapp-frontend:v23.1"
 * Test Object has key "spec§template§spec§containers§0§env§0§value" with value "release-name-hull-test-myapp-backend"
@@ -70,7 +69,7 @@ Test creation of objects and features.
 
 * Prepare test case "Deployment" for kind "Deployment" and values file "values_short_demo.hull.yaml" including suites "debugswitch"
 * Lint and Render values file "values_short_demo.hull.yaml"
-* Expected number of "22" objects were rendered
+* Expected number of "2" objects were rendered on top of basic objects count
 * Set test object to "release-name-hull-test-myapp-frontend"
 * Test Object has key "spec§template§spec§containers§0§image" with value "mycompany/myapp-frontend:v23.1"
 * Test Object has key "spec§template§spec§containers§0§env§0§value" with value "release-name-hull-test-myapp-backend"
@@ -101,7 +100,7 @@ Test creation of objects and features.
 ## Sources Example
 * Prepare test case "Deployment" for kind "Deployment" and values file "values_sources_example.hull.yaml"
 * Lint and Render values file "values_sources_example.hull.yaml"
-* Expected number of "26" objects were rendered
+* Expected number of "6" objects were rendered on top of basic objects count
 
 * Set test object to "release-name-hull-test-app-python-direct"
 * Test Object has key "spec§template§spec§containers§0§image" with value "myrepo/app-python-direct:23.3.2"

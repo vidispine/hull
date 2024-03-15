@@ -17,10 +17,9 @@ from jsonschema import validate
 TEST_EXECUTION_FOLDER = "./../test_execution"
 WINDOWS_LINE_ENDING = '\r\n'
 UNIX_LINE_ENDING = '\n'
-
-@step("Fill data store with kind <kind>")
-def fill_data_store_with_kind(kind):
-    data_store.scenario.kind = kind
+PLACEHOLDER_OBJECT_TYPE = "<OBJECT_TYPE>"
+PLACEHOLDER_K8S_MAJOR_VERSION = "<K8S_MAJOR_VERSION>"
+BASIC_OBJECTS_COUNT = "<BASIC_OBJECTS_COUNT>"
 
 @step("Fill data store with kind <kind> and case <case>")
 def fill_data_store_with_kind_and_case(kind, case):
@@ -36,20 +35,25 @@ def fill_data_store_with_chart_and_suites(chart, suites):
     s.append("basic")
     data_store.scenario.suites = s
 
-@step("Fill data store with case <case>, chart <chart> and suites <suites>")
-def fill_data_store_with_case_chart_suites(case, chart, suites):
-    data_store.scenario.case = case.lower()
-    data_store.scenario.chart = chart
-    s = list()
-    if not suites == "":
-        s = suites.split(',')
-    s.append("basic")
-    data_store.scenario.suites = s
+def fill_data_store_with_environment_info():
+    data_store.scenario.environment = {}
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    chart_yaml_path = os.path.join(dir_path,'./../../../../Chart.yaml')
+    assert os.path.exists(chart_yaml_path), f"Could not find Chart.yaml at {chart_yaml_path}"
+    with open(chart_yaml_path, 'r') as file:
+        version = yaml.safe_load(file)['version'].split('.')
+        data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION] = f"{version[0]}.{version[1]}"
+    basic_counts_path = os.path.join(dir_path,'./../sources/cases/basic', 'counts.yaml')
+    assert os.path.exists(basic_counts_path), f"Could not find counts.yaml at {basic_counts_path}"
+    with open(basic_counts_path, 'r') as file:
+        data_store.scenario.environment[BASIC_OBJECTS_COUNT] = int(yaml.safe_load(file)['basic'])
+
 
 @step("Fill data store with kind <kind>, case <case>, chart <chart> and suites <suites>")
 def fill_data_store(kind, case, chart, suites):
     fill_data_store_with_kind_and_case(kind, case)
     fill_data_store_with_chart_and_suites(chart, suites)
+    fill_data_store_with_environment_info()
     
 @step("Copy folders to test execution folder")
 def copy_folders_to_TEST_EXECUTION_FOLDER():
@@ -139,10 +143,10 @@ def copy_the_hull_chart_files_to_test_object_in_chart(case, chart):
     hull_path = os.path.join(dir_path,'./../../../../')
     dst_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart, "charts/hull-1.0.0/")
     try:
-        copyfile(hull_path, "Chart.yaml", dst_path)
         copyfile(hull_path, "README.md", dst_path)
         copyfile(hull_path, "values.schema.json", dst_path)
         copyfile(hull_path, "values.yaml", dst_path)
+        copy_yaml(hull_path, "Chart.yaml", os.path.join(dst_path, "Chart.yaml"))
         if os.environ.get("style") == 'single_file' or os.environ.get("default"):
             copyfile(hull_path, "hull.yaml", os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart, "templates"))
         if os.environ.get("style") == 'multi_file':
@@ -195,6 +199,10 @@ def fill_data_store_with_rendered_objects():
 def check_that_expected_number_of_objects_of_kind_was_rendered(count, kind):
     found = len(data_store.scenario["objects_" + kind])
     assert int(count) == found, "Expected " + str(count) + " but found " + str(found)
+
+@step("Expected number of <count> objects were rendered on top of basic objects count")
+def check_that_expected_number_of_objects_was_rendered_on_top_of_basic_objects_count(count):
+    check_that_expected_number_of_objects_of_kind_was_rendered(data_store.scenario.environment[BASIC_OBJECTS_COUNT] + int(count), data_store.scenario.kind)
 
 @step("Expected number of <count> objects were rendered")
 def check_that_expected_number_of_objects_was_rendered(count):
@@ -455,7 +463,9 @@ def assert_values_equal(actual, expected, key=None):
         stop_debug = ""
     if (type(expected) == str and type(actual) == str ):
         expected = expected.replace(WINDOWS_LINE_ENDING, UNIX_LINE_ENDING)
+        expected = expected.replace(PLACEHOLDER_K8S_MAJOR_VERSION, data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION])
         actual = actual.replace(WINDOWS_LINE_ENDING, UNIX_LINE_ENDING)
+        actual = actual.replace(PLACEHOLDER_K8S_MAJOR_VERSION, data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION])
         if expected != actual:
             stop_debug = ""
         
@@ -540,11 +550,15 @@ def copytree(src, dst, symlinks=False, ignore=None):
             if not os.path.exists(d) or os.stat(s).st_mtime - os.stat(d).st_mtime > 1:
                 copyfile(os.path.dirname(s), os.path.basename(s), os.path.dirname(d))
 
-def copy_yaml(src_path, dst_path):
-    with open(src_path, 'r', encoding='utf8') as file:
+def copy_yaml(src_dir, src_filename, dst_path):
+    if not os.path.isdir(os.path.dirname(dst_path)):
+        os.makedirs(os.path.dirname(dst_path))
+    with open(os.path.join(src_dir, src_filename),'r', encoding='utf8') as file:
         data = file.read()
         if data_store.scenario.case != "":
-            data = data.replace("<OBJECT_TYPE>", data_store.scenario.case)
+            data = data.replace(PLACEHOLDER_OBJECT_TYPE, data_store.scenario.case)
+        if PLACEHOLDER_K8S_MAJOR_VERSION in data:
+            data = data.replace(PLACEHOLDER_K8S_MAJOR_VERSION, data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION])
         if not os.path.isdir(os.path.dirname(dst_path)):
             os.makedirs(os.path.dirname(dst_path))
         dst_file = open(dst_path, "w", encoding='utf8')
@@ -555,7 +569,7 @@ def copyfile(src_dir, src_filename, dst_dir):
     if not os.path.isdir(os.path.dirname(dst_dir)):
         os.makedirs(os.path.dirname(dst_dir))
     if  os.path.splitext(src_filename)[1] == ".yaml":
-        copy_yaml(os.path.join(src_dir, src_filename),  os.path.join(dst_dir, src_filename))
+        copy_yaml(src_dir, src_filename, os.path.join(dst_dir, src_filename))
     else:
         shutil.copy2(os.path.join(src_dir, src_filename), os.path.join(dst_dir, src_filename))
 

@@ -268,39 +268,10 @@ is changed to
 
 Also make the same change(s) to the per-object type files of `hull` which you may use to render a file per object type instead of one big `hull.yaml`. the files are located in the `files/templates` folder.
 
-
-### Adapt test chart
-
-Set the versions in `Chart.yaml` of the test chart at `hull/files/test/HULL/sources/charts/hull-test`:
-
-- `version: 1.x.0` where x is the Kubernetes major version
-- `appVersion: 1.x.y` where x is the Kubernetes major version and y the patch version of the schema
-- ```yaml
-  dependencies:
-  - name: hull
-    version: "1.x.1"
-    repository: "https://vidispine.github.io/hull"
-    ```
-     where x is the Kubernetes major version 
-
 ### Adapt test schema
 
 Replace the files for the Kubernetes JSON schema in `hull/files/test/HULL/schema` with the created files from the new subfolder of `kubernetes-json-schema`. This makes the JSON validation test against the new version.
 
-### Adapt tests
-
-In the `specs/concepts/basic.cpt` change the version that is tested against:
-
-- `* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.x.y"` where x is the Kubernetes major version and y the patch version of the schema
-
-The ConfigMap and Secret tests also contain a particular test which references the current version of the library. These tests need to be updated es well and hence in the `specs/configmap.cpt` exchange versions in the `Include transformations` test line:
-
-`* Test Object has key "data§chart_ref" with value "hull-test-1.x.0"`
-
-and do the same for `specs/secret.cpt` line:
-
-`* Test Object has key "data§chart_ref" with Base64 encoded value of "hull-test-1.x.0"`
-``
 ### Run tests
 
 All tests need to run successfully.
@@ -355,26 +326,6 @@ This typically involves work on files in the `templates` folder and maybe on fil
 ### Adapt the JSON schema (if needed)
 
 Make the changes required for the version update.
-
-### Adapt `Chart.yaml`
-
-Set the versions in `Chart.yaml`:
-
-- `version: 1.x.z` where x is the Kubernetes major version and z the increased minor version
-
-### Adapt test chart
-
-Set the versions in `Chart.yaml` of the test chart at `hull/files/test/HULL/sources/charts/hull-test`:
-
-- `version: 1.x.z` where x is the Kubernetes major version and z the increased minor version
-- ```yaml
-  dependencies:
-  - name: hull
-    version: "1.x.z"
-    repository: "https://vidispine.github.io/hull"
-    ```
-  
-  where x is the Kubernetes major version and z the increased minor version
 
 ### Adapt tests
 
