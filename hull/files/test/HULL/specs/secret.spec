@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "37" objects were rendered
+* Expected number of "18" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -80,7 +80,7 @@ Test creation of objects and features.
 * Test Object has key "data§include_name" with Base64 encoded value of "hull-test-test"
 * Test Object has key "data§include_name_with_parent" with Base64 encoded value of "hull-test-test"
 * Test Object has key "data§escape" with Base64 encoded value of "hull-test-split:by:colon"
-* Test Object has key "data§chart_ref" with Base64 encoded value of "hull-test-1.28.0"
+* Test Object has key "data§chart_ref" with Base64 encoded value of "hull-test-<K8S_MAJOR_VERSION>.0"
 * Test Object has key "data§object_instance_key" with Base64 encoded value of "test-include-transformation"
 * Test Object has key "data§object_type" with Base64 encoded value of "secret"
 * Test Object has key "data§object_instance_key_include" with Base64 encoded value of "hull-test-test-include-transformation"

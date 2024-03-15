@@ -224,12 +224,25 @@
 {{- $objectInstanceKey = index $sourcePath 3 -}}
 {{- end -}}
 {{- end -}}
+{{- $current := "" -}}
+{{- if $reference | hasPrefix "*" -}}
+{{- $reference = $reference | replace "*" "" -}}
+{{- $current = toYaml $parent | fromYaml }}
+{{- else -}}
+{{- $current = $parent.Values }}
+{{- end -}}
 {{- $path := splitList "." $reference -}}
-{{- $current := $parent.Values }}
 {{- $skipBroken := false}}
 {{- $brokenPart := "" }}
 {{- $details := "" -}}
-{{- range $pathElement := $path -}}
+{{- $isChartSpecialCase := false -}}
+{{- if (eq (first $path) "Chart")  -}}
+{{- $isChartSpecialCase = true -}}
+{{- end -}}
+{{- range $pathIndex, $pathElement := $path -}}
+{{- if (and ($isChartSpecialCase) (eq $pathIndex 1)) -}}
+{{- $pathElement = $pathElement | untitle -}}
+{{- end -}}
 {{- if eq $pathElement "§OBJECT_TYPE§" -}}
   {{- if ne $objectType "" -}}
     {{- $pathElement = $objectType -}}
@@ -465,7 +478,7 @@
 {{- $call = printf "%s %s (index . \"$\")" $call ("PARENT_CONTEXT" | quote) -}}
 {{- end -}}
 {{- $call = printf "%s) }}" ($call | trim) -}}
-{{- $tpl := tpl $call (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType ) .) -}}
+{{- $tpl := tpl $call (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) -}}
 {{- $result := dict -}}
 {{- if (or (eq $serializer "") (eq $serializer "none")) -}}
 {{- $result = $tpl | fromYaml -}}

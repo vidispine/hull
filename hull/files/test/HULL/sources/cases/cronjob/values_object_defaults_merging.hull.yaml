@@ -364,3 +364,13 @@ hull:
                 image:
                   repository: my/image/repo
                   tag: "99.9"
+
+      test-get-transformation-on-root:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"

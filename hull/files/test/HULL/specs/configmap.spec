@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "35" objects were rendered
+* Expected number of "16" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -81,7 +81,7 @@ Test creation of objects and features.
 * Test Object has key "data§include_name" with value "hull-test-test"
 * Test Object has key "data§include_name_with_parent" with value "hull-test-test"
 * Test Object has key "data§escape" with value "hull-test-split:by:colon"
-* Test Object has key "data§chart_ref" with value "hull-test-1.28.0"
+* Test Object has key "data§chart_ref" with value "hull-test-<K8S_MAJOR_VERSION>.0"
 * Test Object has key "data§object_instance_key" with value "test-include-transformation"
 * Test Object has key "data§object_type" with value "configmap"
 * Test Object has key "data§object_instance_key_include" with value "hull-test-test-include-transformation"

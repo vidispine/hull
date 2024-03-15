@@ -86,6 +86,9 @@ hull:
 
       test-serializing:
         provisioner: "local-volume"
+        
+      test-get-transformation-on-root:
+        provisioner: "local-volume"
 
       no-annotations:
         provisioner: "local-volume"

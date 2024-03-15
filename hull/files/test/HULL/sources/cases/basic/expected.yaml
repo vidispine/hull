@@ -134,3 +134,46 @@ test-include-code-list-non-empty-yaml: |-
   - name: listreg2
 test-include-flow-dict: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvcmQ=
   email:email password:password username:username]]]
+
+test-get-chart-apiversion: v2
+test-get-chart-name: hull-test
+test-get-chart-version: <K8S_MAJOR_VERSION>.0
+test-get-chart-kubeversion: 1.27.0 - <K8S_MAJOR_VERSION>.0
+test-get-chart-description: hull-test
+test-get-chart-type: application
+test-get-chart-keywords: '[hull test]'
+test-get-chart-home: https://vidispine.github.io/hull
+test-get-chart-sources: '[https://vidispine.github.io/hull https://github.com/vidispine/hull/blob/gh-pages/hull.png]'
+test-get-chart-dependencies: '[map[enabled:true name:hull repository:https://vidispine.github.io/hull version:<K8S_MAJOR_VERSION>.0]]'
+test-get-chart-maintainers: '[map[email:person1@test.com name:testperson1 url:https://person1.com] map[email:person2@test.com name:testperson2 url:https://person2.com]]'
+test-get-chart-icon: https://github.com/vidispine/hull/blob/gh-pages/hull.png
+test-get-chart-appversion: <K8S_MAJOR_VERSION>.0
+test-get-chart-deprecated: "true"
+test-get-chart-annotations: map[test1:test1 test2:test2]
+test-get-chart-annotations-test1: test1
+test-get-chart-annotations-test2: test2
+
+test-get-release-name: release-name
+test-get-release-namespace: default
+test-get-release-isupgrade: "false"
+test-get-release-isinstall: "true"
+test-get-release-revision: "1"
+test-get-release-service: Helm
+
+test-get-capabilities-apiversions: "[v1 admissionregistration.k8s.io/v1
+  admissionregistration.k8s.io/v1alpha1 admissionregistration.k8s.io/v1beta1 internal.apiserver.k8s.io/v1alpha1
+  apps/v1 apps/v1beta1 apps/v1beta2 authentication.k8s.io/v1 authentication.k8s.io/v1alpha1
+  authentication.k8s.io/v1beta1 authorization.k8s.io/v1 authorization.k8s.io/v1beta1
+  autoscaling/v1 autoscaling/v2 autoscaling/v2beta1 autoscaling/v2beta2 batch/v1
+  batch/v1beta1 certificates.k8s.io/v1 certificates.k8s.io/v1beta1 certificates.k8s.io/v1alpha1
+  coordination.k8s.io/v1beta1 coordination.k8s.io/v1 discovery.k8s.io/v1 discovery.k8s.io/v1beta1
+  events.k8s.io/v1 events.k8s.io/v1beta1 extensions/v1beta1 flowcontrol.apiserver.k8s.io/v1alpha1
+  flowcontrol.apiserver.k8s.io/v1beta1 flowcontrol.apiserver.k8s.io/v1beta2 flowcontrol.apiserver.k8s.io/v1beta3
+  networking.k8s.io/v1 networking.k8s.io/v1alpha1 networking.k8s.io/v1beta1 node.k8s.io/v1
+  node.k8s.io/v1alpha1 node.k8s.io/v1beta1 policy/v1 policy/v1beta1 rbac.authorization.k8s.io/v1
+  rbac.authorization.k8s.io/v1beta1 rbac.authorization.k8s.io/v1alpha1 resource.k8s.io/v1alpha2
+  scheduling.k8s.io/v1alpha1 scheduling.k8s.io/v1beta1 scheduling.k8s.io/v1 storage.k8s.io/v1beta1
+  storage.k8s.io/v1 storage.k8s.io/v1alpha1 apiextensions.k8s.io/v1beta1 apiextensions.k8s.io/v1]"
+test-get-capabilities-kubeversion-major: "1"
+
+test-get-template-basepath: hull-test/templates

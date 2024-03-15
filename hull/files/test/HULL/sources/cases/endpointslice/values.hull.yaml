@@ -107,6 +107,10 @@ hull:
       test-serializing:
         addressType: FQDN
         endpoints: []
+        
+      test-get-transformation-on-root:
+        addressType: FQDN
+        endpoints: []
 
       test-one:
         addressType: FQDN
