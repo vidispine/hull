@@ -395,6 +395,9 @@ hull:
         
       test-serializing:
         serviceName: test-serializing
+        
+      test-get-transformation-on-root:
+        serviceName: test-serializing
 
       no-annotations:
         serviceName: no-annotations
