@@ -509,7 +509,7 @@ def lint_chart(case, chart, values_file, namespace):
             suite_file = suite.split('/')[1]
         suites += ("-f", os.path.join(chart_path, suite_file + ".values.hull.yaml"))
     
-    args = ("helm", "lint", chart_path, "--kube-version", data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION], "--debug", "--strict", "--namespace", namespace) + suites + ("-f",  os.path.join(chart_path, values_file))
+    args = ("helm", "lint", chart_path, "--debug", "--strict", "--namespace", namespace) + suites + ("-f",  os.path.join(chart_path, values_file))
     
     popen = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     print('STDOUT:\n', popen.stdout.decode("utf-8").replace("\n",os.linesep))
