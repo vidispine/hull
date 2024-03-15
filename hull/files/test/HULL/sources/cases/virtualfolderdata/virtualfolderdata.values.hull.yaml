@@ -622,6 +622,11 @@ hull:
           test-path-serialize-from-json-auto.json:
             path: files/test-serialize-from-json-auto.json
 
+      test-get-transformation-on-root:
+        data:
+          empty:
+            inline: ""
+
       inline-precedence:
         data:
           test1:

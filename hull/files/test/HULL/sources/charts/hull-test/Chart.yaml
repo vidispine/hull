@@ -1,11 +1,31 @@
 # Basic chart description and version
 apiVersion: v2
-appVersion: 1.27.0
-description: hull-test
 name: hull-test
-icon: https://github.com/vidispine/hull/blob/gh-pages/hull.png
-version: 1.27.0
+version: <K8S_MAJOR_VERSION>.0
+kubeVersion: "1.27.0 - <K8S_MAJOR_VERSION>.0"
+description: hull-test
+type: application
+keywords:
+  - "hull"
+  - "test"
+home: https://vidispine.github.io/hull
+sources:
+  - https://vidispine.github.io/hull
+  - https://github.com/vidispine/hull/blob/gh-pages/hull.png
 dependencies:
   - name: hull
-    version: "1.27.0"
+    version: "<K8S_MAJOR_VERSION>.0"
     repository: "https://vidispine.github.io/hull"
+maintainers:
+  - name: testperson1
+    email: person1@test.com
+    url: https://person1.com
+  - name: testperson2
+    email: person2@test.com
+    url: https://person2.com
+icon: https://github.com/vidispine/hull/blob/gh-pages/hull.png
+appVersion: <K8S_MAJOR_VERSION>.0
+deprecated: True
+annotations:
+  test1: test1
+  test2: test2

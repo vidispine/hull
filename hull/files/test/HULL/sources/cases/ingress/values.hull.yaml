@@ -273,7 +273,7 @@ hull:
             secretName: test_enabled_missing
             hosts:
               - "host.two.com"
-
+      
       vidistream:
         enabled: false
         annotations:
