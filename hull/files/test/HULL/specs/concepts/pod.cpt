@@ -209,6 +209,7 @@ Combinations of hashsumAnotation set to true false, missing etc on multiple cont
 
 * Set test object to "release-name-hull-test-no-imagepullsecrets"
 * Test Object does not have key "spec§template§spec§imagePullSecrets"
+
 * Set test object to "release-name-hull-test-imagepullsecrets-add-all"
 * Test Object has key "spec§template§spec§containers§0§image" with value matching regex "example.cr.io/.*$"
 

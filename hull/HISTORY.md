@@ -1,5 +1,11 @@
 # History
 ------------------
+[1.27.15]
+------------------
+CHANGES:
+- added possibility to get values from the charts root with notation `_HT**`
+
+------------------
 [1.27.14]
 ------------------
 CHANGES:
