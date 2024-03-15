@@ -185,6 +185,22 @@ hull:
           kind: "Deployment"
           name: target_deployment
           staticName: true
+          
+      test-get-transformation-on-root:
+        minReplicas: 1
+        maxReplicas: 2
+        behavior:
+          scaleUp: 
+            selectPolicy: select_policy_up
+            stabilizationWindowSeconds: 999
+          scaleDown: 
+            selectPolicy: select_policy_down
+            stabilizationWindowSeconds: 111
+        scaleTargetRef:
+          apiVersion: "v1"
+          kind: "Deployment"
+          name: target_deployment
+          staticName: true
       
       no-annotations:
         scaleTargetRef:

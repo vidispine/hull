@@ -87,6 +87,9 @@ hull:
       
       test-serializing:
         value: 100
+        
+      test-get-transformation-on-root:
+        value: 100
       
       no-annotations:
         value: 100

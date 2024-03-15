@@ -1965,6 +1965,14 @@ hull:
                 test-get-list-string: 
                   value: _HT*toString|hull.config.specific.dict_mixed_content.list
 
+      test-get-transformation-on-root:
+        pod:
+          containers:
+            my-pod:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
       no-annotations:
         pod:
           containers:

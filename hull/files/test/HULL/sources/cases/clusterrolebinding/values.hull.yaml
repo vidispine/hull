@@ -165,6 +165,12 @@ hull:
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
+
+      test-get-transformation-on-root:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
       
       no-annotations:
         roleRef:

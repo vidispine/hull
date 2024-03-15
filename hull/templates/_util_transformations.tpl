@@ -224,12 +224,25 @@
 {{- $objectInstanceKey = index $sourcePath 3 -}}
 {{- end -}}
 {{- end -}}
+{{- $current := "" -}}
+{{- if $reference | hasPrefix "*" -}}
+{{- $reference = $reference | replace "*" "" -}}
+{{- $current = toYaml $parent | fromYaml }}
+{{- else -}}
+{{- $current = $parent.Values }}
+{{- end -}}
 {{- $path := splitList "." $reference -}}
-{{- $current := $parent.Values }}
 {{- $skipBroken := false}}
 {{- $brokenPart := "" }}
 {{- $details := "" -}}
-{{- range $pathElement := $path -}}
+{{- $isChartSpecialCase := false -}}
+{{- if (eq (first $path) "Chart")  -}}
+{{- $isChartSpecialCase = true -}}
+{{- end -}}
+{{- range $pathIndex, $pathElement := $path -}}
+{{- if (and ($isChartSpecialCase) (eq $pathIndex 1)) -}}
+{{- $pathElement = $pathElement | untitle -}}
+{{- end -}}
 {{- if eq $pathElement "§OBJECT_TYPE§" -}}
   {{- if ne $objectType "" -}}
     {{- $pathElement = $objectType -}}
