@@ -16,7 +16,7 @@ General label section must be populated with overriden names
 * All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
 * All test objects have key "metadata§labels§app.kubernetes.io/name" with value "a-shorter-name"
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
-* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.28.0"
+* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "<K8S_MAJOR_VERSION>.0"
 
 Static names can be created
 
@@ -96,7 +96,7 @@ General label section must be populated
 * All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
 * All test objects have key "metadata§labels§app.kubernetes.io/name" with value of key "chart" from scenario data_store
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
-* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.28.0"
+* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "<K8S_MAJOR_VERSION>.0"
 
 Run metadataNameOverride tests
 
@@ -119,7 +119,7 @@ General label section must be populated
 * All test objects have key "metadata§labels§app.kubernetes.io/managed-by" with value "Helm"
 * All test objects have key "metadata§labels§app.kubernetes.io/name" with value of key "chart" from scenario data_store
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
-* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "1.28.0"
+* All test objects have key "metadata§labels§app.kubernetes.io/version" with value "<K8S_MAJOR_VERSION>.0"
 
 Static names can be created
 
@@ -421,6 +421,47 @@ Test serialization functions
 * Test Object has key "metadata§labels§test-include-code-list-non-empty-yaml" with value of key "test-include-code-list-non-empty-yaml" from expected.yaml of suite "basic"
 * Test Object has key "metadata§labels§test-include-code-list-non-empty-string" with value of key "test-include-code-list-non-empty-string" from expected.yaml of suite "basic"
 * Test Object has key "metadata§labels§test-include-flow-dict" with value of key "test-include-flow-dict" from expected.yaml of suite "basic"
+
+Test get transformation on root level
+
+* Set test object to "release-name-hull-test-test-get-transformation-on-root"
+
+* Test Object has key "metadata§labels§test-get-chart-apiversion" with value of key "test-get-chart-apiversion" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-name-lowercase" with value of key "test-get-chart-name" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-name-uppercase" with value of key "test-get-chart-name" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-version-lowercase" with value of key "test-get-chart-version" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-version-capitalcase" with value of key "test-get-chart-version" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-version-with-transformation" with value of key "test-get-chart-version" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-kubeversion" with value of key "test-get-chart-kubeversion" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-description" with value of key "test-get-chart-description" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-type" with value of key "test-get-chart-type" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-keywords" with value of key "test-get-chart-keywords" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-home" with value of key "test-get-chart-home" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-sources" with value of key "test-get-chart-sources" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-dependencies" with value of key "test-get-chart-dependencies" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-maintainers" with value of key "test-get-chart-maintainers" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-icon" with value of key "test-get-chart-icon" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-appversion" with value of key "test-get-chart-appversion" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-deprecated" with value of key "test-get-chart-deprecated" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-annotations" with value of key "test-get-chart-annotations" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-annotations-test1" with value of key "test-get-chart-annotations-test1" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-chart-annotations-test2" with value of key "test-get-chart-annotations-test2" from expected.yaml of suite "basic"
+
+* Test Object has key "metadata§labels§test-get-release-name" with value of key "test-get-release-name" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-release-namespace" with value of key "test-get-release-namespace" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-release-isupgrade" with value of key "test-get-release-isupgrade" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-release-isinstall" with value of key "test-get-release-isinstall" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-release-revision" with value of key "test-get-release-revision" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-release-service" with value of key "test-get-release-service" from expected.yaml of suite "basic"
+
+* Test Object has key "metadata§labels§test-get-capabilities-apiversions" with list value that has count of items greater than "0"
+* Test Object has key "metadata§labels§test-get-capabilities-kubeversion" with map value that has "3" items which are not empty
+* Test Object has key "metadata§labels§test-get-capabilities-kubeversion-major" with value of key "test-get-capabilities-kubeversion-major" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-capabilities-helmversion" with map value that has "4" items which are not empty
+
+* Test Object has key "metadata§labels§test-get-template-basepath" with value of key "test-get-template-basepath" from expected.yaml of suite "basic"
+
+
 
 Test annotation rendering
 

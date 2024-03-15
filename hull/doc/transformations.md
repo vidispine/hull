@@ -144,12 +144,55 @@ Now we can take a look at the [transformation definition] for `hull.util.transfo
 {{- $reference = $getValue.remainder -}}
 {{- $serializer = $getValue.serializer -}}
 {{- end -}}
+{{- $sourcePath := default list (index . "SOURCE_PATH") -}}
+{{- $objectType := "" -}}
+{{- $objectInstanceKey := "" -}}
+{{- if (gt (len $sourcePath) 3) -}}
+{{  if (eq (index $sourcePath 1) "objects") -}}
+{{- $objectType = index $sourcePath 2 -}}
+{{- $objectInstanceKey = index $sourcePath 3 -}}
+{{- end -}}
+{{- end -}}
+{{- $current := "" -}}
+{{- if $reference | hasPrefix "*" -}}
+{{- $reference = $reference | replace "*" "" -}}
+{{- $current = toYaml $parent | fromYaml }}
+{{- else -}}
+{{- $current = $parent.Values }}
+{{- end -}}
 {{- $path := splitList "." $reference -}}
-{{- $current := $parent.Values }}
 {{- $skipBroken := false}}
 {{- $brokenPart := "" }}
-{{- range $pathElement := $path -}}
-{{- $pathElement = regexReplaceAll "§" $pathElement "." }}
+{{- $details := "" -}}
+{{- $isChartSpecialCase := false -}}
+{{- if (eq (first $path) "Chart")  -}}
+{{- $isChartSpecialCase = true -}}
+{{- end -}}
+{{- range $pathIndex, $pathElement := $path -}}
+{{- if (and ($isChartSpecialCase) (eq $pathIndex 1)) -}}
+{{- $pathElement = $pathElement | untitle -}}
+{{- end -}}
+{{- if eq $pathElement "§OBJECT_TYPE§" -}}
+  {{- if ne $objectType "" -}}
+    {{- $pathElement = $objectType -}}
+  {{- else -}}
+    {{- $skipBroken = true -}}
+    {{- $brokenPart = $pathElement -}}
+    {{- $details = printf "OBJECT_TYPE not set in current calling context, cannot get path %s" $reference }}
+  {{- end -}}
+{{- else -}}
+  {{- if eq $pathElement "§OBJECT_INSTANCE_KEY§" -}}
+    {{- if ne $objectInstanceKey "" -}}
+      {{- $pathElement = $objectInstanceKey -}}
+    {{- else -}}
+      {{- $skipBroken = true -}}
+      {{- $brokenPart = $pathElement -}}
+      {{- $details = printf "OBJECT_INSTANCE_KEY not set in current calling context, cannot get path %s" $reference }}
+    {{- end -}}
+  {{- else -}}
+    {{- $pathElement = regexReplaceAll "§" $pathElement "." }}
+  {{- end -}}
+{{- end -}}
 {{- if (not $skipBroken) -}}
 {{- if (or (hasKey $current $pathElement)) -}}
 {{- $current = (index $current $pathElement) }}
@@ -159,8 +202,19 @@ Now we can take a look at the [transformation definition] for `hull.util.transfo
 {{- end -}}
 {{- end -}}
 {{- end -}}
-{{- if $skipBroken }}
+{{- if $skipBroken -}}
+{{- if $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences -}}
 {{ $key }}: BROKEN-HULL-GET-TRANSFORMATION-REFERENCE:Element {{ $brokenPart }} in path {{ $reference }} was not found
+{{- else }}
+{{- if $parent.Values.hull.config.general.errorChecks.hullGetTransformationReferenceValid -}}
+{{- if eq $details "" -}}
+{{- $details = printf "Element %s in path %s was not found" $brokenPart $reference -}}
+{{- end -}}
+{{- $key }}: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details) -}}
+{{- else -}}
+{{- $key }}: ""
+{{- end -}}
+{{- end -}}
 {{- else -}}
 {{- if and (typeIs "string" $current) (not $current) }}
 {{ $key }}: ""
@@ -578,6 +632,15 @@ string: _HT*hull.config.specific.string_value_to_get
 int: _HT*hull.config.specific.int_value_to_get
 dictionary: _HT*hull.config.specific.dictionary_value_to_get
 serialized_dictionary: _HT*toJson:hull.config.specific.dictionary_value_to_get
+```
+
+### __Get Chart/Release informations__
+
+If you want to access root informations in your Chart you need to provide an additional `*` to change the context.
+
+```yaml
+release-name: _HT**Release.Name
+chart-name: _HT**Chart.Name
 ```
 
 ### Create dynamic fullname (_hull.util.transformation.makefullname_)
