@@ -1859,6 +1859,10 @@
             "$ref": "#/definitions/io.k8s.api.apps.v1.DaemonSetCondition"
           },
           "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map",
           "x-kubernetes-patch-merge-key": "type",
           "x-kubernetes-patch-strategy": "merge"
         },
@@ -2072,7 +2076,8 @@
         }
       },
       "required": [],
-      "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]
+      "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ],
+      "additionalProperties": false
     },
     "io.k8s.api.apps.v1.DeploymentStatus": {
       "description": "DeploymentStatus is the most recently observed status of the Deployment.",
@@ -2093,6 +2098,10 @@
             "$ref": "#/definitions/io.k8s.api.apps.v1.DeploymentCondition"
           },
           "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map",
           "x-kubernetes-patch-merge-key": "type",
           "x-kubernetes-patch-strategy": "merge"
         },
@@ -2282,6 +2291,10 @@
             "$ref": "#/definitions/io.k8s.api.apps.v1.ReplicaSetCondition"
           },
           "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map",
           "x-kubernetes-patch-merge-key": "type",
           "x-kubernetes-patch-strategy": "merge"
         },
@@ -2541,11 +2554,13 @@
           "items": {
             "$ref": "#/definitions/io.k8s.api.core.v1.PersistentVolumeClaim"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "required": [],
-      "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]
+      "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ],
+      "additionalProperties": false
     },
     "io.k8s.api.apps.v1.StatefulSetStatus": {
       "description": "StatefulSetStatus represents the current state of a StatefulSet.",
@@ -2566,6 +2581,10 @@
             "$ref": "#/definitions/io.k8s.api.apps.v1.StatefulSetCondition"
           },
           "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map",
           "x-kubernetes-patch-merge-key": "type",
           "x-kubernetes-patch-strategy": "merge"
         },
@@ -2735,7 +2754,8 @@
           "items": {
             "type": "string"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-type": "atomic"
         },
         "boundObjectRef": {
           "$ref": "#/definitions/io.k8s.api.authentication.v1.BoundObjectReference",
@@ -2813,7 +2833,8 @@
           "items": {
             "type": "string"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-type": "atomic"
         },
         "token": {
           "description": "Token is the opaque bearer token.",
@@ -2831,7 +2852,8 @@
           "items": {
             "type": "string"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-type": "atomic"
         },
         "authenticated": {
           "description": "Authenticated indicates that the token was associated with a known user.",
@@ -2857,31 +2879,18 @@
             "items": {
               "type": "string"
             },
-            "anyOf": [
-              {
-                "$ref": "#/definitions/hull.Transformation.Pattern"
-              },
-              {
-                "type": "array"
-              }
-            ]
+            "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
           },
           "description": "Any additional information provided by the authenticator.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "object"
-            }
-          ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]
         },
         "groups": {
           "description": "The names of groups this user is a part of.",
           "items": {
             "type": "string"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-type": "atomic"
         },
         "uid": {
           "description": "A unique value that identifies this user across time. If this user is deleted and another user by the same name is added, they will have different UIDs.",
@@ -3044,14 +3053,16 @@
           "items": {
             "type": "string"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-type": "atomic"
         },
         "verbs": {
           "description": "Verb is a list of kubernetes non-resource API verbs, like: get, post, put, delete, patch, head, options.  \"*\" means all.",
           "items": {
             "type": "string"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "required": [],
@@ -3101,28 +3112,32 @@
           "items": {
             "type": "string"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-type": "atomic"
         },
         "resourceNames": {
           "description": "ResourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.  \"*\" means all.",
           "items": {
             "type": "string"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-type": "atomic"
         },
         "resources": {
           "description": "Resources is a list of resources this rule applies to.  \"*\" means all in the specified apiGroups.\n \"*/foo\" represents the subresource 'foo' for all resources in the specified apiGroups.",
           "items": {
             "type": "string"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-type": "atomic"
         },
         "verbs": {
           "description": "Verb is a list of kubernetes resource API verbs, like: get, list, watch, create, update, delete, proxy.  \"*\" means all.",
           "items": {
             "type": "string"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "required": [],
@@ -3277,31 +3292,18 @@
             "items": {
               "type": "string"
             },
-            "anyOf": [
-              {
-                "$ref": "#/definitions/hull.Transformation.Pattern"
-              },
-              {
-                "type": "array"
-              }
-            ]
+            "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
           },
           "description": "Extra corresponds to the user.Info.GetExtra() method from the authenticator.  Since that is input to the authorizer it needs a reflection here.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "object"
-            }
-          ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]
         },
         "groups": {
           "description": "Groups is the groups you're testing for.",
           "items": {
             "type": "string"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-type": "atomic"
         },
         "nonResourceAttributes": {
           "$ref": "#/definitions/io.k8s.api.authorization.v1.NonResourceAttributes",
@@ -3363,14 +3365,16 @@
           "items": {
             "$ref": "#/definitions/io.k8s.api.authorization.v1.NonResourceRule"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-type": "atomic"
         },
         "resourceRules": {
           "description": "ResourceRules is the list of actions the subject is allowed to perform on resources. The list ordering isn't significant, may contain duplicates, and possibly be incomplete.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.authorization.v1.ResourceRule"
           },
-          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+          "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ],
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "required": [],
@@ -3508,7 +3512,8 @@
         }
       },
       "required": [],
-      "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]
+      "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ],
+      "additionalProperties": false
     },
     "io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerStatus": {
       "description": "current status of a horizontal pod autoscaler",
@@ -3907,7 +3912,8 @@
         }
       },
       "required": [],
-      "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]
+      "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ],
+      "additionalProperties": false
     },
     "io.k8s.api.autoscaling.v2.HorizontalPodAutoscalerStatus": {
       "description": "HorizontalPodAutoscalerStatus describes the current status of a horizontal pod autoscaler.",
@@ -4307,7 +4313,8 @@
         }
       },
       "required": [],
-      "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]
+      "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ],
+      "additionalProperties": false
     },
     "io.k8s.api.batch.v1.CronJobStatus": {
       "description": "CronJobStatus represents the current state of a cron job.",
@@ -5679,7 +5686,8 @@
           "kind": "ConfigMap",
           "version": "v1"
         }
-      ]
+      ],
+      "additionalProperties": false
     },
     "io.k8s.api.core.v1.ConfigMapEnvSource": {
       "description": "ConfigMapEnvSource selects a ConfigMap to populate the environment variables with.\n\nThe contents of the target ConfigMap's Data field will represent the key-value pairs as environment variables.",
