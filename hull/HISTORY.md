@@ -1,5 +1,11 @@
 # History
 ------------------
+[1.30.0]
+------------------
+CHANGES:
+- initial K8S 1.30 release
+- deprecating 1.27 release
+------------------
 [1.29.7]
 ------------------
 CHANGES:

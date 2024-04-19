@@ -9,7 +9,7 @@
 - `_objects_base_pod.tpl`: objects that internally use a pod template 
 - `_objects_xyz.tpl`: any other more complex object with array structures that should be converted to dictionaries requires a custom template
 
-[PriorityClass](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#priorityclass-v1-scheduling-k8s-io) is a very simple structure so it can use `_objects_base_plain.tpl`
+[PriorityClass](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#priorityclass-v1-scheduling-k8s-io) is a very simple structure so it can use `_objects_base_plain.tpl`
 
 ### Add to the handled objects in `hull.yaml`
 
@@ -186,27 +186,27 @@ Copy the `_definition.json` from the newly created schema folder to `values.sche
 General hints for doing this when starting comparing top to bottom:
 - before going through the new `values.schema.json` line by line you should do some global replacements in the new file to adapt the types of objects to the HULL types:
   - ```
-    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]
+    "type": "object"
     --> 
-    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]} ]
+    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]
     ```
   - ```
-    "type": "array" 
+    "type": "array"
     --> 
     "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
     ```
   - ```
-    "type": "integer" 
+    "type": "integer"
     --> 
     "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "integer" } ]
     ```
   - ```
-    "type": "number" 
+    "type": "number"
     --> 
     "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "number" } ]
     ```
   - ```
-    "type": "boolean" 
+    "type": "boolean"
     --> 
     "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "boolean" } ]
     ```

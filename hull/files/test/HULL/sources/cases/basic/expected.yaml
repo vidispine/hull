@@ -138,7 +138,7 @@ test-include-flow-dict: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvc
 test-get-chart-apiversion: v2
 test-get-chart-name: hull-test
 test-get-chart-version: <K8S_MAJOR_VERSION>.0
-test-get-chart-kubeversion: 1.27.0 - <K8S_MAJOR_VERSION>.0
+test-get-chart-kubeversion: 1.30.0 - <K8S_MAJOR_VERSION>.0
 test-get-chart-description: hull-test
 test-get-chart-type: application
 test-get-chart-keywords: '[hull test]'

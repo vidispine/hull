@@ -1,4 +1,4 @@
-# Creating Services
+properties# Creating Services
 
 The HULL Service object is a thin wrapper around the Kubernetes Service providing the possibility to specify the `ports` via keys.
 
@@ -6,7 +6,7 @@ The HULL Service object is a thin wrapper around the Kubernetes Service providin
 
 ### The `hull.Service.v1` properties
 
-Properties can be set as they are defined in the [Kubernetes API's service spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#service-v1-core). 
+Properties can be set as they are defined in the [Kubernetes API's service spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#service-v1-core). 
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -20,7 +20,7 @@ However the properties listed below are overwritten or added by HULL:
 
 > The `name` property of the service's port is derived from the key.
 
-Properties can be set as they are defined in the [Kubernetes API's serviceport spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#serviceport-v1-core). 
+Properties can be set as they are defined in the [Kubernetes API's serviceport spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#serviceport-v1-core). 
 
 However the properties listed below are overwritten or added by HULL:
 
