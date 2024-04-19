@@ -186,9 +186,9 @@ Copy the `_definition.json` from the newly created schema folder to `values.sche
 General hints for doing this when starting comparing top to bottom:
 - before going through the new `values.schema.json` line by line you should do some global replacements in the new file to adapt the types of objects to the HULL types:
   - ```
-    "type": "object" 
-    --> 
     "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]
+    --> 
+    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]} ]
     ```
   - ```
     "type": "array" 
