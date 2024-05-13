@@ -188,27 +188,62 @@ General hints for doing this when starting comparing top to bottom:
   - ```
     "type": "object"
     --> 
-    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "object" } ]
+    "anyOf": [
+      {
+        "$ref": "#/definitions/hull.Transformation.Pattern"
+      },
+      {
+        "type": "object"
+      }
+    ]
     ```
   - ```
     "type": "array"
     --> 
-    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "array" } ]
+    "anyOf": [
+      {
+        "$ref": "#/definitions/hull.Transformation.Pattern"
+      },
+      {
+        "type": "array"
+      }
+    ]
     ```
   - ```
     "type": "integer"
     --> 
-    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "integer" } ]
+    "anyOf": [
+      {
+        "$ref": "#/definitions/hull.Transformation.Pattern"
+      },
+      {
+        "type": "integer"
+      }
+    ]
     ```
   - ```
     "type": "number"
     --> 
-    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "number" } ]
+    "anyOf": [
+      {
+        "$ref": "#/definitions/hull.Transformation.Pattern"
+      },
+      {
+        "type": "number"
+      }
+    ]
     ```
   - ```
     "type": "boolean"
     --> 
-    "anyOf": [ { "$ref": "#/definitions/hull.Transformation.Pattern" }, { "type": "boolean" } ]
+    "anyOf": [
+      {
+        "$ref": "#/definitions/hull.Transformation.Pattern"
+      },
+      {
+        "type": "boolean"
+      }
+    ]
     ```
   - the `required` properties need to be removed to improve defaulting capabilities. When you have `required` properties you would need to set them on each object instance's fields which defeats the purpose of efficient defaulting via `sources` or `_HULL_OBJECT_TYPE_DEFAULT_`. To remove all required properties the following regex search and replacement can be used. Note that the below syntax is guarenteed to be working with VSCode, it may need to be adapted when using other editors for the regex replacing.
   - ```
