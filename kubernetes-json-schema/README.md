@@ -14,11 +14,15 @@ https://github.com/yannh/kubernetes-json-schema
 
 This is an autoupated fork of the original project that provided the Kubernetes API JSON schemas but seems to be updated anymore. The fork creates new schemas on a regular schedule.
 
-from this it is required to get the `standalone-strict` version of the relevant API version, for Kubenetes API version 1.24 this would be:
+from this it is required to get the `standalone-strict` version of the relevant API version, for Kubenetes API version 1.30 this would be:
 
-https://github.com/yannh/kubernetes-json-schema/tree/master/v1.24.0-standalone-strict
+https://github.com/yannh/kubernetes-json-schema/tree/master/v1.30.0-standalone-strict
 
 and all files therein need to be copied to the `hull/files/test/HULL/schema` folder.
+
+The Git Repository is really big, if you don't want to clone the whole thing there is a helper site which lets you just download the needed folder:
+
+https://download-directory.github.io/
 
 ## All-in-one file JSON schema
 
