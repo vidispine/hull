@@ -207,4 +207,10 @@ hull:
           name: metadata-overwrite
           kind: "Deployment"
         maxReplicas: 3
+
+      test-get-transformations-array:
+        scaleTargetRef:
+          name: metadata-overwrite
+          kind: "Deployment"
+        maxReplicas: 3
 ###################################################

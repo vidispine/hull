@@ -48,4 +48,3 @@
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "name")) | indent 2 }}
 {{ end }}
 {{ end }}
-

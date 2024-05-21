@@ -2,7 +2,7 @@
 apiVersion: v2
 name: hull-test
 version: <K8S_MAJOR_VERSION>.0
-kubeVersion: "1.30.0 - <K8S_MAJOR_VERSION>.0"
+kubeVersion: "<K8S_MAJOR_VERSION>.0 - <K8S_MAJOR_VERSION>.0"
 description: hull-test
 type: application
 keywords:

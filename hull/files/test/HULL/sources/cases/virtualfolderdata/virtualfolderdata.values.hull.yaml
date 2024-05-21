@@ -764,4 +764,7 @@ hull:
             path: files/issue-288-dot
           path-subdict-access-dot:
             path: files/subdict-access-dot
+      
+      test-glob-import:
+        data: _HT/hull.util.tools.virtualdata.data.glob:GLOB:"files/code-java-*.java"
 ###################################################
