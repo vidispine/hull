@@ -29,6 +29,7 @@ type: {{ default "Opaque" $spec.type }}
 {{ end }}
 
 
+
 {{- /*
 | Purpose:  
 |   

@@ -157,6 +157,7 @@ objects:
       subjects: 
       - kind: ServiceAccount
         name: _HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.makefullname>>><<<COMPONENT=default>>>
+        namespace: _HT**Release.Namespace
 ###################################################
 
 # CLUSTERROLES

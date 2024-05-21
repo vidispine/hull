@@ -171,4 +171,8 @@ hull:
         addressType: FQDN
         endpoints: []
 
+      test-get-transformations-array:
+        addressType: FQDN
+        endpoints: []
+
 ###################################################

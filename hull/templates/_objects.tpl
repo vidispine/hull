@@ -2,11 +2,15 @@
 ############################################ OBJECT OVERRIDES ##############################################
 */ -}}
 
+
+
 {{- /*
 ### none - nothing special to apply
 */ -}}
 {{ define "this.none" }}
 {{- end -}}
+
+
 
 {{- /*
 ### emptynamespace - Sets an empty namespace
@@ -16,9 +20,13 @@ metadata:
   namespace: ""
 {{- end -}}
 
+
+
 {{- /*
 ################################################# PREPARE ALL #####################################################
 */ -}}
+
+
 
 {{ define "hull.objects.prepare.all" }}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
@@ -27,6 +35,8 @@ metadata:
 ### Load all handled object types step by step for better visibility
 */ -}}
 {{- $allObjects := dict -}}
+
+
 
 {{- /*
 ### Load plain objects
@@ -97,6 +107,8 @@ metadata:
 {{- include "hull.objects.render" . }}
 {{- end -}}
 
+
+
 {{- /*
 ################################################# RENDER #####################################################
 */ -}}
@@ -105,7 +117,6 @@ metadata:
 {{- $rootContext := (index . "ROOT_CONTEXT") -}}
 {{- $allObjects := (index . "HULL_OBJECTS") -}}
 {{- $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $rootContext.Values.hull "HULL_ROOT_KEY" $hullRootKey "SOURCE_PATH" (list "hull")) | fromYaml }}
-
 
 {{- range $objectType, $objectTypeSpec := $allObjects }}
 {{- $lowerObjectType := $objectType | lower }}
@@ -165,7 +176,7 @@ metadata:
 {{- $errorMessage := include "hull.util.error.check" (dict "OBJECT" $objectSpec "OBJECT_TYPE" $lowerObjectType) -}}
 {{- if (and (hasKey $objectSpec "Error") (eq (len (keys ($objectSpec))) 1)) -}}
 {{- if (index $rootContext.Values $hullRootKey).config.general.errorChecks.objectYamlValid -}}
-{{- $errorMessage = printf "%s [%s %s: %s]" $errorMessage "HULL failed with error" "BROKEN-OBJECT-YAML" "A broken object YAML was encountered" -}}
+{{- $errorMessage = printf "%s [%s %s: %s for %s %s due to YAML error '%s']" $errorMessage "HULL failed with error" "BROKEN-OBJECT-YAML" "A broken object YAML was encountered" $lowerObjectType $objectKey (index $objectSpec "Error") -}}
 {{- end -}}
 {{- end -}}
 {{- if (ne $errorMessage "") -}}

@@ -227,9 +227,9 @@
 {{- $current := "" -}}
 {{- if $reference | hasPrefix "*" -}}
 {{- $reference = $reference | replace "*" "" -}}
-{{- $current = toYaml $parent | fromYaml }}
+{{- $current = toYaml $parent | fromYaml -}}
 {{- else -}}
-{{- $current = $parent.Values }}
+{{- $current = $parent.Values -}}
 {{- end -}}
 {{- $path := splitList "." $reference -}}
 {{- $skipBroken := false}}
@@ -265,11 +265,15 @@
   {{- end -}}
 {{- end -}}
 {{- if (not $skipBroken) -}}
+{{- if (regexMatch "^\\d+$" $pathElement) -}}
+{{- $current = (index $current (int $pathElement)) -}}
+{{- else -}}
 {{- if (or (hasKey $current $pathElement)) -}}
 {{- $current = (index $current $pathElement) }}
 {{- else -}}
 {{- $skipBroken = true -}}
 {{- $brokenPart = $pathElement -}}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

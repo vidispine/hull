@@ -93,4 +93,7 @@ hull:
       
       no-annotations:
         value: 100
+
+      test-get-transformations-array:
+        value: 100
 ###################################################

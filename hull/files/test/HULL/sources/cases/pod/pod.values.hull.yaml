@@ -2029,3 +2029,11 @@ hull:
               env:
                 GET_FROM_HULL_CONFIG:
                   value: _HT*hull.config.specific.components.§OBJECT_TYPE§.§OBJECT_INSTANCE_KEY§
+
+      test-get-transformations-array:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+          containers:
+            my-pod:
+              image:
+                repository: hello-world

@@ -128,3 +128,21 @@ hull:
         apiVersion: "dummyApi/v1"
         kind: "Dummy"
         spec: {}
+
+      dbzm-kamel-issue-311:
+        apiVersion: camel.apache.org/v1
+        kind: Integration
+        spec:
+          sources:
+          - name: dbzm-simple.yaml
+            language: java
+            content: |-
+              _HT/hull.util.tools.file.get:PATH:"files/code-java-simple.java"
+          - name: dbzm-medium.yaml
+            language: java
+            content: |-
+              _HT/hull.util.tools.file.get:PATH:"files/code-java-medium.java"
+          - name: dbzm-complex.yaml
+            language: yaml
+            content: |-
+              _HT/hull.util.tools.file.get:PATH:"files/code-java-complex.java"
