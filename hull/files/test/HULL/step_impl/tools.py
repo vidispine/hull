@@ -84,7 +84,7 @@ def copy_the_test_chart_folders_to(case, chart):
         try:
             if not "expected" in data_store.scenario:
                 data_store.scenario["expected"] = {}
-            data_store.scenario["expected"][case] = yaml.load(os.path.open(expected,newline='\n'))
+            data_store.scenario["expected"][case] = yaml.safe_load(open(expected,newline='\n'))
         except Exception as e:
             print(f"Failed to read {expected}", e.__str__, "occurred.")
             assert False

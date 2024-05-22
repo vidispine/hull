@@ -1,6 +1,5 @@
-test-get-dict: map[boolean:true dict:map[key:value] list:[54 false map[subdict:map[a:b
-  boolish:false c:d int:398]]] number:45]
-test-get-dict-json: '{"boolean":true,"dict":{"key":"value"},"list":[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","int":398}}],"number":45}'
+test-get-dict: map[boolean:true dict:map[key:value] list:[54 false map[subdict:map[a:b boolish:false c:d inner_list:[inner_1 inner_2 inner_3] int:398]]] number:45]
+test-get-dict-json: '{"boolean":true,"dict":{"key":"value"},"list":[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","inner_list":["inner_1","inner_2","inner_3"],"int":398}}],"number":45}'
 test-get-dict-prettyjson: |-
   {
     "boolean": true,
@@ -15,15 +14,19 @@ test-get-dict-prettyjson: |-
           "a": "b",
           "boolish": false,
           "c": "d",
+          "inner_list": [
+            "inner_1",
+            "inner_2",
+            "inner_3"
+          ],
           "int": 398
         }
       }
     ],
     "number": 45
   }
-test-get-dict-rawjson: '{"boolean":true,"dict":{"key":"value"},"list":[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","int":398}}],"number":45}'
-test-get-dict-string: map[boolean:true dict:map[key:value] list:[54 false map[subdict:map[a:b
-  boolish:false c:d int:398]]] number:45]
+test-get-dict-rawjson: '{"boolean":true,"dict":{"key":"value"},"list":[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","inner_list":["inner_1","inner_2","inner_3"],"int":398}}],"number":45}'
+test-get-dict-string: map[boolean:true dict:map[key:value] list:[54 false map[subdict:map[a:b boolish:false c:d inner_list:[inner_1 inner_2 inner_3] int:398]]] number:45]
 test-get-dict-yaml: |-
   boolean: true
   dict:
@@ -35,10 +38,14 @@ test-get-dict-yaml: |-
       a: b
       boolish: false
       c: d
+      inner_list:
+      - inner_1
+      - inner_2
+      - inner_3
       int: 398
   number: 45
-test-get-list: '[54 false map[subdict:map[a:b boolish:false c:d int:398]]]'
-test-get-list-json: '[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","int":398}}]'
+test-get-list: '[54 false map[subdict:map[a:b boolish:false c:d inner_list:[inner_1 inner_2 inner_3] int:398]]]'
+test-get-list-json: '[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","inner_list":["inner_1","inner_2","inner_3"],"int":398}}]'
 test-get-list-prettyjson: |-
   [
     54,
@@ -48,12 +55,17 @@ test-get-list-prettyjson: |-
         "a": "b",
         "boolish": false,
         "c": "d",
+        "inner_list": [
+          "inner_1",
+          "inner_2",
+          "inner_3"
+        ],
         "int": 398
       }
     }
   ]
-test-get-list-rawjson: '[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","int":398}}]'
-test-get-list-string: '[54 false map[subdict:map[a:b boolish:false c:d int:398]]]'
+test-get-list-rawjson: '[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","inner_list":["inner_1","inner_2","inner_3"],"int":398}}]'
+test-get-list-string: '[54 false map[subdict:map[a:b boolish:false c:d inner_list:[inner_1 inner_2 inner_3] int:398]]]'
 test-get-list-yaml: |-
   - 54
   - false
@@ -61,6 +73,10 @@ test-get-list-yaml: |-
       a: b
       boolish: false
       c: d
+      inner_list:
+      - inner_1
+      - inner_2
+      - inner_3
       int: 398
 test-include-code-dict: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvcmQ=
   email:email password:password username:username]]]
@@ -138,7 +154,7 @@ test-include-flow-dict: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvc
 test-get-chart-apiversion: v2
 test-get-chart-name: hull-test
 test-get-chart-version: <K8S_MAJOR_VERSION>.0
-test-get-chart-kubeversion: 1.30.0 - <K8S_MAJOR_VERSION>.0
+test-get-chart-kubeversion: <K8S_MAJOR_VERSION>.0 - <K8S_MAJOR_VERSION>.0
 test-get-chart-description: hull-test
 test-get-chart-type: application
 test-get-chart-keywords: '[hull test]'
