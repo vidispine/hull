@@ -151,26 +151,6 @@ hull:
                   repository: my/image/repo
                   tag: "99.9"
 
-      metadata-merge:
-        schedule: "* * 2"
-        job:
-          pod:
-            containers:
-              main:
-                image:
-                  repository: my/image/repo
-                  tag: "99.9"
-
-      metadata-overwrite:
-        schedule: "* * 2"
-        job:
-          pod:
-            containers:
-              main:
-                image:
-                  repository: my/image/repo
-                  tag: "99.9"
-
       metadata-custom-template-merge:
         schedule: "* * 2"
         job:
@@ -282,6 +262,16 @@ hull:
                   tag: "99.9"
 
       no-annotations:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+      
+      test-get-transformations-array:
         schedule: "* * 2"
         job:
           pod:

@@ -31,6 +31,22 @@ Maybe TODO: Check basic metadata functionality
 * Test Object has key "apiVersion" with value "mailReceiverApi/v1"
 * Test Object has key "kind" with value "MailReceiver"
 
+## Load from file
+
+* Lint and Render
+
+* Set test object to "release-name-hull-test-dbzm-kamel-issue-311" of kind "Integration"
+* Test Object has key "spec§sources§0§name" with value "dbzm-simple.yaml"
+* Test Object has key "spec§sources§0§language" with value "java"
+* Test Object has key "spec§sources§0§content" with value of key "code-java-simple.java" from expected.yaml
+* Test Object has key "spec§sources§1§name" with value "dbzm-medium.yaml"
+* Test Object has key "spec§sources§1§language" with value "java"
+* Test Object has key "spec§sources§1§content" with value of key "code-java-medium.java" from expected.yaml
+* Test Object has key "spec§sources§2§name" with value "dbzm-complex.yaml"
+* Test Object has key "spec§sources§2§language" with value "yaml"
+* Test Object has key "spec§sources§2§content" with value of key "code-java-complex.java" from expected.yaml
+
+
 ___
 
 * Clean the test execution folder
