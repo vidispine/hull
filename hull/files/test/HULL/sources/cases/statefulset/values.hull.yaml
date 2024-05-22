@@ -422,4 +422,8 @@ hull:
 
       ht-get-object-type-example-doc:
         serviceName: ht-get-object-type-example-doc
+
+      test-get-transformations-array:
+        serviceName: ht-get-object-type-example-doc
+
 ###################################################
