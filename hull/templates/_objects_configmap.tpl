@@ -29,6 +29,7 @@
 {{ end }}
 
 
+
 {{- /*
 | Purpose:  
 |   
@@ -43,6 +44,7 @@
 {{- define "hull.object.configmap.data" -}}
 {{- include "hull.object.virtualfolder.data" (merge (dict "VIRTUAL_FOLDER_TYPE" "configmap") .) }}
 {{- end -}}
+
 
 
 {{- /*

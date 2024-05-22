@@ -1,13 +1,15 @@
 default_file_1.json: |-
   {"name":"i am default_file_1.json"}
+default_file_2.yaml: |-
+  name: i am default_file_2.yaml
+default_inline_1: "Default Inline 1"
+default_inline_2: "Concrete Inline 2"
 concrete_file_3_untemplated.yaml: |-
   name: i am concrete_file_3.yaml
   templating: {{ .Values.hull.config.general.metadata.labels.custom.general_custom_label_1 }}
-test-get-dict: map[boolean:true dict:map[key:value] list:[54 false map[subdict:map[a:b
-  boolish:false c:d int:398]]] number:45]
-test-get-dict-json: '{"boolean":true,"dict":{"key":"value"},"list":[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","int":398}}],"number":45}'
-test-get-dict-none: map[boolean:true dict:map[key:value] list:[54 false map[subdict:map[a:b
-    boolish:false c:d int:398]]] number:45]
+test-get-dict: map[boolean:true dict:map[key:value] list:[54 false map[subdict:map[a:b boolish:false c:d inner_list:[inner_1 inner_2 inner_3] int:398]]] number:45]
+test-get-dict-json: '{"boolean":true,"dict":{"key":"value"},"list":[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","inner_list":["inner_1","inner_2","inner_3"],"int":398}}],"number":45}'
+test-get-dict-none: map[boolean:true dict:map[key:value] list:[54 false map[subdict:map[a:b boolish:false c:d inner_list:[inner_1 inner_2 inner_3] int:398]]] number:45]
 test-get-dict-prettyjson: |-
   {
     "boolean": true,
@@ -22,15 +24,19 @@ test-get-dict-prettyjson: |-
           "a": "b",
           "boolish": false,
           "c": "d",
+          "inner_list": [
+            "inner_1",
+            "inner_2",
+            "inner_3"
+          ],
           "int": 398
         }
       }
     ],
     "number": 45
   }
-test-get-dict-rawjson: '{"boolean":true,"dict":{"key":"value"},"list":[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","int":398}}],"number":45}'
-test-get-dict-string: map[boolean:true dict:map[key:value] list:[54 false map[subdict:map[a:b
-  boolish:false c:d int:398]]] number:45]
+test-get-dict-rawjson: '{"boolean":true,"dict":{"key":"value"},"list":[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","inner_list":["inner_1","inner_2","inner_3"],"int":398}}],"number":45}'
+test-get-dict-string: map[boolean:true dict:map[key:value] list:[54 false map[subdict:map[a:b boolish:false c:d inner_list:[inner_1 inner_2 inner_3] int:398]]] number:45]
 test-get-dict-yaml: |-
   boolean: true
   dict:
@@ -42,11 +48,15 @@ test-get-dict-yaml: |-
       a: b
       boolish: false
       c: d
+      inner_list:
+      - inner_1
+      - inner_2
+      - inner_3
       int: 398
   number: 45
-test-get-list: '[54 false map[subdict:map[a:b boolish:false c:d int:398]]]'
-test-get-list-json: '[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","int":398}}]'
-test-get-list-none: '[54 false map[subdict:map[a:b boolish:false c:d int:398]]]'
+test-get-list: '[54 false map[subdict:map[a:b boolish:false c:d inner_list:[inner_1 inner_2 inner_3] int:398]]]'
+test-get-list-json: '[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","inner_list":["inner_1","inner_2","inner_3"],"int":398}}]'
+test-get-list-none: '[54 false map[subdict:map[a:b boolish:false c:d inner_list:[inner_1 inner_2 inner_3] int:398]]]'
 test-get-list-prettyjson: |-
   [
     54,
@@ -56,12 +66,17 @@ test-get-list-prettyjson: |-
         "a": "b",
         "boolish": false,
         "c": "d",
+        "inner_list": [
+          "inner_1",
+          "inner_2",
+          "inner_3"
+        ],
         "int": 398
       }
     }
   ]
-test-get-list-rawjson: '[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","int":398}}]'
-test-get-list-string: '[54 false map[subdict:map[a:b boolish:false c:d int:398]]]'
+test-get-list-rawjson: '[54,false,{"subdict":{"a":"b","boolish":false,"c":"d","inner_list":["inner_1","inner_2","inner_3"],"int":398}}]'
+test-get-list-string: '[54 false map[subdict:map[a:b boolish:false c:d inner_list:[inner_1 inner_2 inner_3] int:398]]]'
 test-get-list-yaml: |-
   - 54
   - false
@@ -69,6 +84,10 @@ test-get-list-yaml: |-
       a: b
       boolish: false
       c: d
+      inner_list:
+      - inner_1
+      - inner_2
+      - inner_3
       int: 398
 test-include-code-dict: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvcmQ=
   email:email password:password username:username]]]
@@ -324,3 +343,73 @@ subdict-access-ht-get-rawjson: '{"myName":"Some Other Name"}'
 subdict-access-ht-get-string: map[myName:Some Other Name]
 subdict-access-ht-get-yaml: 'myName: Some Other Name'
 subdict-access-ht-tpl: Some Other Name
+code-java-complex.java: "import java.io.File;\r\nimport java.io.FileNotFoundException;\r\nimport
+  java.io.FileReader;\r\nimport java.io.IOException;\r\nimport java.io.InputStreamReader;\r\nimport
+  java.net.MalformedURLException;\r\nimport java.net.URL;\r\n\r\n\r\npublic class
+  FreqTableExampleOriginal {\r\n\r\n    public static final int NUM_ASCII_CHAR =
+  128;\r\n\r\n    // program to create a frequency table.\r\n    // Example of simple
+  try catch blocks to deal with checked exceptions\r\n    public static void main(String[]
+  args)\r\n        {\r\n\r\n        int[] freqs = createFreqTableURL(\"http://www.utexas.edu/\");\r\n\r\n
+  \       if( freqs.length == 0)\r\n            System.out.println(\"No frequency
+  table created due to problems when reading from file\");\r\n        else{\r\n
+  \           for(int i = 0; i < NUM_ASCII_CHAR; i++){\r\n                System.out.println(\"charcater
+  code: \" + i + \" ,character: \" + (char)i + \" ,frequency: \" + freqs[i]);\r\n
+  \           }\r\n            System.out.println(\"Total characters in file: \"
+  + sum(freqs));\r\n        }\r\n\r\n\r\n        freqs = new int[]{};\r\n        try{\r\n
+  \           freqs = createTable(\"ciaFactBook2008.txt\");\r\n        }\r\n        catch(FileNotFoundException
+  e){\r\n            System.out.println(\"File not found. Unable to create freq
+  table\" + e);\r\n        }\r\n        catch(IOException e){\r\n            System.out.println(\"Problem
+  while reading from file. Unable to create freq table\" + e);\r\n        }\r\n
+  \       if( freqs.length == 0)\r\n            System.out.println(\"No frequency
+  table created due to problems when reading from file\");\r\n        else{\r\n
+  \           for(int i = 0; i < freqs.length; i++){\r\n                System.out.println(\"charcater
+  code: \" + i + \" ,character: \" + (char)i + \" ,frequency: \" + freqs[i]);\r\n
+  \           }\r\n            System.out.println(\"Total characters in file: \"
+  + sum(freqs));\r\n        }\r\n\r\n    }\r\n\r\n\r\n    // return sum of ints
+  in list\r\n    // list may not be null\r\n    private static int sum(int[] list)
+  {\r\n        assert list != null : \"Failed precondition, sum: parameter list\"
+  +\r\n            \" may not be null.\";\r\n        int total = 0;\r\n        for(int
+  x : list){\r\n            total += x;\r\n        }\r\n        return total;\r\n
+  \   }\r\n\r\n\r\n    // pre: url != null\r\n    // Connect to the URL specified
+  by the String url.\r\n    // Map characters to index in array.\r\n    // All non
+  ASCII character dumped into one element of array\r\n    // If IOException occurs
+  message printed and array of\r\n    // length 0 returned.\r\n    public static
+  int[] createFreqTableURL (String url){\r\n        if(url == null)\r\n            throw
+  new IllegalArgumentException(\"Violation of precondition. parameter url must not
+  be null.\");\r\n\r\n        int[] freqs = new int[NUM_ASCII_CHAR];\r\n        try
+  {\r\n        URL inputURL = new URL(url);\r\n        InputStreamReader in\r\n
+  \           = new InputStreamReader(inputURL.openStream());\r\n\r\n        while(in.ready()){\r\n
+  \           int c = in.read();\r\n            if(0 <= c && c < freqs.length)\r\n
+  \               freqs[c]++;\r\n            else\r\n                System.out.println(\"Non
+  ASCII char: \" + c + \" \" + (char) c);\r\n        }\r\n        in.close();\r\n
+  \       }\r\n        catch(MalformedURLException e){\r\n            System.out.println(\"Bad
+  URL.\");\r\n            freqs = new int[0];\r\n        }\r\n        catch(IOException
+  e){\r\n            System.out.println(\"Unable to read from resource.\" + e);\r\n
+  \           freqs = new int[0];\r\n        }\r\n        return freqs;\r\n    }\r\n\r\n\r\n\r\n
+  \   // Connect to the file specified by the String fileName.\r\n    // Assumes
+  it is in same directory as compiled code.\r\n    // Map characters to index in
+  array.\r\n    public static int[] createTable(String fileName) throws FileNotFoundException,
+  IOException{\r\n        int[] freqs = new int[NUM_ASCII_CHAR];\r\n        File
+  f = new File(fileName);\r\n        FileReader r = new FileReader(f);\r\n        while(
+  r.ready() ){\r\n            int ch = r.read();\r\n//            if( 0 <= ch &&
+  ch <= NUM_ASCII_CHAR)\r\n//                freqs[ch]++;\r\n//            else\r\n//
+  \               freqs[INDEX_NON_ASCII]++;\r\n            if(0 <= ch && ch < freqs.length)\r\n
+  \               freqs[ch]++;\r\n            else\r\n                System.out.println((char)
+  ch);\r\n                \r\n        }\r\n        r.close();\r\n        return
+  freqs;\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n}"
+code-java-medium.java: "public class Main {\r\n\r\n  public static void main(String[]
+  args) {\r\n    int number = 34;\r\n    boolean flag = false;\r\n    for (int i
+  = 2; i <= number / 2; ++i) {\r\n\r\n      // condition for i to be a prime number\r\n
+  \     if (checkPrime(i)) {\r\n\r\n        // condition for n-i to be a prime number\r\n
+  \       if (checkPrime(number - i)) {\r\n\r\n          // n = primeNumber1 + primeNumber2\r\n
+  \         System.out.printf(\"%d = %d + %d\\n\", number, i, number - i);\r\n          flag
+  = true;\r\n        }\r\n\r\n      }\r\n    }\r\n\r\n    if (!flag)\r\n      System.out.println(number
+  + \" cannot be expressed as the sum of two prime numbers.\");\r\n  }\r\n\r\n  //
+  Function to check prime number\r\n  static boolean checkPrime(int num) {\r\n    boolean
+  isPrime = true;\r\n\r\n    for (int i = 2; i <= num / 2; ++i) {\r\n      if (num
+  % i == 0) {\r\n        isPrime = false;\r\n        break;\r\n      }\r\n    }\r\n\r\n
+  \   return isPrime;\r\n  }\r\n}"
+code-java-simple.java: "class Main {\r\n\r\n  public static void main(String[] args)
+  {\r\n    \r\n    int first = 10;\r\n    int second = 20;\r\n\r\n    \r\n    int
+  sum = first + second;\r\n    System.out.println(first + \" + \" + second + \"
+  = \"  + sum);\r\n  }\r\n}"

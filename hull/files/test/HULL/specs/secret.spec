@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "18" objects were rendered on top of basic objects count
+* Expected number of "19" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -341,6 +341,19 @@ Test creation of objects and features.
 * Test Object has key "data§path-subdict-access-dollar" with Base64 encoded value of key "subdict-access-dollar" from expected.yaml of suite "virtualfolderdata"
 * Test Object has key "data§path-issue-288-dot" with Base64 encoded value of key "issue-288-dot" from expected.yaml of suite "virtualfolderdata"
 * Test Object has key "data§path-subdict-access-dot" with Base64 encoded value of key "subdict-access-dot" from expected.yaml of suite "virtualfolderdata"
+
+## GLOB loading files
+* Prepare default test case for this kind including suites "virtualfolderdata"
+* Lint and Render
+* Set test object to "release-name-hull-test-test-glob-import"
+
+* Test Object has key "data§default_file_1.json" with Base64 encoded value of key "default_file_1.json" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§default_file_2.yaml" with Base64 encoded value of key "default_file_2.yaml" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§default_inline_1" with Base64 encoded value of "Default Inline 1"
+* Test Object has key "data§default_inline_2" with Base64 encoded value of "Default Inline 2"
+* Test Object has key "data§code-java-simple.java" with Base64 encoded value of key "code-java-simple.java" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§code-java-medium.java" with Base64 encoded value of key "code-java-medium.java" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§code-java-complex.java" with Base64 encoded value of key "code-java-complex.java" from expected.yaml of suite "virtualfolderdata"
 
 ___
 

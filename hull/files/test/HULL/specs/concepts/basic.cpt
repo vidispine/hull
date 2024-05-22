@@ -18,6 +18,7 @@ General label section must be populated with overriden names
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
 * All test objects have key "metadata§labels§app.kubernetes.io/version" with value "<K8S_MAJOR_VERSION>.0"
 
+
 Static names can be created
 
 * Set test object to "static-name"
@@ -336,6 +337,7 @@ Use Object Type and Instance Key
 
 
 Force Strings as annotation and label values
+
 * Set test object to "release-name-hull-test-metadata-stringify"
 * Test Object has key "metadata§annotations§a_string_value" with value "a_string_value"
 * Test Object has key "metadata§annotations§an_integer_value" with value "123"
@@ -461,12 +463,28 @@ Test get transformation on root level
 
 * Test Object has key "metadata§labels§test-get-template-basepath" with value of key "test-get-template-basepath" from expected.yaml of suite "basic"
 
+Test get transformation on array item
 
+* Set test object to "release-name-hull-test-test-get-transformations-array"
+
+* Test Object has key "metadata§annotations§test-get-transformation-index-0" with value "just"
+* Test Object has key "metadata§annotations§test-get-transformation-index-1" with value "some"
+* Test Object has key "metadata§annotations§test-get-transformation-index-2" with value "args"
+* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-0" with value "54"
+* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-1" with value "false"
+* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-0" with value "b"
+* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-1" with value "d"
+* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-2" with value "398"
+* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-3" with value "false"
+* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-sublist-0" with value "inner_1"
+* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-sublist-1" with value "inner_2"
+* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-sublist-2" with value "inner_3"
 
 Test annotation rendering
 
 * Prepare default test case for this kind including suites ""
 * Lint and Render
+
 * Set test object to "release-name-hull-test-no-annotations"
 * Test Object does not have key "metadata§annotations"
 

@@ -77,7 +77,6 @@ hull:
       metadata-name-override-static:
         provisioner: "local-volume"
 
-
       metadata-object-info:
         provisioner: "local-volume"        
     
@@ -91,5 +90,8 @@ hull:
         provisioner: "local-volume"
 
       no-annotations:
+        provisioner: "local-volume"
+
+      test-get-transformations-array:
         provisioner: "local-volume"
 ###################################################
