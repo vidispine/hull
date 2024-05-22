@@ -37,6 +37,5 @@ hull:
             inline: Default Inline 1
           default_file_1.json:
             path: files/default_file_1.json
-      
 
 ###################################################

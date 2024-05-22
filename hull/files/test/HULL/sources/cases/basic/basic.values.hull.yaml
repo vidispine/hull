@@ -99,6 +99,10 @@ hull:
             c: d
             int: 398
             boolish: false
+            inner_list:
+            - inner_1
+            - inner_2
+            - inner_3
       pod_spec:
         containers:
           single:
@@ -512,6 +516,20 @@ hull:
           test-get-template-name: _HT**Template.Name
           test-get-template-basepath: _HT**Template.BasePath
 
+      test-get-transformations-array:
+        annotations:
+          test-get-transformation-index-0: _HT*hull.config.specific.args_array.0
+          test-get-transformation-index-1: _HT*hull.config.specific.args_array.1
+          test-get-transformation-index-2: _HT*hull.config.specific.args_array.2
+          test-get-transformation-mixed-index-0: _HT*hull.config.specific.dict_mixed_content.list.0
+          test-get-transformation-mixed-index-1: _HT*hull.config.specific.dict_mixed_content.list.1
+          test-get-transformation-mixed-index-subdict-0: _HT*hull.config.specific.dict_mixed_content.list.2.subdict.a
+          test-get-transformation-mixed-index-subdict-1: _HT*hull.config.specific.dict_mixed_content.list.2.subdict.c
+          test-get-transformation-mixed-index-subdict-2: _HT*hull.config.specific.dict_mixed_content.list.2.subdict.int
+          test-get-transformation-mixed-index-subdict-3: _HT*hull.config.specific.dict_mixed_content.list.2.subdict.boolish
+          test-get-transformation-mixed-index-subdict-sublist-0: _HT*hull.config.specific.dict_mixed_content.list.2.subdict.inner_list.0
+          test-get-transformation-mixed-index-subdict-sublist-1: _HT*hull.config.specific.dict_mixed_content.list.2.subdict.inner_list.1
+          test-get-transformation-mixed-index-subdict-sublist-2: _HT*hull.config.specific.dict_mixed_content.list.2.subdict.inner_list.2
 
       no-annotations:
         enabled: true

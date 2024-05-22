@@ -12,8 +12,9 @@
 {{- define "hull.object.virtualfolder.path.exists" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $path := default "" (index . "PATH") -}}
-
 {{- end -}}
+
+
 
 {{- /*
 | Purpose:  
