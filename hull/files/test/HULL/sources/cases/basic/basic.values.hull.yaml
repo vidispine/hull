@@ -290,7 +290,9 @@ hull:
 
       disabled:
         enabled: false
-      
+        annotations:
+          annotation: "I am an Annotation"
+
       disabled-transform:
         enabled: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=
           {{ (index . \"PARENT\").Values.hull.config.specific.switch_enabled_off }}

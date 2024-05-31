@@ -16,9 +16,10 @@
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $apiKind := default "" (index . "API_KIND") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $forceEnabled := default false (index . "FORCE_ENABLED") -}}
 {{- $enabledDefault := dig "enabled" true (index . "DEFAULT_COMPONENT") -}}
 {{- $defaultWebhookBasePath := dig "webhooks" "_HULL_OBJECT_TYPE_DEFAULT_" dict (index . "DEFAULT_COMPONENT") }}
-{{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
+{{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) $forceEnabled -}}
 {{ template "hull.metadata.header" . }}
 {{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultWebhookBasePath "SPEC" $spec "KEY" "webhooks" "OBJECT_TEMPLATE" "hull.object.base.webhook.webhooks" "HULL_ROOT_KEY" $hullRootKey) | indent 0 }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "webhooks")) | indent 0 }}
