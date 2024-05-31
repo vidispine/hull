@@ -16,8 +16,9 @@
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $forceEnabled := default false (index . "FORCE_ENABLED") -}}
 {{- $enabledDefault := dig "enabled" true (index . "DEFAULT_COMPONENT") -}}
-{{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) -}}
+{{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) $forceEnabled -}}
 {{ template "hull.metadata.header" . }}
 spec:
 {{ include "hull.util.selector" . | indent 2 }}

@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "43" objects were rendered on top of basic objects count
+* Expected number of "44" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -35,6 +35,43 @@ Test creation of objects and features.
 * Test Object has key "spec§template§spec§volumes§0§name" with value "custom-installation-files"
 * Test Object has key "spec§template§spec§volumes§1§name" with value "installation"
 
+## Render Hull Job to ConfigMap
+* Lint and Render
+* Set test object to "release-name-hull-test-source-enabled-disabled"
+
+* Test Object has key "metadata§annotations§annotation" with value "I am an Annotation"
+* Test Object has key "metadata§labels§job-type" with value "videoengine-mediaframework"
+* Test Object has key "spec§template§metadata§annotations§annotation" with value "I am an Annotation"
+* Test Object has key "spec§template§metadata§labels§job-type" with value "videoengine-mediaframework"
+* Test Object has key "spec§backoffLimit" with integer value "0"
+* Test Object has key "spec§ttlSecondsAfterFinished" with integer value "300"
+* Test Object has key "spec§template§spec§containers§0§env§0§name" with value "TRANSCODER_LOG_LEVEL"
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "INFO"
+* Test Object has key "spec§template§spec§containers§0§image" with value "videoengine/transcoders4m:24.1.20"
+* Test Object has key "spec§template§spec§containers§0§name" with value "transcoder"
+* Test Object has key "spec§template§spec§containers§0§restartPolicy" with value "Never"
+* Test Object has key "spec§template§spec§imagePullSecrets§0§name" with value "release-name-hull-test-example-registry"
+* Test Object has key "spec§template§spec§imagePullSecrets§1§name" with value "release-name-hull-test-local-registry"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "release-name-hull-test-mediaframework-transcode"
+* Test Object has key "spec§ttlSecondsAfterFinished" with integer value "300"
+
+* Set test object to "release-name-hull-test-test-force-enable-on" of kind "ConfigMap"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "metadata§annotations§annotation" with value "I am an Annotation"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "metadata§labels§job-type" with value "videoengine-mediaframework"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "spec§template§metadata§annotations§annotation" with value "I am an Annotation"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "spec§template§metadata§labels§job-type" with value "videoengine-mediaframework"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "spec§backoffLimit" with integer value "0"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "spec§ttlSecondsAfterFinished" with integer value "300"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "spec§template§spec§containers§0§env§0§name" with value "TRANSCODER_LOG_LEVEL"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "spec§template§spec§containers§0§env§0§value" with value "INFO"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "spec§template§spec§containers§0§image" with value "videoengine/transcoders4m:24.1.20"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "spec§template§spec§containers§0§name" with value "transcoder"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "spec§template§spec§containers§0§restartPolicy" with value "Never"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "spec§template§spec§imagePullSecrets§0§name" with value "release-name-hull-test-example-registry"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "spec§template§spec§imagePullSecrets§1§name" with value "release-name-hull-test-local-registry"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "spec§template§spec§serviceAccountName" with value "release-name-hull-test-mediaframework-transcode"
+* Test Object has key "data§mediaframework-job" containing serialized "YAML" having key "spec§ttlSecondsAfterFinished" with integer value "300"
+
 ## Certificates
 * Prepare default test case for this kind including suites "pod,customcacertificates"
 * Lint and Render
@@ -58,6 +95,7 @@ Test creation of objects and features.
 * Test Object has key "spec§template§spec§volumes§1§name" with value "custom-installation-files"
 * Test Object has key "spec§template§spec§volumes§2§name" with value "etcssl"
 * Test Object has key "spec§template§spec§volumes§3§name" with value "installation"
+
 
 ___
 

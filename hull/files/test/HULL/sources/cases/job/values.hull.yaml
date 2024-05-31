@@ -32,18 +32,50 @@ hull:
   ###################################################
   ### OBJECTS
   objects:
-    
+
   # CONFIGMAPS
+    configmap:
+      test-force-enable-off:
+        data:
+          mediaframework-job:
+            inline: |
+              {{ include "hull.object.base.pod" (dict "PARENT_CONTEXT" $ "SPEC" (index .Values.hull.objects.job "disabled") "OBJECT_TYPE" "Job" "API_KIND" "Job" "API_VERSION" "batch/v1" "COMPONENT" "disabled" "DEFAULT_COMPONENT" .Values.hull.objects.job._HULL_OBJECT_TYPE_DEFAULT_) | fromYaml | toYaml }}
+      
+      test-force-enable-on:
+        data:
+          mediaframework-job:
+            inline: |
+              {{ include "hull.object.base.pod" (dict "PARENT_CONTEXT" $ "SPEC" (index .Values.hull.objects.job "disabled") "OBJECT_TYPE" "Job" "API_KIND" "Job" "API_VERSION" "batch/v1" "COMPONENT" "disabled" "DEFAULT_COMPONENT" .Values.hull.objects.job._HULL_OBJECT_TYPE_DEFAULT_ "FORCE_ENABLED" true) | fromYaml | toYaml }}
+          
     job:
       
       disabled:
+        labels:
+          job-type: videoengine-mediaframework
+        ttlSecondsAfterFinished: 300
         pod:
-          containers: {}
-        
+          serviceAccountName: _HT^mediaframework-transcode
+          affinity: {}
+          containers:
+            transcoder:
+              image:
+                repository: videoengine/transcoders4m
+                tag: 24.1.20
+              env:
+                TRANSCODER_LOG_LEVEL:
+                  value: INFO
+              restartPolicy: Never
+        backoffLimit: 0
+
+      source-enabled-disabled:
+        enabled: true
+        sources:
+        - disabled
+
       metadata-overwrite:
         pod:
           containers: {}
-        
+
       image-name-empty-registry:
         pod:
           containers: 
