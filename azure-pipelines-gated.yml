@@ -22,16 +22,22 @@ jobs:
     maxParallel: 5
     matrix:
       Helm_3_13_3_single: 
-        HelmVersion: "3.13.3"  
+        HelmVersion: "3.13.3"
         TestType: single
       Helm_3_13_3_multi: 
-        HelmVersion: "3.13.3"  
+        HelmVersion: "3.13.3"
         TestType: multi
-      Helm_3_14_1_single: 
-        HelmVersion: "3.14.1"  
+      Helm_3_14_4_single: 
+        HelmVersion: "3.14.4"
         TestType: single
-      Helm_3_14_1_multi: 
-        HelmVersion: "3.14.1"  
+      Helm_3_14_4_multi: 
+        HelmVersion: "3.14.4"
+        TestType: multi
+      Helm_3_15_1_single: 
+        HelmVersion: "3.15.1"
+        TestType: single
+      Helm_3_15_1_multi: 
+        HelmVersion: "3.15.1"
         TestType: multi
   steps:
   - template: azure-pipelines-test.yml  # Template reference

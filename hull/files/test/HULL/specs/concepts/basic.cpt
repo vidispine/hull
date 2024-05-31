@@ -480,23 +480,6 @@ Test get transformation on array item
 * Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-sublist-1" with value "inner_2"
 * Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-sublist-2" with value "inner_3"
 
-Test get transformation on array item
-
-* Set test object to "release-name-hull-test-test-get-transformations-array"
-
-* Test Object has key "metadata§annotations§test-get-transformation-index-0" with value "just"
-* Test Object has key "metadata§annotations§test-get-transformation-index-1" with value "some"
-* Test Object has key "metadata§annotations§test-get-transformation-index-2" with value "args"
-* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-0" with value "54"
-* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-1" with value "false"
-* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-0" with value "b"
-* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-1" with value "d"
-* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-2" with value "398"
-* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-3" with value "false"
-* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-sublist-0" with value "inner_1"
-* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-sublist-1" with value "inner_2"
-* Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-sublist-2" with value "inner_3"
-
 Test annotation rendering
 
 * Prepare default test case for this kind including suites ""
