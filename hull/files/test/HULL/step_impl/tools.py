@@ -390,7 +390,24 @@ def test_object_has_key_with_base64_encoded_value(key, value):
 @step("Test Object has key <key> with value <value> of key <scenario_key> from scenario data_store")
 def test_object_has_key_with_value_of_key_from_scenario_data_store(key, scenario_key):
     test_object_has_key_with_value(key, data_store.scenario[scenario_key])
-    
+
+def load_from_serialized_value(key, serialization):
+    assert "test_object" in data_store.scenario != None, "No Test Object set!"
+    assert data_store.scenario.test_object != None, "Test Object set to None!"
+    assert serialization in ["YAML"], f"The value {serialization} for serialization is not in range of supported values [YAML]!"
+    source = None
+    if serialization == "YAML":
+        source = Dotty(yaml.safe_load(data_store.scenario.test_object[key]), separator='§')
+    return source
+
+@step("Test Object has key <key> containing serialized <serialization> having key <serialized_key> with value <serialized_value>")
+def test_object_has_key_containing_serialized_having_key_with_value(key, serialization, serialized_key, serialized_value):
+    assert_values_equal(load_from_serialized_value(key, serialization)[serialized_key],serialized_value, serialized_key)
+
+@step("Test Object has key <key> containing serialized <serialization> having key <serialized_key> with integer value <serialized_value>")
+def test_object_has_key_containing_serialized_having_key_with_value(key, serialization, serialized_key, serialized_value):
+    assert_values_equal(load_from_serialized_value(key, serialization)[serialized_key],int(serialized_value), serialized_key)
+
 @step("All test objects have key <key> with value <value>")
 def all_test_objects_have_key_with_value(key, value):
     test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
