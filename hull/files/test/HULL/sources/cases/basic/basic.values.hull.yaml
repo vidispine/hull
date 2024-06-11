@@ -37,6 +37,132 @@ hull:
           protocol: UDP
       port_one: "1"
       port_two: "2"
+      port-one:
+        - 0
+        - port-two:
+          - 0
+          - 1
+          - port-three: 
+            - 0
+            - 1
+            - 2
+            - 3
+      deep:
+        nested:
+          dictionary:
+            with-array-with-dashes-in-name:
+            - entry: 
+                not: this
+            - entry: 
+                this:
+                  access:
+                    items:
+                    - "no"
+                    - "nono"
+                    - transformation-doc-examples:
+                        <OBJECT_TYPE>: "found me!"
+      string-to-process: You_Can_Lowercase_And_CamelCase_Me_From_Snake_Case
+      hundred:
+        its-00: 0
+        its-01: 1
+        its-02: 2
+        its-03: 3
+        its-04: 4
+        its-05: 5
+        its-06: 6
+        its-07: 7
+        its-08: 8
+        its-09: 9
+        its-10: 10
+        its-11: 11
+        its-12: 12
+        its-13: 13
+        its-14: 14
+        its-15: 15
+        its-16: 16
+        its-17: 17
+        its-18: 18
+        its-19: 19
+        its-20: 20
+        its-21: 21
+        its-22: 22
+        its-23: 23
+        its-24: 24
+        its-25: 25
+        its-26: 26
+        its-27: 27
+        its-28: 28
+        its-29: 29
+        its-30: 30
+        its-31: 31
+        its-32: 32
+        its-33: 33
+        its-34: 34
+        its-35: 35
+        its-36: 36
+        its-37: 37
+        its-38: 38
+        its-39: 39
+        its-40: 40
+        its-41: 41
+        its-42: 42
+        its-43: 43
+        its-44: 44
+        its-45: 45
+        its-46: 46
+        its-47: 47
+        its-48: 48
+        its-49: 49
+        its-50: 50
+        its-51: 51
+        its-52: 52
+        its-53: 53
+        its-54: 54
+        its-55: 55
+        its-56: 56
+        its-57: 57
+        its-58: 58
+        its-59: 59
+        its-60: 60
+        its-61: 61
+        its-62: 62
+        its-63: 63
+        its-64: 64
+        its-65: 65
+        its-66: 66
+        its-67: 67
+        its-68: 68
+        its-69: 69
+        its-70: 70
+        its-71: 71
+        its-72: 72
+        its-73: 73
+        its-74: 74
+        its-75: 75
+        its-76: 76
+        its-77: 77
+        its-78: 78
+        its-79: 79
+        its-80: 80
+        its-81: 81
+        its-82: 82
+        its-83: 83
+        its-84: 84
+        its-85: 85
+        its-86: 86
+        its-87: 87
+        its-88: 88
+        its-89: 89
+        its-90: 90
+        its-91: 91
+        its-92: 92
+        its-93: 93
+        its-94: 94
+        its-95: 95
+        its-96: 96
+        its-97: 97
+        its-98: 98
+        its-99: 99
       command_one: command-one
       command_two: command-two
       string_defined: i_am_string
@@ -509,10 +635,13 @@ hull:
           test-get-release-service: _HT**Release.Service
 
           test-get-capabilities-raw: _HT**Capabilities
-          test-get-capabilities-apiversions: _HT*toYaml|*Capabilities.APIVersions
-          test-get-capabilities-kubeversion: _HT*toYaml|*Capabilities.KubeVersion
+          test-get-capabilities-apiversions-legacy: _HT*toYaml|*Capabilities.APIVersions
+          test-get-capabilities-apiversions: _HT**toYaml|Capabilities.APIVersions
+          test-get-capabilities-kubeversion-legacy: _HT*toYaml|*Capabilities.KubeVersion
+          test-get-capabilities-kubeversion: _HT**toYaml|Capabilities.KubeVersion
           test-get-capabilities-kubeversion-major: _HT**Capabilities.KubeVersion.Major
-          test-get-capabilities-helmversion: _HT*toYaml|*Capabilities.HelmVersion
+          test-get-capabilities-helmversion-legacy: _HT*toYaml|*Capabilities.HelmVersion
+          test-get-capabilities-helmversion: _HT**toYaml|Capabilities.HelmVersion
 
           test-get-template-raw: _HT**Template
           test-get-template-name: _HT**Template.Name

@@ -57,3 +57,29 @@ instance:
   configMap:
     name: {{ $instance }}
 {{- end -}}
+
+{{- define "hull.include.test.true" -}}
+true
+{{- end -}}
+
+{{- define "hull.include.test.false" -}}
+false
+{{- end -}}
+
+{{- define "hull.include.test.true.string" -}}
+"true"
+{{- end -}}
+
+{{- define "hull.include.test.false.string" -}}
+"false"
+{{- end -}}
+
+{{- define "hull.include.test.true.from.field" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $parent.Values.hull.config.specific.env_bool_true -}}
+{{- end -}}
+
+{{- define "hull.include.test.false.from.field" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $parent.Values.hull.config.specific.env_bool_false -}}
+{{- end -}}
