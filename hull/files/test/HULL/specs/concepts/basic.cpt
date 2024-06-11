@@ -456,9 +456,12 @@ Test get transformation on root level
 * Test Object has key "metadata§labels§test-get-release-revision" with value of key "test-get-release-revision" from expected.yaml of suite "basic"
 * Test Object has key "metadata§labels§test-get-release-service" with value of key "test-get-release-service" from expected.yaml of suite "basic"
 
+* Test Object has key "metadata§labels§test-get-capabilities-apiversions-legacy" with list value that has count of items greater than "0"
 * Test Object has key "metadata§labels§test-get-capabilities-apiversions" with list value that has count of items greater than "0"
+* Test Object has key "metadata§labels§test-get-capabilities-kubeversion-legacy" with map value that has "3" items which are not empty
 * Test Object has key "metadata§labels§test-get-capabilities-kubeversion" with map value that has "3" items which are not empty
 * Test Object has key "metadata§labels§test-get-capabilities-kubeversion-major" with value of key "test-get-capabilities-kubeversion-major" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-get-capabilities-helmversion-legacy" with map value that has "4" items which are not empty
 * Test Object has key "metadata§labels§test-get-capabilities-helmversion" with map value that has "4" items which are not empty
 
 * Test Object has key "metadata§labels§test-get-template-basepath" with value of key "test-get-template-basepath" from expected.yaml of suite "basic"

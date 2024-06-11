@@ -1,0 +1,13 @@
+hull:
+  objects:
+    <OBJECT_TYPE>:
+      transformation-doc-examples:
+        pod:
+          containers:
+            tpl_variants:
+              image:
+                repository: quay.io/external_app
+                tag: "latest"
+              env:
+                tpl_get_transformation_errors: 
+                  value: _HT!{{ printf "%s-%s" _HT*hull.config.specific.not_existing _HT*hull.config.specific.also_not_existing }}
