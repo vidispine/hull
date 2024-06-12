@@ -117,7 +117,7 @@ metadata:
 {{- $rootContext := (index . "ROOT_CONTEXT") -}}
 {{- $allObjects := (index . "HULL_OBJECTS") -}}
 {{- $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $rootContext.Values.hull "HULL_ROOT_KEY" $hullRootKey "SOURCE_PATH" (list "hull")) | fromYaml }}
-
+{{- $errorMessages := "" }}
 {{- range $objectType, $objectTypeSpec := $allObjects }}
 {{- $lowerObjectType := $objectType | lower }}
 {{- $apiKind := $objectType }}
@@ -180,8 +180,11 @@ metadata:
 {{- end -}}
 {{- end -}}
 {{- if (ne $errorMessage "") -}}
-{{- fail $errorMessage -}}
-{{- end -}}
+{{ $errorMessages = printf "%s%s" $errorMessages $errorMessage }}
+
+
+---
+{{ else }}
 {{- $printedObject := toYaml $objectSpec -}}
 {{- range $replacementName, $replacementValue := (index $rootContext.Values $hullRootKey).config.general.postRender.globalStringReplacements -}}
 {{- if $replacementValue.enabled -}}
@@ -205,6 +208,7 @@ metadata:
 
 ---
 {{ end -}}
+{{- end -}}
 {{- else -}}
 {{- /* 
 ### DEBUG SPEC 
@@ -218,5 +222,9 @@ metadata:
 {{- end -}}
 {{- end -}}
 {{- end -}}
+
+{{- end -}}
+{{- if (ne $errorMessages "") -}}
+{{- fail $errorMessages -}}
 {{- end -}}
 {{- end -}}

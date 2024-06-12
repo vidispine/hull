@@ -203,19 +203,18 @@
 |
 |   PARENT_CONTEXT: The Parent charts context
 |   REFERENCE: The key in dot-notation for which the value should be retrieved
+|   SOURCE_PATH: The path elements leading up to this field
+|   RETURN_TEMPLATE_STRING: If true, returns a templating expression which can be 
+|                           used with tpl to resolve this fields value. If false, 
+|                           the resolved value itself is returned.
 |
 */ -}}
 {{- define "hull.util.transformation.get" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $key := (index . "KEY") -}}
 {{- $reference := (index . "REFERENCE") -}}
-{{- $serializer := "" }}
-{{- $getValue := include "hull.util.transformation.serialize.get" (dict "VALUE" $reference) | fromYaml -}}
-{{- if $getValue.serialize -}}
-{{- $reference = $getValue.remainder -}}
-{{- $serializer = $getValue.serializer -}}
-{{- end -}}
 {{- $sourcePath := default list (index . "SOURCE_PATH") -}}
+{{- $returnTemplateString := default false (index . "RETURN_TEMPLATE_STRING") -}}
 {{- $objectType := "" -}}
 {{- $objectInstanceKey := "" -}}
 {{- if (gt (len $sourcePath) 3) -}}
@@ -224,12 +223,23 @@
 {{- $objectInstanceKey = index $sourcePath 3 -}}
 {{- end -}}
 {{- end -}}
-{{- $current := "" -}}
-{{- if $reference | hasPrefix "*" -}}
-{{- $reference = $reference | replace "*" "" -}}
+{{- $templateString := "(index . \"$\").Values"  }}
+{{- $current := $parent.Values -}}
+{{- if hasPrefix "*" $reference -}}
+{{- $reference = $reference | trimPrefix "*" -}}
 {{- $current = toYaml $parent | fromYaml -}}
-{{- else -}}
-{{- $current = $parent.Values -}}
+{{- $templateString = "(index . \"$\")"  }}
+{{- end -}}
+{{- $serializer := "" }}
+{{- $getValue := include "hull.util.transformation.serialize.get" (dict "VALUE" $reference) | fromYaml -}}
+{{- if $getValue.serialize -}}
+{{- $reference = $getValue.remainder -}}
+{{- if hasPrefix "*" $reference -}}
+{{- $reference = $reference | trimPrefix "*" -}}
+{{- $current = toYaml $parent | fromYaml -}}
+{{- $templateString = "(index . \"$\")" }}
+{{- end -}}
+{{- $serializer = $getValue.serializer -}}
 {{- end -}}
 {{- $path := splitList "." $reference -}}
 {{- $skipBroken := false}}
@@ -267,9 +277,11 @@
 {{- if (not $skipBroken) -}}
 {{- if (regexMatch "^\\d+$" $pathElement) -}}
 {{- $current = (index $current (int $pathElement)) -}}
+{{- $templateString = printf "(index %s %s)" $templateString $pathElement }}
 {{- else -}}
 {{- if (or (hasKey $current $pathElement)) -}}
 {{- $current = (index $current $pathElement) }}
+{{- $templateString = printf "(index %s \"%s\")" $templateString $pathElement }}
 {{- else -}}
 {{- $skipBroken = true -}}
 {{- $brokenPart = $pathElement -}}
@@ -278,23 +290,35 @@
 {{- end -}}
 {{- end -}}
 {{- if $skipBroken -}}
+{{- if eq $details "" -}}
+{{- $details = printf "Element %s in path %s was not found" $brokenPart $reference -}}
+{{- end -}}
+{{- if $returnTemplateString -}}
+{{- include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details) -}}
+{{- else -}}
 {{- if $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences -}}
 {{ $key }}: BROKEN-HULL-GET-TRANSFORMATION-REFERENCE:Element {{ $brokenPart }} in path {{ $reference }} was not found
 {{- else }}
 {{- if $parent.Values.hull.config.general.errorChecks.hullGetTransformationReferenceValid -}}
-{{- if eq $details "" -}}
-{{- $details = printf "Element %s in path %s was not found" $brokenPart $reference -}}
-{{- end -}}
 {{- $key }}: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details) -}}
 {{- else -}}
 {{- $key }}: ""
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- else -}}
 {{- if and (typeIs "string" $current) (not $current) }}
 {{ $key }}: ""
 {{- else -}}
-{{ $key }}: {{ (include "hull.util.transformation.convert" (dict "SOURCE" $current "KEY" $key "SERIALIZER" $serializer)) }}
+{{- $convert := (include "hull.util.transformation.convert" (dict "SOURCE" $current "SERIALIZER" $serializer)) }}
+{{- if (ne $serializer "") -}}
+{{- $templateString = printf "(include \"hull.util.transformation.convert\" (dict \"SOURCE\" %s \"SERIALIZER\" \"%s\"))" $templateString $serializer }}
+{{- end -}}
+{{- if $returnTemplateString -}}
+{{- $templateString -}}
+{{- else -}}
+{{ $key }}: {{ $convert }}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -347,7 +371,7 @@
 {{- /*
 | Purpose:  
 |   
-|   Gets the value from a tpl expression run against the CONTENT string.
+|   Process _HT* expressions
 |
 | Interface:
 |
@@ -355,9 +379,41 @@
 |   CONTENT: The string that describes the code which is subject to tpl
 |
 */ -}}
-{{- define "hull.util.transformation.tpl" -}}
+{{- define "hull.util.process.get.paths" -}}
+{{- $content := (index . "CONTENT") -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $sourcePath := default list (index . "SOURCE_PATH") -}}
+{{- $hits := regexFindAll "_HT\\*([A-Za-z\\._\\-\\d\\|\\*§]+)" $content -1 -}}
+{{- $error := "" -}}
+{{- range $hit := $hits -}}
+{{- $rep := $hit | toString | replace "_HT*" "" -}}
+{{- $replacement := include "hull.util.transformation.get" (merge (dict "REFERENCE" $rep "SOURCE_PATH" $sourcePath "RETURN_TEMPLATE_STRING" true) $parent) }}
+{{- $errorMessage := include "hull.util.error.check" (dict "OBJECT" $replacement) -}}
+{{- if (ne $errorMessage "") -}}
+{{- $error = printf "%s%s" $error $replacement -}}
+{{- else -}}
+{{- $content = $content | replace $hit $replacement -}}
+{{- end -}}
+{{- end -}}
+{{- (dict "error" $error "content" $content) | toYaml -}}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:  
+|   
+|   Construct a tpl string to process content
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   CONTENT: The string that describes the code which is subject to tpl
+|
+*/ -}}
+{{- define "hull.util.process.tpl" -}}
 {{- $key := (index . "KEY") -}}
-{{ $content := (index . "CONTENT") }}
+{{- $content := (index . "CONTENT") -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $sourcePath := default list (index . "SOURCE_PATH") -}}
 {{- $objectType := "" -}}
@@ -368,7 +424,36 @@
 {{- $objectInstanceKey = index $sourcePath 3 -}}
 {{- end -}}
 {{- end -}}
-{{ $key }}: {{ tpl  $content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) }}
+{{- $getProcessing := (include "hull.util.process.get.paths" (dict "CONTENT" $content "PARENT_CONTEXT" . "SOURCE_PATH" $sourcePath)) | fromYaml -}}
+{{- if (ne $getProcessing.error "") -}}
+{{ $key }}: {{ $getProcessing.error }}
+{{- else -}}
+{{ $key }}: {{ tpl $getProcessing.content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) }}
+{{- end -}}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:  
+|   
+|   Gets the value from a tpl expression run against the CONTENT string.
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   CONTENT: The string that describes the code which is subject to tpl
+|
+*/ -}}
+{{- define "hull.util.transformation.tpl" -}}
+{{- $key := (index . "KEY") -}}
+{{- $content := (index . "CONTENT") -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $sourcePath := default list (index . "SOURCE_PATH") -}}
+{{- if (hasPrefix "*" $content) -}}
+{{- $content = printf "%s %s %s" "{{" ($content | trimPrefix "*") "}}" -}}
+{{- end -}}
+{{- include "hull.util.process.tpl" (merge (dict "CONTENT" $content "SOURCE_PATH" $sourcePath) .) -}}
 {{- end -}}
 
 
@@ -386,20 +471,15 @@
 */ -}}
 {{- define "hull.util.transformation.bool" -}}
 {{- $key := (index . "KEY") -}}
-{{ $content := (index . "CONDITION") }}
+{{- $content := (index . "CONDITION") -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
-{{- $sourcePath := default nil (index . "SOURCE_PATH") -}}
-{{- $objectType := "" -}}
-{{- $objectInstanceKey := "" -}}
-{{- if (gt (len $sourcePath) 3) -}}
-{{  if (eq (index $sourcePath 1) "objects") -}}
-{{- $objectType = index $sourcePath 2 -}}
-{{- $objectInstanceKey = index $sourcePath 3 -}}
+{{- $sourcePath := default list (index . "SOURCE_PATH") -}}
+{{- if ($content | hasPrefix "/") -}}
+{{- $includeContext := merge (dict "CONTENT" ($content | trimPrefix "/") "SOURCE_PATH" $sourcePath) . -}}
+{{- $content = index (include "hull.util.transformation.include" $includeContext | fromYaml) $key -}}
 {{- end -}}
+{{- include "hull.util.process.tpl" (merge (dict "CONTENT" (printf "{{ if (%s) }}true{{ else }}false{{ end }}" $content) "SOURCE_PATH" $sourcePath) .) -}}
 {{- end -}}
-{{ $key }}: {{ tpl  (printf "{{ if %s }}true{{ else }}false{{ end }}" $content) (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) }}
-{{- end -}}
-
 
 
 {{- /*
@@ -440,7 +520,7 @@
 {{- $key := (index . "KEY") -}}
 {{- $content := (index . "CONTENT") -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
-{{- $sourcePath := default nil (index . "SOURCE_PATH") -}}
+{{- $sourcePath := default list (index . "SOURCE_PATH") -}}
 {{- $serializer := "" -}}
 {{- $objectType := "" -}}
 {{- $objectInstanceKey := "" -}}
