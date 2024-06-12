@@ -127,7 +127,13 @@ hull:
         serviceName: custom-args
 
       int-bool-dict-array-ht:
-        serviceName: custom-args_as_string
+        serviceName: int-bool-dict-array-ht
+      
+      int-bool-dict-array-ht-tpl-get:
+        serviceName: int-bool-dict-array-ht-tpl-get
+
+      int-bool-dict-array-ht-tpl-get-raw:
+        serviceName: int-bool-dict-array-ht-tpl-get-raw
 
       removal-test:
         serviceName: removal-test
@@ -424,6 +430,23 @@ hull:
         serviceName: ht-get-object-type-example-doc
 
       test-get-transformations-array:
-        serviceName: ht-get-object-type-example-doc
+        serviceName: test-get-transformations-array
 
+      object-condition-get-bool-get-true:
+        serviceName: object-condition-get-bool-get-true
+      
+      object-condition-get-bool-get-false:
+        serviceName: object-condition-get-bool-get-false
+
+      object-condition-include-bool-true-string:
+        serviceName: object-condition-include-bool-true-string
+      
+      object-condition-include-bool-false-string:
+        serviceName: object-condition-include-bool-false-string
+
+      object-condition-include-bool-true-field:
+        serviceName: object-condition-include-bool-true-field
+      
+      object-condition-include-bool-false-field:
+        serviceName: object-condition-include-bool-false-field
 ###################################################
