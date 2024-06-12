@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "44" objects were rendered on top of basic objects count
+* Expected number of "52" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -95,6 +95,7 @@ Test creation of objects and features.
 * Test Object has key "spec§template§spec§volumes§1§name" with value "custom-installation-files"
 * Test Object has key "spec§template§spec§volumes§2§name" with value "etcssl"
 * Test Object has key "spec§template§spec§volumes§3§name" with value "installation"
+
 
 ___
 

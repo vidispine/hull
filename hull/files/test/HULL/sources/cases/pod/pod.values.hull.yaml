@@ -10,6 +10,8 @@ hull:
       pullPolicy: IfNotPresent
       env_string: "this is some string used in testing"
       env_bool: true
+      env_bool_true: true
+      env_bool_false: false
       env_float: 9.8642
       env_integer: 12345
       env_integer_six_digits: 123456
@@ -384,6 +386,36 @@ hull:
                   configMapRef:
                     name: full_example_configmap
                     optional: _HT!true
+      
+      int-bool-dict-array-ht-tpl-get:
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              args: _HT![
+                  {{ if _HT*hull.config.specific.if_this_arg_is_defined }}
+                    "{{ _HT*hull.config.specific.if_this_arg_is_defined }}",
+                    "{{ _HT*hull.config.specific.then_add_this_arg }}",
+                  {{ end }}
+                  {{ if not _HT*hull.config.specific.if_this_arg_is_not_defined }}
+                    "{{ _HT*hull.config.specific.then_use_this_arg }}"
+                  {{ end }}
+                ]
+      
+      int-bool-dict-array-ht-tpl-get-raw:
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              env:
+                RAW:
+                  value: _HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.if_this_arg_is_not_defined":RETURN_TEMPLATE_STRING:true
+              
+
       removal-test:
         pod:
           containers:
@@ -1196,9 +1228,191 @@ hull:
               image:
                 repository: quay.io/external_app
                 tag: "latest"
+              stdin: _HT*hull.config.specific.bool_defined_true
+              stdinOnce: _HT*hull.config.specific.bool_defined_false
+              securityContext:
+                allowPrivilegeEscalation: _HT?_HT*hull.config.specific.bool_defined_true
+                privileged: _HT?_HT*hull.config.specific.bool_defined_false
+                readOnlyRootFilesystem: _HT?not _HT*hull.config.specific.bool_defined_true
+                runAsNonRoot: _HT?not _HT*hull.config.specific.bool_defined_false
               env:
+                tpl_get_transformation: 
+                  value: _HT!{{ printf "%s-%s" _HT*hull.config.specific.port_one _HT*hull.config.specific.port_two }}
+                tpl_get_transformation_deep_nesting:
+                  value: _HT!{{ printf "%s! %s! %s!!" _HT*hull.config.specific.deep.nested.dictionary.with-array-with-dashes-in-name.1.entry.this.access.items.0 _HT*hull.config.specific.deep.nested.dictionary.with-array-with-dashes-in-name.1.entry.this.access.items.1 _HT*hull.config.specific.deep.nested.dictionary.with-array-with-dashes-in-name.1.entry.this.access.items.2.§OBJECT_INSTANCE_KEY§.§OBJECT_TYPE§ }}
+                tpl_raw_string: 
+                  value: _HT/hull.util.transformation.get:REFERENCE:"toJson|hull.config.specific.port_one":RETURN_TEMPLATE_STRING:true
+                tpl_raw_string_dashes: 
+                  value: _HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.port-one.1.port-two.2.port-three.3":RETURN_TEMPLATE_STRING:true
+                tpl_raw_string_dashes_get: 
+                  value: _HT!{{ _HT*hull.config.specific.port-one.1.port-two.2.port-three.3 }}
+                tpl_raw_string_dashes_index: 
+                  value: _HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.port-one.1.port-two.2.port-three.3":RETURN_TEMPLATE_STRING:true
+                tpl_raw_string_dashes_index_get: 
+                  value: _HT!{{ _HT*hull.config.specific.port-one.1.port-two.2.port-three.3 }}
+                tpl_raw_string_get: 
+                  value: _HT!{{ _HT*toJson|hull.config.specific.port_one }}
+                tpl_raw_string_root_access: 
+                  value: _HT/hull.util.transformation.get:REFERENCE:"*Release.Name":RETURN_TEMPLATE_STRING:true
+                tpl_raw_string_root_access_get: 
+                  value: _HT!{{ _HT**Release.Name }}
                 tpl_string:
                   value: _HT!{{ printf "%s-%s" (index . "$").Values.hull.config.specific.port_one (index . "$").Values.hull.config.specific.port_two }}
+                tpl_wrap_raw_string: 
+                  value: _HT/hull.util.transformation.get:REFERENCE:"toJson|hull.config.specific.port_one":RETURN_TEMPLATE_STRING:true
+                tpl_wrap_raw_string_get: 
+                  value: _HT!* _HT*toJson|hull.config.specific.port_one | add "10"
+                tpl_equality_index:
+                  value: _HT!{{ (index (index . "$").Values.hull.config.specific "string-to-process") | lower | camelcase }}
+                tpl_equality_tpl_get:
+                  value: _HT!{{ _HT*hull.config.specific.string-to-process | lower | camelcase }}
+                tpl_equality_tpl_get_short:
+                  value: _HT!* _HT*hull.config.specific.string-to-process | lower | camelcase
+                tpl_bool_get_direct:
+                  value: _HT*hull.config.specific.bool_defined_true
+                tpl_bool_get_bool_get:
+                  value: _HT?_HT*hull.config.specific.bool_defined_true
+                tpl_bool_get_bool_get_get:
+                  value: _HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.bool_defined_true":RETURN_TEMPLATE_STRING:true
+                tpl_wrap_math_bool_get_true:
+                  value: |-
+                    _HT?lt (add _HT*hull.config.specific.hundred.its-99 _HT*hull.config.specific.hundred.its-50) 150
+                tpl_wrap_math_bool_get_false:
+                  value: |-
+                    _HT?lt (add _HT*hull.config.specific.hundred.its-99 _HT*hull.config.specific.hundred.its-52) 150
+                tpl_wrap_zero_to_ninetynine:
+                  value: |-
+                    _HT!{{- 
+                    printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                    (_HT*hull.config.specific.hundred.its-00 | int) 
+                    (_HT*hull.config.specific.hundred.its-01 | int) 
+                    (_HT*hull.config.specific.hundred.its-02 | int) 
+                    (_HT*hull.config.specific.hundred.its-03 | int) 
+                    (_HT*hull.config.specific.hundred.its-04 | int) 
+                    (_HT*hull.config.specific.hundred.its-05 | int) 
+                    (_HT*hull.config.specific.hundred.its-06 | int) 
+                    (_HT*hull.config.specific.hundred.its-07 | int) 
+                    (_HT*hull.config.specific.hundred.its-08 | int) 
+                    (_HT*hull.config.specific.hundred.its-09 | int) 
+                    -}}{{- 
+                    printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                    (_HT*hull.config.specific.hundred.its-10 | int) 
+                    (_HT*hull.config.specific.hundred.its-11 | int) 
+                    (_HT*hull.config.specific.hundred.its-12 | int) 
+                    (_HT*hull.config.specific.hundred.its-13 | int) 
+                    (_HT*hull.config.specific.hundred.its-14 | int) 
+                    (_HT*hull.config.specific.hundred.its-15 | int) 
+                    (_HT*hull.config.specific.hundred.its-16 | int) 
+                    (_HT*hull.config.specific.hundred.its-17 | int) 
+                    (_HT*hull.config.specific.hundred.its-18 | int) 
+                    (_HT*hull.config.specific.hundred.its-19 | int) 
+                    -}}{{- 
+                    printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                    (_HT*hull.config.specific.hundred.its-20 | int) 
+                    (_HT*hull.config.specific.hundred.its-21 | int) 
+                    (_HT*hull.config.specific.hundred.its-22 | int) 
+                    (_HT*hull.config.specific.hundred.its-23 | int) 
+                    (_HT*hull.config.specific.hundred.its-24 | int) 
+                    (_HT*hull.config.specific.hundred.its-25 | int) 
+                    (_HT*hull.config.specific.hundred.its-26 | int) 
+                    (_HT*hull.config.specific.hundred.its-27 | int) 
+                    (_HT*hull.config.specific.hundred.its-28 | int) 
+                    (_HT*hull.config.specific.hundred.its-29 | int) 
+                    -}}{{- 
+                    printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                    (_HT*hull.config.specific.hundred.its-30 | int) 
+                    (_HT*hull.config.specific.hundred.its-31 | int) 
+                    (_HT*hull.config.specific.hundred.its-32 | int) 
+                    (_HT*hull.config.specific.hundred.its-33 | int) 
+                    (_HT*hull.config.specific.hundred.its-34 | int) 
+                    (_HT*hull.config.specific.hundred.its-35 | int) 
+                    (_HT*hull.config.specific.hundred.its-36 | int) 
+                    (_HT*hull.config.specific.hundred.its-37 | int) 
+                    (_HT*hull.config.specific.hundred.its-38 | int) 
+                    (_HT*hull.config.specific.hundred.its-39 | int) 
+                    -}}{{- 
+                    printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                    (_HT*hull.config.specific.hundred.its-40 | int) 
+                    (_HT*hull.config.specific.hundred.its-41 | int) 
+                    (_HT*hull.config.specific.hundred.its-42 | int) 
+                    (_HT*hull.config.specific.hundred.its-43 | int) 
+                    (_HT*hull.config.specific.hundred.its-44 | int) 
+                    (_HT*hull.config.specific.hundred.its-45 | int) 
+                    (_HT*hull.config.specific.hundred.its-46 | int) 
+                    (_HT*hull.config.specific.hundred.its-47 | int) 
+                    (_HT*hull.config.specific.hundred.its-48 | int) 
+                    (_HT*hull.config.specific.hundred.its-49 | int) 
+                    -}}{{- 
+                    printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                    (_HT*hull.config.specific.hundred.its-50 | int) 
+                    (_HT*hull.config.specific.hundred.its-51 | int) 
+                    (_HT*hull.config.specific.hundred.its-52 | int) 
+                    (_HT*hull.config.specific.hundred.its-53 | int) 
+                    (_HT*hull.config.specific.hundred.its-54 | int) 
+                    (_HT*hull.config.specific.hundred.its-55 | int) 
+                    (_HT*hull.config.specific.hundred.its-56 | int) 
+                    (_HT*hull.config.specific.hundred.its-57 | int) 
+                    (_HT*hull.config.specific.hundred.its-58 | int) 
+                    (_HT*hull.config.specific.hundred.its-59 | int) 
+                    -}}{{- 
+                    printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                    (_HT*hull.config.specific.hundred.its-60 | int) 
+                    (_HT*hull.config.specific.hundred.its-61 | int) 
+                    (_HT*hull.config.specific.hundred.its-62 | int) 
+                    (_HT*hull.config.specific.hundred.its-63 | int) 
+                    (_HT*hull.config.specific.hundred.its-64 | int) 
+                    (_HT*hull.config.specific.hundred.its-65 | int) 
+                    (_HT*hull.config.specific.hundred.its-66 | int) 
+                    (_HT*hull.config.specific.hundred.its-67 | int) 
+                    (_HT*hull.config.specific.hundred.its-68 | int) 
+                    (_HT*hull.config.specific.hundred.its-69 | int) 
+                    -}}{{- 
+                    printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                    (_HT*hull.config.specific.hundred.its-70 | int) 
+                    (_HT*hull.config.specific.hundred.its-71 | int) 
+                    (_HT*hull.config.specific.hundred.its-72 | int) 
+                    (_HT*hull.config.specific.hundred.its-73 | int) 
+                    (_HT*hull.config.specific.hundred.its-74 | int) 
+                    (_HT*hull.config.specific.hundred.its-75 | int) 
+                    (_HT*hull.config.specific.hundred.its-76 | int) 
+                    (_HT*hull.config.specific.hundred.its-77 | int) 
+                    (_HT*hull.config.specific.hundred.its-78 | int) 
+                    (_HT*hull.config.specific.hundred.its-79 | int) 
+                    -}}{{- 
+                    printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                    (_HT*hull.config.specific.hundred.its-80 | int) 
+                    (_HT*hull.config.specific.hundred.its-81 | int) 
+                    (_HT*hull.config.specific.hundred.its-82 | int) 
+                    (_HT*hull.config.specific.hundred.its-83 | int) 
+                    (_HT*hull.config.specific.hundred.its-84 | int) 
+                    (_HT*hull.config.specific.hundred.its-85 | int) 
+                    (_HT*hull.config.specific.hundred.its-86 | int) 
+                    (_HT*hull.config.specific.hundred.its-87 | int) 
+                    (_HT*hull.config.specific.hundred.its-88 | int) 
+                    (_HT*hull.config.specific.hundred.its-89 | int) 
+                    -}}{{- 
+                    printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d" 
+                    (_HT*hull.config.specific.hundred.its-90 | int) 
+                    (_HT*hull.config.specific.hundred.its-91 | int) 
+                    (_HT*hull.config.specific.hundred.its-92 | int) 
+                    (_HT*hull.config.specific.hundred.its-93 | int) 
+                    (_HT*hull.config.specific.hundred.its-94 | int) 
+                    (_HT*hull.config.specific.hundred.its-95 | int) 
+                    (_HT*hull.config.specific.hundred.its-96 | int) 
+                    (_HT*hull.config.specific.hundred.its-97 | int) 
+                    (_HT*hull.config.specific.hundred.its-98 | int) 
+                    (_HT*hull.config.specific.hundred.its-99 | int) 
+                    -}}
+              volumeMounts:
+                test-math-bool-transformation-false:
+                  readOnly: _HT?lt (add _HT*hull.config.specific.hundred.its-99 _HT*hull.config.specific.hundred.its-52) 150
+                  name: test-math-bool-transformation-false
+                  mountPath: /test-math-bool-transformation-false
+                test-math-bool-transformation-true:
+                  readOnly: _HT?lt (add _HT*hull.config.specific.hundred.its-99 _HT*hull.config.specific.hundred.its-50) 150
+                  name: test-math-bool-transformation-true
+                  mountPath: test-math-bool-transformation-true
+                
               command:
               - _HT!
                   [ 
@@ -1998,6 +2212,54 @@ hull:
       object-instance-key-and-type-bool-false:
         pod:
           shareProcessNamespace: _HT?(index (index (index . "$").Values.hull.config.specific.components (index . "OBJECT_TYPE")) (index . "OBJECT_INSTANCE_KEY")).value_false
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+
+      object-condition-get-bool-get-true:
+        pod:
+          shareProcessNamespace: _HT*hull.config.specific.env_bool_true
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+      
+      object-condition-get-bool-get-false:
+        pod:
+          shareProcessNamespace: _HT*hull.config.specific.env_bool_false
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+
+      object-condition-include-bool-true-string:
+        pod:
+          shareProcessNamespace: _HT?/hull.include.test.true.string
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+      
+      object-condition-include-bool-false-string:
+        pod:
+          shareProcessNamespace: _HT?/hull.include.test.false.string
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+
+      object-condition-include-bool-true-field:
+        pod:
+          shareProcessNamespace: _HT?/hull.include.test.true.from.field
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+      
+      object-condition-include-bool-false-field:
+        pod:
+          shareProcessNamespace: _HT?/hull.include.test.false.from.field
           containers:
             my-pod:
               image:
