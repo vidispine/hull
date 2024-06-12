@@ -221,7 +221,7 @@ selector:
 {{- define "hull.util.error.message" -}}
 {{- $errorType := default "" (index . "ERROR_TYPE") -}}
 {{- $errorMessage := default "" (index . "ERROR_MESSAGE") -}}
-{{- printf "°%s:%s:%s" "_HULL_ERROR_" $errorType $errorMessage -}}
+{{- printf "~%s:%s:%s" "_HULL_ERROR_" $errorType $errorMessage -}}
 {{- end -}}
 
 
@@ -247,9 +247,12 @@ selector:
       {{- if (and $value (eq $lowerObjectType "secret") (regexMatch "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$" $value)) -}}
         {{- $value = $value | b64dec -}}
       {{- end -}}
-      {{- if hasPrefix "°_HULL_ERROR_" $value -}}
-        {{- $error := regexSplit ":" (trimAll "°" $value) -1}}
-        {{- $errorMessage = printf "%s\n[%s %s: %s]" $errorMessage "HULL failed with error" (index $error 1) (index $error 2) -}}
+      {{- if hasPrefix "~_HULL_ERROR_" $value -}}
+        {{- $errors := regexSplit "~_HULL_ERROR_" (trimPrefix "~_HULL_ERROR_" $value) -1 -}}
+        {{- range $error := $errors -}}
+          {{- $errorParts := regexSplit ":" (trimAll "~" $error) -1 -}}
+          {{- $errorMessage = printf "%s\n[%s %s: %s]" $errorMessage "HULL failed with error" (index $errorParts 1) (index $errorParts 2) -}}
+        {{- end -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
@@ -260,9 +263,12 @@ selector:
   {{- end -}}
 {{- end -}}
 {{- if typeIs "string" $object -}}
-  {{- if hasPrefix "°_HULL_ERROR_" $object -}}
-    {{- $error = regexSplit ":" (trimAll "°" $object) -1}}
-    {{- $errorMessage = printf "%s\n[%s %s: %s]" $errorMessage "HULL failed with error" (index $error 1) (index $error 2) -}}
+  {{- if hasPrefix "~_HULL_ERROR_" $object -}}
+    {{- $errors := regexSplit "~_HULL_ERROR_" (trimPrefix "~_HULL_ERROR_" $object) -1 -}}
+    {{- range $error := $errors -}}
+      {{- $errorParts := regexSplit ":" (trimAll "~" $error) -1 -}}
+      {{- $errorMessage = printf "%s\n[%s %s: %s]" $errorMessage "HULL failed with error" (index $errorParts 1) (index $errorParts 2) -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
 {{ $errorMessage }}
