@@ -1239,7 +1239,7 @@ hull:
                 tpl_get_transformation: 
                   value: _HT!{{ printf "%s-%s" _HT*hull.config.specific.port_one _HT*hull.config.specific.port_two }}
                 tpl_get_transformation_deep_nesting:
-                  value: _HT!{{ printf "%s! %s! %s!!" _HT*hull.config.specific.deep.nested.dictionary.with-array-with-dashes-in-name.1.entry.this.access.items.0 _HT*hull.config.specific.deep.nested.dictionary.with-array-with-dashes-in-name.1.entry.this.access.items.1 _HT*hull.config.specific.deep.nested.dictionary.with-array-with-dashes-in-name.1.entry.this.access.items.2.§OBJECT_INSTANCE_KEY§.§OBJECT_TYPE§ }}
+                  value: _HT!{{ printf "%s! %s! %s!!" _HT*hull.config.specific.deep.nested.dictionary.with-array-with-dashes-in-name.1.entry.this.access.items.0 _HT*hull.config.specific.deep.nested.dictionary.with-array-with-dashes-in-name.1.entry.this.access.items.1 _HT*hull.config.specific.deep.nested.dictionary.with-array-with-dashes-in-name.1.entry.this.access.items.2.Â§OBJECT_INSTANCE_KEYÂ§.Â§OBJECT_TYPEÂ§ }}
                 tpl_raw_string: 
                   value: _HT/hull.util.transformation.get:REFERENCE:"toJson|hull.config.specific.port_one":RETURN_TEMPLATE_STRING:true
                 tpl_raw_string_dashes: 
@@ -2266,7 +2266,7 @@ hull:
 
       object-instance-key-and-type-get-true:
         pod:
-          shareProcessNamespace: _HT*hull.config.specific.components.§OBJECT_TYPE§.§OBJECT_INSTANCE_KEY§.value_true
+          shareProcessNamespace: _HT*hull.config.specific.components.Â§OBJECT_TYPEÂ§.Â§OBJECT_INSTANCE_KEYÂ§.value_true
           containers:
             my-pod:
               image:
@@ -2274,7 +2274,7 @@ hull:
       
       object-instance-key-and-type-get-false:
         pod:
-          shareProcessNamespace: _HT*hull.config.specific.components.§OBJECT_TYPE§.§OBJECT_INSTANCE_KEY§.value_false
+          shareProcessNamespace: _HT*hull.config.specific.components.Â§OBJECT_TYPEÂ§.Â§OBJECT_INSTANCE_KEYÂ§.value_false
           containers:
             my-pod:
               image:
@@ -2289,7 +2289,7 @@ hull:
                 tag: "1.0"
               env:
                 GET_FROM_HULL_CONFIG:
-                  value: _HT*hull.config.specific.components.§OBJECT_TYPE§.§OBJECT_INSTANCE_KEY§
+                  value: _HT*hull.config.specific.components.Â§OBJECT_TYPEÂ§.Â§OBJECT_INSTANCE_KEYÂ§
 
       test-get-transformations-array:
         pod:
