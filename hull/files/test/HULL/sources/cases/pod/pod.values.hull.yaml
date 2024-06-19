@@ -1403,6 +1403,18 @@ hull:
                     (_HT*hull.config.specific.hundred.its-98 | int) 
                     (_HT*hull.config.specific.hundred.its-99 | int) 
                     -}}
+                test-vc-error:
+                  value: |
+                    _HT!
+                       {{- $index :=  default (default "" _HT*hull.config.general.data.endpoints.opensearch.uri.api) _HT*hull.config.general.data.endpoints.opensearch.uri.apiInternal -}}
+                       {{- if (ne $index "") -}}
+                       {{ $index }}
+                       {{- else -}}
+                       {{- $index =  default (default "" _HT*hull.config.general.data.endpoints.solr.uri.api) _HT*hull.config.general.data.endpoints.solr.uri.apiInternal -}}
+                       {{- if (ne $index "") -}}
+                       {{ $index }}
+                       {{- end -}}
+                       {{- end -}}
               volumeMounts:
                 test-math-bool-transformation-false:
                   readOnly: _HT?lt (add _HT*hull.config.specific.hundred.its-99 _HT*hull.config.specific.hundred.its-52) 150

@@ -1,0 +1,1171 @@
+Helm upgrade failed for release preptest1/vidicore with chart vidicore@24.2.0-pre-37-gb1d85489b9: template: vidicore/templates/hull-validatingwebhookconfiguration.yaml:5:3: executing "vidicore/templates/hull-validatingwebhookconfiguration.yaml" at <include "hull.objects.render" (dict "HULL_ROOT_KEY" "hull" "ROOT_CONTEXT" $ "HULL_OBJECTS" (dict $type $objects))>: error calling include: template: vidicore/charts/hull/templates/_objects.tpl:119:17: executing "hull.objects.render" at <include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $rootContext.Values.hull "HULL_ROOT_KEY" $hullRootKey "SOURCE_PATH" (list "hull"))>: error calling include: template: vidicore/charts/hull/templates/_util_transformations.tpl:43:20: executing "hull.util.transformation" at <include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey)>: error calling include: template: vidicore/charts/hull/templates/_util_transformations.tpl:43:20: executing "hull.util.transformation" at <include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey)>: error calling include: template: vidicore/charts/hull/templates/_util_transformations.tpl:43:20: executing "hull.util.transformation" at <include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey)>: error calling include: template: vidicore/charts/hull/templates/_util_transformations.tpl:43:20: executing "hull.util.transformation" at <include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey)>: error calling include: template: vidicore/charts/hull/templates/_util_transformations.tpl:43:20: executing "hull.util.transformation" at <include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey)>: error calling include: template: vidicore/charts/hull/templates/_util_transformations.tpl:43:20: executing "hull.util.transformation" at <include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey)>: error calling include: template: vidicore/charts/hull/templates/_util_transformations.tpl:43:20: executing "hull.util.transformation" at <include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey)>: error calling include: template: vidicore/charts/hull/templates/_util_transformations.tpl:68:42: executing "hull.util.transformation" at <include ($params.NAME) $pass>: error calling include: template: vidicore/charts/hull/templates/_util_transformations.tpl:456:4: executing "hull.util.transformation.tpl" at <include "hull.util.process.tpl" (merge (dict "CONTENT" $content "SOURCE_PATH" $sourcePath) .)>: error calling include: template: vidicore/charts/hull/templates/_util_transformations.tpl:431:15: executing "hull.util.process.tpl" at <tpl $getProcessing.content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .)>: error calling tpl: error during tpl function execution for "\n {\n {{- $index := default (default \"\" \nsearch: \"\") \nsearch: \"\"Internal -}}\n {{- if (ne $index \"\") -}}\n backend: \"elasticsearch\"\n {{- else -}}\n {{- $index = default (default \"\" \nsearch: \"\") \nsearch: \"\"Internal -}}\n {{- if (ne $index \"\") -}}\n backend: \"solr\"\n {{- end -}}\n {{- end -}},\n url: {{ $index }},\n user: \"${INDEX_USER}\",\n password: \"${INDEX_PASS}\"\n }\n": parse error at (vidicore/templates/hull-validatingwebhookconfiguration.yaml:4): function "search" not defined
+
+# This is a YAML-formatted file.
+# - declares variables to be passed into your templates
+# - provides default values where applicable
+---
+hull:
+  config:
+    general:
+      data:
+        endpoints:
+          postgres:
+            uri:
+              address: ""
+            auth:
+              basic:
+                adminUsername: ""
+                adminPassword: ""
+                usernamesPostfix: ""
+            options:
+              timeout: 30
+          mssql:
+            uri:
+              address: ""
+            auth:
+              basic:
+                adminUsername: ""
+                adminPassword: ""
+          authservice:
+            uri:
+              api: ""
+            auth:
+              token:
+                installationClientId: ""
+                installationClientSecret: ""
+          configportal:
+            uri:
+              api: ""
+              apiInternal: ""
+            auth:
+              token:
+                installationClientId: ""
+                installationClientSecret: ""
+          vidicore:
+            uri:
+              api: ""
+              apinoauth: ""
+              logReport: ""
+              apiInternal: http://vidicore-vidicore:31060/API
+              apinoauthInternal: http://vidicore-vidicore:31060/APInoauth
+              logReportInternal: http://vidicore-vidicore:31060/LogReport
+            auth:
+              basic:
+                adminUserSecretName: _HT!* printf "%s-%s" _HT**Release.Namespace "vidispine-admin-user"
+          activemq:
+            uri:
+              amq: ""
+              amqInternal: ""
+            auth:
+              basic:
+                username: ""
+                password: ""
+          opensearch:
+            uri:
+              api: ""
+              apiInternal: ""
+            auth:
+              basic:
+                username: ""
+                password: ""
+          solr:
+            uri:
+              api: ""
+              apiInternal: ""
+            auth:
+              basic:
+                username: ""
+                password: ""
+              
+    # Settings particular to this Helm Chart
+    specific:
+      ingress:
+        # Connect ingress to controller via IngressClass
+        controllerClass: haproxy-ingress.github.io/controller
+      # Logging configuration
+      logging:
+        vidicoreLogfilesDaysToKeep: 28
+        defaultLevel: INFO
+      metrics:
+        # Enable exposing metrics
+        enabled: true
+      # Centrally defined tags for often referenced images
+      images:
+        vidicore: 
+          repository: vidicore/server
+          tag: "22.4"
+        dbTools: 
+          repository: vpms/dbtools
+          tag: "1.9"
+      components:
+        vidicore:
+          custom:
+            system:
+              name: ""
+              vidispineSiteId: VX
+              vidispineIdentifierFormat: full
+              defaultPurgingTimeInDays: 28
+              dbPurgingExportRetentionTimeInDays: 28
+              dbPurgingDirectory: /vidispine-database-purging
+              vidispineServiceQuorum: _HT!* add (floor (divf _HT*hull.objects.statefulset.vidicore.replicas 2)) 1
+              concurrentJobs: 20
+            access:
+              serviceUserAdminCredentials:
+                distribution: script # Possible Values: script, reflector
+            java:
+              maxRamPercentage: 80.0
+            license:
+              proxy:
+              enableNodeLockedLicense: false
+            thumbnails:
+              hierarchy: ""
+            callback:
+              enableCallbackMonitor: false
+            ports:
+              api: 31060
+              adminHttp: 31061
+              vxaConnect: 31062
+              callback: 31063
+              callbackReadiness: 6415
+          mounts:
+            secret:
+              "server.yaml":
+                server:
+                  applicationConnectors:
+                    - type: http
+                      port: 8080
+                  adminConnectors:
+                    - type: http
+                      port: 9001
+                  maxThreads: 50
+                  maxQueuedRequests: 4096
+                  requestLog:
+                    appenders:
+                      - type: console
+                        layout:
+                          type: access-json
+                database:
+                  driverClass: |
+                    _HT!
+                      {{- if (eq (include "hull.vidispine.addon.library.get.endpoint.key" (dict "PARENT_CONTEXT" (index . "$") "TYPE" "database")) "mssql") -}}
+                      com.microsoft.sqlserver.jdbc.SQLServerDriver
+                      {{- else -}}
+                      org.postgresql.Driver
+                      {{- end -}}
+                  url: |
+                    _HT!
+                      {{- if (eq (include "hull.vidispine.addon.library.get.endpoint.key" (dict "PARENT_CONTEXT" (index . "$") "TYPE" "database")) "mssql") -}}
+                      {{- printf "%s" "jdbc:sqlserver://" -}}
+                      {{- else -}}
+                      {{- printf "%s" "jdbc:postgresql://" -}}
+                      {{- end -}}
+                      {{- printf "%s:%s" 
+                          (include "hull.vidispine.addon.library.get.endpoint.info" (dict "PARENT_CONTEXT" (index . "$") "TYPE" "database" "INFO" "host"))
+                          (include "hull.vidispine.addon.library.get.endpoint.info" (dict "PARENT_CONTEXT" (index . "$") "TYPE" "database" "INFO" "port")) -}}
+                      {{- if (eq (include "hull.vidispine.addon.library.get.endpoint.key" (dict "PARENT_CONTEXT" (index . "$") "TYPE" "database")) "mssql") -}}
+                      {{- printf "%s" ";databaseName=" -}}
+                      {{- else -}}
+                      {{- printf "%s" "/" -}}
+                      {{- end -}}
+                      {{- printf "%s" _HT*hull.config.specific.components.vidicore.database.name -}}
+                  user: ${DBUSER}
+                  password: ${DBPASSWORD}
+                  maxSize: _HT!* mul _HT*hull.config.specific.components.vidicore.mounts.secret.server§yaml.server.maxThreads 2
+                cluster:
+                  bindAddress: ${CLUSTER_BIND_ADDRESS}
+                broker:
+                  url: _HT/hull.vidispine.addon.library.get.endpoint.uri.info:ENDPOINT:"activemq":URI:"amq"
+                  user: ${MESSAGEBUS_USER}
+                  password: ${MESSAGEBUS_PASSWORD}
+                vsaconnection:
+                  bindPort: _HT*hull.config.specific.components.vidicore.custom.ports.vxaConnect
+                  clusterConnect: true
+                logging:
+                  level: _HT*hull.config.specific.logging.defaultLevel
+                  appenders:
+                    - type: console
+                      layout:
+                        type: json
+                    - type: file
+                      logFormat: '%-5p [%d{ISO8601,UTC}] [%tid] %c: %m%n%rEx'
+                      currentLogFilename: /var/log/vidispine/${HOSTNAME}/server.log
+                      archive: true
+                      archivedLogFilenamePattern: /var/log/vidispine/${HOSTNAME}/server-%d.log.gz
+                      archivedFileCount: _HT*hull.config.specific.logging.vidicoreLogfilesDaysToKeep
+                      timeZone: UTC
+                  loggers:
+                    "org.hibernate": _HT*hull.config.specific.logging.defaultLevel
+                    "org.infinispan": _HT*hull.config.specific.logging.defaultLevel
+                    "org.apache": _HT*hull.config.specific.logging.defaultLevel
+                    "OpenEJB": _HT*hull.config.specific.logging.defaultLevel
+                    "Transaction": _HT*hull.config.specific.logging.defaultLevel
+                    "org.eclipse.jetty": _HT*hull.config.specific.logging.defaultLevel
+                    "org.jgroups.protocols.JDBC_PING": _HT*hull.config.specific.logging.defaultLevel
+                search: |
+                  _HT!
+                    {
+                      {{- $index :=  default (default "" _HT*hull.config.general.data.endpoints.opensearch.uri.api) _HT*hull.config.general.data.endpoints.opensearch.uri.apiInternal -}}
+                      {{- if (ne $index "") -}}
+                      backend: "elasticsearch"
+                      {{- else -}}
+                      {{- $index =  default (default "" _HT*hull.config.general.data.endpoints.solr.uri.api) _HT*hull.config.general.data.endpoints.solr.uri.apiInternal -}}
+                      {{- if (ne $index "") -}}
+                      backend: "solr"
+                      {{- end -}}
+                      {{- end -}},
+                      url: {{ $index }},
+                      user: "${INDEX_USER}",
+                      password: "${INDEX_PASS}"
+                    }
+          database:
+            name: vidicore
+            connectionStringEnvVarSuffix: ""
+            username: vidicore
+            password: ""
+  objects:
+    configmap:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations:
+          helm.sh/hook: pre-install,pre-upgrade
+          helm.sh/hook-delete-policy: before-hook-creation
+          helm.sh/hook-weight: "-80"
+      vidicore:
+        data: _HT/hull.vidispine.addon.library.component.configmap.data:COMPONENT:"vidicore"
+      databasepurging:
+        data: _HT/hull.vidispine.addon.library.component.configmap.data:COMPONENT:"databasepurging"
+      migrate:
+        data:
+          dbinit:
+            inline: required
+    secret:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations:
+          helm.sh/hook: pre-install,pre-upgrade
+          helm.sh/hook-delete-policy: before-hook-creation
+          helm.sh/hook-weight: "-80"
+      vidicore:
+        data: _HT/hull.vidispine.addon.library.component.secret.data:COMPONENT:"vidicore"
+      auth:
+        data: _HT/hull.vidispine.addon.library.auth.secret.data:ENDPOINTS:"database,activemq,index,vidicore"
+      license:
+        data:
+          DeploymentLicense.lic:
+            path: files/license/DeploymentLicense.lic
+      ssh:
+        data: {}
+      admin-user:
+        data:
+          password:
+            inline: ""
+
+    service:
+      vidicore:
+        type: ClusterIP
+        ports:
+          api:
+            targetPort: api
+            port: _HT*hull.config.specific.components.vidicore.custom.ports.api
+          admin-http:
+            targetPort: admin-http
+            port: _HT*hull.config.specific.components.vidicore.custom.ports.adminHttp
+          vxa-connect:
+            targetPort: vxa-connect
+            port: _HT*hull.config.specific.components.vidicore.custom.ports.vxaConnect
+          statsd-exporter:
+            targetPort: statsd-exporter
+            port: 9102
+            enabled: _HT*hull.config.specific.metrics.enabled
+        selector:
+          app.kubernetes.io/component: vidicore
+      discovery:
+        type: ClusterIP
+        clusterIP: None
+        ports:
+          api:
+            targetPort: api
+            port: _HT*hull.config.specific.components.vidicore.custom.ports.api
+          admin-http:
+            targetPort: admin-http
+            port: _HT*hull.config.specific.components.vidicore.custom.ports.adminHttp
+          vxa-connect:
+            targetPort: vxa-connect
+            port: _HT*hull.config.specific.components.vidicore.custom.ports.vxaConnect
+          statsd-exporter:
+            targetPort: statsd-exporter
+            port: 9102
+            enabled: _HT*hull.config.specific.metrics.enabled
+        selector:
+          app.kubernetes.io/component: vidicore
+      callback:
+        enabled: _HT? _HT*hull.config.specific.components.vidicore.custom.callback.enableCallbackMonitor
+        type: ClusterIP
+        ports:
+          callback:
+            targetPort: callback
+            port: _HT*hull.config.specific.components.vidicore.custom.ports.callback
+        selector:
+          app.kubernetes.io/component: vidicore
+          callback-role: active
+
+    job:
+      _HULL_OBJECT_TYPE_DEFAULT_:  
+        pod:
+          restartPolicy: Never
+        backoffLimit: 4
+      
+      vidicore-create-db:
+        sources:
+        - hull-database
+        pod: _HT/hull.vidispine.addon.library.component.job.database:COMPONENT:"vidicore":TYPE:"create"
+
+      hull-configure:
+        enabled: true
+        pod:
+          initContainers:
+            01-check-vidicore-ready:
+              image:
+                repository: _HT*hull.config.specific.images.dbTools.repository
+                tag: _HT!* _HT*hull.config.specific.images.dbTools.tag | toString | quote
+              command: 
+              - "sh"
+              - "-c"
+              - /scripts/check-vidicore-ready.sh
+              volumeMounts:
+                scripts:
+                  name: configmap
+                  mountPath: /scripts
+              env:
+                VIDICORE_API_NOAUTH:
+                  value: _HT/hull.vidispine.addon.library.get.endpoint.uri.info:ENDPOINT:"vidicore":URI:"apinoauth"
+            02-configure-vidicore:
+              image:
+                repository: docker.io/gempesaw/curl-jq
+                tag: latest_at_07-22-2019
+              command:
+              - "/bin/sh"
+              - "-c"
+              - "/scripts/configure-vidicore.sh"
+              env:
+                VIDICORE_API:
+                  value: _HT/hull.vidispine.addon.library.get.endpoint.uri.info:ENDPOINT:"vidicore":URI:"api"
+                VIDICORE_SERVICEUSER_ADMIN_USERNAME:
+                  valueFrom:
+                    secretKeyRef:
+                      name: _HT*hull.config.general.data.endpoints.vidicore.auth.basic.adminUserSecretName
+                      staticName: true
+                      key: username
+                VIDICORE_SERVICEUSER_ADMIN_PASSWORD:
+                  valueFrom:
+                    secretKeyRef:
+                      name: _HT*hull.config.general.data.endpoints.vidicore.auth.basic.adminUserSecretName
+                      staticName: true
+                      key: password
+                VIDICORE_ADMIN_PASSWORD:
+                  valueFrom:
+                    secretKeyRef:
+                      name: admin-user
+                      key: password
+                PURGINGFILES_DIRECTORY: 
+                  value: _HT*hull.config.specific.components.vidicore.custom.system.dbPurgingDirectory
+              volumeMounts:
+                scripts:
+                  name: configmap
+                  mountPath: /scripts
+            03-reindex:
+              enabled: false
+              image:
+                repository: docker.io/gempesaw/curl-jq
+                tag: latest_at_07-22-2019
+              command:
+              - "/bin/sh"
+              - "-c"
+              - "/scripts/reindex.sh"
+              env:
+                VIDICORE_API:
+                  value: _HT/hull.vidispine.addon.library.get.endpoint.uri.info:ENDPOINT:"vidicore":URI:"api"
+                VIDICORE_SERVICEUSER_ADMIN_USERNAME:
+                  valueFrom:
+                    secretKeyRef:
+                      name: _HT*hull.config.general.data.endpoints.vidicore.auth.basic.adminUserSecretName
+                      staticName: true
+                      key: username
+                VIDICORE_SERVICEUSER_ADMIN_PASSWORD:
+                  valueFrom:
+                    secretKeyRef:
+                      name: _HT*hull.config.general.data.endpoints.vidicore.auth.basic.adminUserSecretName
+                      staticName: true
+                      key: password
+                VIDICORE_ADMIN_PASSWORD:
+                  valueFrom:
+                    secretKeyRef:
+                      name: admin-user
+                      key: password
+              volumeMounts:
+                scripts:
+                  name: configmap
+                  mountPath: /scripts
+            04-setup-authentication:
+              enabled: _HT/hull.vidispine.addon.library.get.endpoint.uri.exists:KEY:"authservice"
+              image:
+                repository: docker.io/gempesaw/curl-jq
+                tag: latest_at_07-22-2019
+              command:
+              - "/bin/sh"
+              - "-c"
+              - "/scripts/setup-authentication.sh"
+              env:
+                AUTH_SERVICE_ENDPOINT:
+                  value: _HT/hull.vidispine.addon.library.get.endpoint.uri.info:ENDPOINT:"authservice"
+                VIDICORE_API:
+                  value: _HT/hull.vidispine.addon.library.get.endpoint.uri.info:ENDPOINT:"vidicore":URI:"api"
+                VIDICORE_SERVICEUSER_ADMIN_USERNAME:
+                  valueFrom:
+                    secretKeyRef:
+                      name: _HT*hull.config.general.data.endpoints.vidicore.auth.basic.adminUserSecretName
+                      staticName: true
+                      key: username
+                VIDICORE_SERVICEUSER_ADMIN_PASSWORD:
+                  valueFrom:
+                    secretKeyRef:
+                      name: _HT*hull.config.general.data.endpoints.vidicore.auth.basic.adminUserSecretName
+                      staticName: true
+                      key: password
+                VIDICORE_ADMIN_PASSWORD:
+                  valueFrom:
+                    secretKeyRef:
+                      name: admin-user
+                      key: password
+              volumeMounts:
+                scripts:
+                  name: configmap
+                  mountPath: /scripts
+                temp:
+                  name: temp
+                  mountPath: /tmp
+          containers:
+            installation:
+              envFrom:
+                auth:
+                  secretRef:
+                    name: auth
+              env:
+                AUTH_BASIC_VIDICORE_ADMINUSERNAME:
+                  valueFrom:
+                    secretKeyRef:
+                      name: _HT*hull.config.general.data.endpoints.vidicore.auth.basic.adminUserSecretName
+                      staticName: true
+                      key: username
+                AUTH_BASIC_VIDICORE_ADMINPASSWORD:
+                  valueFrom:
+                    secretKeyRef:
+                      name: _HT*hull.config.general.data.endpoints.vidicore.auth.basic.adminUserSecretName
+                      staticName: true
+                      key: password
+          volumes:
+            configmap:
+              configMap:
+                name: vidicore
+                defaultMode: 0755
+            temp:
+              emptyDir: {}    
+    
+    statefulset:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        pod:
+          initContainers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              image:
+                repository: docker.io/busybox
+                tag: 1.34.0
+              env:
+                INDEX_ENDPOINT:
+                  value: |
+                    _HT!
+                       {{- $index :=  default (default "" _HT*hull.config.general.data.endpoints.opensearch.uri.api) _HT*hull.config.general.data.endpoints.opensearch.uri.apiInternal -}}
+                       {{- if (ne $index "") -}}
+                       {{ $index }}
+                       {{- else -}}
+                       {{- $index =  default (default "" _HT*hull.config.general.data.endpoints.solr.uri.api) _HT*hull.config.general.data.endpoints.solr.uri.apiInternal -}}
+                       {{- if (ne $index "") -}}
+                       {{ $index }}
+                       {{- end -}}
+                       {{- end -}}
+                INDEX_USER:
+                  valueFrom:
+                    secretKeyRef:
+                      name: auth
+                      key: AUTH_BASIC_INDEX_USERNAME
+                INDEX_PASS:
+                  valueFrom:
+                    secretKeyRef:
+                      name: auth
+                      key: AUTH_BASIC_INDEX_PASSWORD
+          containers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              image:
+                repository: docker.io/busybox
+                tag: 1.34.0
+              env:
+                INDEX_ENDPOINT:
+                  value: |
+                    _HT!
+                       {{- $index :=  default (default "" _HT*hull.config.general.data.endpoints.opensearch.uri.api) _HT*hull.config.general.data.endpoints.opensearch.uri.apiInternal -}}
+                       {{- if (ne $index "") -}}
+                       {{ $index }}
+                       {{- else -}}
+                       {{- $index =  default (default "" _HT*hull.config.general.data.endpoints.solr.uri.api) _HT*hull.config.general.data.endpoints.solr.uri.apiInternal -}}
+                       {{- if (ne $index "") -}}
+                       {{ $index }}
+                       {{- end -}}
+                       {{- end -}}
+                INDEX_USER:
+                  valueFrom:
+                    secretKeyRef:
+                      name: auth
+                      key: AUTH_BASIC_INDEX_USERNAME
+                INDEX_PASS:
+                  valueFrom:
+                    secretKeyRef:
+                      name: auth
+                      key: AUTH_BASIC_INDEX_PASSWORD
+                MESSAGEBUS_USER:
+                  valueFrom:
+                    secretKeyRef:
+                      name: auth
+                      key: AUTH_BASIC_ACTIVEMQ_USERNAME
+                MESSAGEBUS_PASS:
+                  valueFrom:
+                    secretKeyRef:
+                      name: auth
+                      key: AUTH_BASIC_ACTIVEMQ_PASSWORD
+      vidicore:
+        serviceName: discovery
+        replicas: 2
+        updateStrategy:
+          type: RollingUpdate
+        podManagementPolicy: OrderedReady
+        pod:
+          terminationGracePeriodSeconds: 10
+          initContainers:
+            01-copy-server-config:
+              command:
+                - sh
+                - -c
+                - cp /config/server.yaml /etc/vidispine && cp /license/DeploymentLicense.lic /etc/vidispine
+              volumeMounts:
+                config:
+                  name: secret
+                  mountPath: /config
+                etc-vidispine:
+                  name: etc-vidispine
+                  mountPath: /etc/vidispine
+                license:
+                  name: license
+                  mountPath: /license
+            02-apply-server-license:
+              image:
+                repository: docker.io/bash
+                tag: "4.4"
+              command:
+              - 'bash'
+              - '/config/init-mac-license.sh'
+              volumeMounts:
+                config:
+                  name: configmap
+                  mountPath: /config
+                etc-vidispine:
+                  name: etc-vidispine
+                  mountPath: /etc/vidispine
+                license:
+                  name: license
+                  mountPath: /license
+            03-check-index-ready:
+              image:
+                repository: _HT*hull.config.specific.images.dbTools.repository
+                tag: _HT!* _HT*hull.config.specific.images.dbTools.tag | toString | quote
+              command:
+              - 'sh'
+              - '-c'
+              - '/scripts/check-index-ready.sh'
+              volumeMounts:
+                scripts:
+                  name: configmap
+                  mountPath: /scripts
+                _HT!:
+                  _: |-
+                    {
+                      {{ range $certkey, $certvalue := _HT*hull.config.general.data.installation.config.customCaCertificates}}
+                      "custom-ca-certificates-{{ $certkey }}": 
+                        {
+                          enabled: true, 
+                          name: "certs",
+                          mountPath: "/usr/local/share/ca-certificates/custom-ca-certificates-{{ $certkey }}",
+                          subPath: "{{ $certkey }}"
+                        },
+                      {{ end }}
+                    }
+                etcssl:
+                  enabled: _HT? _HT*Values.hull.config.general.data.installation.config.customCaCertificates
+                  name: etcssl
+                  mountPath: /etc/ssl/certs
+            04-init-vidicore:
+              image:
+                repository: _HT*hull.config.specific.images.vidicore.repository
+                tag: _HT!* _HT*hull.config.specific.images.vidicore.tag | toString | quote
+              command:
+              - 'sh'
+              - '-c'
+              - '/scripts/init-vidicore.sh'
+              env:
+                CLUSTER_BIND_ADDRESS:
+                  value: auto
+                JAVA_OPTS:
+                  value: |
+                    _HT!
+                      -XX:+CrashOnOutOfMemoryError -XX:+UseContainerSupport -XX:MaxRAMPercentage=
+                      {{- _HT*hull.config.specific.components.vidicore.custom.java.maxRamPercentage }}
+                      -Dcom.vidispine.site=
+                      {{- _HT*hull.config.specific.components.vidicore.custom.system.vidispineSiteId }}
+                      -Dvidispine.identifier.format=
+                      {{- _HT*hull.config.specific.components.vidicore.custom.system.vidispineIdentifierFormat }}
+                      -Dcom.vidispine.service.quorum=
+                      {{- _HT*hull.config.specific.components.vidicore.custom.system.vidispineServiceQuorum }}
+                LOG_DIRECTORY_WITH_HOSTNAME:
+                  value: "true"
+                LOGFILES_DAYSTOKEEP:
+                  value: _HT!* _HT*Values.hull.config.specific.components.vidicore.custom.system.defaultPurgingTimeInDays | toString | quote
+                CORBA_CALLBACK_ENDPOINT:
+                  enabled: _HT*hull.config.specific.components.vidicore.custom.callback.enableCallbackMonitor
+                  value: _HT*hull.config.specific.components.vidicore.custom.ports.callback
+                DBUSER:
+                  valueFrom:
+                    secretKeyRef:
+                      name: vidicore
+                      key: AUTH_BASIC_DATABASE_USERNAME
+                DBPASSWORD:
+                  valueFrom:
+                    secretKeyRef:
+                      name: vidicore
+                      key: AUTH_BASIC_DATABASE_PASSWORD
+                MESSAGEBUS_USER:
+                  valueFrom:
+                    secretKeyRef:
+                      name: auth
+                      key: AUTH_BASIC_ACTIVEMQ_USERNAME
+                MESSAGEBUS_PASSWORD:
+                  valueFrom:
+                    secretKeyRef:
+                      name: auth
+                      key: AUTH_BASIC_ACTIVEMQ_PASSWORD
+              volumeMounts:
+                scripts:
+                  name: configmap
+                  mountPath: /scripts
+                etc-vidispine:
+                  name: etc-vidispine
+                  mountPath: /etc/vidispine/
+                default-ca-certs:
+                  name: default-ca-certs
+                  mountPath: /etc/default/
+                migrate:
+                  name: migrate
+                  mountPath: /dbinit-flag/dbinit
+                  subPath: dbinit
+                logs:
+                  name: logs
+                  mountPath: /var/log/vidispine
+                _HT!:
+                  _: |-
+                    {
+                      {{ range $certkey, $certvalue := _HT*hull.config.general.data.installation.config.customCaCertificates}}
+                      "custom-ca-certificates-{{ $certkey }}": 
+                        {
+                          enabled: true, 
+                          name: "certs",
+                          mountPath: "/usr/local/share/ca-certificates/custom-ca-certificates-{{ $certkey }}",
+                          subPath: "{{ $certkey }}"
+                        },
+                      {{ end }}
+                    }
+                etcssl:
+                  name: etcssl
+                  mountPath: /etc/ssl/certs
+            05-check-activemq-ready:
+              enabled: _HT?ne "" (default "" _HT*hull.config.general.data.endpoints.activemq.uri.amqInternal)
+              image:
+                repository: docker.io/gempesaw/curl-jq
+                tag: latest_at_07-22-2019
+              command:
+              - 'sh'
+              - '-c'
+              - '/scripts/check-activemq-ready.sh'
+              volumeMounts:
+                scripts:
+                  name: configmap
+                  mountPath: /scripts
+            06-admin-user:
+              image:
+                repository: docker.io/gempesaw/curl-jq
+                tag: latest_at_07-22-2019
+              args:
+              - "/bin/sh"
+              - "-c"
+              - /scripts/check-admin-user.sh
+              env:
+                VIDICORE_ADMIN_USER_SECRET_NAME:
+                  valueFrom:
+                    secretKeyRef:
+                      name: auth
+                      key: AUTH_BASIC_VIDICORE_ADMINUSERSECRETNAME
+                DISTRIBUTION_MODE:
+                  value: _HT*hull.config.specific.components.vidicore.custom.access.serviceUserAdminCredentials.distribution
+              volumeMounts:
+                scripts:
+                  name: configmap
+                  mountPath: /scripts
+          containers:
+            vidicore:
+              image:
+                repository: _HT*hull.config.specific.images.vidicore.repository
+                tag: _HT!* _HT*hull.config.specific.images.vidicore.tag | toString | quote
+              securityContext: |
+                _HT!
+                  {
+                    {{- if _HT*hull.config.specific.components.vidicore.custom.license.enableNodeLockedLicense -}}
+                    runAsUser: 1001,
+                    capabilities:
+                    {  drop: [all],
+                       add: [NET_ADMIN]
+                    }
+                    {{- end -}}
+                  }
+              ports:
+                api:
+                  containerPort: 8080
+                api-8088:
+                  containerPort: 8088
+                api-8089:
+                  containerPort: 8089
+                admin-http:
+                  containerPort: 9001
+                vxa-connect:
+                  containerPort: _HT*hull.config.specific.components.vidicore.custom.ports.vxaConnect
+                callback:
+                  enabled: _HT*hull.config.specific.components.vidicore.custom.callback.enableCallbackMonitor
+                  containerPort: _HT*hull.config.specific.components.vidicore.custom.ports.callback
+              env:
+                CLUSTER_BIND_ADDRESS:
+                  value: "auto"
+                JAVA_OPTS:
+                  value: |
+                    _HT!
+                      -XX:+CrashOnOutOfMemoryError -XX:+UseContainerSupport -XX:MaxRAMPercentage=
+                      {{- _HT*hull.config.specific.components.vidicore.custom.java.maxRamPercentage }}
+                      -Dcom.vidispine.site=
+                      {{- _HT*hull.config.specific.components.vidicore.custom.system.vidispineSiteId }}
+                      -Dvidispine.identifier.format=
+                      {{- _HT*hull.config.specific.components.vidicore.custom.system.vidispineIdentifierFormat }}
+                      -Dcom.vidispine.service.quorum=
+                      {{- _HT*hull.config.specific.components.vidicore.custom.system.vidispineServiceQuorum }}
+                LOG_DIRECTORY_WITH_HOSTNAME:
+                  value: "true"
+                LOGFILES_DAYSTOKEEP:
+                  value: _HT!* _HT*hull.config.specific.components.vidicore.custom.system.defaultPurgingTimeInDays | toString | quote
+                CORBA_CALLBACK_ENDPOINT:
+                  enabled: _HT*hull.config.specific.components.vidicore.custom.callback.enableCallbackMonitor
+                  value: _HT*hull.config.specific.components.vidicore.custom.ports.callback
+                DBUSER:
+                  valueFrom:
+                    secretKeyRef:
+                      name: vidicore
+                      key: AUTH_BASIC_DATABASE_USERNAME
+                DBPASSWORD:
+                  valueFrom:
+                    secretKeyRef:
+                      name: vidicore
+                      key: AUTH_BASIC_DATABASE_PASSWORD
+                MESSAGEBUS_USER:
+                  valueFrom:
+                    secretKeyRef:
+                      name: auth
+                      key: AUTH_BASIC_ACTIVEMQ_USERNAME
+                MESSAGEBUS_PASSWORD:
+                  valueFrom:
+                    secretKeyRef:
+                      name: auth
+                      key: AUTH_BASIC_ACTIVEMQ_PASSWORD
+              livenessProbe:
+                failureThreshold: 20
+                httpGet:
+                  path: /APInoauth/is-online
+                  port: api
+                  scheme: HTTP
+                initialDelaySeconds: 180
+                periodSeconds: 30
+                successThreshold: 1
+                timeoutSeconds: 20
+              readinessProbe:
+                failureThreshold: 4
+                httpGet:
+                  path: /APInoauth/is-online
+                  port: api
+                  scheme: HTTP
+                initialDelaySeconds: 30
+                periodSeconds: 15
+                successThreshold: 1
+                timeoutSeconds: 20
+              resources:
+                limits:
+                  cpu: "2"
+                  memory: 8Gi
+                requests:
+                  cpu: "2"
+                  memory: 8Gi
+              volumeMounts:
+                etc-vidispine:
+                  name: etc-vidispine
+                  mountPath: /etc/vidispine
+                logs:
+                  name: logs
+                  mountPath: /var/log/vidispine
+                instanceroot:
+                  name: instanceroot
+                  mountPath: /var/lib/vidispine/server
+                license:
+                  name: license
+                  mountPath: /license
+                ssh:
+                  name: ssh
+                  mountPath: /home/vidispine/.ssh/
+                _HT!: 
+                  _: |-
+                    {
+                      {{ range $certkey, $certvalue := _HT*hull.config.general.data.installation.config.customCaCertificates}}
+                      "custom-ca-certificates-{{ $certkey }}": 
+                        {
+                          enabled: true, 
+                          name: "certs",
+                          mountPath: "/usr/local/share/ca-certificates/custom-ca-certificates-{{ $certkey }}",
+                          subPath: "{{ $certkey }}"
+                        },
+                      {{ end }}
+                    }
+                etcssl:
+                  name: etcssl
+                  mountPath: '/etc/ssl/certs'
+                extensions:
+                  name: extensions
+                  mountPath: /usr/share/vidispine/lib/ext
+            statsd-exporter:
+              enabled: _HT? _HT*hull.config.specific.metrics.enabled
+              image:
+                repository: docker.io/prom/statsd-exporter
+                tag: v0.8.1
+              ports:
+                udp:
+                  containerPort: 9125
+                statsd-exporter:
+                  containerPort: 9102
+              resources:
+                limits:
+                  cpu: 50m
+                  memory: 288Mi
+                requests:
+                  cpu: 50m
+                  memory: 288Mi
+            callback-monitor:
+              enabled: _HT? _HT*hull.config.specific.components.vidicore.custom.callback.enableCallbackMonitor
+              image:
+                repository: _HT*hull.config.specific.images.dbTools.repository
+                tag: _HT!* _HT*hull.config.specific.images.dbTools.tag | toString | quote
+              command: |
+                _HT!
+                  [
+                    'sh',
+                    '-c',
+                    '/scripts/check-callback-readiness-port.sh {{ _HT*hull.config.specific.components.vidicore.custom.ports.callbackReadiness }}'
+                  ]
+              env:
+                POD_NAME:
+                  valueFrom:
+                    fieldRef:
+                      apiVersion: v1
+                      fieldPath: metadata.name
+                POD_NAMESPACE:
+                  valueFrom:
+                    fieldRef:
+                      apiVersion: v1
+                      fieldPath: metadata.namespace
+              resources:
+                limits:
+                  cpu: 50m
+                  memory: 288Mi
+                requests:
+                  cpu: 50m
+                  memory: 288Mi
+              volumeMounts:
+                scripts:
+                  name: configmap
+                  mountPath: /scripts
+                tmp:
+                  name: tmp
+                  mountPath: /tmp
+          restartPolicy: Always
+          volumes:
+            configmap:
+              configMap:
+                name: vidicore
+                defaultMode: 0755
+            secret:
+              secret:
+                secretName: vidicore
+                defaultMode: 0755
+            migrate:
+              configMap:
+                name: migrate
+                defaultMode: 0444
+            instancerootmap:
+              configMap:
+                name: instanceroot
+                defaultMode: 0744
+            license:
+              secret:
+                secretName: license
+                defaultMode: 0744
+            ssh:
+              secret:
+                secretName: ssh
+                defaultMode: 0744
+            etc-vidispine:
+              emptyDir: {}
+            instanceroot:
+              emptyDir: {}
+            data:
+              emptyDir: {}
+            tmp:
+              emptyDir: {}
+            extensions:
+              emptyDir: {}
+            certs:
+              enabled: _HT? _HT*hull.config.general.data.installation.config.customCaCertificates
+              secret:
+                secretName: "custom-ca-certificates"
+            etcssl:
+              emptyDir: {}
+            default-ca-certs:
+              emptyDir: {}
+            logs:
+              emptyDir: {}
+    ingressclass:
+      default:
+        controller: _HT*hull.config.specific.ingress.controllerClass
+
+    ingress:
+      vidicore:
+        enabled: true
+        ingressClassName: _HT^default
+        rules: _HT/hull.vidispine.addon.library.component.ingress.rules:ENDPOINT:"vidicore":SERVICENAME:"vidicore":PORTNAME:"api":COMPONENTS:"api,apinoauth,log-report"    
+    
+    serviceaccount:
+      vidicore-create-db:
+        sources: 
+        - hull-database
+
+    role:
+      endpoint-reader:
+        rules:
+          endpoints:
+            apiGroups: [""]
+            resources: ["endpoints"]
+            verbs: ["get", "list"]
+      pod-reader:
+        rules:
+          pods:
+            apiGroups: [""]
+            resources: ["pods"]
+            verbs: ["get", "list"]
+      pod-writer:
+        rules:
+          pods:
+            apiGroups: [""]
+            resources: ["pods"]
+            verbs: ["update", "patch"]
+      job-reader:
+        rules:
+          jobs:
+            apiGroups: ["batch", "extensions"]
+            resources: ["jobs"]
+            verbs: ["get"]
+      sts-reader:
+        rules:
+          jobs:
+            apiGroups: ["apps"]
+            resources: ["statefulsets"]
+            verbs: ["get", "list"]
+      configmap-writer:
+        rules:
+          configmaps:
+            apiGroups: [""]
+            resources: ["configmaps"]
+            verbs: ["update"]
+      secret-writer:
+        rules:
+          secrets:
+            apiGroups: ["","apps"]
+            resources: ["secrets"]
+            verbs: ["update","create"]
+      secret-reader:
+        rules:
+          secrets:
+            apiGroups: ["", "apps"]
+            resources: ["secrets"]
+            resourceNames: |
+              _HT!
+                [
+                  "{{ _HT*hull.config.general.data.endpoints.vidicore.auth.basic.adminUserSecretName }}"
+                ]
+            verbs: ["get", "list"]
+
+    rolebinding:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        subjects:
+        - kind: ServiceAccount
+          name: _HT^default
+      endpoint-reader:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: _HT^endpoint-reader
+      pod-reader:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: _HT^pod-reader
+      pod-writer:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: _HT^pod-writer
+      job-reader:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: _HT^job-reader
+      sts-reader:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: _HT^sts-reader
+      configmap-writer:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: _HT^configmap-writer
+      secret-reader:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: _HT^secret-reader
+      secret-writer:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: _HT^secret-writer
+      secret-reader-cluster:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: _HT^secret-reader
+      secret-writer-cluster:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: _HT^secret-writer
+
+    clusterrole:
+      secret-writer:
+        rules:
+          secrets:
+            apiGroups: ["","apps"]
+            resources: ["secrets"]
+            verbs: ["update","create"]
+      secret-reader:
+        rules:
+          secrets:
+            apiGroups: ["", "apps"]
+            resources: ["secrets"]
+            resourceNames: |
+              _HT!
+                [
+                  "{{ _HT*hull.config.general.data.endpoints.vidicore.auth.basic.adminUserSecretName  }}"
+                ]
+            verbs: ["get", "list"]
+
+    clusterrolebinding:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        subjects:
+        - kind: ServiceAccount
+          name: _HT^default
+          namespace: _HT**Release.Namespace
+      secret-reader-cluster:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: _HT^secret-reader
+      secret-writer-cluster:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: _HT^secret-writer
+    
+    servicemonitor:
+      vidicore:
+        enabled: _HT? _HT*hull.config.specific.metrics.enabled
+        endpoints:
+        - path: /metrics
+          port: statsd-exporter
+        namespaceSelector:
+          matchNames: _HT![{{ _HT**Release.Namespace }}]
+        selector:
+          matchLabels:
+            app.kubernetes.io/component: vidicore
+
+    daemonset:
+      database-purging-cleanup:
+        updateStrategy:
+          type: RollingUpdate
+        pod:
+          containers:
+            database-purging-cleanup:
+              image:
+                repository: vpms/cmdlinetools
+                tag: "1.0"
+              command: ['bash', '-c', '/scripts/cleanup.sh' ]
+              env:
+                PURGINGFILES_DIRECTORY: 
+                  value: _HT*hull.config.specific.components.vidicore.custom.system.dbPurgingDirectory
+                PURGINGFILES_DAYSTOKEEP:
+                  value: _HT!* _HT*hull.config.specific.components.vidicore.custom.system.dbPurgingExportRetentionTimeInDays | toString | quote
+              volumeMounts:
+                scripts:
+                  name: scripts
+                  mountPath: /scripts
+              resources:
+                limits:
+                  memory: 256Mi
+                  cpu: 100m
+          volumes:
+            scripts:
+              configMap:
+                name: databasepurging
+                defaultMode: 0755
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                  - key: app.kubernetes.io/component
+                    operator: In
+                    values:
+                    - vidicore
+                topologyKey: "kubernetes.io/hostname"

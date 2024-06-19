@@ -7,7 +7,16 @@
 hull:
   config:
     general:  
-      data: {} 
+      data: 
+        endpoints:
+          opensearch:
+            uri:
+              api: http://os-api:8080 
+              apiInternal: ""
+          solr:
+            uri:
+              api: http://os-api:8080 
+              apiInternal: ""
     specific: 
       globalRegistry: local.registry
       switch_enabled_off: false

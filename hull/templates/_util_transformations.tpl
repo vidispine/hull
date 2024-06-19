@@ -385,8 +385,13 @@
 {{- $sourcePath := default list (index . "SOURCE_PATH") -}}
 {{- $hits := regexFindAll "_HT\\*([A-Za-z\\._\\-\\d\\|\\*§]+)" $content -1 -}}
 {{- $error := "" -}}
+{{- $hitsSorted := dict }}
 {{- range $hit := $hits -}}
-{{- $rep := $hit | toString | replace "_HT*" "" -}}
+{{- $hitsSorted = set $hitsSorted (printf "%d%s" (len $hit) uuidv4) $hit }}
+{{- end -}}
+{{- $keysSorted := $hitsSorted | keys | sortAlpha }}
+{{- range $hit := $keysSorted -}}
+{{- $rep := (index $hitsSorted $hit) | toString | replace "_HT*" "" -}}
 {{- $replacement := include "hull.util.transformation.get" (merge (dict "REFERENCE" $rep "SOURCE_PATH" $sourcePath "RETURN_TEMPLATE_STRING" true) $parent) }}
 {{- $errorMessage := include "hull.util.error.check" (dict "OBJECT" $replacement) -}}
 {{- if (ne $errorMessage "") -}}
