@@ -355,6 +355,100 @@ Test creation of objects and features.
 * Test Object has key "data§code-java-medium.java" with Base64 encoded value of key "code-java-medium.java" from expected.yaml of suite "virtualfolderdata"
 * Test Object has key "data§code-java-complex.java" with Base64 encoded value of key "code-java-complex.java" from expected.yaml of suite "virtualfolderdata"
 
+## Verify sources are not muddled together
+* Prepare default test case for this kind including suites "virtualfolderdata"
+* Lint and Render values file "secret_sources_seperated.values.hull.yaml"
+
+* Set test object to "release-name-hull-test-auth"
+* Test Object has key "metadata§annotations§helm.sh/hook" with value "pre-install,pre-upgrade"
+* Test Object has key "metadata§annotations§helm.sh/hook-weight" with value "-100"
+* Test Object has key "metadata§annotations§helm.sh/hook-delete-policy" with value "before-hook-creation"
+* Test Object has key "data§dummy" with Base64 encoded value of "Just another dummy text"
+
+* Set test object to "release-name-hull-test-custom-installation-files"
+* Test Object has key "metadata§annotations§helm.sh/hook" with value "pre-install,pre-upgrade"
+* Test Object has key "metadata§annotations§helm.sh/hook-weight" with value "-80"
+* Test Object has key "metadata§annotations§helm.sh/hook-delete-policy" with value "before-hook-creation"
+* Test Object has key "data§dummy" with Base64 encoded value of "Just another dummy text"
+
+* Set test object to "release-name-hull-test-custom-installation-files-1"
+* Test Object has key "metadata§annotations§helm.sh/hook" with value "pre-install,pre-upgrade"
+* Test Object has key "metadata§annotations§helm.sh/hook-weight" with value "-80"
+* Test Object has key "metadata§annotations§helm.sh/hook-delete-policy" with value "before-hook-creation"
+* Test Object has key "data§dummy" with Base64 encoded value of "Just another dummy text"
+
+* Set test object to "release-name-hull-test-custom-installation-files-2"
+* Test Object has key "metadata§annotations§helm.sh/hook" with value "pre-install,pre-upgrade"
+* Test Object has key "metadata§annotations§helm.sh/hook-weight" with value "-80"
+* Test Object has key "metadata§annotations§helm.sh/hook-delete-policy" with value "before-hook-creation"
+* Test Object has key "data§dummy" with Base64 encoded value of "Just another dummy text"
+
+* Set test object to "release-name-hull-test-custom-installation-files-3"
+* Test Object has key "metadata§annotations§helm.sh/hook" with value "pre-install,pre-upgrade"
+* Test Object has key "metadata§annotations§helm.sh/hook-weight" with value "-80"
+* Test Object has key "metadata§annotations§helm.sh/hook-delete-policy" with value "before-hook-creation"
+* Test Object has key "data§dummy" with Base64 encoded value of "Just another dummy text"
+
+* Set test object to "release-name-hull-test-custom-installation-files-4"
+* Test Object has key "metadata§annotations§helm.sh/hook" with value "pre-install,pre-upgrade"
+* Test Object has key "metadata§annotations§helm.sh/hook-weight" with value "-80"
+* Test Object has key "metadata§annotations§helm.sh/hook-delete-policy" with value "before-hook-creation"
+* Test Object has key "data§dummy" with Base64 encoded value of "Just another dummy text"
+
+* Set test object to "release-name-hull-test-custom-installation-files-5"
+* Test Object has key "metadata§annotations§helm.sh/hook" with value "pre-install,pre-upgrade"
+* Test Object has key "metadata§annotations§helm.sh/hook-weight" with value "-80"
+* Test Object has key "metadata§annotations§helm.sh/hook-delete-policy" with value "before-hook-creation"
+* Test Object has key "data§dummy" with Base64 encoded value of "Just another dummy text"
+
+* Set test object to "release-name-hull-test-custom-installation-files-6"
+* Test Object has key "metadata§annotations§helm.sh/hook" with value "pre-install,pre-upgrade"
+* Test Object has key "metadata§annotations§helm.sh/hook-weight" with value "-80"
+* Test Object has key "metadata§annotations§helm.sh/hook-delete-policy" with value "before-hook-creation"
+* Test Object has key "data§dummy" with Base64 encoded value of "Just another dummy text"
+
+* Set test object to "release-name-hull-test-custom-installation-files-7"
+* Test Object has key "metadata§annotations§helm.sh/hook" with value "pre-install,pre-upgrade"
+* Test Object has key "metadata§annotations§helm.sh/hook-weight" with value "-80"
+* Test Object has key "metadata§annotations§helm.sh/hook-delete-policy" with value "before-hook-creation"
+* Test Object has key "data§dummy" with Base64 encoded value of "Just another dummy text"
+
+* Set test object to "release-name-hull-test-custom-installation-files-8"
+* Test Object has key "metadata§annotations§helm.sh/hook" with value "pre-install,pre-upgrade"
+* Test Object has key "metadata§annotations§helm.sh/hook-weight" with value "-80"
+* Test Object has key "metadata§annotations§helm.sh/hook-delete-policy" with value "before-hook-creation"
+* Test Object has key "data§dummy" with Base64 encoded value of "Just another dummy text"
+
+* Set test object to "release-name-hull-test-custom-installation-files-9"
+* Test Object has key "metadata§annotations§helm.sh/hook" with value "pre-install,pre-upgrade"
+* Test Object has key "metadata§annotations§helm.sh/hook-weight" with value "-80"
+* Test Object has key "metadata§annotations§helm.sh/hook-delete-policy" with value "before-hook-creation"
+* Test Object has key "data§dummy" with Base64 encoded value of "Just another dummy text"
+
+* Set test object to "release-name-hull-test-custom-installation-files-10"
+* Test Object has key "metadata§annotations§helm.sh/hook" with value "pre-install,pre-upgrade"
+* Test Object has key "metadata§annotations§helm.sh/hook-weight" with value "-80"
+* Test Object has key "metadata§annotations§helm.sh/hook-delete-policy" with value "before-hook-creation"
+* Test Object has key "data§dummy" with Base64 encoded value of "Just another dummy text"
+
+* Set test object to "release-name-hull-test-authservice"
+* Test Object has key "metadata§annotations§helm.sh/hook" with value "pre-install,pre-upgrade"
+* Test Object has key "metadata§annotations§helm.sh/hook-weight" with value "-10"
+* Test Object has key "metadata§annotations§helm.sh/hook-delete-policy" with value "before-hook-creation"
+* Test Object has key "data§dummy" with Base64 encoded value of "Just another dummy text"
+
+* Set test object to "shared-cert"
+
+* Set test object to "release-name-hull-test-keycloak-user"
+* Test Object does not have key "metadata§annotations§helm.sh/hook"
+* Test Object does not have key "metadata§annotations§helm.sh/hook-weight"
+* Test Object does not have key "metadata§annotations§helm.sh/hook-delete-policy"
+* Test Object has key "data§KEYCLOAK_ADMIN" with Base64 encoded value of "admin"
+* Test Object has key "data§KEYCLOAK_ADMIN_PASSWORD" with Base64 encoded value of ""
+* Test Object has key "data§KEYCLOAK_MANAGEMENT_USER" with Base64 encoded value of "manager"
+* Test Object has key "data§KEYCLOAK_MANAGEMENT_PASSWORD" with Base64 encoded value of ""
+* Test Object has key "data§VIDISPINE_REALM_ADMIN" with Base64 encoded value of "admin"
+* Test Object has key "data§VIDISPINE_REALM_ADMIN_PASSWORD" with Base64 encoded value of ""
 ___
 
 * Clean the test execution folder
