@@ -201,10 +201,10 @@ selector:
 {{- if not (hasKey (index (index $parent.Values $hullRootKey).objects $lowerObjectType) $defaultTemplate) -}}
 {{- fail (printf "No object instance %s in hull.objects %s" $defaultTemplate $lowerObjectType) }}
 {{- end -}}
-{{- $defaultSpec = (merge (omit (index (index (index $parent.Values $hullRootKey).objects $lowerObjectType) $defaultTemplate) "enabled") $defaultSpec) -}}
+{{- $_ := (mergeOverwrite $defaultSpec (omit (deepCopy (index (index (index $parent.Values $hullRootKey).objects $lowerObjectType) $defaultTemplate)) "enabled")) -}}
 {{- end -}}
 {{- else -}}
-{{- $defaultSpec = (merge (index (index (index $parent.Values $hullRootKey).objects $lowerObjectType) "_HULL_OBJECT_TYPE_DEFAULT_") $defaultSpec) -}}
+{{- $_ := (mergeOverwrite $defaultSpec (deepCopy (index (index (index $parent.Values $hullRootKey).objects $lowerObjectType) "_HULL_OBJECT_TYPE_DEFAULT_"))) -}}
 {{- end -}}
 {{- end -}}
 {{ toYaml $defaultSpec }}
