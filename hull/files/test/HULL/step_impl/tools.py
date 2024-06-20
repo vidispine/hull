@@ -214,6 +214,7 @@ def set_test_object_to_of_kind(name, kind):
     assert name in data_store.scenario[objects_of_kind], f"Object with name {name} not found in objects of kind {kind}!"
     data_store.scenario.test_object = data_store.scenario[objects_of_kind][name]
     data_store.scenario.name = name
+    print(f"--> Test Object is now: {kind} {name}")
 
 
 @step("Set test object to <name>")
