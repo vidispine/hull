@@ -1,6 +1,7 @@
 # Changelog
 ------------------
-[1.30.4]
+[1.30.5]
 ------------------
 FIXES:
-- fixed unwanted fields being merged when using the `sources` feature. When adding multiple sources, the intermediate results were not only merged into the target object but were also added to the sources themselves permanently. If `_HULL_OBJECT_TYPE_DEFAULT_` is in the sources list, this could lead to unwanted fields merged back into object instances that did not have sources specified and only inherited from `_HULL_OBJECT_TYPE_DEFAULT_` implicitly.
+- fixed issue with using `_HT*` get transformation path syntax within `_HT!` tpl functions when there is an overlap in the paths of the `_HT*` expressions. Since expressions were resolved in order of appearance this could lead to unexpected results where parts of longer expressions were incorrectly overwritten. For example, having get expressions `_HT*hull.config.specific.path.api` and `_HT*hull.config.specific.path.api-user.password` could lead to `_HT*hull.config.specific.path.api` being resolved incorrectly in the latter expresison leaving `-user.password` as an invalid remainder. By sorting the found expressions by descending length instead of order of appearance, it is guaranteed that the longer paths are resolved correctly before any shorter paths that may have an overlap.
+- fixed rendering error in case a Secret or ConfigMap that was referred to via the `hashsumAnnotation` feature was set to `enabled: false`. Disabled ConfigMaps or Secrets are now ignored for the calculation of hashsums.

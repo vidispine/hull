@@ -122,29 +122,31 @@ annotations: {}
 {{ end }}
 {{ range $type,$dict := dict "secret" $secrets "configmap" $configmaps }}
   {{ range $key, $spec := index (index $parent.Values $hullRootKey).objects $type }}
-    {{ $fullName := include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "COMPONENT" $key) }}
-    {{ if (hasKey $dict $fullName) }}
-      {{ $objectDefault := fromYaml (include "hull.objects.defaults" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $type) ) -}}
-      {{ $objectSpec := include (printf "hull.object.%s" $type) (dict "PARENT_CONTEXT" $parent "SPEC" $spec "OBJECT_TYPE" $type "COMPONENT" $key "DEFAULT_COMPONENT" $objectDefault) | fromYaml }}
-      {{ if (hasKey (index $dict $objectSpec.metadata.name) "_ALL_") }}
-        {{ range $dataKey,$dataValue := $objectSpec.data }}
-          {{- $decodedValue := $dataValue -}}
-          {{- if eq $type "secret" -}}
-            {{- $decodedValue = b64dec $decodedValue -}}
-          {{- end -}}
-          {{ $annotations = merge $annotations (dict (printf "%s/%s" (printf "hashsum.%s.%s" $type $objectSpec.metadata.name | trunc 253) ($dataKey | trunc 63)) (sha256sum $decodedValue)) }}
+    {{ if (dig "enabled" true $spec) }}
+      {{ $fullName := include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "COMPONENT" $key) }}
+      {{ if (hasKey $dict $fullName) }}
+        {{ $objectDefault := fromYaml (include "hull.objects.defaults" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $type) ) -}}
+        {{ $objectSpec := include (printf "hull.object.%s" $type) (dict "PARENT_CONTEXT" $parent "SPEC" $spec "OBJECT_TYPE" $type "COMPONENT" $key "DEFAULT_COMPONENT" $objectDefault) | fromYaml }}
+        {{ if (hasKey (index $dict $objectSpec.metadata.name) "_ALL_") }}
+          {{ range $dataKey,$dataValue := $objectSpec.data }}
+            {{- $decodedValue := $dataValue -}}
+            {{- if eq $type "secret" -}}
+              {{- $decodedValue = b64dec $decodedValue -}}
+            {{- end -}}
+            {{ $annotations = merge $annotations (dict (printf "%s/%s" (printf "hashsum.%s.%s" $type $objectSpec.metadata.name | trunc 253) ($dataKey | trunc 63)) (sha256sum $decodedValue)) }}
+          {{ end }}
+        {{ else }}
+          {{ range $dataKey,$dataValue := (index $dict $objectSpec.metadata.name) }}
+            {{- $decodedValue := index $objectSpec.data $dataKey -}}
+            {{- if eq $type "secret" -}}
+              {{- $decodedValue = b64dec $decodedValue -}}
+            {{- end -}}
+            {{ $annotations = merge $annotations (dict (printf "%s/%s" (printf "hashsum.%s.%s" $type $objectSpec.metadata.name | trunc 253) ($dataKey | trunc 63)) (sha256sum $decodedValue)) }}  
+          {{ end }}
         {{ end }}
-      {{ else }}
-        {{ range $dataKey,$dataValue := (index $dict $objectSpec.metadata.name) }}
-          {{- $decodedValue := index $objectSpec.data $dataKey -}}
-          {{- if eq $type "secret" -}}
-            {{- $decodedValue = b64dec $decodedValue -}}
-          {{- end -}}
-          {{ $annotations = merge $annotations (dict (printf "%s/%s" (printf "hashsum.%s.%s" $type $objectSpec.metadata.name | trunc 253) ($dataKey | trunc 63)) (sha256sum $decodedValue)) }}  
-        {{ end }}
-      {{ end }}        
-    {{ end }}          
-  {{ end }}      
+      {{ end }}
+    {{ end }}
+  {{ end }}
 {{ end }}
 {{ end }}
 {{ toYaml $annotations }}

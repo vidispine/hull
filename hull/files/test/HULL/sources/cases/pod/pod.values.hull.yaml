@@ -6,6 +6,25 @@
 ### CONFIG
 hull:
   config:
+    general:
+      data:
+        endpoints:
+          opensearch-api-only:
+            uri:
+              api: "osendpoint"
+              apiInternal: ""
+          opensearch-none:
+            uri:
+              api: ""
+              apiInternal: ""
+          opensearch-internal-only:
+            uri:
+              api: ""
+              apiInternal: "osendpointintern"
+          solr:
+            uri:
+              api: solrendpoint
+              apiInternal: solrendpointintern
     specific:
       pullPolicy: IfNotPresent
       env_string: "this is some string used in testing"
@@ -139,7 +158,13 @@ hull:
             path: files/secret-three-path-two.txt
           secret-three-path-two.yaml:
             path: files/secret-three-path-two.yaml
-      
+      secret-disabled:
+        enabled: false
+        data:
+          secret-disabled.json:
+            inline: |-
+              { "key": "json for hash sum calculation of this secret-disabled.json" }
+
     configmap:
       configmap-one:
         data:
@@ -237,6 +262,13 @@ hull:
             path: files/configmap-three-path-two.txt
           configmap-three-path-two.yaml:
             path: files/configmap-three-path-two.yaml
+      configmap-disabled:
+        enabled: false
+        data:
+          configmap-disabled.json:
+            inline: |-
+              { "key": "json for hash sum calculation of this configmap-disabled.json" }
+
     registry:
 
       example-registry:
@@ -1403,6 +1435,44 @@ hull:
                     (_HT*hull.config.specific.hundred.its-98 | int) 
                     (_HT*hull.config.specific.hundred.its-99 | int) 
                     -}}
+                tpl_overlapping_paths_1:
+                  value: |
+                    _HT!
+                       {{- $index :=  default (default "" _HT*hull.config.general.data.endpoints.opensearch-api-only.uri.api) _HT*hull.config.general.data.endpoints.opensearch-api-only.uri.apiInternal -}}
+                       {{- if (ne $index "") -}}
+                       {{ $index }}
+                       {{- else -}}
+                       {{- $index =  default (default "" _HT*hull.config.general.data.endpoints.solr.uri.api) _HT*hull.config.general.data.endpoints.solr.uri.apiInternal -}}
+                       {{- if (ne $index "") -}}
+                       {{ $index }}
+                       {{- end -}}
+                       {{- end -}}
+                tpl_overlapping_paths_2:
+                  value: |-
+                    _HT!
+                       {{- $index :=  default (default "" _HT*hull.config.general.data.endpoints.opensearch-none.uri.api) _HT*hull.config.general.data.endpoints.opensearch-none.uri.apiInternal -}}
+                       {{- if (ne $index "") -}}
+                       {{ $index }}
+                       {{- else -}}
+                       {{- $index =  default (default "" _HT*hull.config.general.data.endpoints.opensearch-api-only.uri.api) _HT*hull.config.general.data.endpoints.opensearch-internal-only.uri.apiInternal -}}
+                       {{- if (ne $index "") -}}
+                       {{ $index }}
+                       {{- end -}}
+                       {{- end -}}
+                tpl_overlapping_paths_3:
+                  value: |
+                    _HT!
+                       {{- $index :=  default (default "" _HT*hull.config.general.data.endpoints.opensearch-none.uri.api) _HT*hull.config.general.data.endpoints.opensearch-none.uri.apiInternal -}}
+                       {{- if (ne $index "") -}}
+                       {{ $index }}
+                       {{- else -}}
+                       {{- $index =  default (default "" _HT*hull.config.general.data.endpoints.opensearch-internal-only.uri.api) _HT*hull.config.general.data.endpoints.opensearch-api-only.uri.apiInternal -}}
+                       {{- if (ne $index "") -}}
+                       {{- else -}}
+                       {{- $index =  default (default "" _HT*hull.config.general.data.endpoints.solr.uri.api) _HT*hull.config.general.data.endpoints.solr.uri.apiInternal -}}
+                       {{- end -}}
+                       {{ $index }}
+                       {{- end -}}
               volumeMounts:
                 test-math-bool-transformation-false:
                   readOnly: _HT?lt (add _HT*hull.config.specific.hundred.its-99 _HT*hull.config.specific.hundred.its-52) 150
@@ -1660,6 +1730,16 @@ hull:
                   mountPath: /three/subpath.json
                   subPath: configmap-three-inline-two.json
                   hashsumAnnotation: false
+            disabled-configmap:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              volumeMounts:
+                configmap-disabled.txt:
+                  name: configmap-disabled
+                  mountPath: /disabled/subpath.txt
+                  subPath: configmap-disabled.txt
+                  hashsumAnnotation: true
             one-secret:
               image:
                 repository: my/image/repo
@@ -1712,6 +1792,16 @@ hull:
                   mountPath: /three/subpath.json
                   subPath: secret-three-inline-two.json
                   hashsumAnnotation: false
+            disabled-secret:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              volumeMounts:
+                secret-disabled.txt:
+                  name: secret-disabled
+                  mountPath: /disabled/subpath.txt
+                  subPath: secret-disabled.txt
+                  hashsumAnnotation: true
           volumes:
             configmap-one:
               configMap:
@@ -1722,6 +1812,9 @@ hull:
             configmap-three:
               configMap:
                 name: configmap-three
+            configmap-disabled:
+              configMap:
+                name: configmap-disabled
             secret-one:
               secret:
                 secretName: secret-one
@@ -1731,6 +1824,9 @@ hull:
             secret-three:
               secret:
                 secretName: secret-three
+            secret-disabled:
+              configMap:
+                name: secret-disabled
             other:
               hostPath: 
                 path: /the_path_one
@@ -1931,6 +2027,26 @@ hull:
                       name: configmap-three
                       key: configmap-three-inline-two.json
                       hashsumAnnotation: false
+            disabled-configmap-envfrom:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              envFrom:
+                configmap-disabled:
+                  configMapRef:
+                    name: configmap-disabled
+                    hashsumAnnotation: true
+            disabled-configmap:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              env:
+                configmap-disabled.json:
+                  valueFrom:
+                    configMapKeyRef:
+                      name: configmap-disabled
+                      key: configmap-disabled.json
+                      hashsumAnnotation: true
             one-secret:
               image:
                 repository: my/image/repo
@@ -1991,7 +2107,27 @@ hull:
                       name: secret-three
                       key: secret-three-inline-two.json
                       hashsumAnnotation: false
-
+            disabled-secret-envfrom:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              envFrom:
+                secret-disabled:
+                  secretRef:
+                    name: secret-disabled
+                    hashsumAnnotation: true
+            disabled-secret:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              env:
+                secret-disabled.json:
+                  valueFrom:
+                    secretKeyRef:
+                      name: secret-disabled
+                      key: secret-disabled.json
+                      hashsumAnnotation: true
+          
       pod-partial-values:
         enabled: false
         pod: |-
