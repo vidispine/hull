@@ -308,7 +308,11 @@
 {{- end -}}
 {{- else -}}
 {{- if and (typeIs "string" $current) (not $current) }}
+{{- if $returnTemplateString -}}
+{{- $templateString -}}
+{{- else -}}
 {{ $key }}: ""
+{{- end -}}
 {{- else -}}
 {{- $convert := (include "hull.util.transformation.convert" (dict "SOURCE" $current "SERIALIZER" $serializer)) }}
 {{- if (ne $serializer "") -}}
@@ -385,7 +389,24 @@
 {{- $sourcePath := default list (index . "SOURCE_PATH") -}}
 {{- $hits := regexFindAll "_HT\\*([A-Za-z\\._\\-\\d\\|\\*§]+)" $content -1 -}}
 {{- $error := "" -}}
-{{- range $hit := $hits -}}
+{{- $sortedHits := list -}}
+{{- if (gt (len $hits) 0) -}}
+{{- range $i := $hits -}}
+{{- if (gt (len $hits) 0) -}}
+{{- $maxLength := -1 -}}
+{{- $maxLengthValue := -1 -}}
+{{- range $j := $hits -}}
+{{- if (gt (len $j) $maxLength) -}}
+{{- $maxLength = len $j -}}
+{{- $maxLengthValue = $j -}}
+{{- end -}}
+{{- end -}}
+{{- $sortedHits = append $sortedHits $maxLengthValue -}}
+{{- $hits = without $hits $maxLengthValue -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- range $hit := $sortedHits -}}
 {{- $rep := $hit | toString | replace "_HT*" "" -}}
 {{- $replacement := include "hull.util.transformation.get" (merge (dict "REFERENCE" $rep "SOURCE_PATH" $sourcePath "RETURN_TEMPLATE_STRING" true) $parent) }}
 {{- $errorMessage := include "hull.util.error.check" (dict "OBJECT" $replacement) -}}

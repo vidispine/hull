@@ -57,6 +57,13 @@ Combinations of hashsumAnotation set to true false, missing etc on multiple cont
 * Test Object does not have key "spec§template§metadata§annotations§hashsum.configmap.release-name-hull-test-configmap-three/configmap-three-inline-two.yaml"
 * Test Object does not have key "spec§template§metadata§annotations§hashsum.configmap.release-name-hull-test-configmap-three/configmap-three-path-two.yaml"
 
+Disabled configmap must be ignored
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§0§name" with value "configmap-disabled"
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§0§mountPath" with value "/disabled/subpath.txt"
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§0§subPath" with value "configmap-disabled.txt"
+* Test Object does not have key "spec§template§metadata§annotations§hashsum.configmap.release-name-hull-test-configmap-disabled/configmap-disabled.json"
+
+
 All from secret-one must be present
 * Test Object has key "spec§template§metadata§annotations§hashsum.secret.release-name-hull-test-secret-one/secret-one-inline-one.json" with value "65f7b1bb241ad152c2fe9815bf2f8f61117c172442131767038a8bea67cefbb4"
 * Test Object has key "spec§template§metadata§annotations§hashsum.secret.release-name-hull-test-secret-one/secret-one-path-one.json" with value "65f7b1bb241ad152c2fe9815bf2f8f61117c172442131767038a8bea67cefbb4"
@@ -98,6 +105,12 @@ Combinations of hashsumAnotation set to true false, missing etc on multiple cont
 * Test Object does not have key "spec§template§metadata§annotations§hashsum.secret.release-name-hull-test-secret-three/secret-three-path-two.txt"
 * Test Object does not have key "spec§template§metadata§annotations§hashsum.secret.release-name-hull-test-secret-three/secret-three-inline-two.yaml"
 * Test Object does not have key "spec§template§metadata§annotations§hashsum.secret.release-name-hull-test-secret-three/secret-three-path-two.yaml"
+
+Disabled secret must be ignored
+* Test Object has key "spec§template§spec§containers§1§volumeMounts§0§name" with value "secret-disabled"
+* Test Object has key "spec§template§spec§containers§1§volumeMounts§0§mountPath" with value "/disabled/subpath.txt"
+* Test Object has key "spec§template§spec§containers§1§volumeMounts§0§subPath" with value "secret-disabled.txt"
+* Test Object does not have key "spec§template§metadata§annotations§hashsum.secret.release-name-hull-test-secret-disabled/secret-disabled.json"
 
 * Set test object to "release-name-hull-test-hashing-pod-env"
 All from configmap-one must be present
@@ -142,6 +155,12 @@ Combinations of hashsumAnotation set to true false, missing etc on multiple cont
 * Test Object does not have key "spec§template§metadata§annotations§hashsum.configmap.release-name-hull-test-configmap-three/configmap-three-inline-two.yaml"
 * Test Object does not have key "spec§template§metadata§annotations§hashsum.configmap.release-name-hull-test-configmap-three/configmap-three-path-two.yaml"
 
+Disabled configmap must be ignored
+* Test Object has key "spec§template§spec§containers§0§env§0§valueFrom§configMapKeyRef§name" with value "release-name-hull-test-configmap-disabled"
+* Test Object has key "spec§template§spec§containers§0§env§0§valueFrom§configMapKeyRef§key" with value "configmap-disabled.json"
+* Test Object has key "spec§template§spec§containers§1§envFrom§0§configMapRef§name" with value "release-name-hull-test-configmap-disabled"
+* Test Object does not have key "spec§template§metadata§annotations§hashsum.configmap.release-name-hull-test-configmap-disabled/configmap-disabled.json"
+
 All from secret-one must be present
 * Test Object has key "spec§template§metadata§annotations§hashsum.secret.release-name-hull-test-secret-one/secret-one-inline-one.json" with value "65f7b1bb241ad152c2fe9815bf2f8f61117c172442131767038a8bea67cefbb4"
 * Test Object has key "spec§template§metadata§annotations§hashsum.secret.release-name-hull-test-secret-one/secret-one-path-one.json" with value "65f7b1bb241ad152c2fe9815bf2f8f61117c172442131767038a8bea67cefbb4"
@@ -184,7 +203,11 @@ Combinations of hashsumAnotation set to true false, missing etc on multiple cont
 * Test Object does not have key "spec§template§metadata§annotations§hashsum.secret.release-name-hull-test-secret-three/secret-three-inline-two.yaml"
 * Test Object does not have key "spec§template§metadata§annotations§hashsum.secret.release-name-hull-test-secret-three/secret-three-path-two.yaml"
 
-
+Disabled secret must be ignored
+* Test Object has key "spec§template§spec§containers§2§env§0§valueFrom§secretKeyRef§name" with value "release-name-hull-test-secret-disabled"
+* Test Object has key "spec§template§spec§containers§2§env§0§valueFrom§secretKeyRef§key" with value "secret-disabled.json"
+* Test Object has key "spec§template§spec§containers§3§envFrom§0§secretRef§name" with value "release-name-hull-test-secret-disabled"
+* Test Object does not have key "spec§template§metadata§annotations§hashsum.secret.release-name-hull-test-secret-disabled/secret-disabled.json"
 
 * Prepare default test case for this kind including suites "pod,noimagepullsecrets"
 * Lint and Render
@@ -575,34 +598,40 @@ Combinations of hashsumAnotation set to true false, missing etc on multiple cont
 * Test Object has key "spec§template§spec§containers§8§env§6§value" with value "1-2"
 * Test Object has key "spec§template§spec§containers§8§env§7§name" with value "tpl_get_transformation_deep_nesting"
 * Test Object has key "spec§template§spec§containers§8§env§7§value" with value "no! nono! found me!!!"
-* Test Object has key "spec§template§spec§containers§8§env§8§name" with value "tpl_raw_string"
-* Test Object has key "spec§template§spec§containers§8§env§8§value" with value of key "tpl_raw_string" from expected.yaml of suite "pod"
-* Test Object has key "spec§template§spec§containers§8§env§9§name" with value "tpl_raw_string_dashes"
-* Test Object has key "spec§template§spec§containers§8§env§9§value" with value of key "tpl_raw_string_dashes" from expected.yaml of suite "pod"
-* Test Object has key "spec§template§spec§containers§8§env§10§name" with value "tpl_raw_string_dashes_get"
-* Test Object has key "spec§template§spec§containers§8§env§10§value" with value "3"
-* Test Object has key "spec§template§spec§containers§8§env§11§name" with value "tpl_raw_string_dashes_index"
-* Test Object has key "spec§template§spec§containers§8§env§11§value" with value of key "tpl_raw_string_dashes_index" from expected.yaml of suite "pod"
-* Test Object has key "spec§template§spec§containers§8§env§12§name" with value "tpl_raw_string_dashes_index_get"
-* Test Object has key "spec§template§spec§containers§8§env§12§value" with value "3"
-* Test Object has key "spec§template§spec§containers§8§env§13§name" with value "tpl_raw_string_get"
-* Test Object has key "spec§template§spec§containers§8§env§13§value" with value "1"
-* Test Object has key "spec§template§spec§containers§8§env§14§name" with value "tpl_raw_string_root_access"
-* Test Object has key "spec§template§spec§containers§8§env§14§value" with value of key "tpl_raw_string_root_access" from expected.yaml of suite "pod"
-* Test Object has key "spec§template§spec§containers§8§env§15§name" with value "tpl_raw_string_root_access_get"
-* Test Object has key "spec§template§spec§containers§8§env§15§value" with value "release-name"
-* Test Object has key "spec§template§spec§containers§8§env§16§name" with value "tpl_string"
-* Test Object has key "spec§template§spec§containers§8§env§16§value" with value "1-2"
-* Test Object has key "spec§template§spec§containers§8§env§17§name" with value "tpl_wrap_math_bool_get_false"
-* Test Object has key "spec§template§spec§containers§8§env§17§value" with value "false"
-* Test Object has key "spec§template§spec§containers§8§env§18§name" with value "tpl_wrap_math_bool_get_true"
-* Test Object has key "spec§template§spec§containers§8§env§18§value" with value "true"
-* Test Object has key "spec§template§spec§containers§8§env§19§name" with value "tpl_wrap_raw_string"
-* Test Object has key "spec§template§spec§containers§8§env§19§value" with value of key "tpl_wrap_raw_string" from expected.yaml of suite "pod"
-* Test Object has key "spec§template§spec§containers§8§env§20§name" with value "tpl_wrap_raw_string_get"
-* Test Object has key "spec§template§spec§containers§8§env§20§value" with value "11"
-* Test Object has key "spec§template§spec§containers§8§env§21§name" with value "tpl_wrap_zero_to_ninetynine"
-* Test Object has key "spec§template§spec§containers§8§env§21§value" with value of key "tpl_wrap_zero_to_ninetynine" from expected.yaml of suite "pod"
+* Test Object has key "spec§template§spec§containers§8§env§8§name" with value "tpl_overlapping_paths_1"
+* Test Object has key "spec§template§spec§containers§8§env§8§value" with value "osendpoint"
+* Test Object has key "spec§template§spec§containers§8§env§9§name" with value "tpl_overlapping_paths_2"
+* Test Object has key "spec§template§spec§containers§8§env§9§value" with value "osendpointintern"
+* Test Object has key "spec§template§spec§containers§8§env§10§name" with value "tpl_overlapping_paths_3"
+* Test Object has key "spec§template§spec§containers§8§env§10§value" with value "solrendpointintern"
+* Test Object has key "spec§template§spec§containers§8§env§11§name" with value "tpl_raw_string"
+* Test Object has key "spec§template§spec§containers§8§env§11§value" with value of key "tpl_raw_string" from expected.yaml of suite "pod"
+* Test Object has key "spec§template§spec§containers§8§env§12§name" with value "tpl_raw_string_dashes"
+* Test Object has key "spec§template§spec§containers§8§env§12§value" with value of key "tpl_raw_string_dashes" from expected.yaml of suite "pod"
+* Test Object has key "spec§template§spec§containers§8§env§13§name" with value "tpl_raw_string_dashes_get"
+* Test Object has key "spec§template§spec§containers§8§env§13§value" with value "3"
+* Test Object has key "spec§template§spec§containers§8§env§14§name" with value "tpl_raw_string_dashes_index"
+* Test Object has key "spec§template§spec§containers§8§env§14§value" with value of key "tpl_raw_string_dashes_index" from expected.yaml of suite "pod"
+* Test Object has key "spec§template§spec§containers§8§env§15§name" with value "tpl_raw_string_dashes_index_get"
+* Test Object has key "spec§template§spec§containers§8§env§15§value" with value "3"
+* Test Object has key "spec§template§spec§containers§8§env§16§name" with value "tpl_raw_string_get"
+* Test Object has key "spec§template§spec§containers§8§env§16§value" with value "1"
+* Test Object has key "spec§template§spec§containers§8§env§17§name" with value "tpl_raw_string_root_access"
+* Test Object has key "spec§template§spec§containers§8§env§17§value" with value of key "tpl_raw_string_root_access" from expected.yaml of suite "pod"
+* Test Object has key "spec§template§spec§containers§8§env§18§name" with value "tpl_raw_string_root_access_get"
+* Test Object has key "spec§template§spec§containers§8§env§18§value" with value "release-name"
+* Test Object has key "spec§template§spec§containers§8§env§19§name" with value "tpl_string"
+* Test Object has key "spec§template§spec§containers§8§env§19§value" with value "1-2"
+* Test Object has key "spec§template§spec§containers§8§env§20§name" with value "tpl_wrap_math_bool_get_false"
+* Test Object has key "spec§template§spec§containers§8§env§20§value" with value "false"
+* Test Object has key "spec§template§spec§containers§8§env§21§name" with value "tpl_wrap_math_bool_get_true"
+* Test Object has key "spec§template§spec§containers§8§env§21§value" with value "true"
+* Test Object has key "spec§template§spec§containers§8§env§22§name" with value "tpl_wrap_raw_string"
+* Test Object has key "spec§template§spec§containers§8§env§22§value" with value of key "tpl_wrap_raw_string" from expected.yaml of suite "pod"
+* Test Object has key "spec§template§spec§containers§8§env§23§name" with value "tpl_wrap_raw_string_get"
+* Test Object has key "spec§template§spec§containers§8§env§23§value" with value "11"
+* Test Object has key "spec§template§spec§containers§8§env§24§name" with value "tpl_wrap_zero_to_ninetynine"
+* Test Object has key "spec§template§spec§containers§8§env§24§value" with value of key "tpl_wrap_zero_to_ninetynine" from expected.yaml of suite "pod"
 * Test Object has key "spec§template§spec§containers§8§command" with array value that has "2" items
 * Test Object has key "spec§template§spec§containers§8§command§0" with value "command-one"
 * Test Object has key "spec§template§spec§containers§8§command§1" with value "command-two"
@@ -611,8 +640,8 @@ Combinations of hashsumAnotation set to true false, missing etc on multiple cont
 * Test Object has key "spec§template§spec§containers§8§ports§1§name" with value "second"
 * Test Object has key "spec§template§spec§containers§8§ports§1§containerPort" with integer value "2"
 
-* Fail to render the templates for values file "values_tpl_get_broken_references.values.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element not_existing in path hull.config.specific.not_existing was not found]\\n[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element also_not_existing in path hull.config.specific.also_not_existing was not found]"
-
+* Fail to render the templates for values file "values_tpl_get_broken_references.values.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element not_existing in path hull.config.specific.not_existing was not found]"
+* Fail to render the templates for values file "values_tpl_get_broken_references.values.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element also_not_existing in path hull.config.specific.also_not_existing was not found]"
 
 * Set test object to "release-name-hull-test-complex-gets"
 
