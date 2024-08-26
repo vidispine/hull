@@ -12394,7 +12394,8 @@
         {
           "type": "object"
         }
-      ]
+      ],
+      "additionalProperties": false
     },
     "io.k8s.api.core.v1.LimitRangeList": {
       "description": "LimitRangeList is a list of LimitRange items.",
@@ -12479,8 +12480,7 @@
         {
           "type": "object"
         }
-      ],
-      "additionalProperties": false
+      ]
     },
     "io.k8s.api.core.v1.LinuxContainerUser": {
       "description": "LinuxContainerUser represents user identity information in Linux containers",
