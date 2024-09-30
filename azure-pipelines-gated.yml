@@ -39,6 +39,12 @@ jobs:
       Helm_3_15_4_multi: 
         HelmVersion: "3.15.4"
         TestType: multi
+      Helm_3_15_4_single: 
+        HelmVersion: "3.16.1"
+        TestType: single
+      Helm_3_15_4_multi: 
+        HelmVersion: "3.16.1"
+        TestType: multi
   steps:
   - template: azure-pipelines-test.yml  # Template reference
     parameters:

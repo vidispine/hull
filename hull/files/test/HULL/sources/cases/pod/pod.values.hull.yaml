@@ -1473,6 +1473,163 @@ hull:
                        {{- end -}}
                        {{ $index }}
                        {{- end -}}
+                tpl_include_in_tpl_transformation_simple:
+                  value: |
+                    _HT!
+                      {{- $name := _HT/hull.metadata.name:COMPONENT:"tpl-transformation-include"/TH_ -}}
+                      {{ $name }}
+                tpl_include_in_tpl_transformation_many:
+                  value: |
+                    _HT!
+                      {{- $noarg := _HT/hull.metadata.chartref/TH_ -}}
+                      {{- $onearg := _HT/hull.metadata.name:COMPONENT:"one-arg-include"/TH_ -}}
+                      {{- $twoarg := _HT/hull.util.error.message:ERROR_TYPE:"dummy_error_type":"ERROR_MESSAGE":"dummy_error_message"/TH_ -}}
+                      {{ printf "%s !! %s !!! %s !!!!" $noarg $onearg $twoarg }}
+                tpl_include_in_tpl_transformation_mixed_with_get:
+                  value: |-
+                    _HT!
+                      {{- _HT*hull.config.specific.hundred.its-00 -}}
+                      {{- _HT/hull.metadata.chartref/TH_ -}}
+                      {{- _HT*hull.config.specific.hundred.its-33 -}}
+                      {{- _HT/hull.metadata.name:COMPONENT:"one-arg-include"/TH_ -}}
+                      {{- _HT*hull.config.specific.hundred.its-66 -}}
+                      {{- _HT/hull.util.error.message:ERROR_TYPE:"dummy_error_type":"ERROR_MESSAGE":"dummy_error_message"/TH_ -}}
+                      {{- _HT*hull.config.specific.hundred.its-99 -}}
+                      -split-
+                      {{- printf "%s is the chart reference value" _HT/hull.metadata.chartref/TH_ }}
+                                            
+                tpl_include_in_tpl_transformation_mixed_with_get_raw:
+                  value: |-
+                    _HT!
+                      _HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-00":RETURN_TEMPLATE_STRING:true/TH_
+                      _HT/hull.util.transformation.include:CONTENT:"hull.metadata.chartref":RETURN_TEMPLATE_STRING:true/TH_
+                      _HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-33":RETURN_TEMPLATE_STRING:true/TH_
+                      _HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-66":RETURN_TEMPLATE_STRING:true/TH_
+                      _HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-99":RETURN_TEMPLATE_STRING:true/TH_
+                tpl_include_in_tpl_transformation_hundred:
+                  value: |-
+                    _HT!{{- 
+                      printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-00":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-01":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-02":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-03":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-04":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-05":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-06":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-07":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-08":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-09":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                    -}}{{- 
+                      printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-10":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-11":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-12":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-13":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-14":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-15":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-16":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-17":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-18":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-19":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                    -}}{{- 
+                      printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-20":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-21":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-22":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-23":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-24":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-25":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-26":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-27":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-28":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-29":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                    -}}{{- 
+                      printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-30":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-31":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-32":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-33":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-34":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-35":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-36":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-37":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-38":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-39":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                    -}}{{- 
+                      printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-40":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-41":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-42":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-43":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-44":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-45":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-46":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-47":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-48":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-49":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                    -}}{{- 
+                      printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-50":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-51":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-52":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-53":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-54":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-55":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-56":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-57":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-58":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-59":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                    -}}{{- 
+                      printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-60":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-61":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-62":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-63":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-64":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-65":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-66":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-67":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-68":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-69":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                    -}}{{- 
+                      printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-70":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-71":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-72":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-73":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-74":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-75":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-76":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-77":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-78":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-79":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                    -}}{{- 
+                      printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-" 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-80":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-81":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-82":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-83":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-84":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-85":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-86":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-87":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-88":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-89":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                    -}}{{- 
+                      printf "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d" 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-90":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-91":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-92":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-93":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-94":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-95":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-96":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-97":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-98":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                      ((index (_HT/hull.util.transformation.get:REFERENCE:"hull.config.specific.hundred.its-99":KEY:"key"/TH_ | fromYaml) "key") | int) 
+                    -}}
+
               volumeMounts:
                 test-math-bool-transformation-false:
                   readOnly: _HT?lt (add _HT*hull.config.specific.hundred.its-99 _HT*hull.config.specific.hundred.its-52) 150
