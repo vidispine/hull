@@ -1,0 +1,332 @@
+# Default values for VidiStream.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+# - provides default values where applicable
+
+# Configuration of chart should be done via the hull subchart
+hull:
+  config:
+    general:
+      data:
+        endpoints:
+          vidicore:
+            uri:
+              api: ""
+          authservice:
+            uri:
+              api: ""
+            auth:
+              token:
+                installationClientId: ""
+                installationClientSecret: ""
+                productClientId: ""
+                productClientSecret: ""
+          configportal:
+            uri:
+              api: ""
+              apiInternal: ""
+              notification: ""
+            auth:
+              token:
+                installationClientId: ""
+                installationClientSecret: ""
+          vidistream:
+            uri:
+              httpStream: ""
+              httpStreamMetrics: ""
+              httpRender: ""
+              httpRenderMetrics: ""
+              httpTrickplay: ""
+              httpTrickplayMetrics: ""
+              httpFile: ""
+    specific:
+      ingress:
+        # Connect ingress to controller via IngressClass
+        controllerClass: haproxy-ingress.github.io/controller
+      images:
+        vidistream:
+          repository: videoengine/vidistream
+          tag: _HT!{{ (index . "$").Chart.Version }}
+      allowOrigins: []
+      components:
+        vidistream:
+          custom:
+            ports:
+              http: 4531
+              tcp: 4532
+          auth:
+            clientId: mediaframework
+            clientSecret: ""
+        stream:
+          replicas: 1
+        render: 
+          replicas: 0
+        trickplay:
+          replicas: 0
+
+  objects:
+
+    # Define all services to be created
+    service:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        ports:
+          http-dash:
+            port: _HT*hull.config.specific.components.vidistream.custom.ports.http
+            targetPort: 4531
+          monitor:
+            port: 80
+          metrics:
+            port: 9100
+          agent-check:
+            port: 4567
+        selector:
+          app.kubernetes.io/instance: _HT**Release.Name
+          app.kubernetes.io/name: _HT/hull.metadata.name:NAMEPREFIX:"":COMPONENT:""
+
+      stream:
+        ports:
+          tcp:
+            port: _HT*hull.config.specific.components.vidistream.custom.ports.tcp
+            targetPort: 4532
+        selector:
+          app.kubernetes.io/component: stream
+      render:
+        selector:
+          app.kubernetes.io/component: |-
+            _HT!
+              {{ if (ge (int (index . "$").Values.hull.config.specific.components.render.replicas) 1) }}
+              render
+              {{ else }}
+              stream
+              {{ end }}
+      trickplay:
+        selector:
+          app.kubernetes.io/component: |-
+            _HT!
+              {{ if (ge (int (index . "$").Values.hull.config.specific.components.trickplay.replicas) 1) }}
+              trickplay
+              {{ else }}
+              stream
+              {{ end }}
+      file:
+        selector:
+          app.kubernetes.io/component: |-
+            _HT!
+              {{ if (ge (int (index . "$").Values.hull.config.specific.components.render.replicas) 1) }}
+              render
+              {{ else }}
+              stream
+              {{ end }}
+
+    configmap:
+      vidistream:
+        data: _HT/hull.vidispine.addon.library.component.configmap.data:COMPONENT:"vidistream"
+      
+    deployment:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        pod:
+          containers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              image:
+                repository: _HT*hull.config.specific.images.vidistream.repository
+                tag: _HT*hull.config.specific.images.vidistream.tag
+              command:
+              - "/bin/bash"
+              args:
+              - "entrypoint.sh"
+              env:
+                CONFIGSERVICE_API_URI:
+                  value: _HT*hull.config.general.data.endpoints.configportal.uri.api
+                NOTIFICATION_API_URI:
+                  value: _HT*hull.config.general.data.endpoints.configportal.uri.notification
+                AUTH_API_URI:
+                  value: _HT*hull.config.general.data.endpoints.authservice.uri.api
+                ALLOW_ORIGIN: 
+                  value: |-
+                    _HT!
+                      [
+                        {{ if (kindIs "string" (index . "$").Values.hull.config.specific.allowOrigins) }}
+                        "{{ (index . "$").Values.hull.config.specific.allowOrigins }}"
+                        {{ else }}
+                        {{ range $origin := (index . "$").Values.hull.config.specific.allowOrigins }}
+                        "{{ $origin | trim }}",
+                        {{ end }}
+                        {{ end }}
+                      ]
+                'PODINFO_CPU_REQUEST':
+                  valueFrom:
+                    resourceFieldRef:
+                      resource: requests.cpu
+                'PODINFO_CPU_LIMIT':
+                  valueFrom:
+                    resourceFieldRef:
+                      resource: limits.cpu
+                'PODINFO_MEMORY_REQUEST':
+                  valueFrom:
+                    resourceFieldRef:
+                      resource: requests.memory
+                'PODINFO_MEMORY_LIMIT':
+                  valueFrom:
+                    resourceFieldRef:
+                      resource: limits.memory
+              ports:
+                http-dash:
+                  containerPort: 4531
+                  protocol: TCP
+                monitor:
+                  containerPort: 80
+                  protocol: TCP
+                metrics:
+                  containerPort: 9100
+                  protocol: TCP
+                agent-check:
+                  containerPort: 4567
+                  protocol: TCP
+              livenessProbe:
+                httpGet:
+                  path: /dash/getversion
+                  port: http-dash
+              readinessProbe:
+                httpGet:
+                  path: /dash/getversion
+                  port: http-dash
+              volumeMounts:
+                entrypoint:
+                  name: configmap
+                  mountPath: '/app/entrypoint.sh'
+                  subPath: 'entrypoint.sh'
+                etcssl:
+                  enabled: _HT?(index . "$").Values.hull.config.general.data.installation.config.customCaCertificates
+                  name: etcssl
+                  mountPath: '/etc/ssl/certs'
+                _HULL_TRANSFORMATION_:
+                  NAME: hull.util.transformation.tpl
+                  CONTENT: |-
+                    {
+                      {{ range $certkey, $certvalue := (index . "$").Values.hull.config.general.data.installation.config.customCaCertificates}}
+                      "custom-ca-certificates-{{ $certkey }}": 
+                        {
+                          enabled: true, 
+                          name: "certs",
+                          mountPath: "/usr/local/share/ca-certificates/custom-ca-certificates-{{ $certkey }}",
+                          subPath: "{{ $certkey }}",
+                          hashsumAnnotation: true
+                        },
+                      {{ end }}
+                    }
+
+      stream:
+        enabled: _HT?gt (int (index (index . "$").Values.hull.config.specific.components (index . "OBJECT_INSTANCE_KEY")).replicas) 0
+        replicas: _HT*hull.config.specific.components.§OBJECT_INSTANCE_KEY§.replicas
+        pod:
+          containers:
+            vidistream:
+              ports:
+                tcp:
+                  containerPort: 4532
+                  protocol: TCP
+          volumes: _HT/hull.vidispine.addon.library.component.pod.volumes:COMPONENT:"vidistream"
+
+      render:
+        enabled: _HT?gt (int (index (index . "$").Values.hull.config.specific.components (index . "OBJECT_INSTANCE_KEY")).replicas) 0
+        replicas: _HT*hull.config.specific.components.§OBJECT_INSTANCE_KEY§.replicas
+        pod:
+          containers:
+            vidistream:
+              ports: {}
+          volumes: _HT/hull.vidispine.addon.library.component.pod.volumes:COMPONENT:"vidistream"
+
+      trickplay:
+        enabled: _HT?gt (int (index (index . "$").Values.hull.config.specific.components (index . "OBJECT_INSTANCE_KEY")).replicas) 0
+        replicas: _HT*hull.config.specific.components.§OBJECT_INSTANCE_KEY§.replicas
+        pod:
+          containers:
+            vidistream:
+              ports: {}
+          volumes: _HT/hull.vidispine.addon.library.component.pod.volumes:COMPONENT:"vidistream"
+
+    ingressclass:
+      vidistream:
+        controller: _HT*hull.config.specific.ingress.controllerClass
+
+    ingress:
+      
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations:
+          ingress.kubernetes.io/balance-algorithm: "uri depth 3"
+          ingress.kubernetes.io/backend-server-naming: pod
+          ingress.kubernetes.io/use-haproxy-user: 'true'
+          ingress.kubernetes.io/health-check-interval: nil
+        ingressClassName: _HT^vidistream
+      
+      vidistream:
+        enabled: false
+        annotations:
+          ingress.kubernetes.io/rewrite-target: /dash
+          ingress.kubernetes.io/config-backend: |
+            no option http-keep-alive
+            hash-type consistent
+            hash-balance-factor 150
+            http-response add-header X-App-Server %b/%s
+
+      metrics:
+        enabled: false
+        annotations:
+          ingress.kubernetes.io/rewrite-target: /streaming/metrics
+          
+      stream:
+        sources:
+        - _HULL_OBJECT_TYPE_DEFAULT_
+        - vidistream
+        rules: _HT/hull.vidispine.addon.library.component.ingress.rules:ENDPOINT:"vidistream":COMPONENTS:"http-stream":SERVICENAME:"stream":PORTNAME:"http-dash"
+
+      streammetrics:
+        sources:
+        - _HULL_OBJECT_TYPE_DEFAULT_
+        - metrics
+        rules: _HT/hull.vidispine.addon.library.component.ingress.rules:ENDPOINT:"vidistream":COMPONENTS:"http-stream-metrics":SERVICENAME:"stream":PORTNAME:"metrics":PATHTYPE:"Prefix"
+
+      render:
+        sources:
+        - _HULL_OBJECT_TYPE_DEFAULT_
+        - vidistream
+        rules: _HT/hull.vidispine.addon.library.component.ingress.rules:ENDPOINT:"vidistream":COMPONENTS:"http-render":SERVICENAME:"render":PORTNAME:"http-dash"
+
+      rendermetrics:
+        sources:
+        - _HULL_OBJECT_TYPE_DEFAULT_
+        - metrics
+        rules: _HT/hull.vidispine.addon.library.component.ingress.rules:ENDPOINT:"vidistream":COMPONENTS:"http-render-metrics":SERVICENAME:"render":PORTNAME:"metrics":PATHTYPE:"Prefix"
+
+      trickplay:
+        annotations:
+          ingress.kubernetes.io/rewrite-target: /trickplay/v1
+        sources:
+        - _HULL_OBJECT_TYPE_DEFAULT_
+        - vidistream
+        rules: _HT/hull.vidispine.addon.library.component.ingress.rules:ENDPOINT:"vidistream":COMPONENTS:"http-trickplay":SERVICENAME:"trickplay":PORTNAME:"http-dash"
+
+      trickplaymetrics:
+        sources:
+        - _HULL_OBJECT_TYPE_DEFAULT_
+        - metrics
+        rules: _HT/hull.vidispine.addon.library.component.ingress.rules:ENDPOINT:"vidistream":COMPONENTS:"http-trickplay-metrics":SERVICENAME:"trickplay":PORTNAME:"metrics":PATHTYPE:"Prefix"
+
+      file:
+        annotations:
+          ingress.kubernetes.io/rewrite-target: /file
+        sources:
+        - _HULL_OBJECT_TYPE_DEFAULT_
+        - vidistream
+        rules: _HT/hull.vidispine.addon.library.component.ingress.rules:ENDPOINT:"vidistream":COMPONENTS:"http-file":SERVICENAME:"file":PORTNAME:"http-dash":PATHTYPE:"Prefix"
+
+    servicemonitor:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        endpoints:
+        - path: /streaming/metrics
+          port: metrics
+      vidistream:
+        selector: 
+          matchLabels: 
+            app.kubernetes.io/name: vidistream
+            app.kubernetes.io/instance: vidistream

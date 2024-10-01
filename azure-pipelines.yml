@@ -73,6 +73,48 @@ jobs:
       Helm_3_14_4_multi: 
         HelmVersion: "3.14.4"  
         TestType: multi
+      Helm_3_15_0_single: 
+        HelmVersion: "3.15.0"  
+        TestType: single
+      Helm_3_15_0_multi: 
+        HelmVersion: "3.15.0"  
+        TestType: multi
+      Helm_3_15_1_single: 
+        HelmVersion: "3.15.1"
+        TestType: single
+      Helm_3_15_1_multi: 
+        HelmVersion: "3.15.1"
+        TestType: multi
+      Helm_3_15_2_single: 
+        HelmVersion: "3.15.2"
+        TestType: single
+      Helm_3_15_2_multi: 
+        HelmVersion: "3.15.2"
+        TestType: multi
+      Helm_3_15_3_single: 
+        HelmVersion: "3.15.3"
+        TestType: single
+      Helm_3_15_3_multi: 
+        HelmVersion: "3.15.3"
+        TestType: multi
+      Helm_3_15_4_single: 
+        HelmVersion: "3.15.4"
+        TestType: single
+      Helm_3_15_4_multi: 
+        HelmVersion: "3.15.4"
+        TestType: multi
+      Helm_3_16_0_single: 
+        HelmVersion: "3.16.0"
+        TestType: single
+      Helm_3_16_0_multi: 
+        HelmVersion: "3.16.0"
+        TestType: multi
+      Helm_3_16_1_single: 
+        HelmVersion: "3.16.1"
+        TestType: single
+      Helm_3_16_1_multi: 
+        HelmVersion: "3.16.1"
+        TestType: multi
   steps:
   - template: azure-pipelines-test.yml  # Template reference
     parameters:

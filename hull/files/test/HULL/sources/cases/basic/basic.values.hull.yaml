@@ -665,3 +665,9 @@ hull:
       no-annotations:
         enabled: true
         annotations: {}
+
+      namespace-override:
+        annotations:
+          some: annotation
+        namespaceOverride: "different-namespace"
+      

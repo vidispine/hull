@@ -75,7 +75,7 @@ hull:
       metadata-overwrite:
         pod:
           containers: {}
-        
+
       image-name-empty-registry:
         pod:
           containers: 

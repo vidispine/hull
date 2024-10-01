@@ -5,7 +5,7 @@
 
 Namespace must be set and overriden
 
-* All test objects have key "metadata§namespace" with value "a-namespace-to-render"
+* All test objects have key "metadata§namespace" with value "a-namespace-to-render" except objects "release-name-hull-test-namespace-override"
 
 * Prepare default test case for this kind including suites "namingoverride,globalmetadata,objecttypemetadata"
 * Lint and Render
@@ -78,7 +78,7 @@ Run namespace set via argument test
 
 * Prepare default test case for this kind including suites "globalmetadata,objecttypemetadata"
 * Lint and Render to namespace "namespace-provided-as-arg"
-* All test objects have key "metadata§namespace" with value "namespace-provided-as-arg"
+* All test objects have key "metadata§namespace" with value "namespace-provided-as-arg" except objects "release-name-hull-test-namespace-override"
 
 
 
@@ -89,7 +89,7 @@ Run non-name override tests
 
 Namespace must be set to default
 
-* All test objects have key "metadata§namespace" with value "default"
+* All test objects have key "metadata§namespace" with value "default" except objects "release-name-hull-test-namespace-override"
 
 General label section must be populated
 
@@ -482,6 +482,14 @@ Test get transformation on array item
 * Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-sublist-0" with value "inner_1"
 * Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-sublist-1" with value "inner_2"
 * Test Object has key "metadata§annotations§test-get-transformation-mixed-index-subdict-sublist-2" with value "inner_3"
+
+Test namespace override
+
+* Set test object to "release-name-hull-test-namespace-override"
+
+* Test Object has key "metadata§namespace" with value "different-namespace"
+
+* Fail to render the templates for values file "failonemptynamespaceoverride.values.hull.yaml" to test execution folder because error contains "[HULL failed with error MISSING-NAMESPACE-OVERRIDE: namespaceOverride for ClusterRole empty-namespace-override cannot be empty]"
 
 Test annotation rendering
 
