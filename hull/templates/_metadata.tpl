@@ -19,7 +19,7 @@ metadata:
 {{ end }}
 {{ if (hasKey $spec "namespaceOverride") }}
 {{ if (eq $spec.namespaceOverride "") }}
-{{ $details := printf "namespaceOverride for %s %s cannot be empty" (index . "OBJECT_TYPE") (index . "OBJECT_INSTANCE_KEY") }}
+{{ $details := printf "namespaceOverride for %s %s cannot be empty" ((index . "OBJECT_TYPE") | lower) (index . "OBJECT_INSTANCE_KEY") }}
   namespace: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-NAMESPACE-OVERRIDE" "ERROR_MESSAGE" $details) }}
 {{ else }}
   namespace: {{ $spec.namespaceOverride }}

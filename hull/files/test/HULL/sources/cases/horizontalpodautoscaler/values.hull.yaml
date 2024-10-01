@@ -213,4 +213,10 @@ hull:
           name: metadata-overwrite
           kind: "Deployment"
         maxReplicas: 3
+
+      namespace-override:
+        scaleTargetRef:
+          name: metadata-overwrite
+          kind: "Deployment"
+        maxReplicas: 3
 ###################################################

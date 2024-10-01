@@ -168,6 +168,7 @@ def fail_to_render_the_templates_to_namespace_namespace_for_values_file_to_TEST_
 @step("Fail to render the templates for test case <case> and chart <chart> and values file <values_file> to test execution folder and namespace <namespace> because error contains <expected_error>")
 def fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_and_values_file(case, chart, values_file, namespace, expected_error):
     result = render_chart(case, chart, values_file, namespace)
+    expected_error = expected_error.replace(PLACEHOLDER_OBJECT_TYPE, case)
     if result.returncode != 0 and expected_error in str(result.stdout):
         assert True
     else:
@@ -241,7 +242,7 @@ def test_object_does_not_exist(name):
 def test_object_has_key_with_array_value_that_has_items(key, value):
     assert data_store.scenario.test_object != None
     if isinstance(data_store.scenario.test_object[key], list): 
-        assert_values_equal(len(data_store.scenario.test_object[key]), int(value), key)
+        assert_values_equal(len(data_store.scenario.test_object[key]), int(value), data_store.scenario.case.lower(), key)
     else:
         assert False
 
@@ -252,7 +253,7 @@ def test_object_has_key_with_dictionary_value_that_has_items(key, value):
         for key in data_store.scenario.test_object[key].keys():            
             print(f'Found key: {key}')
             
-        assert_values_equal(len(data_store.scenario.test_object[key].keys()), int(value), key)
+        assert_values_equal(len(data_store.scenario.test_object[key].keys()), int(value), data_store.scenario.case.lower(),  key)
     else:
         assert False
 
@@ -265,7 +266,7 @@ def test_object_has_key_with_map_value_that_has_non_empty_items(key, value):
             print(f'Found key: {key}')
             if not dictionary[key]:
                 assert False, f"Key '{key}' has an empty value!"
-        assert_values_equal(len(dictionary.keys()), int(value), key)
+        assert_values_equal(len(dictionary.keys()), int(value), data_store.scenario.case.lower(), key)
     else:
         assert False
 
@@ -284,7 +285,7 @@ def test_object_has_key_with_list_value_that_has_count_greater(key, value):
 def test_object_has_key_with_value(key, value):
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
-    assert_values_equal(data_store.scenario.test_object[key], value, key)
+    assert_values_equal(data_store.scenario.test_object[key], value, data_store.scenario.case.lower(), key)
 
 @step("Test Object has key <key> with value of key <expectedkey> from expected.yaml")
 def test_object_has_key_with_value_of_key_from_expected_yaml(key, expectedkey):
@@ -298,7 +299,7 @@ def test_object_has_key_with_value_of_key_from_expected_yaml_of_suite(key, expec
     assert 'expected' in  data_store.scenario, f"No expected entries found in Test Scenario"
     assert suite in data_store.scenario.expected, f"Suite {suite} not found in expected.yaml!"
     assert expectedkey in data_store.scenario.expected[suite], f"Expected Key {expectedkey} not found in Suite {suite} in expected.yaml!"
-    assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.expected[suite][expectedkey], key)
+    assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.expected[suite][expectedkey], data_store.scenario.case.lower(), key)
 
 @step("Test Object has key <key> with Base64 encoded value of key <expectedkey> from expected.yaml of suite <suite>")
 def test_object_has_key_with_base64_encoded_value_of_key_from_expected_yaml_of_suite(key, expectedkey, suite):
@@ -306,25 +307,25 @@ def test_object_has_key_with_base64_encoded_value_of_key_from_expected_yaml_of_s
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     decoded = base64.b64decode(data_store.scenario.test_object[key]).decode()
     assert_values_equal(
-        data_store.scenario.expected[suite][expectedkey], decoded, key)
+        data_store.scenario.expected[suite][expectedkey], decoded, data_store.scenario.case.lower(), key)
 
 @step("Test Object has key <key> with value equaling object type")
 def test_object_has_key_with_value_equaling_object_type(key):
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
-    assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.case.lower(), key)
+    assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.case.lower(), data_store.scenario.case.lower(), key)
 
 @step("Test Object has key <key> with value equaling object instance name")
 def test_object_has_key_with_value_equaling_object_instance_name(key):
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
-    assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.name, key)
+    assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.name, data_store.scenario.case.lower(), key)
 
 @step("Test Object has key <key> with value equaling object instance key")
 def test_object_has_key_with_value_equaling_object_instance_key(key):
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
-    assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.name.removeprefix("release-name-hull-test-"), key)
+    assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.name.removeprefix("release-name-hull-test-"), data_store.scenario.case.lower(), key)
 
 @step("Test Object has key <key> with value matching regex <regex>")
 def test_object_has_key_with_value_matching_regex(key, regex):
@@ -373,20 +374,20 @@ def test_object_does_not_have_key(key):
 def test_object_has_key_with_integer_value(key, value):
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
-    assert_values_equal(data_store.scenario.test_object[key], int(value), key)
+    assert_values_equal(data_store.scenario.test_object[key], int(value), data_store.scenario.case.lower(), key)
 
 @step("Test Object has key <key> with null value")
 def test_object_has_key_with_null_value(key):
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
-    assert_values_equal(data_store.scenario.test_object[key], None, key)
+    assert_values_equal(data_store.scenario.test_object[key], None, data_store.scenario.case.lower(), key)
 
 @step("Test Object has key <key> with Base64 encoded value of <value>")
 def test_object_has_key_with_base64_encoded_value(key, value):
     assert data_store.scenario.test_object != None
     decoded = base64.b64decode(data_store.scenario.test_object[key]).decode()
     assert_values_equal(
-        value, decoded, key)
+        value, decoded, data_store.scenario.case.lower(), key)
     
 @step("Test Object has key <key> with value <value> of key <scenario_key> from scenario data_store")
 def test_object_has_key_with_value_of_key_from_scenario_data_store(key, scenario_key):
@@ -403,11 +404,11 @@ def load_from_serialized_value(key, serialization):
 
 @step("Test Object has key <key> containing serialized <serialization> having key <serialized_key> with value <serialized_value>")
 def test_object_has_key_containing_serialized_having_key_with_value(key, serialization, serialized_key, serialized_value):
-    assert_values_equal(load_from_serialized_value(key, serialization)[serialized_key],serialized_value, serialized_key)
+    assert_values_equal(load_from_serialized_value(key, serialization)[serialized_key],serialized_value, data_store.scenario.case.lower(), serialized_key)
 
 @step("Test Object has key <key> containing serialized <serialization> having key <serialized_key> with integer value <serialized_value>")
 def test_object_has_key_containing_serialized_having_key_with_value(key, serialization, serialized_key, serialized_value):
-    assert_values_equal(load_from_serialized_value(key, serialization)[serialized_key],int(serialized_value), serialized_key)
+    assert_values_equal(load_from_serialized_value(key, serialization)[serialized_key],int(serialized_value), data_store.scenario.case.lower(), serialized_key)
 
 @step("All test objects have key <key> with value <value>")
 def all_test_objects_have_key_with_value(key, value):
@@ -490,7 +491,7 @@ def validate_test_object_against_json_schema(test_object):
 
 ### non-steps
 
-def assert_values_equal(actual, expected, key=None):
+def assert_values_equal(actual, expected, object_type, object_key):
     if expected != actual:
         stop_debug = ""
     if (type(expected) == str and type(actual) == str ):
@@ -498,10 +499,11 @@ def assert_values_equal(actual, expected, key=None):
         expected = expected.replace(PLACEHOLDER_K8S_MAJOR_VERSION, data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION])
         actual = actual.replace(WINDOWS_LINE_ENDING, UNIX_LINE_ENDING)
         actual = actual.replace(PLACEHOLDER_K8S_MAJOR_VERSION, data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION])
+        expected = expected.replace(PLACEHOLDER_OBJECT_TYPE, object_type)
         if expected != actual:
             stop_debug = ""
         
-    assert expected == actual, "For key '"+ key + "' there was expected value:\n\n" + str(expected) + "\n\nbut found:\n\n" + str(actual) + "\n\n"
+    assert expected == actual, "For key '"+ object_key + "' there was expected value:\n\n" + str(expected) + "\n\nbut found:\n\n" + str(actual) + "\n\n"
 
 def validateJson(test_object):
     

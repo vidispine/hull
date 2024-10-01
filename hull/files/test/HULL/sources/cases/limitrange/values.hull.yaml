@@ -76,6 +76,9 @@ hull:
       metadata-stringify:
         limits: []
 
+      namespace-override:
+        limits: []
+
       cpu:
         limits:
         - max:

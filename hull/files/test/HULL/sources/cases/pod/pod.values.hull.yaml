@@ -1069,6 +1069,14 @@ hull:
                 repository: my/image/repo
                 tag: "99.9"
 
+      namespace-override:
+        pod:
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+
       static-name:
         pod:
           containers:

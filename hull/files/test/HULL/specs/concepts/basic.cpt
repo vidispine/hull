@@ -489,7 +489,7 @@ Test namespace override
 
 * Test Object has key "metadata§namespace" with value "different-namespace"
 
-* Fail to render the templates for values file "failonemptynamespaceoverride.values.hull.yaml" to test execution folder because error contains "[HULL failed with error MISSING-NAMESPACE-OVERRIDE: namespaceOverride for ClusterRole empty-namespace-override cannot be empty]"
+* Fail to render the templates for values file "failonemptynamespaceoverride.values.hull.yaml" to test execution folder because error contains "[HULL failed with error MISSING-NAMESPACE-OVERRIDE: namespaceOverride for <OBJECT_TYPE> empty-namespace-override cannot be empty]"
 
 Test annotation rendering
 
