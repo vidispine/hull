@@ -416,6 +416,20 @@ def all_test_objects_have_key_with_value(key, value):
         set_test_object_to(i)
         test_object_has_key_with_value(key, value)
 
+@step("All test objects have key <key> with value <value> except objects <exceptions>")
+def all_test_objects_have_key_with_value_except_objects(key, value, exceptions):
+    test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
+    to_skip = exceptions.split(',')
+    for i in test_objects:
+        skip = False
+        for j in to_skip:
+            if j.strip() == i:
+                skip = True
+        if skip:
+            continue
+        set_test_object_to(i)
+        test_object_has_key_with_value(key, value)
+
 @step("All test objects have key <key> with value matching regex <regex>")
 def all_test_objects_have_key_with_value_matching_regex(key, regex):
     test_objects = data_store.scenario["objects_" + data_store.scenario.kind]

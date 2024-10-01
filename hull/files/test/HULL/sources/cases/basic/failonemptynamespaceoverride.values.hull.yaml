@@ -1,0 +1,10 @@
+hull:
+  ### OBJECTS
+  objects:
+    # OBJECT TYPE
+    <OBJECT_TYPE>:
+      
+      empty-namespace-override:
+        annotations:
+          some: annotation
+        namespaceOverride: ""

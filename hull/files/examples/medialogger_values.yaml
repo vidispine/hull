@@ -9,64 +9,111 @@ hull:
     general:
       data:
         endpoints:
-          # define some globally relevant system endpoints here and refer to them
-          vidicore:
-            uri:
-              api: ''
           authservice:
             uri:
-              api: ''
+              api: ""
+            auth:
+              token:
+                installationClientId: ""
+                installationClientSecret: ""
+                productClientId: ""
+                productClientSecret: ""
           configportal:
             uri:
-              api: ''
+              api: ""
+              apiInternal: ""
+            auth:
+              token:
+                installationClientId: ""
+                installationClientSecret: ""
+          vidicore:
+            uri:
+              api: ""
+              apinoauth: ""
+              apiInternal: ""
+              apinoauthInternal: ""
+            auth:
+              basic:
+                adminUserSecretName: _HT/hull.vidispine.addon.library.secret.name.vidispine.admin.user
           vidistream:
             uri:
               httpStream: ''
               httpRender: ''
-              httpTrickplay: ''
+              httpTrickPlay: ''
           medialogger:
             uri:
-              # this is the endpoint of this application including scheme and subpath
               ui: ''
 
-    # define important or shared values that can be referenced to from multiple places
+        installation:
+          config:
+            productUris: _HT! [ {{- (index . "$").Values.hull.config.general.data.endpoints.medialogger.uri.ui -}} ]
+
+          endpoints:
+            30_configportal:
+              auth:
+                token:
+                  scopes:
+                  - 'configportalscope'
+                  - 'identityscope'
+
+
     specific:
       ingress:
-        # connect ingress to controller via IngressClass
+        # Connect ingress to controller via IngressClass
         controllerClass: haproxy-ingress.github.io/controller
-      ssl:
-        # true if my own endpoint is configured to an https scheme
-        enabled: _HT?(eq (urlParse (index . "$").Values.hull.config.general.data.endpoints.medialogger.uri.ui).scheme "https")
-        # mount custom ca certificates if any are given
-        custom_ca_certs: {}
-      # some authentication data with secrets not to be put here
-      authService:
-        installerClientId: installerClient
-        installerClientSecret: ''
-        productClientId: medialoggerbackend
-        productClientSecret: ''
-        frontendClientId: medialoggerfrontend
-        frontendClientSecret: ''
-        swaggerClientId: medialoggerswaggerclient
-        swaggerClientSecret: ""
-      # get the subpath on the host where this application runs from endpoint
-      pathBase:
-        ui: _HT!{{ (urlParse (index . "$").Values.hull.config.general.data.endpoints.medialogger.uri.ui).path }}
+      components:
+        medialogger: {}
+        medialogger-frontend:
+          auth:
+            clientId:
+            clientSecret:
+        medialogger-backend:
+          auth:
+            clientId:
+            clientSecret:
+        medialogger-swagger:
+          auth:
+            clientId:
+            clientSecret:
 
   objects:
-
-    # define all services to be created
+    # Define all services to be created
     service:
-      # this apps service
-      medialogger:
+      _HULL_OBJECT_TYPE_DEFAULT_:
         type: ClusterIP
+      medialogger:
         ports:
           http:
             port: 80
 
     # - this block is created for deployment objects if at least one deployment exists
     deployment:
-      # the app
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        pod:
+          containers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              volumeMounts:
+                etcssl:
+                  enabled: _HT?(index . "$").Values.hull.config.general.data.installation.config.customCaCertificates
+                  name: etcssl
+                  mountPath: '/etc/ssl/certs'
+                _HULL_TRANSFORMATION_:
+                  NAME: hull.util.transformation.tpl
+                  CONTENT: |-
+                    {
+                      {{ range $certkey, $certvalue := (index . "$").Values.hull.config.general.data.installation.config.customCaCertificates}}
+                      "custom-ca-certificates-{{ $certkey }}":
+                        {
+                          enabled: true,
+                          name: "certs",
+                          mountPath: "/usr/local/share/ca-certificates/custom-ca-certificates-{{ $certkey }}",
+                          subPath: "{{ $certkey }}",
+                          hashsumAnnotation: true
+
+                        },
+                      {{ end }}
+                    }
+
       medialogger:
         pod:
           containers:
@@ -77,23 +124,29 @@ hull:
                 tag: ''
               env:
                 REACT_APP_CONFIGPORTAL_ROOT:
-                  # get the path to the ConfigPortal app minus the API version
                   value: _HT!{{ trimSuffix "/" (trimSuffix "/v2" (index . "$").Values.hull.config.general.data.endpoints.configportal.uri.api) }}
                 REACT_APP_AUTH_SERVICE_ROOT:
-                  # reference AuthService apps API endpoint
                   value: _HT*hull.config.general.data.endpoints.authservice.uri.api
                 REACT_APP_AUTH_SERVICE_CLIENT_ID:
-                  value: _HT*hull.config.specific.authService.frontendClientId
-                REACT_APP_BASENAME:
-                  # subpath for hosting
-                  value: _HT*hull.config.specific.pathBase.ui
-                  # VidiCore app endpoint
+                  valueFrom:
+                    secretKeyRef:
+                      name: "auth"
+                      key: "CLIENT_MEDIALOGGER_FRONTEND_ID"
                 REACT_APP_VIDISPINE_URL:
                   value: _HT*hull.config.general.data.endpoints.vidicore.uri.api
               ports:
                 http:
                   containerPort: 80
                   protocol: TCP
+              livenessProbe:
+                httpGet:
+                  path: /api/Status/ping
+                  port: http
+                periodSeconds: 30
+              readinessProbe:
+                httpGet:
+                  path: /api/Status/ping
+                  port: http
               resources:
                 limits:
                   cpu: 2000m
@@ -101,50 +154,14 @@ hull:
                 requests:
                   cpu: 1000m
                   memory: 1Gi
+          volumes: _HT/hull.vidispine.addon.library.component.pod.volumes:COMPONENT:(index . "OBJECT_INSTANCE_KEY")
 
     ingressclass:
       medialogger:
         controller: _HT*hull.config.specific.ingress.controllerClass
 
     ingress:
-      medialogger:
-        # generate a unique 'fully qualified' name for the IngressClass as <Release>-<Chart>-medialogger
+      _HULL_OBJECT_TYPE_DEFAULT_:
         ingressClassName: _HT^medialogger
-        rules:
-          medialogger:
-            # reference this apps hosted hostname
-            host: _HT!{{ (urlParse (index . "$").Values.hull.config.general.data.endpoints.medialogger.uri.ui).host }}
-            http:
-              paths:
-                dash:
-                  # subpath on host
-                  path: _HT*hull.config.specific.pathBase.ui
-                  pathType: Prefix
-                  backend:
-                    service:
-                      name: 'medialogger'
-                      port:
-                        number: 80
-
-    secret:
-      # create this secret with custom ca certificates when there are any
-      'custom-ca-certificates':
-        enabled: _HT?(index . "$").Values.hull.config.specific.ssl.custom_ca_certs
-        # use full templating capabilities to create the data required
-        data: |-
-          _HT!{
-            {{ range $key,$value :=  (index . "$").Values.hull.config.specific.ssl.custom_ca_certs }}
-            {{ $key }}: { inline: {{ $value | quote }} },
-            {{ end }}
-          }
-
-      'authservice-token-secret':
-        data:
-          productClientId: 
-            inline: _HT*hull.config.specific.authService.productClientId
-          productClientSecret: 
-            inline: _HT*hull.config.specific.authService.productClientSecret
-          installerClientId:
-            inline: _HT*hull.config.specific.authService.installerClientId
-          installerClientSecret:
-            inline: _HT*hull.config.specific.authService.installerClientSecret
+      medialogger:
+        rules: _HT/hull.vidispine.addon.library.component.ingress.rules:ENDPOINT:"medialogger":COMPONENTS:"ui":SERVICENAME:(index . "OBJECT_INSTANCE_KEY")

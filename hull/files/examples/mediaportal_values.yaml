@@ -1,0 +1,215 @@
+### Default values for MediaPortal.
+# This is a YAML-formatted file.
+# - declares variables to be passed into your templates
+# - provides default values where applicable
+hull:
+  config:
+    general:
+      data:
+        endpoints:
+          vidicore:
+            uri:
+              api: ''
+            auth:
+              basic:
+                adminUserSecretName: _HT/hull.vidispine.addon.library.secret.name.vidispine.admin.user
+          authservice:
+            uri:
+              api: ""
+            auth:
+              token:
+                installationClientId: ""
+                installationClientSecret: ""
+                productClientId: ""
+                productClientSecret: ""
+          configportal:
+            uri:
+              api: ""
+              apiInternal: ""
+            auth:
+              token:
+                installationClientId: ""
+                installationClientSecret: ""
+          vidistream:
+            uri:
+              httpStream: ''
+              httpRender: ''
+              httpTrickplay: ''
+          mediaportal:
+            uri:
+              ui: ''
+              uiInternal: _HT!
+                  http://{{- include "hull.metadata.fullname" (dict "PARENT_CONTEXT" (index . "$") "COMPONENT" "ui") -}}
+                  .{{- (index . "$").Release.Namespace -}}:80
+              notifier: ''
+              notifierInternal: _HT!
+                  http://{{- include "hull.metadata.fullname" (dict "PARENT_CONTEXT" (index . "$") "COMPONENT" "notifier") -}}
+                  .{{- (index . "$").Release.Namespace -}}:4000
+          vidiflow:
+            uri:
+              monitoringUi: ''
+
+        installation:
+          config:
+            productUris: _HT! [ {{- (index . "$").Values.hull.config.general.data.endpoints.mediaportal.uri.ui -}}, "http://localhost:1313" ]
+          endpoints:
+            30_configportal:
+              auth:
+                token:
+                  scopes:
+                  - 'configportalscope'
+                  - 'identityscope'
+
+    # Add product specific configuration here
+    specific:
+      ingress:
+        # Connect ingress to controller via IngressClass
+        controllerClass: haproxy-ingress.github.io/controller
+      components:
+        mediaportal:
+          auth:
+            clientId: ""
+            clientSecret: ""
+        notifier: {}
+      systemType: VPMS
+
+  objects:
+    # Define all services to be created
+    service:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        type: ClusterIP
+      mediaportal:
+        ports:
+          http:
+            port: 80
+      notifier:
+        ports:
+          http:
+            port: 4000
+
+    secret:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations:
+          helm.sh/hook: pre-install,pre-upgrade
+          helm.sh/hook-delete-policy: before-hook-creation
+          helm.sh/hook-weight: "-80"
+      auth:
+        data: _HT/hull.vidispine.addon.library.auth.secret.data:ENDPOINTS:"vidicore"
+      mediaportal:
+        data: _HT/hull.vidispine.addon.library.component.secret.data:COMPONENT:(index . "OBJECT_INSTANCE_KEY")
+      notifier:
+        data: _HT/hull.vidispine.addon.library.component.secret.data:COMPONENT:(index . "OBJECT_INSTANCE_KEY")
+
+    deployment:
+      # Configure MediaPortal deployment
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations:
+          helm.sh/hook-delete-policy: before-hook-creation
+        pod:
+          containers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              volumeMounts:
+                etcssl:
+                  enabled: _HT?(index . "$").Values.hull.config.general.data.installation.config.customCaCertificates
+                  name: etcssl
+                  mountPath: '/etc/ssl/certs'
+                _HULL_TRANSFORMATION_:
+                  NAME: hull.util.transformation.tpl
+                  CONTENT: |-
+                    {
+                      {{ range $certkey, $certvalue := (index . "$").Values.hull.config.general.data.installation.config.customCaCertificates}}
+                      "custom-ca-certificates-{{ $certkey }}":
+                        {
+                          enabled: true,
+                          name: "certs",
+                          mountPath: "/usr/local/share/ca-certificates/custom-ca-certificates-{{ $certkey }}",
+                          subPath: "{{ $certkey }}",
+                          hashsumAnnotation: true
+                        },
+                      {{ end }}
+                    }
+          volumes:
+            certs:
+              enabled: _HT?(index . "$").Values.hull.config.general.data.installation.config.customCaCertificates
+              secret:
+                secretName: 'custom-ca-certificates'
+            etcssl:
+              enabled: _HT?(index . "$").Values.hull.config.general.data.installation.config.customCaCertificates
+              emptyDir: {}
+      mediaportal:
+        pod:
+          containers:
+            mediaportal:
+              image:
+                repository: mediaportal/mediaportal
+                tag: 1.0.0
+              env:
+                'REACT_APP_SERVERURL':
+                  value: _HT! {{- (urlParse (index . "$").Values.hull.config.general.data.endpoints.mediaportal.uri.ui).scheme -}} :// {{- (urlParse (index . "$").Values.hull.config.general.data.endpoints.mediaportal.uri.ui).host -}}
+                'REACT_APP_CONFIGPORTAL_API':
+                  value: _HT*hull.config.general.data.endpoints.configportal.uri.api
+                'REACT_APP_AUTHSERVICE_DOMAIN':
+                  value: _HT*hull.config.general.data.endpoints.authservice.uri.api
+                'REACT_APP_LICENSE_FEATURE':
+                  value: 'false'
+              ports:
+                http:
+                  containerPort: 80
+                  protocol: TCP
+              livenessProbe:
+                httpGet:
+                  path: /api/Status/ping
+                  port: http
+                periodSeconds: 30
+              readinessProbe:
+                httpGet:
+                  path: /api/Status/ping
+                  port: http
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 1024Mi
+                requests:
+                  cpu: 250m
+                  memory: 512Mi
+          volumes: _HT/hull.vidispine.addon.library.component.pod.volumes:COMPONENT:(index . "OBJECT_INSTANCE_KEY")
+      notifier:
+        pod:
+          containers:
+            notifier:
+              image:
+                repository: mediaportal/mediaportalnotificationservice
+                tag: 24.2.0
+              ports:
+                http:
+                  containerPort: 4000
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 1024Mi
+                requests:
+                  cpu: 250m
+                  memory: 512Mi
+          volumes: _HT/hull.vidispine.addon.library.component.pod.volumes:COMPONENT:(index . "OBJECT_INSTANCE_KEY")
+
+    # Configure MediaPortal ingress
+    ingressclass:
+      mediaportal:
+        controller: _HT*hull.config.specific.ingress.controllerClass
+
+    ingress:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        ingressClassName: _HT^mediaportal
+      mediaportal:
+        annotations:
+          # in prepared will not take effect, is overwritten in Prepared script (inventory modify it)
+          ingress.kubernetes.io/config-backend: |
+            http-response add-header X-App-Server %b/%s
+            http-response add-header Cross-Origin-Opener-Policy same-origin
+            http-response add-header Cross-Origin-Embedder-Policy credentialless
+        rules: _HT/hull.vidispine.addon.library.component.ingress.rules:ENDPOINT:"mediaportal":SERVICENAME:(index . "OBJECT_INSTANCE_KEY"):COMPONENTS:"ui"
+      notifier:
+        annotations:
+          ingress.kubernetes.io/rewrite-target: /
+        rules: _HT/hull.vidispine.addon.library.component.ingress.rules:ENDPOINT:"mediaportal":SERVICENAME:(index . "OBJECT_INSTANCE_KEY"):COMPONENTS:(index . "OBJECT_INSTANCE_KEY")
