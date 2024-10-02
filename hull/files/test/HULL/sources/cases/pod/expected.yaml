@@ -175,15 +175,6 @@ tpl_include_in_tpl_transformation_many: |-
 tpl_include_in_tpl_transformation_mixed_with_get: |-
   0hull-test-1.31.033hull-test-one-arg-include66~_HULL_ERROR_:dummy_error_type:dummy_error_message99-split-hull-test-1.31.0 is the chart reference value
 tpl_include_in_tpl_transformation_mixed_with_get_raw: |-
-  (include "hull.util.transformation.get" (dict "REFERENCE" "hull.config.specific.hundred.its-00"
-  "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$"))) (include
-  "hull.util.transformation.include" (dict "CONTENT" "hull.metadata.chartref"
-  "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$"))) (include
-  "hull.util.transformation.get" (dict "REFERENCE" "hull.config.specific.hundred.its-33"
-  "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$"))) (include
-  "hull.util.transformation.get" (dict "REFERENCE" "hull.config.specific.hundred.its-66"
-  "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$"))) (include
-  "hull.util.transformation.get" (dict "REFERENCE" "hull.config.specific.hundred.its-99"
-  "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$")))
+  (include "hull.util.transformation.get" (dict "REFERENCE" "hull.config.specific.hundred.its-00" "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$"))) (include "hull.util.transformation.include" (dict "CONTENT" "hull.metadata.chartref" "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$"))) (include "hull.util.transformation.get" (dict "REFERENCE" "hull.config.specific.hundred.its-33" "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$"))) (include "hull.util.transformation.get" (dict "REFERENCE" "hull.config.specific.hundred.its-66" "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$"))) (include "hull.util.transformation.get" (dict "REFERENCE" "hull.config.specific.hundred.its-99" "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$")))
 tpl_include_in_tpl_transformation_simple: |-
   hull-test-tpl-transformation-include

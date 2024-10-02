@@ -384,3 +384,13 @@ hull:
                 image:
                   repository: my/image/repo
                   tag: "99.9"
+
+      namespace-override:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"

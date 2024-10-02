@@ -86,7 +86,7 @@
 */ -}}
 {{- define "hull.util.include.k8s" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
-{{- $hullObjectBaseKeys := (index . "HULL_BASE_KEYS") | default (list "enabled" "labels" "annotations" "staticName" "metadataNameOverride" "sources") -}}
+{{- $hullObjectBaseKeys := (index . "HULL_BASE_KEYS") | default (list "enabled" "labels" "annotations" "staticName" "metadataNameOverride" "namespaceOverride" "sources") -}}
 {{- $hullObjectKeys := (index . "HULL_OBJECT_KEYS") | default (list) -}}
 {{- $spec := (index . "SPEC") | default nil -}}
 {{- $k8sSpec := (dict) -}}

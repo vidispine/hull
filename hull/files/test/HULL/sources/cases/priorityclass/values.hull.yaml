@@ -96,4 +96,7 @@ hull:
 
       test-get-transformations-array:
         value: 100
+
+      namespace-override:
+        value: 100
 ###################################################
