@@ -171,9 +171,9 @@ int-bool-dict-array-ht-tpl-get-raw: |-
 tpl_include_in_tpl_transformation_hundred: |-
   0-1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20-21-22-23-24-25-26-27-28-29-30-31-32-33-34-35-36-37-38-39-40-41-42-43-44-45-46-47-48-49-50-51-52-53-54-55-56-57-58-59-60-61-62-63-64-65-66-67-68-69-70-71-72-73-74-75-76-77-78-79-80-81-82-83-84-85-86-87-88-89-90-91-92-93-94-95-96-97-98-99
 tpl_include_in_tpl_transformation_many: |-
-  hull-test-1.31.0 !! hull-test-one-arg-include !!! ~_HULL_ERROR_:dummy_error_type:dummy_error_message !!!!
+  hull-test-<K8S_MAJOR_VERSION>.0 !! hull-test-one-arg-include !!! ~_HULL_ERROR_:dummy_error_type:dummy_error_message !!!!
 tpl_include_in_tpl_transformation_mixed_with_get: |-
-  0hull-test-1.31.033hull-test-one-arg-include66~_HULL_ERROR_:dummy_error_type:dummy_error_message99-split-hull-test-1.31.0 is the chart reference value
+  0hull-test-<K8S_MAJOR_VERSION>.033hull-test-one-arg-include66~_HULL_ERROR_:dummy_error_type:dummy_error_message99-split-hull-test-<K8S_MAJOR_VERSION>.0 is the chart reference value
 tpl_include_in_tpl_transformation_mixed_with_get_raw: |-
   (include "hull.util.transformation.get" (dict "REFERENCE" "hull.config.specific.hundred.its-00" "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$"))) (include "hull.util.transformation.include" (dict "CONTENT" "hull.metadata.chartref" "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$"))) (include "hull.util.transformation.get" (dict "REFERENCE" "hull.config.specific.hundred.its-33" "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$"))) (include "hull.util.transformation.get" (dict "REFERENCE" "hull.config.specific.hundred.its-66" "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$"))) (include "hull.util.transformation.get" (dict "REFERENCE" "hull.config.specific.hundred.its-99" "RETURN_TEMPLATE_STRING" true  "PARENT_CONTEXT" (index . "$")))
 tpl_include_in_tpl_transformation_simple: |-
