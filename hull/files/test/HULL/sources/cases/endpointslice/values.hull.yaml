@@ -175,4 +175,8 @@ hull:
         addressType: FQDN
         endpoints: []
 
+      namespace-override:
+        addressType: FQDN
+        endpoints: []
+
 ###################################################

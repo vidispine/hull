@@ -1,7 +1,11 @@
 # Changelog
 ------------------
-[1.30.5]
+[1.30.6]
 ------------------
 FIXES:
-- fixed issue with using `_HT*` get transformation path syntax within `_HT!` tpl functions when there is an overlap in the paths of the `_HT*` expressions. Since expressions were resolved in order of appearance this could lead to unexpected results where parts of longer expressions were incorrectly overwritten. For example, having get expressions `_HT*hull.config.specific.path.api` and `_HT*hull.config.specific.path.api-user.password` could lead to `_HT*hull.config.specific.path.api` being resolved incorrectly in the latter expresison leaving `-user.password` as an invalid remainder. By sorting the found expressions by descending length instead of order of appearance, it is guaranteed that the longer paths are resolved correctly before any shorter paths that may have an overlap.
-- fixed rendering error in case a Secret or ConfigMap that was referred to via the `hashsumAnnotation` feature was set to `enabled: false`. Disabled ConfigMaps or Secrets are now ignored for the calculation of hashsums.
+- fixed follow-up problem with a previous fix for calculation of `hashsumAnnotation` for ConfigMaps or Secrets. In an unlikely case, where a ConfigMap or Secret object has no `data` property set and is then disabled, an unintended error was thrown. ConfigMaps or Secrets with no actual `data` properties can now be disabled without the `hashsumAnnotation` functionality failing. 
+
+CHANGES:
+- added include shortform transformation `_HT/` to the allowed transformations that can be used within `_HT!` tpl transformations. Similar to using the `_HT*` get syntax within `_HT!` transformations, the `_HT/` include syntax is now embeddable as well. To delimit the `_HT/` arguments from the rest of the `_HT!` content, the `_HT/` block must have a clear ending suffix `/TH_`, similar to bashs `if`/`fi` style. For example, the following syntax now executes the include function within the tpl content: `_HT!{{- printf "%s-%s" _HT/hull.metadata.name:COMPONENT:"tpl-include"/TH_ "example" -}}`
+- added possibility to override individual object instance namespaces by setting an optional `namespaceOverride` property on the object instance. CAUTION: creating objects in multiple namespaces _may_ go against Helm principles since normally all objects are created only in the release namespace!  
+- added more example `values.yaml` files to `files/examples` and updated outdated ones

@@ -1,0 +1,419 @@
+# This is a YAML-formatted file.
+# - declares variables to be passed into your templates
+# - provides default values where applicable
+---
+hull: 
+  config:
+    general:
+      data:
+        endpoints:
+          rabbitmq:
+            uri:
+              management: ''
+            auth:
+              basic:
+                username: ""
+                password: ""
+    specific:
+      ingress:
+        # Connect ingress to controller via IngressClass
+        controllerClass: haproxy-ingress.github.io/controller
+      logging:
+        loglevel: debug
+      images:
+        rabbitmq:
+          tag: "3.12.13-management"
+        rabbitmqOperator:
+          tag: "2.7.0"
+        dbTools:
+          tag: "1.9-1"
+      ports:
+        amq: 31055
+      metrics:
+        enable: true
+      components:
+        rabbitmq:
+          custom:
+            repository: docker.io/rabbitmq
+            cluster:
+              default:
+                replicas: 3
+                storageClassName: ""
+                partitionHandling: |
+                  _HT!
+                    {{- if (eq ((index . "$").Values.hull.config.specific.components.rabbitmq.custom.cluster.default.replicas | int) 3) -}}
+                    pause_minority
+                    {{- else -}}
+                    autoheal
+                    {{- end -}}
+                detailedMetrics: true
+                memoryWatermark: 0.75
+          mounts:
+            secret:
+              "definitions.json":
+                users: 
+                - name: _HT*hull.config.general.data.endpoints.rabbitmq.auth.basic.username
+                  password: _HT*hull.config.general.data.endpoints.rabbitmq.auth.basic.password
+                  tags: "administrator"
+                vhosts:
+                - name: _HT/hull.vidispine.addon.library.get.endpoint.info:TYPE:"messagebus":KEY:"rabbitmq":INFO:"vhost"
+                permissions: 
+                - user: _HT*hull.config.general.data.endpoints.rabbitmq.auth.basic.username
+                  vhost: _HT/hull.vidispine.addon.library.get.endpoint.info:TYPE:"messagebus":KEY:"rabbitmq":INFO:"vhost"
+                  configure: ".*"
+                  write: ".*"
+                  read: ".*"
+                  policies: 
+                  - name: "ha-all"
+                    pattern: ".*"
+                    vhost: _HT/hull.vidispine.addon.library.get.endpoint.info:TYPE:"messagebus":KEY:"rabbitmq":INFO:"vhost"
+                    definition: 
+                      ha-mode: "all"
+                      ha-sync-mode: "automatic"
+                      ha-sync-batch-size: 1
+
+  objects:
+    role:
+      default:
+        rules:
+          coordination:
+            apiGroups:
+            - coordination.k8s.io
+            resources:
+            - leases
+            verbs:
+            - get
+            - list
+            - watch
+            - create
+            - update
+            - patch
+            - delete
+          events:
+            apiGroups:
+            - ""
+            resources:
+            - events
+            verbs:
+            - create
+    clusterrole:
+      default:
+        rules:
+          configmaps:
+            apiGroups:
+            - ""
+            resources:
+            - configmaps
+            verbs:
+            - create
+            - get
+            - list
+            - update
+            - watch
+          endpoints:
+            apiGroups:
+            - ""
+            resources:
+            - endpoints
+            verbs:
+            - get
+            - list
+            - watch
+          events:
+            apiGroups:
+            - ""
+            resources:
+            - events
+            verbs:
+            - create
+            - get
+            - patch
+          pvc:
+            apiGroups:
+            - ""
+            resources:
+            - persistentvolumeclaims
+            verbs:
+            - create
+            - get
+            - list
+            - update
+            - watch
+          pods:
+            apiGroups:
+            - ""
+            resources:
+            - pods
+            verbs:
+            - get
+            - list
+            - update
+            - watch
+          pods_exec:
+            apiGroups:
+            - ""
+            resources:
+            - pods/exec
+            verbs:
+            - create
+          secrets:
+            apiGroups:
+            - ""
+            resources:
+            - secrets
+            verbs:
+            - create
+            - get
+            - list
+            - update
+            - watch
+          serviceaccounts:
+            apiGroups:
+            - ""
+            resources:
+            - serviceaccounts
+            verbs:
+            - create
+            - get
+            - list
+            - update
+            - watch
+          services:
+            apiGroups:
+            - ""
+            resources:
+            - services
+            verbs:
+            - create
+            - get
+            - list
+            - update
+            - watch
+          sts:
+            apiGroups:
+            - apps
+            resources:
+            - statefulsets
+            verbs:
+            - create
+            - delete
+            - get
+            - list
+            - update
+            - watch
+          rmq_cluster:
+            apiGroups:
+            - rabbitmq.com
+            resources:
+            - rabbitmqclusters
+            verbs:
+            - create
+            - get
+            - list
+            - update
+            - watch
+          rmq_cluster_finalizer:
+            apiGroups:
+            - rabbitmq.com
+            resources:
+            - rabbitmqclusters/finalizers
+            verbs:
+            - update
+          rmq_cluster_status:
+            apiGroups:
+            - rabbitmq.com
+            resources:
+            - rabbitmqclusters/status
+            verbs:
+            - get
+            - update
+          rolebindings:
+            apiGroups:
+            - rbac.authorization.k8s.io
+            resources:
+            - rolebindings
+            verbs:
+            - create
+            - get
+            - list
+            - update
+            - watch
+          roles:
+            apiGroups:
+            - rbac.authorization.k8s.io
+            resources:
+            - roles
+            verbs:
+            - create
+            - get
+            - list
+            - update
+            - watch
+    
+    rolebinding:
+      default:
+        subjects:
+        - kind: ServiceAccount
+          name: _HT^default
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: _HT^default
+
+    clusterrolebinding:
+      default:
+        subjects:
+        - kind: ServiceAccount
+          name: _HT^default
+          namespace: _HT!{{ (index . "$").Release.Namespace }}
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: _HT^default
+
+    secret:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations:
+          helm.sh/hook: pre-install,pre-upgrade
+          helm.sh/hook-delete-policy: before-hook-creation
+          helm.sh/hook-weight: "-80"
+      rabbitmq:
+        data: _HT/hull.vidispine.addon.library.component.secret.data:COMPONENT:"rabbitmq"
+    
+    deployment:
+      operator:
+        pod:
+          serviceAccountName: _HT^default
+          terminationGracePeriodSeconds: 10
+          containers:
+            operator:
+              image:
+                repository: docker.io/rabbitmqoperator/cluster-operator
+                tag: _HT!{{ printf "%s" (index . "$").Values.hull.config.specific.images.rabbitmqOperator.tag | quote }}
+              command:
+              - /manager
+              env:
+                OPERATOR_NAMESPACE:
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+              ports:
+                metrics:
+                  containerPort: 9782
+                  protocol: TCP
+
+    ingressclass:
+      rabbitmq:
+        controller: _HT*hull.config.specific.ingress.controllerClass
+
+    ingress:
+      rabbitmq:
+        enabled: true
+        ingressClassName: _HT^rabbitmq
+        rules: _HT/hull.vidispine.addon.library.component.ingress.rules:ENDPOINT:"rabbitmq":COMPONENTS:"management":SERVICENAME:"default-cluster":PORTNAME:"management"
+
+    customresource:
+      default-cluster:
+        apiVersion: rabbitmq.com/v1beta1
+        kind: RabbitmqCluster
+        labels:
+          app: _HT^rabbitmq
+        spec:
+          replicas: _HT*hull.config.specific.components.rabbitmq.custom.cluster.default.replicas
+          image: _HT/image/hull.object.container.image:SPEC:(dict "repository" (index . "$").Values.hull.config.specific.components.rabbitmq.custom.repository "tag" (index . "$").Values.hull.config.specific.images.rabbitmq.tag)
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: "app"
+                        operator: In
+                        values: _HT![ "{{ include "hull.metadata.fullname" (dict "PARENT_CONTEXT" (index . "$") "COMPONENT" "rabbitmq") }}" ]
+                  topologyKey: "kubernetes.io/hostname"  
+          override:
+            statefulSet:
+              spec:
+                podManagementPolicy: Parallel
+                template:
+                  spec:
+                    containers:
+                    - name: rabbitmq
+                      volumeMounts:
+                      - mountPath: /configmap/
+                        name: secret
+                    volumes:
+                    - name: secret
+                      secret:
+                        secretName: _HT^rabbitmq
+                    #priorityClassName: @{LOCAL:priorityClass}
+            service:
+              spec:
+                ports:
+                - name: amq
+                  protocol: TCP
+                  port: _HT*hull.config.specific.ports.amq
+                  targetPort: 5672
+          persistence:
+            storageClassName: _HT*hull.config.specific.components.rabbitmq.custom.cluster.default.storageClassName
+          rabbitmq:
+            envConfig: |
+              RABBITMQ_LOGS=""
+            additionalConfig: |
+              _HT!
+                cluster_partition_handling = 
+                {{- printf " %s" (index . "$").Values.hull.config.specific.components.rabbitmq.custom.cluster.default.partitionHandling }}
+                
+                vm_memory_high_watermark.relative = 
+                {{- printf " %s" ((index . "$").Values.hull.config.specific.components.rabbitmq.custom.cluster.default.memoryWatermark | toString) }}
+                
+                load_definitions = /configmap/definitions.json
+               
+                prometheus.return_per_object_metrics = 
+                {{- printf " %s" ((index . "$").Values.hull.config.specific.components.rabbitmq.custom.cluster.default.detailedMetrics | toString) }}
+                
+                log.console = true
+                
+                log.console.level = 
+                {{- printf " %s" (index . "$").Values.hull.config.specific.logging.loglevel }}
+                
+                log.console.use_colors = off
+                
+                log.console.formatter = json
+                
+                log.console.formatter.level_format = uc
+                
+                log.console.formatter.json.field_map = verbosity:- time level msg:message domain file line pid
+                
+                log.console.formatter.time_format = rfc3339_T
+                
+                management.path_prefix = 
+                {{- printf " %s" (urlParse (index . "$").Values.hull.config.general.data.endpoints.rabbitmq.uri.management).path }}
+            advancedConfig: |
+              [
+                {rabbit, [
+                  {consumer_timeout, undefined}
+                ]}
+              ].
+
+      rabbitmq-podmonitor:
+        labels:
+          app: prometheus-operator-prometheus
+          release: prometheus-operator
+        apiVersion: monitoring.coreos.com/v1
+        kind: PodMonitor
+        spec:
+          selector:
+            matchLabels: _HT&rabbitmq
+          podMetricsEndpoints:
+          - port: prometheus
+      rabbitmq-clusteroperator-podmonitor:
+        labels:
+          app: prometheus-operator-prometheus
+          release: prometheus-operator
+        apiVersion: monitoring.coreos.com/v1
+        kind: PodMonitor
+        spec:
+          selector:
+            matchLabels: _HT&operator
+          podMetricsEndpoints:
+          - port: metrics

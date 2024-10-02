@@ -85,5 +85,9 @@ hull:
       enabled-transform-tpl-if:
         selector: {}
         endpoints: []
+
+      namespace-override:
+        selector: {}
+        endpoints: []
       
 ###################################################

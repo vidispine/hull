@@ -424,6 +424,38 @@
 {{- /*
 | Purpose:  
 |   
+|   Process _HT/ expressions
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   CONTENT: The string that describes the code which is subject to tpl
+|
+*/ -}}
+{{- define "hull.util.process.include.paths" -}}
+{{- $content := (index . "CONTENT") -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $sourcePath := default list (index . "SOURCE_PATH") -}}
+{{- $hits := regexFindAll "_HT\\/(.*)\\/TH_" $content -1 -}}
+{{- $error := "" -}}
+{{- range $hit := $hits -}}
+{{- $rep := $hit | toString | replace "_HT/" "" | replace "/TH_" "" -}}
+{{- $replacement := include "hull.util.transformation.include" (merge (dict "CONTENT" $rep "KEY" "result" "SOURCE_PATH" $sourcePath "RETURN_TEMPLATE_STRING" true) $parent) }}
+{{- $errorMessage := include "hull.util.error.check" (dict "OBJECT" $replacement) -}}
+{{- if (ne $errorMessage "") -}}
+{{- $error = printf "%s%s" $error $replacement -}}
+{{- else -}}
+{{- $content = $content | replace $hit $replacement -}}
+{{- end -}}
+{{- end -}}
+{{- (dict "error" $error "content" $content) | toYaml -}}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:  
+|   
 |   Construct a tpl string to process content
 |
 | Interface:
@@ -449,7 +481,12 @@
 {{- if (ne $getProcessing.error "") -}}
 {{ $key }}: {{ $getProcessing.error }}
 {{- else -}}
-{{ $key }}: {{ tpl $getProcessing.content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) }}
+{{- $includeProcessing := (include "hull.util.process.include.paths" (dict "CONTENT" $getProcessing.content "PARENT_CONTEXT" . "SOURCE_PATH" $sourcePath)) | fromYaml -}}
+{{- if (ne $includeProcessing.error "") -}}
+{{ $key }}: {{ $includeProcessing.error }}
+{{- else -}}
+{{ $key }}: {{ tpl $includeProcessing.content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) }}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 
@@ -542,6 +579,7 @@
 {{- $content := (index . "CONTENT") -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $sourcePath := default list (index . "SOURCE_PATH") -}}
+{{- $returnTemplateString := default false (index . "RETURN_TEMPLATE_STRING") -}}
 {{- $serializer := "" -}}
 {{- $objectType := "" -}}
 {{- $objectInstanceKey := "" -}}
@@ -564,7 +602,7 @@
 {{- $resultKey = (regexSplit "/" $includeName -1) | first -}}
 {{- $includeName = (regexSplit "/" $includeName -1) | last -}}
 {{- end -}}
-{{- $call := printf "{{ include %s (dict " ($includeName | quote) -}}
+{{- $call := printf "(include %s (dict " ($includeName | quote) -}}
 {{- $isKey := true -}}
 {{- range $entry := ($parts | rest) }}
 {{- if (eq $entry "PARENT_CONTEXT") -}}
@@ -582,7 +620,11 @@
 {{- if (not $parentContextSubmitted) -}}
 {{- $call = printf "%s %s (index . \"$\")" $call ("PARENT_CONTEXT" | quote) -}}
 {{- end -}}
-{{- $call = printf "%s) }}" ($call | trim) -}}
+{{- $call = printf "%s))" ($call | trim) -}}
+{{- if $returnTemplateString -}}
+{{- $call -}}
+{{- else -}}
+{{- $call = printf "{{ %s }}" $call -}}
 {{- $tpl := tpl $call (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) -}}
 {{- $result := dict -}}
 {{- if (or (eq $serializer "") (eq $serializer "none")) -}}
@@ -603,4 +645,5 @@
 {{- $result = include "hull.util.transformation.serialize" (dict "VALUE" $result "SERIALIZER" $serializer) -}}
 {{- end -}}
 {{ (dict $key $result) | toYaml }}
+{{- end -}}
 {{- end -}}

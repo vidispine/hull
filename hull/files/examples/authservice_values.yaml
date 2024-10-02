@@ -1,112 +1,185 @@
-# Default values for AuthService.
-# This is a YAML-formatted file.
-# - declares variables to be passed into your templates
-# - provides default values where applicable
+global:
+  keycloak_registry: "cr.vidinet.net"
 
-# Configuration of chart should be done via the hull subchart
 hull:
   config:
     general:
       data:
         endpoints:
-          # define some globally relevant system endpoints here and refer to them
+          postgres:
+            uri:
+              address: ""
+            auth:
+              basic:
+                adminUsername: ""
+                adminPassword: ""
+                usernamesPostfix: ""
+            options:
+              timeout: 30
           vidicore:
             uri:
-              api: ""
+              api: ''
+            auth:
+              basic:
+                adminUserSecretName: _HT/hull.vidispine.addon.library.secret.name.vidispine.admin.user
           authservice:
             uri:
-              api: ''
+              api: ""
+              authserviceInternal: |-
+                _HT!
+                  http://{{- printf "%s-authservice" _HT**Release.Name | trunc 23 -}}:8745/auth
+              keycloak: ""
+              keycloakInternal: |-
+                _HT!
+                  http://{{- printf "%s-keycloak" _HT**Release.Name | trunc 20 -}}:80/auth
+            auth:
+              token:
+                installationClientId: ""
+                installationClientSecret: ""
+                productClientId: ""
+                productClientSecret: ""
+          configportal:
+            uri:
+              api: ""
+              apiInternal: ""
+        config:
+            productUris: _HT!
+              [
+                {{- _HT*hull.config.general.data.endpoints.authservice.uri.api -}}
+              ]
 
-    # define important or shared values that can be referenced to from multiple places
     specific:
+      allowOrigins: []
+      # Configure authservice ingress
       ingress:
-        # connect ingress to controller via IngressClass
+        # Connect ingress to controller via IngressClass
         controllerClass: haproxy-ingress.github.io/controller
-      pathBase:
-        authservice: _HT!{{ (urlParse (index . "$").Values.hull.config.general.data.endpoints.authservice.uri.api).path }}
-      ssl:
-        # true if my own endpoint is configured to an https scheme
-        enabled: _HT?(eq (urlParse (index . "$").Values.hull.config.general.data.endpoints.authservice.uri.api).scheme "https")
-        # mount custom ca certificates if any are given
-        custom_ca_certs: {}
-      # setup database
-      database:
-        host: ""
-        # mssql or postgres
-        port: _HT!
-          {{- if (eq (index . "$").Values.hull.config.specific.database.type "mssql") -}}
-          1433
-          {{- else -}}
-          5432
-          {{- end -}}
-        type: "mssql"
-        name: "authservice"
-        username: "authservice"
-        password: ""
-        usernamesPostfix: ""
-        adminUsername: 
-        adminPassword: 
-        # build connection string based on other input: mssql/postgres
-        connectionString: _HT!
-          {{- if (eq (index . "$").Values.hull.config.specific.database.type "mssql") -}}
-          Data Source=
-          {{- (index . "$").Values.hull.config.specific.database.host -}},
-          {{- if (eq (index . "$").Values.hull.config.specific.database.type "mssql") -}}
-          1433
-          {{- else -}}
-          5432
-          {{- end -}}
-          ;Initial Catalog=
-          {{- (index . "$").Values.hull.config.specific.database.name -}}
-          ;MultipleActiveResultSets=true;Connect Timeout=60
-          {{- else -}}
-          Server=
-          {{- (index . "$").Values.hull.config.specific.database.host -}}
-          ;Port=
-          {{- (index . "$").Values.hull.config.specific.database.port -}}
-          ;Database=
-          {{- (index . "$").Values.hull.config.specific.database.name -}}
-          {{- end -}}
-          ;User ID=
-          {{- (index . "$").Values.hull.config.specific.database.username -}}
-          ;Password=
-          {{- (index . "$").Values.hull.config.specific.database.password -}};
-      endpoint:
-        # get host without port
-        host: |- 
-          _HT!{{ $url := (urlParse (index . "$").Values.hull.config.general.data.endpoints.authservice.uri.api) }}
-            {{ if (contains ":" $url.host) }}
-            {{ (splitList ":" $url.host) | first }}
-            {{ else }}
-            {{ $url.host }}
-            {{ end }}
-        # get port
-        port: |- 
-          _HT!{{ $url := (urlParse (index . "$").Values.hull.config.general.data.endpoints.authservice.uri.api) }}
-            {{ if (contains ":" $url.host) }}
-            {{ (splitList ":" $url.host) | last }}
-            {{ else }}
-            {{ if (eq $url.scheme "https") }}
-            443
-            {{ else }}
-            80
-            {{ end }}
-            {{ end }}
-      # appsettings
-      loglevel:
-        Default: Information
-        System: Error
-        Microsoft: Error
-        Microsoft.AspNetCore.Authentication: Warning
-      vidicore:
-        enableAuthServiceLdap: true
-
+      logging:
+        loglevel:
+          Default: Debug
+      images:
+        dbTools: 
+          repository: vpms/dbtools
+          tag: "1.8"
+      components:
+        authservice:
+          custom:
+            enableCRONJobSync: true
+            enableAuthServiceLdap: true
+            enableVidicoreIdProvider: false
+            fullSyncPeriodSeconds: "86400"
+            changedSyncPeriodSeconds: "-1"
+            syncUserToVidicoreMaxThreads: 1
+          mounts:
+            secret:
+              appsettings.json:
+                Vpms3Logging:
+                  Options: "console"
+                  LogLevel: _HT*hull.config.specific.logging.loglevel
+                Server:
+                  Uri: |- 
+                    _HT!
+                      {{- $uri := (urlParse _HT*hull.config.general.data.endpoints.authservice.uri.api) -}}
+                      {{- printf "%s%s" $uri.host $uri.path -}}
+                  UseSsl: _HT?(eq (urlParse _HT*hull.config.general.data.endpoints.authservice.uri.api).scheme "https")
+                Keycloak:
+                  InternalEndpoint: _HT/hull.vidispine.addon.library.get.endpoint.uri.info:ENDPOINT:"authservice":URI:"keycloak":INFO:"base"
+                  InternalEndpointPath: auth
+                  ExternalEndpoint: _HT/hull.vidispine.addon.library.get.endpoint.uri.info:ENDPOINT:"authservice":URI:"keycloak":INFO:"base":IGNORE_INTERNAL:true
+                  ExternalEndpointPath: auth
+                  Realm:
+                    Master:
+                      AdminUserFilePath: /etc/secrets/keycloak/KEYCLOAK_ADMIN
+                      AdminPasswordFilePath: /etc/secrets/keycloak/KEYCLOAK_ADMIN_PASSWORD
+                    Vidispine:
+                      AdminUserFilePath: /etc/secrets/keycloak/VIDISPINE_REALM_ADMIN
+                      AdminPasswordFilePath: /etc/secrets/keycloak/VIDISPINE_REALM_ADMIN_PASSWORD
+                  Client: 
+                    InstallerClient: 
+                      ClientIdFilePath: /etc/secrets/auth/CLIENT_AUTHSERVICE_ID
+                      ClientSecretFilePath: /etc/secrets/auth/CLIENT_AUTHSERVICE_SECRET
+                Vidispine:
+                  EnableAuthServiceLdap: _HT*hull.config.specific.components.authservice.custom.enableAuthServiceLdap
+                  EnableVidicoreIdProvider: _HT*hull.config.specific.components.authservice.custom.enableVidicoreIdProvider
+                  Endpoint: _HT/hull.vidispine.addon.library.get.endpoint.uri.info:ENDPOINT:"vidicore"
+                  FullSyncPeriod: "86400"
+                  ChangedSyncPeriod: "-1"
+                  SyncTimeout: 1800
+                  SyncUserToVidiCoreMaxThreads: _HT*hull.config.specific.components.authservice.custom.syncUserToVidicoreMaxThreads
+                  User: 
+                    AdminServiceUserFilePath: "/etc/secrets/vidispine-admin-service-user/username"
+                    AdminServicePasswordFilePath: "/etc/secrets/vidispine-admin-service-user/password"
+                Certificates:
+                  Ssl: null
+                  TokenSigning: null
+                  TokenValidation: null
+                Proxy:
+                  Uri: auth
+                AllowedOrigins: |-
+                  _HT!
+                    [
+                      {{ if (kindIs "string" _HT*hull.config.specific.allowOrigins) }}
+                      "{{ _HT*hull.config.specific.allowOrigins }}"
+                      {{ else }}
+                      {{ range $origin := _HT*hull.config.specific.allowOrigins }}
+                      "{{ $origin | trim }}",
+                      {{ end }}
+                      {{ end }}
+                    ]
+          auth:
+            clientId: ""
+            clientSecret: ""
+          database:
+            name: auth
+            username: ""
+            password: ""
+          extraVolumes:
+            keycloak-user:
+              secret:
+                secretName: keycloak-user
+                defaultMode: 420
+            vidispine-service-admin-user:
+              secret:
+                secretName: _HT*hull.config.general.data.endpoints.vidicore.auth.basic.adminUserSecretName
+                staticName: true
+                defaultMode: 420
+                optional: true
+            auth:
+              secret:
+                secretName: auth
+                defaultMode: 420
+        validate-password-policy: {}
+          
   objects:
 
-    # define all services to be created
+    serviceaccount:
+      
+      authservice-create-db:
+        sources: 
+        - hull-database
+      
+      authservice-reset-db:
+        sources: 
+        - hull-database
+      
+      validate-password-policy:
+        annotations:
+          "helm.sh/hook": pre-install,pre-upgrade
+          "helm.sh/hook-weight": "-90"
+          "helm.sh/hook-delete-policy": before-hook-creation
+
+    registry:
+      
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations:
+          "helm.sh/hook": pre-install,pre-upgrade
+          "helm.sh/hook-weight": "-90"
+          "helm.sh/hook-delete-policy": before-hook-creation
+
     service:
-      # this apps service
+      
       authservice:
+        enabled: true
         type: ClusterIP
         ports:
           http:
@@ -114,16 +187,158 @@ hull:
             targetPort: 8745
             #nodePort: 31745
 
-    # configure authservice
-    deployment:
+    secret:
+
+      auth:
+        sources:
+        - hull-database
+        data: _HT/hull.vidispine.addon.library.auth.secret.data:ENDPOINTS:"database,vidicore,authservice,rabbitmq,gitrepository"
+
       authservice:
+        sources:
+        - hull-database
+        data: _HT/hull.vidispine.addon.library.component.secret.data:COMPONENT:(index . "OBJECT_INSTANCE_KEY")
+
+      shared-cert:
+        staticName: true
+        data: {}
+
+      keycloak-user:
+        annotations:
+          "helm.sh/hook": pre-install,pre-upgrade
+          "helm.sh/hook-weight": "-90"
+          "helm.sh/hook-delete-policy": before-hook-creation
+        data:
+          # Needs this name for keycloak to accept it
+          KEYCLOAK_ADMIN:
+            inline: "admin"
+          KEYCLOAK_ADMIN_PASSWORD:
+            inline: ""
+          KEYCLOAK_MANAGEMENT_USER:
+            inline: "manager"
+          KEYCLOAK_MANAGEMENT_PASSWORD:
+            inline: ""
+          VIDISPINE_REALM_ADMIN:
+            inline: "admin"
+          VIDISPINE_REALM_ADMIN_PASSWORD:
+            inline: ""
+
+    configmap:
+      
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        annotations:
+          helm.sh/hook: pre-install,pre-upgrade
+          helm.sh/hook-delete-policy: before-hook-creation
+          helm.sh/hook-weight: "-80"
+      
+      authservice:
+        data: _HT/hull.vidispine.addon.library.component.configmap.data:COMPONENT:(index . "OBJECT_INSTANCE_KEY")
+
+      validate-password-policy:
+        annotations:
+          helm.sh/hook-weight: "-90"
+        data: _HT/hull.vidispine.addon.library.component.configmap.data:COMPONENT:(index . "OBJECT_INSTANCE_KEY")
+      
+      custom-db-scripts:
+        data:
+          create-database.sh: 
+            inline: |-
+              #!/bin/sh
+              if [ -z "${DBADMINUSER}" ]; then
+                echo "Database admin user is not configured. Database creation will be skipped."
+                exit 0
+              fi
+
+              case "${DBTYPE}" in 
+                mssql)
+                  DBEXISTS=$(/opt/mssql-tools/bin/sqlcmd -U ${DBUSER} -P ${DBPASSWORD} -S ${DBHOST},${DBPORT} -d ${DBNAME} -l 120 -Q 'SELECT 1;')
+                  if [ "$DBEXISTS" ]; then
+                    echo "database [${DBNAME}] is already accessible by user [${DBUSER}]. No database setup is needed."
+                  else
+                    echo "database [${DBNAME}] is not accessible by user [${DBUSER}]. Database setup is needed."
+
+                    /opt/mssql-tools/bin/sqlcmd -U ${DBADMINUSER} -P ${DBADMINPASSWORD} -S ${DBHOST},${DBPORT} -d master -l 120 -b -i /scripts/create-database.sql
+                    /opt/mssql-tools/bin/sqlcmd -U ${DBADMINUSER} -P ${DBADMINPASSWORD} -S ${DBHOST},${DBPORT} -d ${DBNAME} -l 120 -b -i /scripts/set-permission.sql
+                  fi
+                  ;;
+                postgres)
+                  export PGPASSWORD=${DBPASSWORD}
+                  DBEXISTS=$(psql -h ${DBHOST} -p ${DBPORT} -U ${DBUSER}${DBUSERPOSTFIX} -d ${DBNAME} -tAc "SELECT 1;")
+                  
+                  export PGPASSWORD=${DBADMINPASSWORD}
+                  if [ "$DBEXISTS" ]; then
+                    echo "database [${DBNAME}] is already accessible by user [${DBUSER}]. No database setup is needed."
+                  else
+                    echo "database [${DBNAME}] is not accessible by user [${DBUSER}]. Database setup is needed."
+
+                    if [ $(psql -h ${DBHOST} -p ${DBPORT} -U ${DBADMINUSER}${DBUSERPOSTFIX} -d postgres -tAc "SELECT 1 FROM pg_user WHERE lower(usename)='${DBUSER}';") ]; then
+                      echo "user ${DBUSER} already exists"
+                    else
+                      echo "creating user ${DBUSER}"
+                      psql -h ${DBHOST} -p ${DBPORT} -U ${DBADMINUSER}${DBUSERPOSTFIX} -d postgres -c "CREATE USER ${DBUSER} PASSWORD '${DBPASSWORD}';"
+                      echo "granting role ${DBUSER} to admin user"
+                      psql -h ${DBHOST} -p ${DBPORT} -U ${DBADMINUSER}${DBUSERPOSTFIX} -d postgres -c "GRANT ${DBUSER} to ${DBADMINUSER};"
+                    fi
+                    if [ $(psql -h ${DBHOST} -p ${DBPORT} -U ${DBADMINUSER}${DBUSERPOSTFIX} -d postgres -tAc "SELECT 1 FROM pg_database WHERE lower(datname)='${DBNAME}';") ]; then
+                      echo "database ${DBNAME} already exists"
+                    else
+                      echo "creating database ${DBNAME}"
+                      psql -h ${DBHOST} -p ${DBPORT} -U ${DBADMINUSER}${DBUSERPOSTFIX} -d postgres -c "CREATE DATABASE ${DBNAME} OWNER ${DBUSER};"
+                      echo "Setup database extension"
+                      psql -h ${DBHOST} -p ${DBPORT} -U ${DBADMINUSER}${DBUSERPOSTFIX} -d ${DBNAME} -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
+
+                    fi
+                  fi
+                  ;;
+                *)
+                  echo "unsupported database type ${DBTYPE}"
+                  exit 1
+              esac
+
+    # Configure authservice
+    deployment:
+
+      authservice:
+        enabled: true
         replicas: 1
         pod:
+          initContainers:
+            01-check-keycloak-ready:
+              image:
+                repository: _HT*hull.config.specific.images.dbTools.repository
+                tag: _HT!* _HT*hull.config.specific.images.dbTools.tag | toString | quote
+              command:
+              - 'sh'
+              - '-c'
+              - '/scripts/check-keycloak-ready.sh'
+              volumeMounts:
+                scripts:
+                  name: configmap
+                  mountPath: /scripts
+                  hashsumAnnotation: true
+                _HT!:
+                  _: |-
+                    {
+                      {{ range $certkey, $certvalue := _HT*hull.config.general.data.installation.config.customCaCertificates}}
+                      "custom-ca-certificates-{{ $certkey }}": 
+                        {
+                          enabled: true, 
+                          name: "certs",
+                          mountPath: "/usr/local/share/ca-certificates/custom-ca-certificates-{{ $certkey }}",
+                          subPath: "{{ $certkey }}",
+                          hashsumAnnotation: true
+                        },
+                      {{ end }}
+                    }
+                etcssl:
+                  enabled: _HT?_HT*hull.config.general.data.installation.config.customCaCertificates
+                  name: etcssl
+                  mountPath: /etc/ssl/certs
           containers:
             authservice:
               image:
-                repository: auth/authservice
-                tag: 1.0.0 # Overwritten on build
+                repository: auth/authservicekeycloak
+                tag: _HT!* _HT*Chart.Version | quote | toString
               ports:
                 http:
                   containerPort: 8745
@@ -136,263 +351,374 @@ hull:
                   cpu: 100m
                   memory: 256Mi
               livenessProbe:
-                failureThreshold: 5
+                failureThreshold: 15
                 httpGet:
-                  path: /_health
+                  path: /healthz
                   port: http
                   scheme: HTTP
-                initialDelaySeconds: 60
-                periodSeconds: 30
+                initialDelaySeconds: 30
+                periodSeconds: 10
                 successThreshold: 1
                 timeoutSeconds: 20
               readinessProbe:
-                failureThreshold: 5
+                failureThreshold: 15
                 httpGet:
-                  path: /_health
+                  path: /healthz
                   port: http
                   scheme: HTTP
-                initialDelaySeconds: 60
-                periodSeconds: 30
+                initialDelaySeconds: 10
+                periodSeconds: 10
                 successThreshold: 1
                 timeoutSeconds: 20
               command:
-                - "tini"
+                - 'tini'
               args:
-                - "/bin/bash"
+                - "/bin/sh"
                 - "/app/entrypoint.sh"
+              env: _HT/hull.vidispine.addon.library.component.pod.env:COMPONENT:"authservice"
               volumeMounts:
-                settings_config:
-                  name: settings
-                  mountPath: '/app/config'
-                settings_entrypoint:
-                  name: settings
-                  mountPath: '/app/entrypoint.sh'
-                  subPath: 'entrypoint.sh'
-                certs:
-                  # only render if custom certs are defined
-                  enabled: _HT?(index . "$").Values.hull.config.specific.ssl.custom_ca_certs
-                  name: certs
-                  mountPath: '/usr/local/share/ca-certificates/'
+                settings:
+                  name: secret
+                  mountPath: /app/appsettings.json
+                  subPath: appsettings.json
+                  hashsumAnnotation: true
+                entrypoint:
+                  name: configmap
+                  mountPath: /app/entrypoint.sh
+                  subPath: entrypoint.sh
+                  hashsumAnnotation: true
+                script:
+                  name: configmap
+                  mountPath: /script
+                  hashsumAnnotation: true
+                keycloak-user:
+                  name: keycloak-user
+                  mountPath: /etc/secrets/keycloak
+                  hashsumAnnotation: true
+                authservice:
+                  name: secret
+                  mountPath: /etc/secrets/authservice
+                  hashsumAnnotation: true
+                auth:
+                  name: auth
+                  mountPath: /etc/secrets/auth
+                  hashsumAnnotation: true
+                vidispine-service-admin-user:
+                  name: vidispine-service-admin-user
+                  mountPath: /etc/secrets/vidispine-admin-service-user
                 etcssl:
-                  # only render if custom certs are defined
-                  enabled: _HT?(index . "$").Values.hull.config.specific.ssl.custom_ca_certs
+                  enabled: _HT?_HT*hull.config.general.data.installation.config.customCaCertificates
                   name: etcssl
-                  mountPath: '/etc/ssl/certs'
-          volumes:
-            settings: # references a configmap/secret key
-              configMap:
-                name: "settings"
-                defaultMode: 0744
-            certs:
-              # only render if custom certs are defined
-              enabled: _HT?(index . "$").Values.hull.config.specific.ssl.custom_ca_certs
-              secret:
-                secretName: "custom-ca-certificates"
-            etcssl:
-              emptyDir: {}
+                  mountPath: /etc/ssl/certs
+                _HULL_TRANSFORMATION_:
+                  NAME: hull.util.transformation.tpl
+                  CONTENT: |-
+                    {
+                      {{ range $certkey, $certvalue := _HT*hull.config.general.data.installation.config.customCaCertificates}}
+                      "custom-ca-certificates-{{ $certkey }}": 
+                        {
+                          enabled: true, 
+                          name: "certs",
+                          mountPath: "/usr/local/share/ca-certificates/custom-ca-certificates-{{ $certkey }}",
+                          subPath: "{{ $certkey }}",
+                          hashsumAnnotation: true
+                        },
+                      {{ end }}
+                    }
+          volumes: _HT/hull.vidispine.addon.library.component.pod.volumes:COMPONENT:(index . "OBJECT_INSTANCE_KEY")
     
     # Configure authservice ingress
     ingressclass:
-      authservice:
+      
+      default:
         controller: _HT*hull.config.specific.ingress.controllerClass
-    
+
     ingress:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        ingressClassName: _HT^default
+      
       authservice:
+        annotations:
+          haproxy-ingress.github.io/path-type: regex
         enabled: true
-        # generate a unique 'fully qualified' name for the IngressClass as <Release>-<Chart>-authservice
-        ingressClassName: _HT^authservice
         rules:
           authservice:
-            # reference this apps hosted hostname
-            host: _HT*hull.config.specific.endpoint.host
+            host: _HT/hull.vidispine.addon.library.get.endpoint.uri.info:ENDPOINT:"authservice":INFO:"hostname"
             http:
               paths:
                 application:
-                  # subpath on host
-                  path: _HT*hull.config.specific.pathBase.authservice
-                  pathType: Prefix
+                  path: _HT!{{ printf "%s(/|/$|$|/assets|/swagger|/health|/healthz)(.*|$)" (include "hull.vidispine.addon.library.get.endpoint.uri.info" (dict "PARENT_CONTEXT" (index . "$") "ENDPOINT" "authservice" "INFO" "path")) }}
+                  pathType: _HT!
+                            {{- if contains "haproxy-ingress.github.io/controller" _HT*hull.config.specific.ingress.controllerClass -}}
+                            ImplementationSpecific
+                            {{- else -}}
+                            Exact
+                            {{- end -}}
                   backend:
                     service:
-                      name: 'authservice'
+                      name: authservice
                       port:
-                        number: 8745
-
-    # configure Configmaps
-    configmap:
-      settings:
-        data:
-          # entrypoint script to update any mounted certificates
-          "entrypoint.sh":
-            inline: |-
-              #!/bin/bash
-              set -euo pipefail
-
-              echo "Updating certificates ..."
-              update-ca-certificates
-              echo "---- ---- ---- ---- ---- ---- "
-              echo "Starting Vidispine AuthService as user '$(whoami)' ..."
-              dotnet /app/VPMS3.Auth.Console.dll
-          "appsettings.json":
-            path: "files/appsettings.json"
-      dbsettings:
+                        name: http
+                api:
+                  path: _HT!{{ printf "%s(/([a-zA-Z0-9_])*)(/v([0-9])+/|((?![#=?!]).)*/v([0-9])+/.*)" (include "hull.vidispine.addon.library.get.endpoint.uri.info" (dict "PARENT_CONTEXT" (index . "$") "ENDPOINT" "authservice" "INFO" "path")) }}
+                  pathType: _HT!
+                            {{- if contains "haproxy-ingress.github.io/controller" _HT*hull.config.specific.ingress.controllerClass -}}
+                            ImplementationSpecific
+                            {{- else -}}
+                            Exact
+                            {{- end -}}
+                  backend:
+                    service:
+                      name: authservice
+                      port:
+                        name: http
+                proxy:
+                  path: _HT!{{ printf "%s/realms(/[a-zA-Z0-9_]*)(/connect+/.*)" (include "hull.vidispine.addon.library.get.endpoint.uri.info" (dict "PARENT_CONTEXT" (index . "$") "ENDPOINT" "authservice" "INFO" "path")) }}
+                  pathType: _HT!
+                            {{- if contains "haproxy-ingress.github.io/controller" _HT*hull.config.specific.ingress.controllerClass -}}
+                            ImplementationSpecific
+                            {{- else -}}
+                            Exact
+                            {{- end -}}
+                  backend:
+                    service:
+                      name: authservice
+                      port:
+                        name: http
+      
+      keycloak:
         annotations:
-          "helm.sh/hook": pre-install,pre-upgrade
-          "helm.sh/hook-weight": "-80"
-          "helm.sh/hook-delete-policy": before-hook-creation
-        data:
-          "setupdb.sh":
-            path: "files/setupdb.sh"
-
-    secret:
-      # create this secret with custom ca certificates when there are any
-      'custom-ca-certificates':
-        enabled: _HT?(index . "$").Values.hull.config.specific.ssl.custom_ca_certs
-        # use full templating capabilities to create the data required
-        data: |-
-          _HT!{
-            {{ range $key,$value :=  (index . "$").Values.hull.config.specific.ssl.custom_ca_certs }}
-            {{ $key }}: { inline: {{ $value | quote }} },
-            {{ end }}
-          }
-        
-      database:
-        annotations:
-          "helm.sh/hook": pre-install,pre-upgrade
-          "helm.sh/hook-weight": "-80"
-          "helm.sh/hook-delete-policy": before-hook-creation
-        data:
-          dbConnectionString:
-            inline: _HT*hull.config.specific.database.connectionString
-          dbUserPostfix: # postfix to be added to all DBUsernames when connecting to DB
-            inline: _HT*hull.config.specific.database.usernamesPostfix
-          dbAdminUserWithPostfix: # admin User with Postfix combined
-            inline: _HT!
-              {{ printf "%s%s" (index . "$").Values.hull.config.specific.database.adminUsername (index . "$").Values.hull.config.specific.database.usernamesPostfix }}
-          dbAdminUsername:
-            inline: _HT*hull.config.specific.database.adminUsername
-          dbAdminPassword:
-            inline: _HT*hull.config.specific.database.adminPassword
-          dbUsername:
-            inline: _HT*hull.config.specific.database.username
-          dbPassword:
-            inline: _HT*hull.config.specific.database.password
+          haproxy-ingress.github.io/path-type: regex
+        rules:
+          keycloak:
+            host:  _HT/hull.vidispine.addon.library.get.endpoint.uri.info:ENDPOINT:"authservice":URI:"keycloak":INFO:"hostname":IGNORE_INTERNAL:true
+            http:
+              paths:
+                application:
+                  path: _HT!{{ printf "%s/(admin|resources|js|realms)(($|(?!/((v[0-9]+)|connect)/).)*$)" (include "hull.vidispine.addon.library.get.endpoint.uri.info" (dict "PARENT_CONTEXT" (index . "$") "ENDPOINT" "authservice" "IGNORE_INTERNAL" true "INFO" "path")) }}
+                  pathType: _HT!
+                            {{- if contains "haproxy-ingress.github.io/controller" _HT*hull.config.specific.ingress.controllerClass -}}
+                            ImplementationSpecific
+                            {{- else -}}
+                            Exact
+                            {{- end -}}
+                  backend:
+                    service:
+                      staticName: true
+                      name: _HT!* printf "%s-keycloak" _HT**Release.Name
+                      port: 
+                        name: http
 
     job:
-      # Installation job
-      create-db:
+      
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        pod:
+          restartPolicy: Never
+        backoffLimit: 4
+      
+      authservice-create-db:
+        sources:
+        - hull-database
+        pod: _HT/hull.vidispine.addon.library.component.job.database:COMPONENT:"authservice":TYPE:"create":CREATE_SCRIPT_CONFIGMAP:"custom-db-scripts"
+      
+      authservice-reset-db:
+        enabled: false
+        sources:
+        - hull-database
+        pod: _HT/hull.vidispine.addon.library.component.job.database:COMPONENT:"authservice":TYPE:"reset"
+        
+      validate-password-policy:
         enabled: true
         annotations:
           "helm.sh/hook": pre-install,pre-upgrade
-          "helm.sh/hook-delete-policy": before-hook-creation
-          "helm.sh/hook-weight": "-10"
+          "helm.sh/hook-weight": "-80"
         pod:
+          serviceAccountName: _HT^validate-password-policy
           restartPolicy: OnFailure
-          initContainers:
-            check-database-ready:
-              image:
-                repository: docker.io/busybox
-                tag: 1.28.2
-              command:
-              - sh
-              - -c
-              - until nc $(DATABASE_HOST) $(DATABASE_PORT); do echo waiting for database at $(DATABASE_HOST):$(DATABASE_PORT); sleep 5; done; echo database at $(DATABASE_HOST):$(DATABASE_PORT) found;
-              env:
-                'DATABASE_HOST':
-                  value: _HT*hull.config.specific.database.host
-                'DATABASE_PORT':
-                  value: _HT!"{{ (index . "$").Values.hull.config.specific.database.port | toString }}"
           containers:
-            create-database:
+            validate-password-policy:
               image:
-                repository: vpms/dbtools
-                tag: "1.2"
+                repository: vpms/powershellcore-yaml
+                tag: "7.0.3-ubuntu-18.04-20200928"
               command:
-              - sh
-              - -c
-              - /scripts/create-database.sh && /scripts/setupdb.sh
+                - pwsh
+                - -c
+                - /script/check-password.ps1
+                - "-Passwords @(\"$(VIDISPINE_REALM_ADMIN_PASSWORD)\")"
               env:
-                'DBUSERPOSTFIX':
+                VIDISPINE_REALM_ADMIN_PASSWORD:
                   valueFrom:
                     secretKeyRef:
-                      name: database
-                      key: dbUserPostfix
-                'DBADMINUSER':
-                  valueFrom:
-                    secretKeyRef:
-                      name: database
-                      key: dbAdminUsername
-                'DBADMINPASSWORD':
-                  valueFrom:
-                    secretKeyRef:
-                      name: database
-                      key: dbAdminPassword
-                'DBUSER':
-                  valueFrom:
-                    secretKeyRef:
-                      name: database
-                      key: dbUsername
-                'DBPASSWORD':
-                  valueFrom:
-                    secretKeyRef:
-                      name: database
-                      key: dbPassword
-                'DBNAME':
-                  value: _HT*hull.config.specific.database.name
-                'DBTYPE':
-                  value: _HT*hull.config.specific.database.type
-                'DBHOST':
-                  value: _HT*hull.config.specific.database.host
-                'DBPORT':
-                  value: _HT!"{{ (index . "$").Values.hull.config.specific.database.port | toString }}"
+                      name: keycloak-user
+                      key: VIDISPINE_REALM_ADMIN_PASSWORD
               volumeMounts:
-                dbsettings:
-                  name: dbsettings
-                  mountPath: '/scripts/setupdb.sh'
-                  subPath: 'setupdb.sh'
-          volumes:
-            dbsettings:
-              configMap:
-                name: "dbsettings"
-                defaultMode: 0744
-      reset-db:
-        enabled: false
-        annotations:
-          "helm.sh/hook": pre-install,pre-upgrade
-          "helm.sh/hook-delete-policy": before-hook-creation
-          "helm.sh/hook-weight": "-20"
-        pod:
-          restartPolicy: OnFailure
-          containers:
-            reset-db:
-              image:
-                repository: vpms/dbtools
-                tag: "1.0"
-              command:
-              - sh
-              - /scripts/reset-database.sh
-              env:
-                'DBADMINUSER':
-                  valueFrom:
-                    secretKeyRef:
-                      name: database
-                      key: dbAdminUsername
-                'DBADMINPASSWORD':
-                  valueFrom:
-                    secretKeyRef:
-                      name: database
-                      key: dbAdminPassword
-                'DBNAME':
-                  value: _HT*hull.config.specific.database.name
-                'DBTYPE':
-                  value: _HT*hull.config.specific.database.type
-                'DBHOST':
-                  value: _HT*hull.config.specific.database.host
-                'DBPORT':
-                  value: _HT!"{{ (index . "$").Values.hull.config.specific.database.port | toString }}"
-    customresource:
-      externalsecret:
-        kind: 
-        api: 
-        spec:
-          
+                script:
+                  enabled: true
+                  name: configmap
+                  mountPath: '/script'
+          volumes: _HT/hull.vidispine.addon.library.component.pod.volumes:COMPONENT:(index . "OBJECT_INSTANCE_KEY")
+
+    cronjob:
       
+      check-ldap-sync: 
+        enabled: _HT*hull.config.specific.components.authservice.custom.enableCRONJobSync
+        schedule: "* * * * *"
+        failedJobsHistoryLimit: 2
+        successfulJobsHistoryLimit: 2
+        concurrencyPolicy: Forbid
+        job:
+          pod:
+            restartPolicy: Never
+            containers:
+              ldap-sync:
+                image:
+                  repository: vpms/powershellcore-yaml-oras
+                  tag: 7.3-ubuntu-22.04-20230620
+                command: ["/bin/sh", "-c"]
+                args: [
+                  "pwsh /script/syncscheduler.ps1;"
+                  ]
+                env:
+                  'AUTHSERVICE_URL':
+                    value: _HT/hull.vidispine.addon.library.get.endpoint.uri.info:ENDPOINT:"authservice":URI:"authservice"
+                  'AUTHSERVICE_KEYCLOAK_URL':
+                    value: _HT/hull.vidispine.addon.library.get.endpoint.uri.info:ENDPOINT:"authservice":URI:"keycloak"
+                  'AUTHSERVICE_TOKEN_INSTALLER_CLIENT_ID':
+                    valueFrom:
+                      secretKeyRef:
+                        name: auth
+                        key: AUTH_TOKEN_AUTHSERVICE_INSTALLATIONCLIENTID
+                  'AUTHSERVICE_TOKEN_INSTALLER_CLIENT_SECRET':
+                    valueFrom:
+                      secretKeyRef:
+                        name: auth
+                        key:  AUTH_TOKEN_AUTHSERVICE_INSTALLATIONCLIENTSECRET
+                volumeMounts:
+                  script:
+                    name: configmap
+                    mountPath: '/script'
+            volumes: _HT/hull.vidispine.addon.library.component.pod.volumes:COMPONENT:"authservice"
+
+keycloak:
+  image:
+    registry: "cr.vidinet.net"
+    repository: vidiconfig/bitnami-keycloak
+    tag: 22.0.5
+  global:
+    imagePullSecrets:
+      - vpms3
+  initContainers:
+    - name: provider-install
+      image: '{{ .Values.global.keycloak_registry }}/auth/authservicekeycloak/provider:24.2.7'
+      command: ['/bin/sh']
+      args: ['-c', 'cp -f /artifacts/*.jar /provider']
+      volumeMounts:
+        - name: provider
+          mountPath: '/provider'
+    - name: etcssl
+      image: '{{ .Values.global.keycloak_registry }}/prepared/ca-cert-java:0.2'
+      command:
+      - /bin/bash
+      - '-ec'
+      - |-
+        mkdir -p /etc/ssl/certs/java && update-ca-certificates -f &&
+        /var/lib/dpkg/info/ca-certificates-java.postinst configure
+      volumeMounts:
+      - name: certs
+        mountPath: /usr/local/share/ca-certificates/
+      - name: etcssl
+        mountPath: /etc/ssl/certs
+  extraVolumes:
+    - name: provider
+      emptyDir: {}
+    - name: script
+      configMap: 
+        name: authservice-authservice
+    - name: keytab
+      secret:
+        secretName: authservice-keycloak-keytab
+        defaultMode: 420
+        optional: true
+  extraVolumeMounts:
+    - name: provider
+      mountPath: '/provider'
+    - name: script
+      mountPath: '/docker-entrypoint-initdb.d/copy-providers.sh'
+      subPath: copy-providers.sh
+    - name: keytab
+      mountPath: /keytab
+  auth:
+    createAdminUser: true
+    adminUser: "admin"
+    adminPassword: ""
+    managementUser: "manager"
+    managementPassword: ""
+    tls:
+      enabled: false
+      autoGenerated: true
+  proxyAddressForwarding: true
+  # To set the KEYCLOAK_ADMIN username
+  extraEnvVarsSecret: authservice-keycloak-user
+  #https://www.keycloak.org/docs/latest/server_installation/index.html#default-provider (since the bitnami chart param does not work)
+  extraEnvVars:
+    ## ref: https://keycloak.discourse.group/t/keycloak-10-0-x-and-11-0-0-fails-to-connect-to-the-database/3917/2
+    - name: JDBC_PARAMS
+      value: 'useSSL=false'
+      ## ref: https://keycloak.discourse.group/t/enable-preview-features-in-docker-container/6918
+    - name: JAVA_OPTS
+      value: >-
+        -Dkeycloak.profile=community
+        -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled
+        -Dkeycloak.profile.feature.admin2=disabled
+        -Dkeycloak.profile.feature.client_secret_rotation=enabled
+        -Dkeycloak.profile.feature.declarative_user_profile=enabled
+        -Dkeycloak.profile.feature.docker=enabled
+        -Dkeycloak.profile.feature.openshift_integration=enabled
+        -Dkeycloak.profile.feature.recovery_codes=enabled
+        -Dkeycloak.profile.feature.scripts=enabled
+        -Dkeycloak.profile.feature.token_exchange=enabled
+    - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
+      value: 'true'
+    - name: KEYCLOAK_HTTP_RELATIVE_PATH
+      value: '/auth'
+    - name: KEYCLOAK_LOG_OUTPUT
+      value: 'json'
+    #- name: KEYCLOAK_LOG_LEVEL
+    #  value: INFO
+    - name: QUARKUS_TRANSACTION_MANAGER_DEFAULT_TRANSACTION_TIMEOUT
+      value: '1800S'
+    - name: HTTP_CLIENT_TIMEOUT_IN_SECONDS
+      value: '900'
+  postgresql:
+    enabled: false
+  externalDatabase:
+    existingSecret: authservice-authservice-authservice
+    existingSecretPasswordKey: AUTH_BASIC_DATABASE_PASSWORD
+  service:
+    type: ClusterIP
+  readinessProbe:
+    enabled: false
+  customLivenessProbe:
+    httpGet:
+      path: /auth
+      port: http
+    timeoutSeconds: 30
+    periodSeconds: 120
+    successThreshold: 1
+  livenessProbe:
+    enabled: false
+  customReadinessProbe:
+    httpGet:
+      path: /auth/realms/master
+      port: http
+    timeoutSeconds: 30
+    periodSeconds: 120
+    successThreshold: 1
+  logging:
+    output: json
+  metrics:
+    enabled: true
+  cache:
+    enabled: true
+  replicaCount: 1
+  podManagementPolicy: OrderedReady
