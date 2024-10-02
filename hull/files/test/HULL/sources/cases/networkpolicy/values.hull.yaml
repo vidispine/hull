@@ -121,6 +121,11 @@ hull:
         podSelector: 
           matchLabels:
             key: value
+      
+      namespace-override:
+        podSelector: 
+          matchLabels:
+            key: value
 
       standard:
         egress:

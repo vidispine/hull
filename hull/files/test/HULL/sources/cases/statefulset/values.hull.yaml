@@ -449,4 +449,7 @@ hull:
       
       object-condition-include-bool-false-field:
         serviceName: object-condition-include-bool-false-field
+
+      namespace-override:
+        serviceName: namespace-override
 ###################################################

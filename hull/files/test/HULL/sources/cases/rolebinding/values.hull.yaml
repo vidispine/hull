@@ -183,4 +183,10 @@ hull:
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
+
+      namespace-override:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
 ###################################################

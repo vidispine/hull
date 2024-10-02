@@ -94,4 +94,7 @@ hull:
 
       test-get-transformations-array:
         provisioner: "local-volume"
+
+      namespace-override:
+        provisioner: "local-volume"
 ###################################################
