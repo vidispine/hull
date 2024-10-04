@@ -454,14 +454,14 @@ hull:
                 tag: "99.9"
               args: |-
                 _HT![
-                {{ if (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}
-                  "{{ (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}",
-                  "{{ (index . "$").Values.hull.config.specific.then_add_this_arg }}",
-                {{ end }}
-                {{ if not (index . "$").Values.hull.config.specific.if_this_arg_is_not_defined }}
-                  "{{ (index . "$").Values.hull.config.specific.then_use_this_arg }}"
-                {{ end }}
-              ]
+                  {{ if (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}
+                    "{{ (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}",
+                    "{{ (index . "$").Values.hull.config.specific.then_add_this_arg }}",
+                  {{ end }}
+                  {{ if not (index . "$").Values.hull.config.specific.if_this_arg_is_not_defined }}
+                    "{{ (index . "$").Values.hull.config.specific.then_use_this_arg }}"
+                  {{ end }}
+                ]
 ```
 
 The intention of the above configuration is to demonstrate some conditional population of the `args` array. It should result in three elements:
@@ -618,6 +618,23 @@ hull:
                 ]
 ```
 
+Additionally the `include` short form transformation `_HT/` is now also available for use within `_HT!` content! To correctly delimit the `_HT/` parameters from the remaining `_HT!` content, it needs to be ended with a `/TH_` suffix, similar to a bash `if`/`fi` start/end tag. 
+
+Here is a brief example on how to put `_HT/` transformations into the `_HT!` content:
+
+```yaml
+value: |-
+  _HT!
+    {{- printf "%s is the chart reference value" _HT/hull.
+    metadata.chartref/TH_ -}}
+```
+
+This will render similar to the below, depending on your parents helm charts name and version:
+
+```yaml
+value: hull-test-1.31.0 is the chart reference value
+```
+
 More detailed on this feature is available in the below section on _hull.util.transformation.tpl_ transformations.
 
 ## Provided transformations
@@ -702,7 +719,7 @@ Provides an easy to use shortcut to simply get the value of a field in `values.y
 
 ⚠️ **In case the referenced value should be manipulated in any other way you can use `_HT!` transformations in combination with the `_HT*` reference style. For more information see the 'Example of a complex custom transformation' above and the `hull.util.transformation.tpl` section below** ⚠️
 
-When used in the `values.yaml` context, any complex object (dictionary or array) referenced will in fact be inserted as an object with further leaves into the `values.yaml` tree. This is very powerful since it allows to reuse larger configuration parts multiple times. But in some cases you may want to serialize the referenced dictionary or list object into a JSON or YAML string, for this you have the additional possibility to prefix the REFERENCE with one of the following prefixes:
+When used in the `values.yaml` context, any complex object (dictionary or array) referenced will in fact be inserted as an object with further leafes into the `values.yaml` tree. This is very powerful since it allows to reuse larger configuration parts multiple times. But in some cases you may want to serialize the referenced dictionary or list object into a JSON or YAML string, for this you have the additional possibility to prefix the REFERENCE with one of the following prefixes:
 
 - `toJson`
 - `toPrettyJson`
@@ -802,7 +819,7 @@ The processed result of executing `tpl` on the string. Depending on where this t
 
 The most powerful transformation that allows to freely specify the Go templating expression(s) to be evaluated. Care needs to be taken so that the returned string can be converted to the desired return type if it is not string.
 
-Consider using the `_HT*` reference style to address fields in the `values.yaml` for more compact style and less typing. The full range of `_HT*` usage is available, hence you can also use `_HT**` for root context access or serialization instructions as in `_HT*toJson|hull.config.xyz`.
+Consider using the `_HT*` reference style within the `_HT!` content to address fields in the `values.yaml` for more compact style and less typing. The full range of `_HT*` usage is available, hence you can also use `_HT**` for root context access or serialization instructions as in `_HT*toJson|hull.config.xyz`.
 
 #### __Combinations__
 
@@ -830,7 +847,7 @@ you may use the most concise form:
 string: _HT!*_HT*hull.config.specific.some_referenced_value | lower
 ```
 
-All three variants yield the same result.
+All three variants yield the same result. 
 
 
 #### __Short Form Examples__
@@ -862,7 +879,7 @@ ports: # dictionary-form transformation style
       }
 ```
 
-### Call an `incude` function (_hull.util.transformation.include_)
+### Call an `include` function (_hull.util.transformation.include_)
 
 #### __Arguments__
 
@@ -907,6 +924,17 @@ This is an example with additional parameters, a call to `hull.metadata.name`, a
 name_tpl: _HT!{{ include "hull.metadata.name" (dict "PARENT_CONTEXT" (index . "$") "COMPONENT" "test") }}
 name_include: _HT/hull.metadata.name:COMPONENT:"test"
 ```
+
+⚠️ **In case the referenced value should be manipulated in any other way you can use `_HT!` transformations in combination with the `_HT/` include style! For more information see the 'Example of a complex custom transformation' above and the `hull.util.transformation.tpl` section below** ⚠️
+
+Hence the following:
+
+```yaml
+name_include_in_tpl: _HT!{{ _HT/hull.metadata.name/COMPONENT:"test" }}
+name_include: _HT/hull.metadata.name:COMPONENT:"test"
+```
+
+also delivers identical results while the `name_include_in_tpl` expression provides the possibility to further manipulate the returned value.
 
 It is possible to not only return simple strings but also complex dictionaries or arrays produced by the `include`. Without an extra serialization prefix the resulting object tree or list is inserted into the `values.yaml`.
 

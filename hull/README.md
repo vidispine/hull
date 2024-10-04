@@ -714,6 +714,9 @@ hull:
                   # Applies a tpl transformation allowing to inject dynamic data based
                   # on values in this values.yaml into the resulting field (here the tag
                   # field of this container).
+                  # In this case of simply retrieving a value, the same can be achieved 
+                  # using a Get transformation like this:
+                  #   _HT*hull.config.specific.nginx_tag
                   # _HT! is the short form of the transformation that applies tpl to
                   # a given value. This example just references the value of the field 
                   # which is specified further above in the values.yaml and will 

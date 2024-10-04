@@ -1,0 +1,69 @@
+# This is a YAML-formatted file.
+# - declares variables to be passed into your templates
+# - provides default values where applicable
+---
+hull:
+  objects:
+    clusterrole:
+      eventrouter:
+        rules:
+          configmaps:
+            apiGroups:
+            - ""
+            resources:
+            - events
+            verbs:
+            - get
+            - list
+            - watch
+    clusterrolebinding:
+      eventrouter:
+        subjects:
+        - kind: ServiceAccount
+          name: _HT^default
+          namespace: _HT!{{ (index . "$").Release.Namespace }}
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: _HT^eventrouter
+
+    configmap:
+      eventrouter:
+        #staticName: true
+        data:
+          config.json:
+            inline: |-
+              {
+                "sink": "glog"
+              }
+
+    deployment:
+      eventrouter:
+        labels:
+          app: eventrouter
+        templateLabels:
+          app: eventrouter
+          tier: control-plane-addons
+        pod:
+          serviceAccountName: _HT^default
+          terminationGracePeriodSeconds: 10
+          containers:
+            kube-eventrouter:
+              image:
+                repository: gcr.io/heptio-images/eventrouter
+                tag: "v0.3"
+              resources:
+                requests:
+                  memory: 20Mi
+                  cpu: 10m
+                limits:
+                  memory: 100Mi
+                  cpu: 50m
+              volumeMounts:
+                eventrouter:
+                  name: eventrouter
+                  mountPath: /etc/eventrouter
+          volumes:
+            eventrouter:
+              configMap:
+                name: eventrouter
