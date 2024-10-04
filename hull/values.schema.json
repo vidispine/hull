@@ -29856,6 +29856,7 @@
         "labels",
         "staticName",
         "metadataNameOverride",
+        "namespaceOverride",
         "sources"
       ]
     },
@@ -29919,6 +29920,17 @@
         },
         "metadataNameOverride": {
           "title": "MetadataNameOverride",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "namespaceOverride": {
+          "title": "namespaceOverride",
           "anyOf": [
             {
               "$ref": "#/definitions/hull.Transformation.Pattern"
