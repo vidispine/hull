@@ -477,6 +477,13 @@
 {{- $objectInstanceKey = index $sourcePath 3 -}}
 {{- end -}}
 {{- end -}}
+{{- $serializer := "" }}
+{{- $getValue := include "hull.util.transformation.serialize.get" (dict "VALUE" $content) | fromYaml -}}
+{{- $serializer := "" -}}
+{{- if $getValue.serialize -}}
+{{- $content = $getValue.remainder -}}
+{{- $serializer = $getValue.serializer -}}
+{{- end -}}
 {{- $getProcessing := (include "hull.util.process.get.paths" (dict "CONTENT" $content "PARENT_CONTEXT" . "SOURCE_PATH" $sourcePath)) | fromYaml -}}
 {{- if (ne $getProcessing.error "") -}}
 {{ $key }}: {{ $getProcessing.error }}
@@ -485,7 +492,11 @@
 {{- if (ne $includeProcessing.error "") -}}
 {{ $key }}: {{ $includeProcessing.error }}
 {{- else -}}
-{{ $key }}: {{ tpl $includeProcessing.content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) }}
+{{- $result := tpl $includeProcessing.content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) -}}
+{{- if (and (ne $serializer "") (ne $serializer "none")) -}}
+{{- $result = (include "hull.util.transformation.convert" (dict "SOURCE" ($result | trimPrefix "\n" | trimPrefix "\\n" | trimPrefix "\r\n" | trimPrefix "\\r\\n" | toYaml) "SERIALIZER" $serializer))  -}}
+{{- end -}}
+{{- $key }}: {{ $result }}
 {{- end -}}
 {{- end -}}
 {{- end -}}

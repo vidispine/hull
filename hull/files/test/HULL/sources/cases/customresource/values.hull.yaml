@@ -146,3 +146,49 @@ hull:
             language: yaml
             content: |-
               _HT/hull.util.tools.file.get:PATH:"files/code-java-complex.java"
+    
+      issue-339:
+        apiVersion: camel.apache.org/v1
+        kind: Integration
+        spec:
+          forProvider:
+            inlinePolicy:
+              - name: plain-json-string
+                policy: |-
+                    {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Resource": "*",
+                          "Action": "ssm:GetParameter*"
+                        }
+                      ]
+                    }
+              - name: interpreted-as-flow-style-yaml
+                policy: |-
+                  _HT!
+                    {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "{{ printf "%s" "Allow" }}",
+                          "Resource": "*",
+                          "Action": "ssm:GetParameter*"
+                        }
+                      ]
+                    }
+              - name: interpreted-and-serialized-flow-style-yaml
+                policy: |-
+                  _HT!toPrettyJson|
+                  {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "{{ printf "%s" "Allow" }}",
+                        "Resource": "*",
+                        "Action": "ssm:GetParameter*"
+                      }
+                    ]
+                  }
+            
