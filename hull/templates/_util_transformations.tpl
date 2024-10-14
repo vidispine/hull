@@ -504,18 +504,15 @@
 {{- if (ne $includeProcessing.error "") -}}
 {{ $key }}: {{ $includeProcessing.error }}
 {{- else -}}
-{{- $result := tpl $includeProcessing.content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) -}}
-{{- $isArray := false -}}
+{{- $trimmed := include "hull.util.string.trim.prefixes" (dict "STRING" $includeProcessing.content) -}}
+{{- $result := tpl $trimmed (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) -}}
+{{- $final := $result -}}
 {{- if (and (ne $serializer "") (ne $serializer "none")) -}}
-{{- $trimmed := include "hull.util.string.trim.prefixes" (dict "STRING" $result) -}}
-{{- if (hasPrefix "[" $trimmed) -}}
-{{- $trimmed = printf "{\"dummy\": %s}" $trimmed -}}
-{{- $isArray = true }}
+{{- $final = $result | fromYaml -}}
+{{- if (hasKey $final "Error")  -}}
+{{- $final = $result | fromYamlArray -}}
 {{- end -}}
-{{- $result = (include "hull.util.transformation.convert" (dict "SOURCE" ($trimmed | fromYaml) "SERIALIZER" $serializer)) -}}
-{{- if $isArray -}}
-{{- $result = (index ($result | fromYaml) "dummy") | toString -}}
-{{- end -}}
+{{- $result = (include "hull.util.transformation.convert" (dict "SOURCE" ($final) "SERIALIZER" $serializer)) -}}
 {{- end -}}
 {{- $key }}: {{ $result }}
 {{- end -}}

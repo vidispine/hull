@@ -649,17 +649,37 @@ hull:
               c: "3",
               d: { d1: [ "a1", "btwo", "c3"] }
             }
-          test-tpl-list: ""
-            
+          test-tpl-list: |-
+            _HT!
+              [ 
+              "a",
+              "b",
+              "c" 
+              ]
+              
           test-tpl-list-json: |-
-            _HT!toJson|[ "a" ] 
-          test-tpl-list-prettyjson: ""
-            
-          test-tpl-list-rawjson: ""
-             
-          test-tpl-list-yaml: ""
-             
-          test-tpl-list-string: ""
+            _HT!toJson|
+              [ 
+              "a",
+              "b",
+              "c"
+              ]
+          test-tpl-list-prettyjson: |-
+            _HT!toJson|
+              [ 
+                "a",
+                "b",
+                "c"
+              ] 
+          test-tpl-list-rawjson: |-
+            _HT!toJson|
+            - "a"
+            - "b"
+            - "c"
+          test-tpl-list-yaml: |-
+            _HT!toJson|[ "a", "b", "c" ]
+          test-tpl-list-string: |-
+            _HT!toJson|[ "a", "b", "c"] 
              
 
       test-get-transformation-on-root:
