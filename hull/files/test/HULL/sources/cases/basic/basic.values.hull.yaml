@@ -651,35 +651,38 @@ hull:
             }
           test-tpl-list: |-
             _HT!
-              [ 
+              [
               "a",
               "b",
-              "c" 
+              {"c":"d"}
               ]
               
           test-tpl-list-json: |-
             _HT!toJson|
-              [ 
+              [
               "a",
               "b",
-              "c"
+              {"c":"d"}
               ]
           test-tpl-list-prettyjson: |-
-            _HT!toJson|
+            _HT!toPrettyJson|
               [ 
                 "a",
                 "b",
-                "c"
+                { "c": "d" } 
               ] 
           test-tpl-list-rawjson: |-
-            _HT!toJson|
+            _HT!toRawJson|
             - "a"
             - "b"
-            - "c"
+            - "c": "d"
+            - "e":
+                f: fas
+                g: gaw
           test-tpl-list-yaml: |-
-            _HT!toJson|[ "a", "b", "c" ]
+            _HT!toYaml|[ "a", "b", { "c": "d" } ]
           test-tpl-list-string: |-
-            _HT!toJson|[ "a", "b", "c"] 
+            _HT!toString|[ "a", "b", { "c": "d" } ] 
              
 
       test-get-transformation-on-root:

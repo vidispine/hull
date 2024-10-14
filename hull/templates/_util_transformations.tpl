@@ -353,7 +353,7 @@
 {{- $serializer := default "" (index . "SERIALIZER") -}}
 {{- if typeIs "map[string]interface {}" $source -}}
 {{- if (and (ne $serializer "") (ne $serializer "none")) -}}
-{{- include "hull.util.transformation.serialize" (dict "VALUE" ($source) "SERIALIZER" $serializer) | toYaml -}}
+{{- include "hull.util.transformation.serialize" (dict "VALUE" (dict "buh" $source) "SERIALIZER" $serializer) | toYaml -}}
 {{- else -}}
 { 
   {{- range $k,$value := $source -}}
@@ -510,9 +510,13 @@
 {{- if (and (ne $serializer "") (ne $serializer "none")) -}}
 {{- $final = $result | fromYaml -}}
 {{- if (hasKey $final "Error")  -}}
-{{- $final = $result | fromYamlArray -}}
+{{- $test := list -}}
+{{- range $item := ($result | fromYamlArray) -}}
+{{- $test = append $test $item }}
 {{- end -}}
-{{- $result = (include "hull.util.transformation.convert" (dict "SOURCE" ($final) "SERIALIZER" $serializer)) -}}
+{{- $final = $test -}}
+{{- end -}}
+{{- $result = (include "hull.util.transformation.convert" (dict "SOURCE" $final "SERIALIZER" $serializer)) -}}
 {{- end -}}
 {{- $key }}: {{ $result }}
 {{- end -}}
