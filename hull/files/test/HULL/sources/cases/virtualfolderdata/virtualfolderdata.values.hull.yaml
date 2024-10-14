@@ -35,6 +35,19 @@ hull:
         a: number
         of: 4
         serialization: options
+      multiline-string: |-
+        This could
+        be a 
+        SSH key
+        or 
+        a 
+        certificate
+        with
+        data 
+        like
+        ASDADWADAASDASDASDASDASDADASD
+        BASDASDASDASDASDASD
+        CASDECEACSADSADSDA
       
   ###################################################
 
@@ -763,8 +776,16 @@ hull:
           path-issue-288-dot:
             path: files/issue-288-dot
           path-subdict-access-dot:
-            path: files/subdict-access-dot
+            path: files/subdict-access-dot        
       
       test-glob-import:
         data: _HT/hull.util.tools.virtualdata.data.glob:GLOB:"files/code-java-*.java"
+
+      multiline-string-preserve-linebreaks:
+        data:
+          multiline:
+            inline: _HT*hull.config.specific.multiline-string
+          simple-string:
+            inline: _HT*hull.config.specific.simple-string
+      
 ###################################################

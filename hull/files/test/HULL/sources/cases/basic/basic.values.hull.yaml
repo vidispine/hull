@@ -601,6 +601,66 @@ hull:
           test-get-list-rawjson: _HT*toRawJson|hull.config.specific.dict_mixed_content.list
           test-get-list-yaml: _HT*toYaml|hull.config.specific.dict_mixed_content.list
           test-get-list-string: _HT*toString|hull.config.specific.dict_mixed_content.list
+          test-tpl-dict: |-
+            _HT!
+            {
+              a: 1,
+              b: "two",
+              c: "3",
+              d: { d1: [ "a1", "btwo", "c3"] }
+            }
+          test-tpl-dict-json: |-
+            _HT!toJson|
+            {
+              a: 1,
+              b: "two",
+              c: "3",
+              d: { d1: [ "a1", "btwo", "c3"] }
+            }
+          test-tpl-dict-prettyjson: |-
+            _HT!toPrettyJson|
+            {
+              a: 1,
+              b: "two",
+              c: "3",
+              d: { d1: [ "a1", "btwo", "c3"] }
+            }
+          test-tpl-dict-rawjson: |-
+            _HT!toRawJson|
+            {
+              a: 1,
+              b: "two",
+              c: "3",
+              d: { d1: [ "a1", "btwo", "c3"] }
+            }
+          test-tpl-dict-yaml: |-
+            _HT!toYaml|
+            {
+              a: 1,
+              b: "two",
+              c: "3",
+              d: { d1: [ "a1", "btwo", "c3"] }
+            }
+          test-tpl-dict-string: |-
+            _HT!toString|
+            {
+              a: 1,
+              b: "two",
+              c: "3",
+              d: { d1: [ "a1", "btwo", "c3"] }
+            }
+          test-tpl-list: ""
+            
+          test-tpl-list-json: |-
+            _HT!toJson|[ "a" ] 
+          test-tpl-list-prettyjson: ""
+            
+          test-tpl-list-rawjson: ""
+             
+          test-tpl-list-yaml: ""
+             
+          test-tpl-list-string: ""
+             
 
       test-get-transformation-on-root:
         labels:

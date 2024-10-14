@@ -127,6 +127,13 @@
 
 
 
+{{- define "hull.util.string.trim.prefixes" -}}
+{{- $string := (index . "STRING") -}}
+{{- $string | trimPrefix "\n" | trimPrefix "\\n" | trimPrefix "\r\n" | trimPrefix "\\r\\n"  -}}
+{{- end -}}
+
+
+
 {{- /*
 | Purpose:  
 |   
@@ -142,11 +149,12 @@
 {{- $value := (index . "VALUE") -}}
 {{- $serialize := false -}}
 {{- $result := dict -}}
+{{- $valueTrimmed := include "hull.util.string.trim.prefixes" (dict "STRING" $value) -}}
 {{- range $serializer := list "none" "toJson" "toPrettyJson" "toRawJson" "toYaml" "toString" -}}
-{{- if (hasPrefix (printf "%s|" $serializer) $value ) -}}
+{{- if (hasPrefix (printf "%s|" $serializer) $valueTrimmed) -}}
 {{- $serialize = true -}}
 {{- $result = set $result "serializer" $serializer -}}
-{{- $result = set $result "remainder" ($value | trimPrefix (printf "%s|" $serializer)) -}}
+{{- $result = set $result "remainder" ($valueTrimmed | trimPrefix (printf "%s|" $serializer)) -}}
 {{- end -}}
 {{- end -}}
 {{- $result = set $result "serialize" $serialize -}}
@@ -365,7 +373,11 @@
 ]
 {{- end -}}
 {{- else -}}
+{{- if typeIs "string" $source -}}
+{{ printf "%s" $source }}
+{{- else -}}
 {{ $source }}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -493,8 +505,17 @@
 {{ $key }}: {{ $includeProcessing.error }}
 {{- else -}}
 {{- $result := tpl $includeProcessing.content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) -}}
+{{- $isArray := false -}}
 {{- if (and (ne $serializer "") (ne $serializer "none")) -}}
-{{- $result = (include "hull.util.transformation.convert" (dict "SOURCE" ($result | trimPrefix "\n" | trimPrefix "\\n" | trimPrefix "\r\n" | trimPrefix "\\r\\n" | toYaml) "SERIALIZER" $serializer))  -}}
+{{- $trimmed := include "hull.util.string.trim.prefixes" (dict "STRING" $result) -}}
+{{- if (hasPrefix "[" $trimmed) -}}
+{{- $trimmed = printf "{\"dummy\": %s}" $trimmed -}}
+{{- $isArray = true }}
+{{- end -}}
+{{- $result = (include "hull.util.transformation.convert" (dict "SOURCE" ($trimmed | fromYaml) "SERIALIZER" $serializer)) -}}
+{{- if $isArray -}}
+{{- $result = (index ($result | fromYaml) "dummy") | toString -}}
+{{- end -}}
 {{- end -}}
 {{- $key }}: {{ $result }}
 {{- end -}}
