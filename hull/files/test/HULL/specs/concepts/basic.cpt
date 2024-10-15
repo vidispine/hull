@@ -384,6 +384,19 @@ Test serialization functions
 * Test Object has key "metadata§annotations§test-include-code-list-non-empty-rawjson" with value of key "test-include-code-list-non-empty-rawjson" from expected.yaml of suite "basic"
 * Test Object has key "metadata§annotations§test-include-code-list-non-empty-yaml" with value of key "test-include-code-list-non-empty-yaml" from expected.yaml of suite "basic"
 * Test Object has key "metadata§annotations§test-include-code-list-non-empty-string" with value of key "test-include-code-list-non-empty-string" from expected.yaml of suite "basic"
+* Test Object has key "metadata§annotations§test-include-code-list-indirect-empty" with value of key "test-include-code-list-indirect-empty" from expected.yaml of suite "basic"
+* Test Object has key "metadata§annotations§test-include-code-list-indirect-empty-json" with value of key "test-include-code-list-indirect-empty-json" from expected.yaml of suite "basic"
+* Test Object has key "metadata§annotations§test-include-code-list-indirect-empty-prettyjson" with value of key "test-include-code-list-indirect-empty-prettyjson" from expected.yaml of suite "basic"
+* Test Object has key "metadata§annotations§test-include-code-list-indirect-empty-rawjson" with value of key "test-include-code-list-indirect-empty-rawjson" from expected.yaml of suite "basic"
+* Test Object has key "metadata§annotations§test-include-code-list-indirect-empty-yaml" with value of key "test-include-code-list-indirect-empty-yaml" from expected.yaml of suite "basic"
+* Test Object has key "metadata§annotations§test-include-code-list-indirect-empty-string" with value of key "test-include-code-list-indirect-empty-string" from expected.yaml of suite "basic"
+* Test Object has key "metadata§annotations§test-include-code-list-indirect-non-empty" with value of key "test-include-code-list-indirect-non-empty" from expected.yaml of suite "basic"
+* Test Object has key "metadata§annotations§test-include-code-list-indirect-non-empty-json" with value of key "test-include-code-list-indirect-non-empty-json" from expected.yaml of suite "basic"
+* Test Object has key "metadata§annotations§test-include-code-list-indirect-non-empty-prettyjson" with value of key "test-include-code-list-indirect-non-empty-prettyjson" from expected.yaml of suite "basic"
+* Test Object has key "metadata§annotations§test-include-code-list-indirect-non-empty-rawjson" with value of key "test-include-code-list-indirect-non-empty-rawjson" from expected.yaml of suite "basic"
+* Test Object has key "metadata§annotations§test-include-code-list-indirect-non-empty-yaml" with value of key "test-include-code-list-indirect-non-empty-yaml" from expected.yaml of suite "basic"
+* Test Object has key "metadata§annotations§test-include-code-list-indirect-non-empty-string" with value of key "test-include-code-list-non-empty-string" from expected.yaml of suite "basic"
+
 * Test Object has key "metadata§annotations§test-include-flow-dict" with value of key "test-include-flow-dict" from expected.yaml of suite "basic"
 
 * Test Object has key "metadata§labels§test-get-dict" with value of key "test-get-dict" from expected.yaml of suite "basic"
@@ -422,6 +435,20 @@ Test serialization functions
 * Test Object has key "metadata§labels§test-include-code-list-non-empty-rawjson" with value of key "test-include-code-list-non-empty-rawjson" from expected.yaml of suite "basic"
 * Test Object has key "metadata§labels§test-include-code-list-non-empty-yaml" with value of key "test-include-code-list-non-empty-yaml" from expected.yaml of suite "basic"
 * Test Object has key "metadata§labels§test-include-code-list-non-empty-string" with value of key "test-include-code-list-non-empty-string" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-include-code-list-indirect-empty" with value of key "test-include-code-list-indirect-empty" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-include-code-list-indirect-empty-json" with value of key "test-include-code-list-indirect-empty-json" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-include-code-list-indirect-empty-prettyjson" with value of key "test-include-code-list-indirect-empty-prettyjson" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-include-code-list-indirect-empty-rawjson" with value of key "test-include-code-list-indirect-empty-rawjson" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-include-code-list-indirect-empty-yaml" with value of key "test-include-code-list-indirect-empty-yaml" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-include-code-list-indirect-empty-string" with value of key "test-include-code-list-indirect-empty-string" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-include-code-list-indirect-non-empty" with value of key "test-include-code-list-indirect-non-empty" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-include-code-list-indirect-non-empty-json" with value of key "test-include-code-list-indirect-non-empty-json" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-include-code-list-indirect-non-empty-prettyjson" with value of key "test-include-code-list-indirect-non-empty-prettyjson" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-include-code-list-indirect-non-empty-rawjson" with value of key "test-include-code-list-indirect-non-empty-rawjson" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-include-code-list-indirect-non-empty-yaml" with value of key "test-include-code-list-indirect-non-empty-yaml" from expected.yaml of suite "basic"
+* Test Object has key "metadata§labels§test-include-code-list-indirect-non-empty-string" with value of key "test-include-code-list-non-empty-string" from expected.yaml of suite "basic"
+
+
 * Test Object has key "metadata§labels§test-include-flow-dict" with value of key "test-include-flow-dict" from expected.yaml of suite "basic"
 
 Test get transformation on root level

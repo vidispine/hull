@@ -129,7 +129,7 @@
 
 {{- define "hull.util.string.trim.prefixes" -}}
 {{- $string := (index . "STRING") -}}
-{{- $string | trimPrefix "\n" | trimPrefix "\\n" | trimPrefix "\r\n" | trimPrefix "\\r\\n"  -}}
+{{- $string | trimPrefix "\n" | trimPrefix "\\n" | trimPrefix "\r\n" | trimPrefix "\\r\\n" -}}
 {{- end -}}
 
 
@@ -353,7 +353,7 @@
 {{- $serializer := default "" (index . "SERIALIZER") -}}
 {{- if typeIs "map[string]interface {}" $source -}}
 {{- if (and (ne $serializer "") (ne $serializer "none")) -}}
-{{- include "hull.util.transformation.serialize" (dict "VALUE" (dict "buh" $source) "SERIALIZER" $serializer) | toYaml -}}
+{{- include "hull.util.transformation.serialize" (dict "VALUE" $source "SERIALIZER" $serializer) | toYaml -}}
 {{- else -}}
 { 
   {{- range $k,$value := $source -}}
@@ -510,11 +510,7 @@
 {{- if (and (ne $serializer "") (ne $serializer "none")) -}}
 {{- $final = $result | fromYaml -}}
 {{- if (hasKey $final "Error")  -}}
-{{- $test := list -}}
-{{- range $item := ($result | fromYamlArray) -}}
-{{- $test = append $test $item }}
-{{- end -}}
-{{- $final = $test -}}
+{{- $final = $result | fromYamlArray -}}
 {{- end -}}
 {{- $result = (include "hull.util.transformation.convert" (dict "SOURCE" $final "SERIALIZER" $serializer)) -}}
 {{- end -}}
@@ -662,8 +658,8 @@
 {{- $result := dict -}}
 {{- if (or (eq $serializer "") (eq $serializer "none")) -}}
 {{- $result = $tpl | fromYaml -}}
-{{- if (hasKey $result "Error")  -}}
-{{- $result = $tpl -}}
+{{- if (hasKey $result "Error") -}}
+{{- $result = $tpl | fromYamlArray -}}
 {{- else -}}
 {{- if (ne $resultKey "") -}}
 {{- $result = index $result $resultKey -}}
@@ -672,8 +668,14 @@
 {{- else -}}
 {{- if (ne $resultKey "") -}}
 {{- $result = index ($tpl | fromYaml) $resultKey -}}
+{{- if (and (typeIs "map[string]interface {}" $result) (hasKey $result "Error")) -}}
+{{- $result = index ($tpl | fromYamlArray) $resultKey -}}
+{{- end -}}
 {{- else -}}
 {{- $result = $tpl | fromYaml -}}
+{{- if (hasKey $result "Error") -}}
+{{- $result = $tpl | fromYamlArray -}}
+{{- end -}}
 {{- end -}}
 {{- $result = include "hull.util.transformation.serialize" (dict "VALUE" $result "SERIALIZER" $serializer) -}}
 {{- end -}}

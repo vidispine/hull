@@ -526,18 +526,30 @@ hull:
 
       test-serializing:
         annotations:
-          test-include-code-list-empty: _HT/result/hull.include.test.imagepullsecrets.emptylist
-          test-include-code-list-empty-json: _HT/toJson|result/hull.include.test.imagepullsecrets.emptylist
-          test-include-code-list-empty-prettyjson: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.emptylist
-          test-include-code-list-empty-rawjson: _HT/toRawJson|result/hull.include.test.imagepullsecrets.emptylist
-          test-include-code-list-empty-yaml: _HT/toYaml|result/hull.include.test.imagepullsecrets.emptylist
-          test-include-code-list-empty-string: _HT/toString|result/hull.include.test.imagepullsecrets.emptylist
-          test-include-code-list-non-empty: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
-          test-include-code-list-non-empty-json: _HT/toJson|result/hull.include.test.imagepullsecrets.nonemptylist
-          test-include-code-list-non-empty-prettyjson: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.nonemptylist
-          test-include-code-list-non-empty-rawjson: _HT/toRawJson|result/hull.include.test.imagepullsecrets.nonemptylist
-          test-include-code-list-non-empty-yaml: _HT/toYaml|result/hull.include.test.imagepullsecrets.nonemptylist
-          test-include-code-list-non-empty-string: _HT/toString|result/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-empty: _HT/hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-json: _HT/toJson|hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-prettyjson: _HT/toPrettyJson|hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-rawjson: _HT/toRawJson|hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-yaml: _HT/toYaml|hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-string: _HT/toString|hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-non-empty: _HT/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-json: _HT/toJson|hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-prettyjson: _HT/toPrettyJson|hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-rawjson: _HT/toRawJson|hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-yaml: _HT/toYaml|hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-string: _HT/toString|hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-indirect-empty: _HT/result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-include-code-list-indirect-empty-json: _HT/toJson|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-include-code-list-indirect-empty-prettyjson: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-include-code-list-indirect-empty-rawjson: _HT/toRawJson|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-include-code-list-indirect-empty-yaml: _HT/toYaml|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-include-code-list-indirect-empty-string: _HT/toString|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-include-code-list-indirect-non-empty: _HT/result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-include-code-list-indirect-non-empty-json: _HT/toJson|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-include-code-list-indirect-non-empty-prettyjson: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-include-code-list-indirect-non-empty-rawjson: _HT/toRawJson|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-include-code-list-indirect-non-empty-yaml: _HT/toYaml|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-include-code-list-indirect-non-empty-string: _HT/toString|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
           test-include-flow-dict: _HT/hull.include.test.dockerconfigjson.flow
           test-include-code-dict: _HT/hull.include.test.dockerconfigjson.code
           test-include-code-dict-json: _HT/toJson|hull.include.test.dockerconfigjson.code
@@ -564,18 +576,30 @@ hull:
           test-get-list-yaml: _HT*toYaml|hull.config.specific.dict_mixed_content.list
           test-get-list-string: _HT*toString|hull.config.specific.dict_mixed_content.list
         labels:
-          test-include-code-list-empty: _HT/result/hull.include.test.imagepullsecrets.emptylist
-          test-include-code-list-empty-json: _HT/toJson|result/hull.include.test.imagepullsecrets.emptylist
-          test-include-code-list-empty-prettyjson: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.emptylist
-          test-include-code-list-empty-rawjson: _HT/toRawJson|result/hull.include.test.imagepullsecrets.emptylist
-          test-include-code-list-empty-yaml: _HT/toYaml|result/hull.include.test.imagepullsecrets.emptylist
-          test-include-code-list-empty-string: _HT/toString|result/hull.include.test.imagepullsecrets.emptylist
-          test-include-code-list-non-empty: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
-          test-include-code-list-non-empty-json: _HT/toJson|result/hull.include.test.imagepullsecrets.nonemptylist
-          test-include-code-list-non-empty-prettyjson: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.nonemptylist
-          test-include-code-list-non-empty-rawjson: _HT/toRawJson|result/hull.include.test.imagepullsecrets.nonemptylist
-          test-include-code-list-non-empty-yaml: _HT/toYaml|result/hull.include.test.imagepullsecrets.nonemptylist
-          test-include-code-list-non-empty-string: _HT/toString|result/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-empty: _HT/hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-json: _HT/toJson|hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-prettyjson: _HT/toPrettyJson|hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-rawjson: _HT/toRawJson|hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-yaml: _HT/toYaml|hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-empty-string: _HT/toString|hull.include.test.imagepullsecrets.emptylist
+          test-include-code-list-non-empty: _HT/hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-json: _HT/toJson|hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-prettyjson: _HT/toPrettyJson|hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-rawjson: _HT/toRawJson|hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-yaml: _HT/toYaml|hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-non-empty-string: _HT/toString|hull.include.test.imagepullsecrets.nonemptylist
+          test-include-code-list-indirect-empty: _HT/result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-include-code-list-indirect-empty-json: _HT/toJson|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-include-code-list-indirect-empty-prettyjson: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-include-code-list-indirect-empty-rawjson: _HT/toRawJson|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-include-code-list-indirect-empty-yaml: _HT/toYaml|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-include-code-list-indirect-empty-string: _HT/toString|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-include-code-list-indirect-non-empty: _HT/result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-include-code-list-indirect-non-empty-json: _HT/toJson|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-include-code-list-indirect-non-empty-prettyjson: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-include-code-list-indirect-non-empty-rawjson: _HT/toRawJson|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-include-code-list-indirect-non-empty-yaml: _HT/toYaml|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-include-code-list-indirect-non-empty-string: _HT/toString|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
           test-include-flow-dict: _HT/hull.include.test.dockerconfigjson.flow
           test-include-code-dict: _HT/hull.include.test.dockerconfigjson.code
           test-include-code-dict-json: _HT/toJson|hull.include.test.dockerconfigjson.code
@@ -618,8 +642,7 @@ hull:
               d: { d1: [ "a1", "btwo", "c3"] }
             }
           test-tpl-dict-prettyjson: |-
-            _HT!toPrettyJson|
-            {
+            _HT!toPrettyJson|{
               a: 1,
               b: "two",
               c: "3",
@@ -627,20 +650,16 @@ hull:
             }
           test-tpl-dict-rawjson: |-
             _HT!toRawJson|
-            {
-              a: 1,
-              b: "two",
-              c: "3",
-              d: { d1: [ "a1", "btwo", "c3"] }
-            }
+            { a: 1, b: "two", c: "3", d: { d1: [ "a1", "btwo", "c3"] } }
           test-tpl-dict-yaml: |-
             _HT!toYaml|
-            {
-              a: 1,
-              b: "two",
-              c: "3",
-              d: { d1: [ "a1", "btwo", "c3"] }
-            }
+            a: 1
+            b: "two"
+            c: "3"
+            d: 
+              - d1: "a1"
+              - "btwo"
+              - "c3" 
           test-tpl-dict-string: |-
             _HT!toString|
             {
@@ -659,11 +678,11 @@ hull:
               
           test-tpl-list-json: |-
             _HT!toJson|
-              [
-              "a",
-              "b",
-              {"c":"d"}
-              ]
+            [
+            "a",
+            "b",
+            {"c":"d"}
+            ]
           test-tpl-list-prettyjson: |-
             _HT!toPrettyJson|
               [ 
@@ -684,7 +703,6 @@ hull:
           test-tpl-list-string: |-
             _HT!toString|[ "a", "b", { "c": "d" } ] 
              
-
       test-get-transformation-on-root:
         labels:
           test-get-chart-raw: _HT**Chart
