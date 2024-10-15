@@ -575,6 +575,108 @@ hull:
           test-get-list-rawjson: _HT*toRawJson|hull.config.specific.dict_mixed_content.list
           test-get-list-yaml: _HT*toYaml|hull.config.specific.dict_mixed_content.list
           test-get-list-string: _HT*toString|hull.config.specific.dict_mixed_content.list
+          test-tpl-dict: |-
+            _HT!
+            {
+              a: 1,
+              b: "two",
+              c: "3",
+              d: { d1: [ "a1", "btwo", "c3"] }
+            }
+          test-tpl-dict-json: |-
+            _HT!toJson|
+            {
+              a: 1,
+              b: "two",
+              c: "3",
+              d: { d1: [ "a1", "btwo", "c3"] }
+            }
+          test-tpl-dict-prettyjson: |-
+            _HT!toPrettyJson|{
+              a: 1,
+              b: "two",
+              c: "3",
+              d: { d1: [ "a1", "btwo", "c3"] }
+            }
+          test-tpl-dict-rawjson: |-
+            _HT!toRawJson|
+            { a: 1, b: "two", c: "3", d: { d1: [ "a1", "btwo", "c3"] } }
+          test-tpl-dict-yaml: |-
+            _HT!toYaml|
+            a: 1
+            b: "two"
+            c: "3"
+            d: 
+              d1: 
+              - "a1"
+              - "btwo"
+              - "c3" 
+          test-tpl-dict-string: |-
+            _HT!toString|
+            {
+              a: 1,
+              b: "two",
+              c: "3",
+              d: { d1: [ "a1", "btwo", "c3"] }
+            }
+          test-tpl-list: |-
+            _HT!
+              [
+              "a",
+              "b",
+              {"c":"d"},
+              { "e": 
+                { 
+                  "f": "fas", 
+                  "g": "gaw", 
+                  h: 99, 
+                  subarray: 
+                  [ 
+                    "last", 
+                    "level" 
+                  ] 
+                } 
+                }
+              ]
+              
+          test-tpl-list-json: |-
+            _HT!toJson|
+            [
+            "a",
+            "b",
+            {"c":"d"},
+            { "e": { "f": "fas", "g": "gaw", h: 99, subarray: [ "last", "level" ] } }
+            ]
+          test-tpl-list-prettyjson: |-
+            _HT!toPrettyJson|[ 
+                "a",
+                "b",
+                { "c": "d" },
+                { "e": 
+                  { "f": "fas", 
+                    "g": "gaw", 
+                    h: 99, 
+                    subarray: [ "last", "level" ] 
+                  } 
+                } 
+              ] 
+          test-tpl-list-rawjson: |-
+            _HT!toRawJson|
+            - "a"
+            - "b"
+            - "c": "d"
+            - "e":
+                f: fas
+                g: gaw
+                h: 99
+                subarray:
+                - last
+                - level
+          test-tpl-list-yaml: |-
+            _HT!toYaml|[ "a", "b", { "c": "d" }, { "e": { "f": "fas", "g": "gaw", h: 99, subarray: [ "last", "level" ] } } ]
+          test-tpl-list-string: |-
+            _HT!toString|
+            [ "a", "b", { "c": "d" }, { "e": { "f": "fas", "g": "gaw", h: 99, subarray: [ "last", "level" ] } } ] 
         labels:
           test-include-code-list-empty: _HT/hull.include.test.imagepullsecrets.emptylist
           test-include-code-list-empty-json: _HT/toJson|hull.include.test.imagepullsecrets.emptylist
@@ -657,7 +759,8 @@ hull:
             b: "two"
             c: "3"
             d: 
-              - d1: "a1"
+              d1: 
+              - "a1"
               - "btwo"
               - "c3" 
           test-tpl-dict-string: |-
@@ -673,7 +776,19 @@ hull:
               [
               "a",
               "b",
-              {"c":"d"}
+              {"c":"d"},
+              { "e": 
+                { 
+                  "f": "fas", 
+                  "g": "gaw", 
+                  h: 99, 
+                  subarray: 
+                  [ 
+                    "last", 
+                    "level" 
+                  ] 
+                } 
+                }
               ]
               
           test-tpl-list-json: |-
@@ -681,14 +796,21 @@ hull:
             [
             "a",
             "b",
-            {"c":"d"}
+            {"c":"d"},
+            { "e": { "f": "fas", "g": "gaw", h: 99, subarray: [ "last", "level" ] } }
             ]
           test-tpl-list-prettyjson: |-
-            _HT!toPrettyJson|
-              [ 
+            _HT!toPrettyJson|[ 
                 "a",
                 "b",
-                { "c": "d" } 
+                { "c": "d" },
+                { "e": 
+                  { "f": "fas", 
+                    "g": "gaw", 
+                    h: 99, 
+                    subarray: [ "last", "level" ] 
+                  } 
+                } 
               ] 
           test-tpl-list-rawjson: |-
             _HT!toRawJson|
@@ -698,10 +820,15 @@ hull:
             - "e":
                 f: fas
                 g: gaw
+                h: 99
+                subarray:
+                - last
+                - level
           test-tpl-list-yaml: |-
-            _HT!toYaml|[ "a", "b", { "c": "d" } ]
+            _HT!toYaml|[ "a", "b", { "c": "d" }, { "e": { "f": "fas", "g": "gaw", h: 99, subarray: [ "last", "level" ] } } ]
           test-tpl-list-string: |-
-            _HT!toString|[ "a", "b", { "c": "d" } ] 
+            _HT!toString|
+            [ "a", "b", { "c": "d" }, { "e": { "f": "fas", "g": "gaw", h: 99, subarray: [ "last", "level" ] } } ] 
              
       test-get-transformation-on-root:
         labels:

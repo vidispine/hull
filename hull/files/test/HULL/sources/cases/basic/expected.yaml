@@ -173,6 +173,67 @@ test-include-code-list-indirect-non-empty-yaml: |-
 test-include-flow-dict: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvcmQ=
   email:email password:password username:username]]]
 
+test-tpl-dict: map[a:1 b:two c:3 d:map[d1:[a1 btwo c3]]]
+test-tpl-dict-json: '{"a":1,"b":"two","c":"3","d":{"d1":["a1","btwo","c3"]}}'
+test-tpl-dict-prettyjson: |-
+  {
+    "a": 1,
+    "b": "two",
+    "c": "3",
+    "d": {
+      "d1": [
+        "a1",
+        "btwo",
+        "c3"
+      ]
+    }
+  }
+test-tpl-dict-rawjson: '{"a":1,"b":"two","c":"3","d":{"d1":["a1","btwo","c3"]}}'
+test-tpl-dict-string: map[a:1 b:two c:3 d:map[d1:[a1 btwo c3]]]
+test-tpl-dict-yaml: |-
+  a: 1
+  b: two
+  c: "3"
+  d:
+    d1:
+    - a1
+    - btwo
+    - c3
+test-tpl-list: '[a b map[c:d] map[e:map[f:fas g:gaw h:99 subarray:[last level]]]]'
+test-tpl-list-json: '["a","b",{"c":"d"},{"e":{"f":"fas","g":"gaw","h":99,"subarray":["last","level"]}}]'
+test-tpl-list-prettyjson: |-
+  [
+    "a",
+    "b",
+    {
+      "c": "d"
+    },
+    {
+      "e": {
+        "f": "fas",
+        "g": "gaw",
+        "h": 99,
+        "subarray": [
+          "last",
+          "level"
+        ]
+      }
+    }
+  ]
+test-tpl-list-rawjson: '["a","b",{"c":"d"},{"e":{"f":"fas","g":"gaw","h":99,"subarray":["last","level"]}}]'
+test-tpl-list-string: '[a b map[c:d] map[e:map[f:fas g:gaw h:99 subarray:[last level]]]]'
+test-tpl-list-yaml: |-
+  - a
+  - b
+  - c: d
+  - e:
+      f: fas
+      g: gaw
+      h: 99
+      subarray:
+      - last
+      - level
+
 test-get-chart-apiversion: v2
 test-get-chart-name: hull-test
 test-get-chart-version: <K8S_MAJOR_VERSION>.0
