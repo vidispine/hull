@@ -46,6 +46,21 @@ Maybe TODO: Check basic metadata functionality
 * Test Object has key "spec§sources§2§language" with value "yaml"
 * Test Object has key "spec§sources§2§content" with value of key "code-java-complex.java" from expected.yaml
 
+## Serialize tpl inline
+
+* Lint and Render
+
+* Set test object to "release-name-hull-test-issue-339" of kind "Integration"
+* Test Object has key "spec§forProvider§inlinePolicy§0§name" with value "plain-json-string"
+* Test Object has key "spec§forProvider§inlinePolicy§0§policy" with value of key "plain-json-string" from expected.yaml
+* Test Object has key "spec§forProvider§inlinePolicy§1§name" with value "interpreted-as-flow-style-yaml"
+* Test Object has key "spec§forProvider§inlinePolicy§1§policy§Statement§0§Action" with value "ssm:GetParameter*"
+* Test Object has key "spec§forProvider§inlinePolicy§1§policy§Statement§0§Effect" with value "Allow"
+* Test Object has key "spec§forProvider§inlinePolicy§1§policy§Statement§0§Resource" with value "*"
+* Test Object has key "spec§forProvider§inlinePolicy§2§name" with value "interpreted-and-serialized-flow-style-yaml"
+* Test Object has key "spec§forProvider§inlinePolicy§2§policy" with value of key "interpreted-and-serialized-flow-style-yaml" from expected.yaml
+* Test Object has key "spec§forProvider§inlinePolicy§3§name" with value "interpreted-and-serialized-block-style-yaml"
+* Test Object has key "spec§forProvider§inlinePolicy§3§policy" with value of key "interpreted-and-serialized-block-style-yaml" from expected.yaml
 
 ___
 
