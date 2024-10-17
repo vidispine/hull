@@ -374,7 +374,7 @@
 {{- end -}}
 {{- else -}}
 {{- if typeIs "string" $source -}}
-{{ printf "%s" $source }}
+{{ printf "%s" ($source | quote) }}
 {{- else -}}
 {{ $source }}
 {{- end -}}
@@ -657,27 +657,33 @@
 {{- $tpl := tpl $call (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) -}}
 {{- $result := dict -}}
 {{- if (or (eq $serializer "") (eq $serializer "none")) -}}
-{{- $result = $tpl | fromYaml -}}
-{{- if (hasKey $result "Error") -}}
-{{- $result = $tpl | fromYamlArray -}}
+    {{- $result = $tpl | fromYaml -}}
+    {{- if (hasKey $result "Error") -}}
+        {{- $result = $tpl | fromYamlArray -}}
+        {{- if (and (eq ($result | len) 1) (hasPrefix "error" (index $result 0))) -}}
+            {{- $result = $tpl -}}
+        {{- end -}}
+    {{- else -}}
+        {{- if (ne $resultKey "") -}}
+            {{- $result = index $result $resultKey -}}
+        {{- end -}}
+    {{- end -}}
 {{- else -}}
-{{- if (ne $resultKey "") -}}
-{{- $result = index $result $resultKey -}}
-{{- end -}}
-{{- end -}}
-{{- else -}}
-{{- if (ne $resultKey "") -}}
-{{- $result = index ($tpl | fromYaml) $resultKey -}}
-{{- if (and (typeIs "map[string]interface {}" $result) (hasKey $result "Error")) -}}
-{{- $result = index ($tpl | fromYamlArray) $resultKey -}}
-{{- end -}}
-{{- else -}}
-{{- $result = $tpl | fromYaml -}}
-{{- if (hasKey $result "Error") -}}
-{{- $result = $tpl | fromYamlArray -}}
-{{- end -}}
-{{- end -}}
-{{- $result = include "hull.util.transformation.serialize" (dict "VALUE" $result "SERIALIZER" $serializer) -}}
+    {{- if (ne $resultKey "") -}}
+        {{- $result = index ($tpl | fromYaml) $resultKey -}}
+        {{- if (and (typeIs "map[string]interface {}" $result) (hasKey $result "Error")) -}}
+            {{- $result = index ($tpl | fromYamlArray) $resultKey -}}
+        {{- end -}}
+    {{- else -}}
+        {{- $result = $tpl | fromYaml -}}
+        {{- if (hasKey $result "Error") -}}
+            {{- $result = $tpl | fromYamlArray -}}
+            {{- if (and (eq ($result | len) 1) (hasPrefix "error" (index $result 0))) -}}
+                {{- $result = $tpl -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
+    {{- $result = include "hull.util.transformation.serialize" (dict "VALUE" $result "SERIALIZER" $serializer) -}}
 {{- end -}}
 {{ (dict $key $result) | toYaml }}
 {{- end -}}

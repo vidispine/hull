@@ -191,4 +191,11 @@ hull:
                       }
                     ]
                   }
-            
+              - name: interpreted-and-serialized-block-style-yaml
+                policy: |-
+                  _HT!toPrettyJson|
+                  Version: "2012-10-17"
+                  Statement: 
+                  - Effect: "{{ printf "%s" "Allow" }}"
+                    Resource: "*"
+                    Action: "ssm:GetParameter*"

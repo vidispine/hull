@@ -48,7 +48,55 @@ hull:
         ASDADWADAASDASDASDASDASDADASD
         BASDASDASDASDASDASD
         CASDECEACSADSADSDA
-      
+      certs:
+        cert-a: |-
+          -----BEGIN CERTIFICATE-----
+          MIIDvDCCAyWgAwIBAgIJAMbHBAm8IlugMA0GCSqGSIb3DQEBBQUAMIGbMQswCQYD
+          VQQGEwJKUDEOMAwGA1UECBMFVG9reW8xEDAOBgNVBAcTB0NodW8ta3UxETAPBgNV
+          BAoTCEZyYW5rNEREMRgwFgYDVQQLEw9XZWJDZXJ0IFN1cHBvcnQxGDAWBgNVBAMT
+          D0ZyYW5rNEREIFdlYiBDQTEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBmcmFuazRk
+          ZC5jb20wHhcNMDcxMjA3MTAyMTQ2WhcNMTcxMjA0MTAyMTQ2WjCBmzELMAkGA1UE
+          BhMCSlAxDjAMBgNVBAgTBVRva3lvMRAwDgYDVQQHEwdDaHVvLWt1MREwDwYDVQQK
+          EwhGcmFuazRERDEYMBYGA1UECxMPV2ViQ2VydCBTdXBwb3J0MRgwFgYDVQQDEw9G
+          cmFuazRERCBXZWIgQ0ExIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAZnJhbms0ZGQu
+          Y29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7r7yPJdXmDL2/+L2iogxQ
+          rLML+10EwAY9lJRCHGPqSJ8if7teqnXgFr6MAEiCwTcLvk4h1UxLrDXmxooegNg1
+          zx/OODbcc++SfFCGmflwj/wjLpYRwPgux7/QIgrUqzsj2HtdRFd+WPVD4AOtY9gn
+          xjNXFpVe1zmgAm/UFLdMewIDAQABo4IBBDCCAQAwHQYDVR0OBBYEFGLze+0G1LHV
+          nH9I5e/FyRVh/dkRMIHQBgNVHSMEgcgwgcWAFGLze+0G1LHVnH9I5e/FyRVh/dkR
+          oYGhpIGeMIGbMQswCQYDVQQGEwJKUDEOMAwGA1UECBMFVG9reW8xEDAOBgNVBAcT
+          B0NodW8ta3UxETAPBgNVBAoTCEZyYW5rNEREMRgwFgYDVQQLEw9XZWJDZXJ0IFN1
+          cHBvcnQxGDAWBgNVBAMTD0ZyYW5rNEREIFdlYiBDQTEjMCEGCSqGSIb3DQEJARYU
+          c3VwcG9ydEBmcmFuazRkZC5jb22CCQDGxwQJvCJboDAMBgNVHRMEBTADAQH/MA0G
+          CSqGSIb3DQEBBQUAA4GBALosLpHduFOY30wKS2WQ32RzRgh0ZWNlLXWHkQYmzTHN
+          okwYLy0wGfIqzD1ovLMjDuPMC3MBmQPg8zhd+BY2sgRhgdEBmYWTiw71eZLLmI/e
+          dQbu1z6rOXJb8EegubJNkYTcuxsKLijIfJDnK2noqPt03puJEsBxosN14XPEhIEO
+          -----END CERTIFICATE-----
+          
+        cert-b: |-
+          -----BEGIN CERTIFICATE-----
+          NIIDvDCCAyWgAwIBAgIJAMbHBAm8IlugMA0GCSqGSIb3DQEBBQUAMIGbMQswCQYD
+          VQQGEwJKUDEOMAwGA1UECBMFVG9reW8xEDAOBgNVBAcTB0NodW8ta3UxETAPBgNV
+          BAoTCEZyYW5rNEREMRgwFgYDVQQLEw9XZWJDZXJ0IFN1cHBvcnQxGDAWBgNVBAMT
+          D0ZyYW5rNEREIFdlYiBDQTEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBmcmFuazRk
+          ZC5jb20wHhcNMDcxMjA3MTAyMTQ2WhcNMTcxMjA0MTAyMTQ2WjCBmzELMAkGA1UE
+          BhMCSlAxDjAMBgNVBAgTBVRva3lvMRAwDgYDVQQHEwdDaHVvLWt1MREwDwYDVQQK
+          EwhGcmFuazRERDEYMBYGA1UECxMPV2ViQ2VydCBTdXBwb3J0MRgwFgYDVQQDEw9G
+          cmFuazRERCBXZWIgQ0ExIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAZnJhbms0ZGQu
+          Y29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7r7yPJdXmDL2/+L2iogxQ
+          rLML+10EwAY9lJRCHGPqSJ8if7teqnXgFr6MAEiCwTcLvk4h1UxLrDXmxooegNg1
+          zx/OODbcc++SfFCGmflwj/wjLpYRwPgux7/QIgrUqzsj2HtdRFd+WPVD4AOtY9gn
+          xjNXFpVe1zmgAm/UFLdMewIDAQABo4IBBDCCAQAwHQYDVR0OBBYEFGLze+0G1LHV
+          nH9I5e/FyRVh/dkRMIHQBgNVHSMEgcgwgcWAFGLze+0G1LHVnH9I5e/FyRVh/dkR
+          oYGhpIGeMIGbMQswCQYDVQQGEwJKUDEOMAwGA1UECBMFVG9reW8xEDAOBgNVBAcT
+          B0NodW8ta3UxETAPBgNVBAoTCEZyYW5rNEREMRgwFgYDVQQLEw9XZWJDZXJ0IFN1
+          cHBvcnQxGDAWBgNVBAMTD0ZyYW5rNEREIFdlYiBDQTEjMCEGCSqGSIb3DQEJARYU
+          c3VwcG9ydEBmcmFuazRkZC5jb22CCQDGxwQJvCJboDAMBgNVHRMEBTADAQH/MA0G
+          CSqGSIb3DQEBBQUAA4GBALosLpHduFOY30wKS2WQ32RzRgh0ZWNlLXWHkQYmzTHN
+          okwYLy0wGfIqzD1ovLMjDuPMC3MBmQPg8zhd+BY2sgRhgdEBmYWTiw71eZLLmI/e
+          dQbu1z6rOXJb8EegubJNkYTcuxsKLijIfJDnK2noqPt03puJEsBxosN14XPEhIEO
+          -----END CERTIFICATE-----
+          
   ###################################################
 
   ###################################################
@@ -269,33 +317,61 @@ hull:
           test-inline-include-code-dict-quote-string: 
             inline: _HT/toString|hull.include.test.dockerconfigjson.code.quote
           test-inline-include-code-list-empty: 
-            inline: _HT/result/hull.include.test.imagepullsecrets.emptylist
+            inline: _HT/hull.include.test.imagepullsecrets.emptylist
           test-inline-include-code-list-empty-json: 
-            inline: _HT/toJson|result/hull.include.test.imagepullsecrets.emptylist
+            inline: _HT/toJson|hull.include.test.imagepullsecrets.emptylist
           test-inline-include-code-list-empty-none: 
-            inline: _HT/none|result/hull.include.test.imagepullsecrets.emptylist
+            inline: _HT/none|hull.include.test.imagepullsecrets.emptylist
           test-inline-include-code-list-empty-prettyjson: 
-            inline: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.emptylist
+            inline: _HT/toPrettyJson|hull.include.test.imagepullsecrets.emptylist
           test-inline-include-code-list-empty-rawjson:
-            inline: _HT/toRawJson|result/hull.include.test.imagepullsecrets.emptylist
+            inline: _HT/toRawJson|hull.include.test.imagepullsecrets.emptylist
           test-inline-include-code-list-empty-yaml:
-            inline: _HT/toYaml|result/hull.include.test.imagepullsecrets.emptylist
+            inline: _HT/toYaml|hull.include.test.imagepullsecrets.emptylist
           test-inline-include-code-list-empty-string: 
-            inline: _HT/toString|result/hull.include.test.imagepullsecrets.emptylist
+            inline: _HT/toString|hull.include.test.imagepullsecrets.emptylist
           test-inline-include-code-list-non-empty: 
-            inline: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+            inline: _HT/hull.include.test.imagepullsecrets.nonemptylist
           test-inline-include-code-list-non-empty-json: 
-            inline: _HT/toJson|result/hull.include.test.imagepullsecrets.nonemptylist
+            inline: _HT/toJson|hull.include.test.imagepullsecrets.nonemptylist
           test-inline-include-code-list-non-empty-none: 
-            inline: _HT/none|result/hull.include.test.imagepullsecrets.nonemptylist
+            inline: _HT/none|hull.include.test.imagepullsecrets.nonemptylist
           test-inline-include-code-list-non-empty-prettyjson: 
-            inline: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.nonemptylist
+            inline: _HT/toPrettyJson|hull.include.test.imagepullsecrets.nonemptylist
           test-inline-include-code-list-non-empty-rawjson: 
-            inline: _HT/toRawJson|result/hull.include.test.imagepullsecrets.nonemptylist
+            inline: _HT/toRawJson|hull.include.test.imagepullsecrets.nonemptylist
           test-inline-include-code-list-non-empty-yaml: 
-            inline: _HT/toYaml|result/hull.include.test.imagepullsecrets.nonemptylist
+            inline: _HT/toYaml|hull.include.test.imagepullsecrets.nonemptylist
           test-inline-include-code-list-non-empty-string: 
-            inline: _HT/toString|result/hull.include.test.imagepullsecrets.nonemptylist
+            inline: _HT/toString|hull.include.test.imagepullsecrets.nonemptylist
+          test-inline-include-code-list-indirect-empty: 
+            inline: _HT/result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-inline-include-code-list-indirect-empty-json: 
+            inline: _HT/toJson|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-inline-include-code-list-indirect-empty-none: 
+            inline: _HT/none|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-inline-include-code-list-indirect-empty-prettyjson: 
+            inline: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-inline-include-code-list-indirect-empty-rawjson:
+            inline: _HT/toRawJson|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-inline-include-code-list-indirect-empty-yaml:
+            inline: _HT/toYaml|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-inline-include-code-list-indirect-empty-string: 
+            inline: _HT/toString|result/hull.include.test.imagepullsecrets.indirect.emptylist
+          test-inline-include-code-list-indirect-non-empty: 
+            inline: _HT/result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-inline-include-code-list-indirect-non-empty-json: 
+            inline: _HT/toJson|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-inline-include-code-list-indirect-non-empty-none: 
+            inline: _HT/none|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-inline-include-code-list-indirect-non-empty-prettyjson: 
+            inline: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-inline-include-code-list-indirect-non-empty-rawjson: 
+            inline: _HT/toRawJson|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-inline-include-code-list-indirect-non-empty-yaml: 
+            inline: _HT/toYaml|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+          test-inline-include-code-list-indirect-non-empty-string: 
+            inline: _HT/toString|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
           test-inline-include-flow-dict: 
             inline: _HT/hull.include.test.dockerconfigjson.flow
           test-inline-serialize-from-dict-json:
@@ -776,16 +852,30 @@ hull:
           path-issue-288-dot:
             path: files/issue-288-dot
           path-subdict-access-dot:
-            path: files/subdict-access-dot        
+            path: files/subdict-access-dot
       
       test-glob-import:
         data: _HT/hull.util.tools.virtualdata.data.glob:GLOB:"files/code-java-*.java"
 
       multiline-string-preserve-linebreaks:
+        annotations:
+          multiline-string: _HT*hull.config.specific.multiline-string
+          simple-string: _HT*hull.config.specific.simple-string 
+        labels:
+          multiline-string: _HT*hull.config.specific.multiline-string
+          simple-string: _HT*hull.config.specific.simple-string 
         data:
-          multiline:
+          multiline-string:
             inline: _HT*hull.config.specific.multiline-string
           simple-string:
             inline: _HT*hull.config.specific.simple-string
+          _HT!:
+            _: |-
+              {
+                {{ range $certkey, $certvalue := (index . "$").Values.hull.config.specific.certs }}
+                "custom-ca-certificates-{{ $certkey }}": 
+                  { inline: {{ printf "%s" ($certvalue | quote) }} },
+                {{ end }}
+              }
       
 ###################################################

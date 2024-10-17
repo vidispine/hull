@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "17" objects were rendered on top of basic objects count
+* Expected number of "19" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -359,6 +359,20 @@ Test creation of objects and features.
 * Test Object has key "data§code-java-simple.java" with value of key "code-java-simple.java" from expected.yaml of suite "virtualfolderdata"
 * Test Object has key "data§code-java-medium.java" with value of key "code-java-medium.java" from expected.yaml of suite "virtualfolderdata"
 * Test Object has key "data§code-java-complex.java" with value of key "code-java-complex.java" from expected.yaml of suite "virtualfolderdata"
+
+## String handling
+* Prepare default test case for this kind including suites "virtualfolderdata"
+* Lint and Render
+* Set test object to "release-name-hull-test-multiline-string-preserve-linebreaks"
+
+* Test Object has key "metadata§annotations§multiline-string" with value of key "multiline-string" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "metadata§annotations§simple-string" with value of key "simple-string" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "metadata§labels§multiline-string" with value of key "multiline-string" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "metadata§labels§simple-string" with value of key "simple-string" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§multiline-string" with value of key "multiline-string" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§simple-string" with value of key "simple-string" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§custom-ca-certificates-cert-a" with value of key "custom-ca-certificates-cert-a" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§custom-ca-certificates-cert-b" with value of key "custom-ca-certificates-cert-b" from expected.yaml of suite "virtualfolderdata"
 
 ___
 

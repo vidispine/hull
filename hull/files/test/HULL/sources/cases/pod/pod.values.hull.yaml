@@ -1301,7 +1301,7 @@ hull:
                 tpl_wrap_raw_string: 
                   value: _HT/hull.util.transformation.get:REFERENCE:"toJson|hull.config.specific.port_one":RETURN_TEMPLATE_STRING:true
                 tpl_wrap_raw_string_get: 
-                  value: _HT!* _HT*toJson|hull.config.specific.port_one | add "10"
+                  value: _HT!* _HT*toJson|hull.config.specific.port_one | int | add "10"
                 tpl_equality_index:
                   value: _HT!{{ (index (index . "$").Values.hull.config.specific "string-to-process") | lower | camelcase }}
                 tpl_equality_tpl_get:
@@ -2406,29 +2406,53 @@ hull:
                 tag: "99.9"
               env:
                 test-include-code-list-empty: 
-                  value: _HT/result/hull.include.test.imagepullsecrets.emptylist
+                  value: _HT/hull.include.test.imagepullsecrets.emptylist
                 test-include-code-list-empty-json: 
-                  value: _HT/toJson|result/hull.include.test.imagepullsecrets.emptylist
+                  value: _HT/toJson|hull.include.test.imagepullsecrets.emptylist
                 test-include-code-list-empty-prettyjson: 
-                  value: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.emptylist
+                  value: _HT/toPrettyJson|hull.include.test.imagepullsecrets.emptylist
                 test-include-code-list-empty-rawjson: 
-                  value: _HT/toRawJson|result/hull.include.test.imagepullsecrets.emptylist
+                  value: _HT/toRawJson|hull.include.test.imagepullsecrets.emptylist
                 test-include-code-list-empty-yaml: 
-                  value: _HT/toYaml|result/hull.include.test.imagepullsecrets.emptylist
+                  value: _HT/toYaml|hull.include.test.imagepullsecrets.emptylist
                 test-include-code-list-empty-string: 
-                  value: _HT/toString|result/hull.include.test.imagepullsecrets.emptylist
+                  value: _HT/toString|hull.include.test.imagepullsecrets.emptylist
                 test-include-code-list-non-empty: 
-                  value: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+                  value: _HT/hull.include.test.imagepullsecrets.nonemptylist
                 test-include-code-list-non-empty-json: 
-                  value: _HT/toJson|result/hull.include.test.imagepullsecrets.nonemptylist
+                  value: _HT/toJson|hull.include.test.imagepullsecrets.nonemptylist
                 test-include-code-list-non-empty-prettyjson: 
-                  value: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.nonemptylist
+                  value: _HT/toPrettyJson|hull.include.test.imagepullsecrets.nonemptylist
                 test-include-code-list-non-empty-rawjson: 
-                  value: _HT/toRawJson|result/hull.include.test.imagepullsecrets.nonemptylist
+                  value: _HT/toRawJson|hull.include.test.imagepullsecrets.nonemptylist
                 test-include-code-list-non-empty-yaml: 
-                  value: _HT/toYaml|result/hull.include.test.imagepullsecrets.nonemptylist
+                  value: _HT/toYaml|hull.include.test.imagepullsecrets.nonemptylist
                 test-include-code-list-non-empty-string: 
-                  value: _HT/toString|result/hull.include.test.imagepullsecrets.nonemptylist
+                  value: _HT/toString|hull.include.test.imagepullsecrets.nonemptylist
+                test-include-code-list-indirect-empty: 
+                  value: _HT/result/hull.include.test.imagepullsecrets.indirect.emptylist
+                test-include-code-list-indirect-empty-json: 
+                  value: _HT/toJson|result/hull.include.test.imagepullsecrets.indirect.emptylist
+                test-include-code-list-indirect-empty-prettyjson: 
+                  value: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.indirect.emptylist
+                test-include-code-list-indirect-empty-rawjson: 
+                  value: _HT/toRawJson|result/hull.include.test.imagepullsecrets.indirect.emptylist
+                test-include-code-list-indirect-empty-yaml: 
+                  value: _HT/toYaml|result/hull.include.test.imagepullsecrets.indirect.emptylist
+                test-include-code-list-indirect-empty-string: 
+                  value: _HT/toString|result/hull.include.test.imagepullsecrets.indirect.emptylist
+                test-include-code-list-indirect-non-empty: 
+                  value: _HT/result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+                test-include-code-list-indirect-non-empty-json: 
+                  value: _HT/toJson|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+                test-include-code-list-indirect-non-empty-prettyjson: 
+                  value: _HT/toPrettyJson|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+                test-include-code-list-indirect-non-empty-rawjson: 
+                  value: _HT/toRawJson|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+                test-include-code-list-indirect-non-empty-yaml: 
+                  value: _HT/toYaml|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
+                test-include-code-list-indirect-non-empty-string: 
+                  value: _HT/toString|result/hull.include.test.imagepullsecrets.indirect.nonemptylist
                 test-include-flow-dict: 
                   value: _HT/hull.include.test.dockerconfigjson.flow
                 test-include-code-dict: 

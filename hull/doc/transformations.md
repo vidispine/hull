@@ -10,29 +10,64 @@ The HULL library provides mechanism to work around this and provide this possibi
 
 Technically the objects defined in the `values.yaml` are preprocessed before they are converted to Kubernetes objects. In the first internal step, Helm merges all fields of all `values.yaml`'s involved into a single YAML structure. This YAML tree is then processed key-by-key by HULL and at this stage it becomes possible to modify the YAML to the desired result by adding special keys and values to the YAML sections. When a transformation is detected during the `values.yaml` preprocessing by HULL an associated Go Templating function is called and the result replaces the transformation instruction in the resulting YAML.
 
-⚠️ It is important to consider the fact that when a dictionary is traversed in Go Templating it is done in an alphanumeric fashion. So in order to reference the resolved value of an transformation succesfully it must be have a lower alphanumeric key in the dictionary hierarchy, meaning it must have been processed first. However, since typically you would want to resolve a global value for configuration of your `hull.objects` properties in multiple places you should put your referenced value in the `hull.config.specific` section and then you can access it anytime when creating the objects. When you keep the alphanumeric processing order in mind it is furthermore no problem to use transformations on `hull.config.specific` properties too and later have the transformation result referenced by a transformation in the `hull.objects` section.⚠️
+⚠️ It is important to consider the fact that when a dictionary is traversed in Go Templating it is done in an alphanumeric fashion. So in order to reference the resolved value of an transformation succesfully it must have a lower alphanumeric key in the dictionary hierarchy, meaning it must have been processed first. However, since typically you would want to resolve a global value for configuration of your `hull.objects` properties in multiple places you should put your referenced value in the `hull.config.specific` section and then you can access it anytime when creating the objects. When you keep the alphanumeric processing order in mind it is furthermore no problem to use transformations on `hull.config.specific` properties too and later have the transformation result referenced by a transformation in the `hull.objects` section.⚠️
 
-Some transformations are part of the HULL library and can be used out of the box. It is also possible to create your own Go Templating function/transformation and use them where possible. For this you need only add a `tpl` file to your chart and define a transformation that adheres to the structural rules highlighted next.
+The HULL library provides transformations for all needs which can be used out of the box. It is possible to process inline Go templating expressions (see `_HT!`) and call arbitrary functions via Helms include (see `_HT/`). Additional convenience transformations are provided for easily cross-referencing values in the `values.yaml` (see `_HT*`), evaualating boolean conditions (see `_HT?`) or create chart specific object instance names (see `_HT^`). All of HULLs transformations will be explained in detail in this documentation file.
 
 ## Object Support
 
-Currently transformations are supported for basically any input type. You can use transformations to modify all:
+Currently transformations are supported for basically any input type. You can use transformations to modify property values which are:
 
-- values which are of string type
-- values which are of integer type
-- values which are of boolean type
-- values which are dictionaries
-- values which are arrays
+- of string type
+- of integer type
+- of boolean type
+- dictionaries
+- arrays
 
-⚠️ **Triggering transformations is based on the detection of a starting prefix __\_HULL_TRANSFORMATION\___ or __\_HT__ for built-in transformation short forms in key names (for dictionary values) or string values so it is not 100% guaranteed that a chart does not use this expression as a key or start of a value but otherwise it is highly unlikely.** ⚠️
+⚠️ **Triggering transformations is based on the detection of a starting prefix `_HT` in key names (for dictionary values) or property values. It is not 100% guaranteed that a chart does not contain exactly this prefix pattern as a key or start of a value but otherwise it is highly unlikely.** ⚠️
 
-## Transformations
+## Transformation variants
 
-This section will highlight a simple transformation example and one showcasing the full possibilities of this approach.
+This section will first highlight a simple transformation example and highlight the differences between specifying transformations in string, dictionary or array form. 
 
-### Example of a simple string transformation 
 
-One simple and  useful transformations is likely cross-referencing the value of a dedicated YAML field in several places in the `values.yaml` itself. As mentioned the YAML anchor approach is limited in usability so this is how you can do it using the `hull.util.transformation.get` transformation. 
+### Specyfing transformation in string form
+
+The general syntax for any string transformation is the concatenation of three parts:
+
+- `_HT`: 
+
+  Prefix indicating that a transformation is defined here. All string transformations must start with this prefix.
+  
+  AFter this prefix comes the signalling characters defining which transformation to call.
+
+- `<TYPE>`: 
+
+  The type of the transformation. This is a set of defined combinations of characters with either one or two characters.
+
+  Possible single character transformation type signals are `*`, `?`, `!`, `/`, `^` and `&`:
+
+  - `*`: `hull.util.transformation.get`
+  - `?`: `hull.util.transformation.bool`
+  - `!`: `hull.util.transformation.tpl`
+  - `/`: `hull.util.transformation.include`
+  - `^`: `hull.util.transformation.makefullname`
+  - `&`: `hull.util.transformation.selector`
+
+  Besides this set of essential transformations, some enhanced  combinations exist which further help in writing compact configuration code:
+
+  - `?/`: `hull.util.transformation.bool` + `hull.util.transformation.include`
+  - `!*`: `hull.util.transformation.tpl` + `hull.util.transformation.get`
+
+  The functionality and usage of all types of transformations are covered later in this document. 
+
+- `<ARGUMENT>`
+
+  Argument is specific to the type of the `_HT` transformation. Different transformations have a different argument structure which will be explained in more detail.
+
+#### Example of a simple string transformation 
+
+One simple and useful transformations is likely cross-referencing the value of a dedicated YAML field in several places in the `values.yaml` itself. As mentioned the YAML anchor approach is limited in usability so this is how you can do it using the `hull.util.transformation.get` transformation. 
 
 Assuming you have a local docker registry endpoint you want to use as the registry for several container images, you can achieve this like this:
 
@@ -41,7 +76,7 @@ hull:
   config:
     specific:
       globalRegistry: local.registry # this is the value I want to 
-                                          # reuse in multiple places
+                                     # reuse in multiple places
 
   objects:
     deployment:
@@ -57,220 +92,18 @@ hull:
 
             internal_one:
               image:
-                registry: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.get>>><<<REFERENCE=hull.config.specific.globalRegistry>>>" # here it is used
+                registry: _HT*hull.config.specific.globalRegistry # here it is used
                 repository: internal_app1
                 tag: "latest"
 
             internal_two:
               image: 
-                registry: _HT*hull.config.specific.globalRegistry # and here, just a briefer syntax for the same transformation
+                registry: _HT*hull.config.specific.globalRegistry # and here
                 repository: internal_app2
                 tag: "latest"
 ```
 
-Now when preprocessing in HULL takes place, the string starting with the key word `_HULL_TRANSFORMATION_` (or a short form starting with `_HT`) is signaling that this value is being dynamically derived by calling a transformation function. The two expressions above are now taken apart to call the transformations with named arguments.
-
-#### String transformation interface
-
-The general syntax for any string transformation is:
-
-- `_HULL_TRANSFORMATION_`: 
-
-  Prefix indicating that a transformation is defined here. All string transformations must start with this prefix (unless the short form is used).
-  
-  All arguments to a transformation are wrapped in `<<<ARGUMENT-NAME=ARGUMENT-VALUE>>>`
-
-- `<<<NAME=hull.util.transformation.get>>>`: 
-
-  The name of the transformation (the Go Template Function) to call. This is the only mandatory argument to each HULL transformation which is the first argument in the argument list. Here it is the `hull.util.transformation.get` transformation being executed.
-
-- `<<<REFERENCE=hull.config.specific.globalRegistry>>>`
-
-  This argument is specific to the `hull.util.transformation.get` transformation. Here it references the key from which we want to get the value from in dot-notation.
-
-⚠️ **Note that the arguments themselves cannot contain the start-of and end-of argument signifiers `<<<` and `>>>` when using the long form syntax for transformations! These are important for string-splitting the arguments to the transformation.** ⚠️
-
-#### Transformation short forms
-
-As HULL comes with a predefined set of handy transformations and always typing down the regular transformation interface structure described above is pretty inconvenient, there exist so-called __short forms__ to these built-in transformations. The short forms take advantage of the fact that all built-in transformations only demand a single argument so these transformation call can be done with much less typing.
-
-⚠️ **Short forms are the prefered way to trigger transformations since functionally they are fully equivalent to the long form versions but are much easier to read and write** ⚠️
-
-In the above example we used the short form for the `hull.util.transformation.get` transformation like this: 
-
-```yaml
-registry: _HT*hull.config.specific.globalRegistry # and here
-```
-
-which is equivalent to writing:
-
-```yaml
-registry: "_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.get>>><<<REFERENCE=hull.config.specific.globalRegistry>>>"
-```
-
-but much shorter. The full transformation call is reduced to a short prefix (`_HT`), a character indicating the specific transformation to use (`*` for `hull.util.transformation.get`) and the single arguments (`REFERENCE`) value without the need to specify the arguments name. The other possible characters for short forms are `?`, `!`, `/`, `^` and `&` and  the following transformation short forms are available for use:
-
-- `_HT*`: `hull.util.transformation.get`
-- `_HT?`: `hull.util.transformation.bool`
-- `_HT!`: `hull.util.transformation.tpl`
-- `_HT/`: `hull.util.transformation.include`
-- `_HT^`: `hull.util.transformation.makefullname`
-- `_HT&`: `hull.util.transformation.selector`
-
-Besides this set of basic transformation short forms, some special short form combinations exist which further help in writing compact configuration code:
-
-- `_HT?/`: `hull.util.transformation.bool` + `hull.util.transformation.include`
-- `_HT!*`: `hull.util.transformation.tpl` + `hull.util.transformation.get`
-
-The functionality and usage of the short form combinations is explained after all single short forms have been described in detail which is subject of the next chapter. 
-
-
-#### Example definition of a transformation
-
-Now we can take a look at the [transformation definition] for `hull.util.transformation.get` (./../templates/_util_transformations.tpl) itself:
-
-```yaml
-{{- /*
-| Purpose:  
-|   
-|   Gets the value from a key in values.yaml given dot-notation.
-|
-| Interface:
-|
-|   PARENT_CONTEXT: The Parent charts context
-|   REFERENCE: The key in dot-notation for which the value should be retrieved
-|   SOURCE_PATH: The path elements leading up to this field
-|   RETURN_TEMPLATE_STRING: If true, returns a templating expression which can be 
-|                           used with tpl to resolve this fields value. If false, 
-|                           the resolved value itself is returned.
-|
-*/ -}}
-{{- define "hull.util.transformation.get" -}}
-{{- $parent := (index . "PARENT_CONTEXT") -}}
-{{- $key := (index . "KEY") -}}
-{{- $reference := (index . "REFERENCE") -}}
-{{- $sourcePath := default list (index . "SOURCE_PATH") -}}
-{{- $returnTemplateString := default false (index . "RETURN_TEMPLATE_STRING") -}}
-{{- $objectType := "" -}}
-{{- $objectInstanceKey := "" -}}
-{{- if (gt (len $sourcePath) 3) -}}
-{{  if (eq (index $sourcePath 1) "objects") -}}
-{{- $objectType = index $sourcePath 2 -}}
-{{- $objectInstanceKey = index $sourcePath 3 -}}
-{{- end -}}
-{{- end -}}
-{{- $templateString := "(index . \"$\").Values"  }}
-{{- $current := $parent.Values -}}
-{{- if hasPrefix "*" $reference -}}
-{{- $reference = $reference | trimPrefix "*" -}}
-{{- $current = toYaml $parent | fromYaml -}}
-{{- $templateString = "(index . \"$\")"  }}
-{{- end -}}
-{{- $serializer := "" }}
-{{- $getValue := include "hull.util.transformation.serialize.get" (dict "VALUE" $reference) | fromYaml -}}
-{{- if $getValue.serialize -}}
-{{- $reference = $getValue.remainder -}}
-{{- if hasPrefix "*" $reference -}}
-{{- $reference = $reference | trimPrefix "*" -}}
-{{- $current = toYaml $parent | fromYaml -}}
-{{- $templateString = "(index . \"$\")" }}
-{{- end -}}
-{{- $serializer = $getValue.serializer -}}
-{{- end -}}
-{{- $path := splitList "." $reference -}}
-{{- $skipBroken := false}}
-{{- $brokenPart := "" }}
-{{- $details := "" -}}
-{{- $isChartSpecialCase := false -}}
-{{- if (eq (first $path) "Chart")  -}}
-{{- $isChartSpecialCase = true -}}
-{{- end -}}
-{{- range $pathIndex, $pathElement := $path -}}
-{{- if (and ($isChartSpecialCase) (eq $pathIndex 1)) -}}
-{{- $pathElement = $pathElement | untitle -}}
-{{- end -}}
-{{- if eq $pathElement "§OBJECT_TYPE§" -}}
-  {{- if ne $objectType "" -}}
-    {{- $pathElement = $objectType -}}
-  {{- else -}}
-    {{- $skipBroken = true -}}
-    {{- $brokenPart = $pathElement -}}
-    {{- $details = printf "OBJECT_TYPE not set in current calling context, cannot get path %s" $reference }}
-  {{- end -}}
-{{- else -}}
-  {{- if eq $pathElement "§OBJECT_INSTANCE_KEY§" -}}
-    {{- if ne $objectInstanceKey "" -}}
-      {{- $pathElement = $objectInstanceKey -}}
-    {{- else -}}
-      {{- $skipBroken = true -}}
-      {{- $brokenPart = $pathElement -}}
-      {{- $details = printf "OBJECT_INSTANCE_KEY not set in current calling context, cannot get path %s" $reference }}
-    {{- end -}}
-  {{- else -}}
-    {{- $pathElement = regexReplaceAll "§" $pathElement "." }}
-  {{- end -}}
-{{- end -}}
-{{- if (not $skipBroken) -}}
-{{- if (regexMatch "^\\d+$" $pathElement) -}}
-{{- $current = (index $current (int $pathElement)) -}}
-{{- $templateString = printf "(index %s %s)" $templateString $pathElement }}
-{{- else -}}
-{{- if (or (hasKey $current $pathElement)) -}}
-{{- $current = (index $current $pathElement) }}
-{{- $templateString = printf "(index %s \"%s\")" $templateString $pathElement }}
-{{- else -}}
-{{- $skipBroken = true -}}
-{{- $brokenPart = $pathElement -}}
-{{- end -}}
-{{- end -}}
-{{- end -}}
-{{- end -}}
-{{- if $skipBroken -}}
-{{- if eq $details "" -}}
-{{- $details = printf "Element %s in path %s was not found" $brokenPart $reference -}}
-{{- end -}}
-{{- if $returnTemplateString -}}
-{{- include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details) -}}
-{{- else -}}
-{{- if $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences -}}
-{{ $key }}: BROKEN-HULL-GET-TRANSFORMATION-REFERENCE:Element {{ $brokenPart }} in path {{ $reference }} was not found
-{{- else }}
-{{- if $parent.Values.hull.config.general.errorChecks.hullGetTransformationReferenceValid -}}
-{{- $key }}: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details) -}}
-{{- else -}}
-{{- $key }}: ""
-{{- end -}}
-{{- end -}}
-{{- end -}}
-{{- else -}}
-{{- if and (typeIs "string" $current) (not $current) }}
-{{ $key }}: ""
-{{- else -}}
-{{- $convert := (include "hull.util.transformation.convert" (dict "SOURCE" $current "SERIALIZER" $serializer)) }}
-{{- if (ne $serializer "") -}}
-{{- $templateString = printf "(include \"hull.util.transformation.convert\" (dict \"SOURCE\" %s \"SERIALIZER\" \"%s\"))" $templateString $serializer }}
-{{- end -}}
-{{- if $returnTemplateString -}}
-{{- $templateString -}}
-{{- else -}}
-{{ $key }}: {{ $convert }}
-{{- end -}}
-{{- end -}}
-{{- end -}}
-{{- end -}}
-```
-
-Without going too much into detail, in the code above the value of the dot-notated key is retrieved via iteration over the path's elements. Then it is either returned as an empty string (if non existent) or further processed with the `hull.util.transformation.convert` function which creates the return value based on `$current` type. It is capable of returning simple types (string, bool and integer values) but also complex types including nested dictionaries and arrays. In case of of a missing element in the given path it returns an error in form of a string which will be processed and converted to a speaking execution error of Helm in the end. A special use case is to set RETURN_TEMPLATE_STRING to true which will return a templating expression that resolves the fields value instead of the actual value of the field (required for `_HT!*` combined transformations).
-
-It is mandatory for all transformations to return result data as a yaml block containing the passed in `$key` variable as key:
-
-```yaml
-{{ $key }}: "<RESULT OF TRANSFORMATION>"
-```
-
-In the source YAML the dictionary value of key `$key` is now replaced by the transformations result before rendering. Note that the type of the result field does not have to be a string but it must validate against the Kubernetes API objects JSON schema when deploying to Kubernetes. 
-
-The final rendered output has the transformations successfully applied:
+and the output will be:
 
 ```yaml
 apiVersion: apps/v1
@@ -305,56 +138,36 @@ spec:
         helm.sh/chart: hull-test-1.31.0
    spec:
       containers:
-      - env: []
-        envFrom: []
-        image: quay.io/external_app:latest
+      - image: quay.io/external_app:latest
         name: external
-        ports: []
-        volumeMounts: []
-      - env: []
-        envFrom: []
-        image: local.registry/internal_app1:latest
+      - image: local.registry/internal_app1:latest
         name: internal_one
-        ports: []
-        volumeMounts: []
-      - env: []
-        envFrom: []
-        image: local.registry/internal_app2:latest
+      - image: local.registry/internal_app2:latest
         name: internal_two
-        ports: []
-        volumeMounts: []
 ```
+
+As shown above, the final rendered output has the transformations successfully applied. How does this work under the hood?
+
+When key-by-key preprocessing in HULL takes place, a string starting with the prefix `_HT` is signaling that this value is being dynamically derived by calling a transformation function. The `*` sets the type to the `hull.util.transformation.get` transformation function and the remainder of `hull.config.specific.globalRegistry` is the argument specific to the `hull.util.transformation.get` transformation (a dot seperated path to the referenced field).
 
 ### Specifying transformations in form of a dictionary
 
-A dictionary-form transformation is a transformation that is supposed to create a dictionary as the result and the transformation specification itself is also defined as a dictionary. This was the original way to process dictionaries with HULL transformations to comply with the need of the fields value to be a dictionary.
+A dictionary-form transformation is a transformation which is defined in form of a dictionary. It usually produces a dictionary result when it is applied. Dictionary transformations are not required usually to transform dictionaries or create them in the result. The same can be achieved with less typing by putting in a `_HT` string-based definition of the transformation instead of a dictionary. 
 
-⚠️⚠️⚠️ **By now, HULL has full support to supply a string transformation instead of a boolean, integer, array or dictionary input value in `values.yaml` properties - even if the original Kubernetes schema demands the input value to be boolean, integer, array or object respectively. 'It is solely the responsibility of the configurator to make sure that any transformation returns an object of the correct input type and structure otherwise Kubernetes will not accept invalid objects upon deployment time. Technically the ability to use HULL string transformations everywhere is achieved by extension of the Kubernetes JSON schema to always allow a regex conforming 'transformation' string input besides the original type of the value. Currently the regex of allowed string input is `^\s*(_HT[\*|\?|\^|!|&|/]|_HULL_TRANSFORMATION_<<<).*`. By having this ability the dictionary and array form of the HULL transformations become mostly deprecated to generate complete lists or dictionaries.** ⚠️⚠️⚠️
+However, the dictionary form still does have a very potent usability for combining existing dictionary entries with dynamically generated ones in those scenarios when the JSON schema requires values to be dictionaries themselves. This is mostly the case when HULL represents Kubernetes arrays as dictionaries with a key and dictionary value structure such as in the case of e.g. `volumeMounts`. This is best demonstrated with an example.
 
-Input type validation might demand an `object` as a values object type. Similar to the string transformation presented above you can then also trigger a transformation by providing a dictionary as input. In this case provide the following dictionary value to the key you wish to process:
 
-```yaml
-some_object_key_with_a_dictionary_value: 
-  _HULL_TRANSFORMATION_:
-    NAME: "TRANSFORMATION_NAME"
-    ARGUMENT1: "..."
-    ARGUMENT2: "..."
-    ...
-```
+#### Example of a dictionary transformation 
 
-The presence of the `_HULL_TRANSFORMATION_` key as the value of the input object triggers the transformation. Instead of string-splitting arguments they are derived by the keys in the `_HULL_TRANSFORMATION_` dictionary.
-
-If you use an available short form for a transformation you specify `_HT` plus the single transformation specific character (`*`, `?`, `!`,`^` or `&`) as the key. A single key is expected in the dictionary whose name can be chosen freely (suggestion is `_`) and the actual argument value for that keys value is the argument. For example, the structure presented above would look like this for the short form of the `hull.util.transformation.tpl` transformation:
+If you want to execute a dictionary transformation, you specify `_HT` plus the single transformation specific character (`*`, `?`, `!`,`^` or `&`) as a key in the dictionary. As the value to this key, again a dictionary with a single key is expected whose name can be chosen freely (suggestion is `_`) and the actual argument value for that keys value is the argument to the transformation:
 
 ```yaml
 some_object_key_with_a_dictionary_value: 
   _HT!:
-    "_": <CONTENT of the tpl transformation>
+    _: <CONTENT of the tpl transformation>
 ```
 
-As mentioned, dictionary transformations are not required anymore to transform full dictionaries. The same can be achieved with less typing by putting in a `_HT` string-based definition of the transformation. However, the dictionary form still does have a very potent usability for combining existing dictionary entries with dynamically generated ones. This is best demonstrated by an example.
-
-Assume you have a container in a pod-based object defined in your helm chart and this container is supposed to always have some standard `volumeMounts`, for example a configmap for application configuration. However, for certificate handling it may be required to mount a dynamic number of certificate files into the pod. A `volumeMounts` section which both has defined static entries and dynamic entries could look like this:
+Let us assume you have a container in a pod-based object defined in your helm chart and this container is supposed to always have some standard `volumeMounts`, for example a `configmap` volumeMount for application configuration. However, for certificate handling it may be required to file-mount a dynamic number of certificate files into the pod using `subPath`. A `volumeMounts` section which both has defined static entries and dynamic entries could look like this:
 
 ```yaml
 volumeMounts:
@@ -363,9 +176,8 @@ volumeMounts:
     mountPath: 'app/config/appsettings.json'
     subPath: appsettings.json
     hashsumAnnotation: true
-  _HULL_TRANSFORMATION_: # a transformation trigger
-    NAME: hull.util.transformation.tpl # do a tpl transformation
-    CONTENT: |- # iterate over a dictionary with certificate file names and contents and add one volumeMount per provided file from a volume named certs which is supposed to contain the referenced certificate files
+  _HT: 
+    _: |- # iterate over a dictionary with certificate file names and contents and add one volumeMount per provided file from a volume named certs which is supposed to contain the referenced certificate files
       {
         {{ range $certkey, $certvalue := (index . "$").Values.hull.config.general.data.installation.config.customCaCertificates}}
         "custom-ca-certificates-{{ $certkey }}": 
@@ -384,278 +196,28 @@ volumeMounts:
     mountPath: '/etc/ssl/certs'
 ```
 
-
-### Specifying transformations in form of an array
-
-**It is not required anymore to use an array-form transformation to process an array in HULL with a transformation. By now HULL string transformations are available for objects of all input types.**
-
-Arrays can be transformed via HULL too. A transformation is triggered by providing a single element to the array which is a string transformation:
-
-```yaml
-some_object_key_with_an_array_of_strings_value:
-- "_HULL_TRANSFORMATION_<<<NAME=TRANSFORMATION_NAME>>><<<ARGUMENT1=...>>><<<ARGUMENT2=...>>>"
-```
-
-Note that the result of the transformation needs to be an array with possible multiple entries depending on the executed transformation.
-
-Transformation short forms are supported here same as for string properties, for example:
-
-```yaml
-some_object_key_with_an_array_of_strings_value:
-- _HT!
-    [ 
-      {{ (index . "$").Values.hull.config.specific.some_referenced_value }}, 
-      "another_value",
-      "and_another_value"
-    ]
-```
-
-As highlighted more closely in the next chapter on string-based short form transformations, the same as above can be achieved with this syntax:
-
-```yaml
-some_object_key_with_an_array_of_strings_value: |- 
-  _HT!
-    [ 
-      {{ (index . "$").Values.hull.config.specific.some_referenced_value }}, 
-      "another_value",
-      "and_another_value"
-    ]
-```
+Given that there are any certificates to be mounted found, in the result the `volumeMounts` are populated with entries for `configmap` and `etcssl` and a single entry for each certificate.As highlighted, the dictionary transformation definition style is a powerful tool to combine static dictionary entries with dynamically created ones when the schema demands the property value to be a dictionary itself.  
 
 
-Due to the fact, that in the world of Helm it is not possible to merge arrays, there is no way to use this array transformation in the same way as the dictionary transformation to append entries to an array. Arrays (or lists) can only be overwritten entirely which is the reason why HULL has a strong focus on using dictionaries instead of Kubernetes native arrays in the places where this is possible.
+## Available HULL transformations
 
-### Example of a complex custom transformation
+The following transformations are provided by HULL. Especially given the reusability of the `_HT/` include and the flexibility of the `_HT!` tpl transformations they should cover all usecases. The `_HT/` transformation basically opens the door to integrating additional reusable Helm `functions` while `_HT!` is the swiss-army knife to perform special operations in-place. Nevertheless the remaining transformations are also efficient tools in the transformation kit to save time and effort in writing chart definitions. 
 
-The HULL library comes with the predefined `hull.util.transformation.tpl` transformation (short form: `_HT!`) which adds a crucial functionality to HULL rendered string and object values. Is was already used in the previous examples. 
+Here is the full list of transformations:
 
-While the principal HULL concept is to provide full control over all object values to the creators and consumers directly it might be required to still wrap logic decisions in the creation of some string, dictionary or string array values. A very typical example might be the arguments to a containers command which could depend on custom application specific fields the user should be able to define. It can be argued that this adds in a functionality that is the most basic in the regular helm workflow. In HULL this should be used with care but allows more flexibility for some HULL rendered objects that would otherwise be missing.
+### `_HT*`: Get a value (_hull.util.transformation.get_)
 
-So in short, this transformation puts the templating back into the calculation of values. Consider the following HULL configuration: 
+#### __Argument__ 
 
-```yaml
-hull:
-  config:
-    specific: # Here you can put all that is particular configuration for your app
-      if_this_arg_is_defined: --this-is-defined # Whenever this is not empty ...
-      then_add_this_arg: --hence-is-this # also add this argument
-      
-      if_this_arg_is_not_defined:  # Whenever this is empty ...
-      then_use_this_arg: --and-this-because-other-is-not-defined # also add this argument
+The referenced key within `values.yaml` to get the value from in dot notation. Per default, the key path needs to be specified starting from `.Values` only, for exampe `hull.config.specific.value_to_get`. There are further argument tweaks available as explained below.
 
-  objects:
-    deployment:
-      custom-args:
-        pod:
-          containers:
-            main:
-              image:
-                repository: my/image/repo
-                tag: "99.9"
-              args: |-
-                _HT![
-                  {{ if (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}
-                    "{{ (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}",
-                    "{{ (index . "$").Values.hull.config.specific.then_add_this_arg }}",
-                  {{ end }}
-                  {{ if not (index . "$").Values.hull.config.specific.if_this_arg_is_not_defined }}
-                    "{{ (index . "$").Values.hull.config.specific.then_use_this_arg }}"
-                  {{ end }}
-                ]
-```
+##### Accessing non-`hull` scoped values
 
-The intention of the above configuration is to demonstrate some conditional population of the `args` array. It should result in three elements:
+To access non-`hull` scoped values, the double asterisk may be used instead of a single asterisk (`_HT**`). This effecrtively sets the start of search path to the root context instead of `$.hull` and provides access to subchart values or Helm in-built properties. 
 
-```yaml
-- --this-is-defined # always as value of specific key if_this_arg_is_defined
-- --hence-is-this # value of key then_add_this_arg should be added when key this-is-defined has a value
-- --and-this-because-other-is-not-defined # value of key then_use_this_arg should be added when key if_this_arg_is_not_defined is not defined
-```
-On rendering the following happens:
+##### Escaping dots in key names within the dotted path
 
-- for `args` the transformation `hull.util.transformation.tpl` is executed on the string array via its short form `_HT!` and string transformation notation. 
-- the `CONTENT` argument is subjected to the `tpl` Go Templating function. This renders string input with potential placeholders. 
-
-  > Note that the `"`s need to be escaped with `\"` if the CONTENT value is surrounded with `"`'s.  
-
-  Following additional rules apply to the usage of templating expressions in this manner:
-
-  - when referring to the `.Values` in `values.yaml` you need to refer to 
-
-    ```yaml
-    (index . "$").Values
-    ```
-
-    instead. This is because the parent charts context is being passed into the `tpl` function as a dictionary parameter `$`. Nevertheless full access to all fields of the `values.yaml` is possible.
-    
-    ⚠️ **Instead of `(index . "$")` you can alternatively use the longer legacy form `(index . "PARENT")` which is slight longer to write but does the same.** ⚠️
-
-    The key `(index . "$")` is not the only special context variable you can use directly. When you execute a transformation in the scope of an objects definition (somewhere beneath `hull.objects.<object_type>.<object_instance_key>`) you have direct access to the objects type and object instance key as string values by accessing `(index . "OBJECT_TYPE")` and `(index . "OBJECT_INSTANCE_KEY")`. This is helpful because otherwise you would need to pass in the information manually each time if you want to use it in your transformation for naming purposes for example.
-
-    To exemplify this, if you use these settings:
-
-    ```
-    hull:
-      objects:
-        configmap:
-          test-configmap-key:
-            object_instance_key:
-              inline: _HT!{{ (index . "OBJECT_INSTANCE_KEY") }}
-            object_type:
-              inline: _HT!{{ (index . "OBJECT_TYPE") }}
-    ```
-
-    you will render the following ConfigMap entries in the output:
-    
-    ```
-    object_instance_key: test-configmap-key
-    object_type: configmap
-    ```
-
-    ⚠️ **Note that if you use `(index . "OBJECT_INSTANCE_KEY")` or `(index . "OBJECT_TYPE")` outside of an object instance definition such as `hull.objects.<object_type>.<object_instance_name>` the resulting values will be empty strings.** ⚠️
-
-  - When the `tpl`-ed string should result in a string array, use the 
-
-    ```yaml
-    ["value1","value2"] 
-    ```
-
-    [flow style](https://dev.to/javanibble/yaml-essentials-520b) notation to produce the resulting string array. This overcomes typical indentation pitfalls with the block style:
-
-    ```yaml
-    - value1
-    - value2
-    ```
-    
-    notation. 
-    
-    The same holds for returned dictionaries as well, the `tpl`'ed result needs to be composed in flow style syntax like in this example:
-    
-    ```yaml
-    { 
-      key_one: { inner_string: "value1", inner_int: 1 }, 
-      key_two: { inner_string: "value2", inner_int: 2 }
-    }
-    ```
-
-The rendered result again contains the intended `args` section:
-
-```yaml
-# Source: hull-test/templates/hull.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/component: custom-args
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: hull-test
-    app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.31.0
-    helm.sh/chart: hull-test-1.31.0
-  name: release-name-hull-test-custom-args
-spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/component: custom-args
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/name: hull-test
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/component: custom-args
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: hull-test
-        app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.31.0
-    spec:
-      containers:
-      - args:
-        - --this-is-defined
-        - --hence-is-this
-        - --and-this-because-other-is-not-defined
-        env: []
-        envFrom: []
-        image: my/image/repo:99.9
-        name: main
-        ports: []
-        volumeMounts: []
-      initContainers: []
-      serviceAccountName: release-name-hull-test-default
-      volumes: []
-```
-
-Alternatively, HULL also allows to define field references in the `_HT!` content in the same syntax which is defined for the `_HT*` transformations (explained below). This provides an even more concise way of providing field references within the `tpl` content. The following specification is equivalent to the one already given:
-
-```yaml
-hull:
-  config:
-    specific: # Here you can put all that is particular configuration for your app
-      if_this_arg_is_defined: --this-is-defined # Whenever this is not empty ...
-      then_add_this_arg: --hence-is-this # also add this argument
-      
-      if_this_arg_is_not_defined:  # Whenever this is empty ...
-      then_use_this_arg: --and-this-because-other-is-not-defined # also add this argument
-
-  objects:
-    deployment:
-      custom-args:
-        pod:
-          containers:
-            main:
-              image:
-                repository: my/image/repo
-                tag: "99.9"
-              args: _HT![
-                  {{ if _HT*hull.config.specific.if_this_arg_is_defined }}
-                    "{{ _HT*hull.config.specific.if_this_arg_is_defined }}",
-                    "{{ _HT*hull.config.specific.then_add_this_arg }}",
-                  {{ end }}
-                  {{ if not _HT*hull.config.specific.if_this_arg_is_not_defined }}
-                    "{{ _HT*hull.config.specific.then_use_this_arg }}"
-                  {{ end }}
-                ]
-```
-
-Additionally the `include` short form transformation `_HT/` is now also available for use within `_HT!` content! To correctly delimit the `_HT/` parameters from the remaining `_HT!` content, it needs to be ended with a `/TH_` suffix, similar to a bash `if`/`fi` start/end tag. 
-
-Here is a brief example on how to put `_HT/` transformations into the `_HT!` content:
-
-```yaml
-value: |-
-  _HT!
-    {{- printf "%s is the chart reference value" _HT/hull.
-    metadata.chartref/TH_ -}}
-```
-
-This will render similar to the below, depending on your parents helm charts name and version:
-
-```yaml
-value: hull-test-1.31.0 is the chart reference value
-```
-
-More detailed on this feature is available in the below section on _hull.util.transformation.tpl_ transformations.
-
-## Provided transformations
-
-The following basic transformations are provided by HULL. Extending this with custom helper transformations to allow to do specific operations in a concise manner is possible, for example:
-
-- prefixing/suffixing referenced fields
-- concatenation of referenced fields
-- ...
-
-but this can be achieved with less effort by writing a reguler Helm `function` and call it with the `include` `_HT/` transformation. In this sense the `_HT/` opens the door to integrating additional reusable Helm `functions` while `_HT!` is the swiss-army knife to perform special operations in place. The `tpl` transformation basically offers full flexibility and can be used for all allowed transformation scenarios but this comes at the price of more complex specification of the logical requirements.
-
-### Get a value (_hull.util.transformation.get_)
-
-#### __Arguments__ 
-
-- REFERENCE: 
-
-  The referenced key within `values.yaml` to get the value from. The key path needs to be specified starting from `.Values` only, for exampe `hull.config.specific.value_to_get`. 
-
-  Note that if any path element itself contains a dot (`.`) you can escape it with the `§` character to still be able to reference it, for example if you want to reference the key path:
+Note that if any path element itself contains a dot (`.`) you can escape it with the `§` character to still be able to reference it, for example if you want to reference the key path:
 
   ```yaml
   hull:
@@ -664,49 +226,51 @@ but this can be achieved with less effort by writing a reguler Helm `function` a
           'key.with.dots.in.it': hello dots!
   ```
 
-  you can do so by using the HULL get transformation like this:
+you can do so by using the HULL get transformation like this:
 
-  `_HT*hull.config.specific.key§with§dots§in§it`
+`_HT*hull.config.specific.key§with§dots§in§it`
 
-  Addionally, if used in a field beneath `hull.objects.<object_type>.<object_instance_key>`, it also possible to reference the current contexts `OBJECT_TYPE` and `OBJECT_INSTANCE_KEY` via special static keys: 
+##### Self referencing object type and object instance key
+
+If `_HT*` is used in a field beneath `hull.objects.<OBJECT_TYPE>.<OBJECT_INSTANCE_KEY>`, it also possible to reference the current contexts `OBJECT_TYPE` and `OBJECT_INSTANCE_KEY` via special static keys: 
   
   - `§OBJECT_TYPE§` and 
   - `§OBJECT_INSTANCE_KEY§` 
   
-  in the dotted path. The keys must be exactly written like this and if such a key is found, the replacing of `§` for `.` is of course not performed for this value. 
+in the dotted path. The keys must be exactly written like this. If such a key is found in the dotted path, the replacing of `§` for `.` is of course not performed for this special value. 
   
-  To give an example, with this `values.yaml`:
+To give an example, with this `values.yaml`:
 
-  ```yaml
-  hull:
-    config:
-      specific:
-        components:
-          deployment:
-            ht-get-object-type-example-doc: "Just some demo value to be referenced ..."
-    objects:
-      deployment:
-        ht-get-object-type-example-doc: 
-          pod:
-            containers:
-              main:
-                image:
-                  repository: app-repository
-                  tag: "1.0"
-                env:
-                  GET_FROM_HULL_CONFIG:
-                    value: _HT*hull.config.specific.components.§OBJECT_TYPE§.§OBJECT_INSTANCE_KEY§
-  ```
+```yaml
+hull:
+  config:
+    specific:
+      components:
+        deployment:
+          ht-get-object-type-example-doc: "Just some demo value to be referenced ..."
+  objects:
+    deployment:
+      ht-get-object-type-example-doc: 
+        pod:
+          containers:
+            main:
+              image:
+                repository: app-repository
+                tag: "1.0"
+              env:
+                GET_FROM_HULL_CONFIG:
+                  value: _HT*hull.config.specific.components.§OBJECT_TYPE§.§OBJECT_INSTANCE_KEY§
+```
   
-  you get a rendered result containing:
+you get a rendered result containing:
 
-  ```yaml
-  containers:
-  - env:
-    - name: GET_FROM_HULL_CONFIG
-      value: Just some demo value to be referenced ...
-    image: app-repository:1.0
-    name: main
+```yaml
+containers:
+- env:
+  - name: GET_FROM_HULL_CONFIG
+    value: Just some demo value to be referenced ...
+  image: app-repository:1.0
+  name: main
   ```
 
 #### __Produces__
@@ -1111,6 +675,218 @@ Typical use of this function is to set the `matchLabels` field on a `networkpoli
 podSelector:
   matchLabels: _HT&mycomponentname
 ```
+
+## Example of a complex custom transformation
+
+The HULL library comes with the predefined `hull.util.transformation.tpl` transformation (short form: `_HT!`) which adds a crucial functionality to HULL rendered string and object values. Is was already used in the previous examples. 
+
+While the principal HULL concept is to provide full control over all object values to the creators and consumers directly it might be required to still wrap logic decisions in the creation of some string, dictionary or string array values. A very typical example might be the arguments to a containers command which could depend on custom application specific fields the user should be able to define. It can be argued that this adds in a functionality that is the most basic in the regular helm workflow. In HULL this should be used with care but allows more flexibility for some HULL rendered objects that would otherwise be missing.
+
+So in short, this transformation puts the templating back into the calculation of values. Consider the following HULL configuration: 
+
+```yaml
+hull:
+  config:
+    specific: # Here you can put all that is particular configuration for your app
+      if_this_arg_is_defined: --this-is-defined # Whenever this is not empty ...
+      then_add_this_arg: --hence-is-this # also add this argument
+      
+      if_this_arg_is_not_defined:  # Whenever this is empty ...
+      then_use_this_arg: --and-this-because-other-is-not-defined # also add this argument
+
+  objects:
+    deployment:
+      custom-args:
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              args: |-
+                _HT![
+                  {{ if (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}
+                    "{{ (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}",
+                    "{{ (index . "$").Values.hull.config.specific.then_add_this_arg }}",
+                  {{ end }}
+                  {{ if not (index . "$").Values.hull.config.specific.if_this_arg_is_not_defined }}
+                    "{{ (index . "$").Values.hull.config.specific.then_use_this_arg }}"
+                  {{ end }}
+                ]
+```
+
+The intention of the above configuration is to demonstrate some conditional population of the `args` array. It should result in three elements:
+
+```yaml
+- --this-is-defined # always as value of specific key if_this_arg_is_defined
+- --hence-is-this # value of key then_add_this_arg should be added when key this-is-defined has a value
+- --and-this-because-other-is-not-defined # value of key then_use_this_arg should be added when key if_this_arg_is_not_defined is not defined
+```
+On rendering the following happens:
+
+- for `args` the transformation `hull.util.transformation.tpl` is executed on the string array via its short form `_HT!` and string transformation notation. 
+- the `CONTENT` argument is subjected to the `tpl` Go Templating function. This renders string input with potential placeholders. 
+
+  > Note that the `"`s need to be escaped with `\"` if the CONTENT value is surrounded with `"`'s.  
+
+  Following additional rules apply to the usage of templating expressions in this manner:
+
+  - when referring to the `.Values` in `values.yaml` you need to refer to 
+
+    ```yaml
+    (index . "$").Values
+    ```
+
+    instead. This is because the parent charts context is being passed into the `tpl` function as a dictionary parameter `$`. Nevertheless full access to all fields of the `values.yaml` is possible.
+    
+    ⚠️ **Instead of `(index . "$")` you can alternatively use the longer legacy form `(index . "PARENT")` which is slight longer to write but does the same.** ⚠️
+
+    The key `(index . "$")` is not the only special context variable you can use directly. When you execute a transformation in the scope of an objects definition (somewhere beneath `hull.objects.<object_type>.<object_instance_key>`) you have direct access to the objects type and object instance key as string values by accessing `(index . "OBJECT_TYPE")` and `(index . "OBJECT_INSTANCE_KEY")`. This is helpful because otherwise you would need to pass in the information manually each time if you want to use it in your transformation for naming purposes for example.
+
+    To exemplify this, if you use these settings:
+
+    ```
+    hull:
+      objects:
+        configmap:
+          test-configmap-key:
+            object_instance_key:
+              inline: _HT!{{ (index . "OBJECT_INSTANCE_KEY") }}
+            object_type:
+              inline: _HT!{{ (index . "OBJECT_TYPE") }}
+    ```
+
+    you will render the following ConfigMap entries in the output:
+    
+    ```
+    object_instance_key: test-configmap-key
+    object_type: configmap
+    ```
+
+    ⚠️ **Note that if you use `(index . "OBJECT_INSTANCE_KEY")` or `(index . "OBJECT_TYPE")` outside of an object instance definition such as `hull.objects.<object_type>.<object_instance_name>` the resulting values will be empty strings.** ⚠️
+
+  - When the `tpl`-ed string should result in a string array, use the 
+
+    ```yaml
+    ["value1","value2"] 
+    ```
+
+    [flow style](https://dev.to/javanibble/yaml-essentials-520b) notation to produce the resulting string array. This overcomes typical indentation pitfalls with the block style:
+
+    ```yaml
+    - value1
+    - value2
+    ```
+    
+    notation. 
+    
+    The same holds for returned dictionaries as well, the `tpl`'ed result needs to be composed in flow style syntax like in this example:
+    
+    ```yaml
+    { 
+      key_one: { inner_string: "value1", inner_int: 1 }, 
+      key_two: { inner_string: "value2", inner_int: 2 }
+    }
+    ```
+
+The rendered result again contains the intended `args` section:
+
+```yaml
+# Source: hull-test/templates/hull.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: custom-args
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: hull-test
+    app.kubernetes.io/part-of: undefined
+    app.kubernetes.io/version: 1.31.0
+    helm.sh/chart: hull-test-1.31.0
+  name: release-name-hull-test-custom-args
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: custom-args
+      app.kubernetes.io/instance: release-name
+      app.kubernetes.io/name: hull-test
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: custom-args
+        app.kubernetes.io/instance: release-name
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: hull-test
+        app.kubernetes.io/part-of: undefined
+        app.kubernetes.io/version: 1.31.0
+    spec:
+      containers:
+      - args:
+        - --this-is-defined
+        - --hence-is-this
+        - --and-this-because-other-is-not-defined
+        env: []
+        envFrom: []
+        image: my/image/repo:99.9
+        name: main
+        ports: []
+        volumeMounts: []
+      initContainers: []
+      serviceAccountName: release-name-hull-test-default
+      volumes: []
+```
+
+Alternatively, HULL also allows to define field references in the `_HT!` content in the same syntax which is defined for the `_HT*` transformations (explained below). This provides an even more concise way of providing field references within the `tpl` content. The following specification is equivalent to the one already given:
+
+```yaml
+hull:
+  config:
+    specific: # Here you can put all that is particular configuration for your app
+      if_this_arg_is_defined: --this-is-defined # Whenever this is not empty ...
+      then_add_this_arg: --hence-is-this # also add this argument
+      
+      if_this_arg_is_not_defined:  # Whenever this is empty ...
+      then_use_this_arg: --and-this-because-other-is-not-defined # also add this argument
+
+  objects:
+    deployment:
+      custom-args:
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+              args: _HT![
+                  {{ if _HT*hull.config.specific.if_this_arg_is_defined }}
+                    "{{ _HT*hull.config.specific.if_this_arg_is_defined }}",
+                    "{{ _HT*hull.config.specific.then_add_this_arg }}",
+                  {{ end }}
+                  {{ if not _HT*hull.config.specific.if_this_arg_is_not_defined }}
+                    "{{ _HT*hull.config.specific.then_use_this_arg }}"
+                  {{ end }}
+                ]
+```
+
+Additionally the `include` short form transformation `_HT/` is now also available for use within `_HT!` content! To correctly delimit the `_HT/` parameters from the remaining `_HT!` content, it needs to be ended with a `/TH_` suffix, similar to a bash `if`/`fi` start/end tag. 
+
+Here is a brief example on how to put `_HT/` transformations into the `_HT!` content:
+
+```yaml
+value: |-
+  _HT!
+    {{- printf "%s is the chart reference value" _HT/hull.
+    metadata.chartref/TH_ -}}
+```
+
+This will render similar to the below, depending on your parents helm charts name and version:
+
+```yaml
+value: hull-test-1.31.0 is the chart reference value
+```
+
+More detailed on this feature is available in the below section on _hull.util.transformation.tpl_ transformations.
 
 ---
 Back to [README.md](./../README.md)
