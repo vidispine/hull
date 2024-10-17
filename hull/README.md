@@ -33,7 +33,7 @@ hull: # HULL is configured via subchart key 'hull'
       application_version: v23.1 # a shared image tag for multiple container
       myapp: # some exemplary configuration settings for the app, exposed here for transparency
         rate_limit: 100
-        max_connections: 5     
+        max_connections: 5
   objects: # all objects to create are defined here
     deployment: # create deployments
       myapp-frontend: # the base part of the object name for frontend deployment
@@ -74,40 +74,39 @@ hull: # HULL is configured via subchart key 'hull'
       myappconfig: # the backend configuration
         data: # data section
           backend-appconfig.json: # key name is file name
-            inline: |- # define the contents of the file, using templating logic and references
-              {
-                "rate-limit": {{ .Values.hull.config.specific.myapp.rate_limit }}, 
-                "max-connections": {{ .Values.hull.config.specific.myapp.max_connections }}, 
-                "debug-log": {{ if .Values.hull.config.specific.debug }}true{{ else }}false{{ end }}
-              }
+            serialization: toPrettyJson # serialize the dictionary content of inline to pretty Json
+            inline: # define the contents of the file as a dictionary for convenience
+              rate-limit: _HT*hull.config.specific.myapp.rate_limit
+              max-connections: _HT*hull.config.specific.myapp.max_connections
+              debug-log: _HT!{{ if _HT*hull.config.specific.debug }}true{{ else }}false{{ end }}
     service: # create services
       myapp-frontend: # frontend service, automatically matches pods with identical parent object's key name
+        ports: # definition of service ports
+          http: # http port for type=ClusterIP
+            enabled: _HT?not _HT*hull.config.specific.debug # bind rendering to debug: false condition, use embedded transformation to reference field
+            port: 80 # regular port 
+            targetPort: http # targetPort setting
+          http_nodeport: # http port for type=NodePort
+            enabled: _HT?_HT*hull.config.specific.debug # bind rendering to debug: true condition
+            port: 80 # regular port 
+            nodePort: 31111 # the node port
+            targetPort: http # targetPort setting
         type: |-  # dynamically switch type based on hull.config.specific.debug setting
           _HT!
-            {{- if (index . "$").Values.hull.config.specific.debug -}}
+            {{- if _HT*hull.config.specific.debug -}}
             NodePort
             {{- else -}}
             ClusterIP
             {{- end -}}
-        ports: # definition of service ports
-          http: # http port for type=ClusterIP
-            enabled: _HT?not (index . "$").Values.hull.config.specific.debug # bind rendering to debug: false condition
-            port: 80 # regular port 
-            targetPort: http # targetPort setting
-          http_nodeport: # http port for type=NodePort
-            enabled: _HT?(index . "$").Values.hull.config.specific.debug # bind rendering to debug: true condition
-            port: 80 # regular port 
-            nodePort: 31111 # the node port
-            targetPort: http # targetPort setting
       myapp-backend: # backend service, automatically matches pods with identical parent object's key name
-        type: ClusterIP # in cluster service
         ports: # definition of service ports
           http: # http port
             port: 8080 # regular port 
             targetPort: http # targetPort setting
+        type: ClusterIP # in cluster service
     ingress: # create ingresses
       myapp: # the central frontend ingress
-        enabled: _HT?not (index . "$").Values.hull.config.specific.debug # rendering bound to debug: false
+        enabled: _HT?not _HT*hull.config.specific.debug # rendering bound to debug: false
         rules: # the ingress rules
           myapp: # key-value dictionary of rules
             host: SET_HOSTNAME_HERE # change the host at deployment time to actual one

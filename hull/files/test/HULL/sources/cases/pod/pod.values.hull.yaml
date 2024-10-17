@@ -58,6 +58,8 @@ hull:
             value_true: true
             value_false: false
           ht-get-object-type-example-doc: "Just some demo value to be referenced ..."
+      string_ref: "3"
+      int_ref: 3
   
   objects:
     
@@ -1207,6 +1209,20 @@ hull:
                   "{{ (index . "$").Values.hull.config.specific.then_use_this_arg }}"
                   {{ end }}
                 ]
+
+            full-example-block-style:
+              image:
+                repository: quay.io/external_app
+                tag: "latest"
+              args: |-
+                _HT!
+                {{ if (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}
+                - "{{ (index . "$").Values.hull.config.specific.if_this_arg_is_defined }}"
+                - "{{ (index . "$").Values.hull.config.specific.then_add_this_arg }}"
+                {{ end }}
+                {{ if not (index . "$").Values.hull.config.specific.if_this_arg_is_not_defined }}
+                - "{{ (index . "$").Values.hull.config.specific.then_use_this_arg }}"
+                {{ end }}
 
             get_variants:
               image:
