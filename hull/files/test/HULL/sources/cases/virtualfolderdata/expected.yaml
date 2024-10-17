@@ -165,6 +165,28 @@ test-include-code-list-non-empty-string: '[map[name:listreg1] map[name:listreg2]
 test-include-code-list-non-empty-yaml: |-
   - name: listreg1
   - name: listreg2
+test-include-code-list-indirect-empty: '[]'
+test-include-code-list-indirect-empty-json: '[]'
+test-include-code-list-indirect-empty-prettyjson: '[]'
+test-include-code-list-indirect-empty-rawjson: '[]'
+test-include-code-list-indirect-empty-string: '[]'
+test-include-code-list-indirect-empty-yaml: '[]'
+test-include-code-list-indirect-non-empty: '[map[name:listreg1] map[name:listreg2]]'
+test-include-code-list-indirect-non-empty-json: '[{"name":"listreg1"},{"name":"listreg2"}]'
+test-include-code-list-indirect-non-empty-prettyjson: |-
+  [
+    {
+      "name": "listreg1"
+    },
+    {
+      "name": "listreg2"
+    }
+  ]
+test-include-code-list-indirect-non-empty-rawjson: '[{"name":"listreg1"},{"name":"listreg2"}]'
+test-include-code-list-indirect-non-empty-string: '[map[name:listreg1] map[name:listreg2]]'
+test-include-code-list-indirect-non-empty-yaml: |-
+  - name: listreg1
+  - name: listreg2
 test-include-flow-dict: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvcmQ=
   email:email password:password username:username]]]
 test-serialize-from-dict-json: '{"a":"dict","bool":true,"keys":"and a","this":"is","with":5}'
@@ -413,3 +435,52 @@ code-java-simple.java: "class Main {\r\n\r\n  public static void main(String[] a
   {\r\n    \r\n    int first = 10;\r\n    int second = 20;\r\n\r\n    \r\n    int
   sum = first + second;\r\n    System.out.println(first + \" + \" + second + \"
   = \"  + sum);\r\n  }\r\n}"
+multiline-string: "This could\nbe a \nSSH key\nor \na \ncertificate\nwith\ndata
+  \nlike\nASDADWADAASDASDASDASDASDADASD\nBASDASDASDASDASDASD\nCASDECEACSADSADSDA"
+simple-string: This is a simple string to be written to a ConfigMap
+custom-ca-certificates-cert-a: |-
+  -----BEGIN CERTIFICATE-----
+  MIIDvDCCAyWgAwIBAgIJAMbHBAm8IlugMA0GCSqGSIb3DQEBBQUAMIGbMQswCQYD
+  VQQGEwJKUDEOMAwGA1UECBMFVG9reW8xEDAOBgNVBAcTB0NodW8ta3UxETAPBgNV
+  BAoTCEZyYW5rNEREMRgwFgYDVQQLEw9XZWJDZXJ0IFN1cHBvcnQxGDAWBgNVBAMT
+  D0ZyYW5rNEREIFdlYiBDQTEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBmcmFuazRk
+  ZC5jb20wHhcNMDcxMjA3MTAyMTQ2WhcNMTcxMjA0MTAyMTQ2WjCBmzELMAkGA1UE
+  BhMCSlAxDjAMBgNVBAgTBVRva3lvMRAwDgYDVQQHEwdDaHVvLWt1MREwDwYDVQQK
+  EwhGcmFuazRERDEYMBYGA1UECxMPV2ViQ2VydCBTdXBwb3J0MRgwFgYDVQQDEw9G
+  cmFuazRERCBXZWIgQ0ExIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAZnJhbms0ZGQu
+  Y29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7r7yPJdXmDL2/+L2iogxQ
+  rLML+10EwAY9lJRCHGPqSJ8if7teqnXgFr6MAEiCwTcLvk4h1UxLrDXmxooegNg1
+  zx/OODbcc++SfFCGmflwj/wjLpYRwPgux7/QIgrUqzsj2HtdRFd+WPVD4AOtY9gn
+  xjNXFpVe1zmgAm/UFLdMewIDAQABo4IBBDCCAQAwHQYDVR0OBBYEFGLze+0G1LHV
+  nH9I5e/FyRVh/dkRMIHQBgNVHSMEgcgwgcWAFGLze+0G1LHVnH9I5e/FyRVh/dkR
+  oYGhpIGeMIGbMQswCQYDVQQGEwJKUDEOMAwGA1UECBMFVG9reW8xEDAOBgNVBAcT
+  B0NodW8ta3UxETAPBgNVBAoTCEZyYW5rNEREMRgwFgYDVQQLEw9XZWJDZXJ0IFN1
+  cHBvcnQxGDAWBgNVBAMTD0ZyYW5rNEREIFdlYiBDQTEjMCEGCSqGSIb3DQEJARYU
+  c3VwcG9ydEBmcmFuazRkZC5jb22CCQDGxwQJvCJboDAMBgNVHRMEBTADAQH/MA0G
+  CSqGSIb3DQEBBQUAA4GBALosLpHduFOY30wKS2WQ32RzRgh0ZWNlLXWHkQYmzTHN
+  okwYLy0wGfIqzD1ovLMjDuPMC3MBmQPg8zhd+BY2sgRhgdEBmYWTiw71eZLLmI/e
+  dQbu1z6rOXJb8EegubJNkYTcuxsKLijIfJDnK2noqPt03puJEsBxosN14XPEhIEO
+  -----END CERTIFICATE-----
+custom-ca-certificates-cert-b: |-
+  -----BEGIN CERTIFICATE-----
+  NIIDvDCCAyWgAwIBAgIJAMbHBAm8IlugMA0GCSqGSIb3DQEBBQUAMIGbMQswCQYD
+  VQQGEwJKUDEOMAwGA1UECBMFVG9reW8xEDAOBgNVBAcTB0NodW8ta3UxETAPBgNV
+  BAoTCEZyYW5rNEREMRgwFgYDVQQLEw9XZWJDZXJ0IFN1cHBvcnQxGDAWBgNVBAMT
+  D0ZyYW5rNEREIFdlYiBDQTEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBmcmFuazRk
+  ZC5jb20wHhcNMDcxMjA3MTAyMTQ2WhcNMTcxMjA0MTAyMTQ2WjCBmzELMAkGA1UE
+  BhMCSlAxDjAMBgNVBAgTBVRva3lvMRAwDgYDVQQHEwdDaHVvLWt1MREwDwYDVQQK
+  EwhGcmFuazRERDEYMBYGA1UECxMPV2ViQ2VydCBTdXBwb3J0MRgwFgYDVQQDEw9G
+  cmFuazRERCBXZWIgQ0ExIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAZnJhbms0ZGQu
+  Y29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7r7yPJdXmDL2/+L2iogxQ
+  rLML+10EwAY9lJRCHGPqSJ8if7teqnXgFr6MAEiCwTcLvk4h1UxLrDXmxooegNg1
+  zx/OODbcc++SfFCGmflwj/wjLpYRwPgux7/QIgrUqzsj2HtdRFd+WPVD4AOtY9gn
+  xjNXFpVe1zmgAm/UFLdMewIDAQABo4IBBDCCAQAwHQYDVR0OBBYEFGLze+0G1LHV
+  nH9I5e/FyRVh/dkRMIHQBgNVHSMEgcgwgcWAFGLze+0G1LHVnH9I5e/FyRVh/dkR
+  oYGhpIGeMIGbMQswCQYDVQQGEwJKUDEOMAwGA1UECBMFVG9reW8xEDAOBgNVBAcT
+  B0NodW8ta3UxETAPBgNVBAoTCEZyYW5rNEREMRgwFgYDVQQLEw9XZWJDZXJ0IFN1
+  cHBvcnQxGDAWBgNVBAMTD0ZyYW5rNEREIFdlYiBDQTEjMCEGCSqGSIb3DQEJARYU
+  c3VwcG9ydEBmcmFuazRkZC5jb22CCQDGxwQJvCJboDAMBgNVHRMEBTADAQH/MA0G
+  CSqGSIb3DQEBBQUAA4GBALosLpHduFOY30wKS2WQ32RzRgh0ZWNlLXWHkQYmzTHN
+  okwYLy0wGfIqzD1ovLMjDuPMC3MBmQPg8zhd+BY2sgRhgdEBmYWTiw71eZLLmI/e
+  dQbu1z6rOXJb8EegubJNkYTcuxsKLijIfJDnK2noqPt03puJEsBxosN14XPEhIEO
+  -----END CERTIFICATE-----

@@ -354,9 +354,8 @@ hull:
                 custom-installation-files:
                   name: custom-installation-files
                   mountPath: /custom-installation-files
-                _HULL_TRANSFORMATION_:
-                  NAME: hull.util.transformation.tpl
-                  CONTENT: |-
+                _HT!:
+                  _: |-
                     {
                       {{ range $certkey, $certvalue := (index . "$").Values.hull.config.general.data.installation.config.customCaCertificates}}
                       "custom-ca-certificates-{{ $certkey }}": 

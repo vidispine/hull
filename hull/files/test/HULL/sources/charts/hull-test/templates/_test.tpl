@@ -1,20 +1,48 @@
 {{- define "hull.include.test.imagepullsecrets.emptyarray" -}}
-result: []
+[]
 {{- end -}}
 
 {{- define "hull.include.test.imagepullsecrets.nonemptyarray" -}}
-result:
 - name: "a"
 - name: "b"
 {{- end -}}
 
 {{- define "hull.include.test.imagepullsecrets.emptyflow" -}}
+[]
+{{- end -}}
+
+{{- define "hull.include.test.imagepullsecrets.nonemptyflow" -}}
+[
+  { "name": "flowa" },
+  { "name": "flowb" }
+]
+{{- end -}}
+
+{{- define "hull.include.test.imagepullsecrets.emptylist" -}}
+{{  list | toYaml }}
+{{- end -}}
+
+{{- define "hull.include.test.imagepullsecrets.nonemptylist" -}}
+{{ list (dict "name" "listreg1") (dict "name" "listreg2") | toYaml }}
+{{- end -}}
+
+{{- define "hull.include.test.imagepullsecrets.indirect.emptyarray" -}}
+result: []
+{{- end -}}
+
+{{- define "hull.include.test.imagepullsecrets.indirect.nonemptyarray" -}}
+result:
+- name: "a"
+- name: "b"
+{{- end -}}
+
+{{- define "hull.include.test.imagepullsecrets.indirect.emptyflow" -}}
 { 
   "result": []
 }
 {{- end -}}
 
-{{- define "hull.include.test.imagepullsecrets.nonemptyflow" -}}
+{{- define "hull.include.test.imagepullsecrets.indirect.nonemptyflow" -}}
 { 
   "result": [
     { "name": "flowa" },
@@ -23,11 +51,11 @@ result:
 }
 {{- end -}}
 
-{{- define "hull.include.test.imagepullsecrets.emptylist" -}}
+{{- define "hull.include.test.imagepullsecrets.indirect.emptylist" -}}
 {{ dict "result" list | toYaml }}
 {{- end -}}
 
-{{- define "hull.include.test.imagepullsecrets.nonemptylist" -}}
+{{- define "hull.include.test.imagepullsecrets.indirect.nonemptylist" -}}
 {{ dict "result" (list (dict "name" "listreg1") (dict "name" "listreg2")) | toYaml }}
 {{- end -}}
 

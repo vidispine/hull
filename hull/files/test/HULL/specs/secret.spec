@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "19" objects were rendered on top of basic objects count
+* Expected number of "20" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -73,6 +73,7 @@ Test creation of objects and features.
 * Test Object has key "data§string_undefined" with Base64 encoded value of ""
 * Test Object has key "data§number_defined" with Base64 encoded value of "999"
 * Test Object has key "data§number_undefined" with Base64 encoded value of ""
+* Test Object has key "data§key_with_dots_in_it" with Base64 encoded value of "hello dots!"
 
 ## Include Transformation 
 * Lint and Render

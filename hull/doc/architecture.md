@@ -120,7 +120,7 @@ The end to end process using HULL contains the following phases:
           - `role`
           - `clusterrole`
         - objects with a `spec` field:
-          - `perstistentvolume`
+          - `persistentvolume`
           - `persistentvolumeclaim`
           - `servicemonitor`
           - `poddisruptionbudget`

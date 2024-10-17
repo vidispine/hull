@@ -1,5 +1,17 @@
 # History
 ------------------
+[1.31.2]
+------------------
+FIXES:
+- fixed printed empty string when referencing multi-line strings including line breaks using `_HT*`. Referenced strings via `_HT*` are now bytewise interpreted and printed including newlines using `printf "%s" ($value | quote)` instead of just `$value`. This transports original string as they are literally specified.
+- partially fixed referencing large numbers in their original form. Previously if a string contains large numbers > 999999 or values resembling scientific notation, any reference via `_HT*` to the source field interpreted the strings as numbers and converted them to usually undesired scientific notation, chaning their value and meaning. Side effect of using `printf "%s" ($value | quote)` for string references, all strings are now transported unchanged. Essentially this makes the [JSON hack mentioned in this issue](https://github.com/vidispine/hull/issues/262) obsolete when the source value is in string form.
+
+CHANGES:
+- using `tpl` transformations with `_HT!` now allows in-place serialization of the result using `toJson`, `toPrettyJson`, `toRawJson`, `toYaml` or `toString`. This adds another serialization possibility besides the existing `_HT/` include and `_HT*` get transformation result serialization capabilities. Thanks [ievgenii-shepeliuk](https://github.com/ievgenii-shepeliuk) for the feature request [here](https://github.com/vidispine/hull/issues/339).
+- made previously required dictionary wrapping of array contents for include/`_HT/` transformations obsolete by correctly making use of to `fromYamlArray` Helm function. If an array was to be returned by a `_HT/` transformation, previously it was needed to wrap it in a dictionary and grab the result from the chosen dictionary key. For example, an transformation like `_HT/result/hull.transformation.do.something` would essentially return an array if the include produces a dictionary with a key `result` that has an array value. Starting with this version, it is possible to call `_HT/hull.transformation.do.something` and the resulting include can directly produce the array.
+- restructured documentation on transformations in the `hull/doc/transformation.md` file and removed references to obsolete legacy syntax for transformations.
+
+------------------
 [1.31.1]
 ------------------
 FIXES:
