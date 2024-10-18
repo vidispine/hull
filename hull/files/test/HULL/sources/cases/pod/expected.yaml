@@ -148,6 +148,28 @@ test-include-code-list-non-empty-string: '[map[name:listreg1] map[name:listreg2]
 test-include-code-list-non-empty-yaml: |-
   - name: listreg1
   - name: listreg2
+test-include-code-list-indirect-empty: '[]'
+test-include-code-list-indirect-empty-json: '[]'
+test-include-code-list-indirect-empty-prettyjson: '[]'
+test-include-code-list-indirect-empty-rawjson: '[]'
+test-include-code-list-indirect-empty-string: '[]'
+test-include-code-list-indirect-empty-yaml: '[]'
+test-include-code-list-indirect-non-empty: '[map[name:listreg1] map[name:listreg2]]'
+test-include-code-list-indirect-non-empty-json: '[{"name":"listreg1"},{"name":"listreg2"}]'
+test-include-code-list-indirect-non-empty-prettyjson: |-
+  [
+    {
+      "name": "listreg1"
+    },
+    {
+      "name": "listreg2"
+    }
+  ]
+test-include-code-list-indirect-non-empty-rawjson: '[{"name":"listreg1"},{"name":"listreg2"}]'
+test-include-code-list-indirect-non-empty-string: '[map[name:listreg1] map[name:listreg2]]'
+test-include-code-list-indirect-non-empty-yaml: |-
+  - name: listreg1
+  - name: listreg2
 test-include-flow-dict: map[auths:map[my-registry:map[auth:dXNlcm5hbWU6cGFzc3dvcmQ=
   email:email password:password username:username]]]
 tpl_bool_get_bool_get_get: |-

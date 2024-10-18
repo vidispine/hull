@@ -68,3 +68,36 @@ code-java-simple.java: "class Main {\r\n\r\n  public static void main(String[] a
   {\r\n    \r\n    int first = 10;\r\n    int second = 20;\r\n\r\n    \r\n    int
   sum = first + second;\r\n    System.out.println(first + \" + \" + second + \"
   = \"  + sum);\r\n  }\r\n}"
+plain-json-string: |-
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Resource": "*",
+        "Action": "ssm:GetParameter*"
+      }
+    ]
+  }
+interpreted-and-serialized-flow-style-yaml: |-
+  {
+    "Statement": [
+      {
+        "Action": "ssm:GetParameter*",
+        "Effect": "Allow",
+        "Resource": "*"
+      }
+    ],
+    "Version": "2012-10-17"
+  }
+interpreted-and-serialized-block-style-yaml: |-
+  {
+    "Statement": [
+      {
+        "Action": "ssm:GetParameter*",
+        "Effect": "Allow",
+        "Resource": "*"
+      }
+    ],
+    "Version": "2012-10-17"
+  }
