@@ -34588,10 +34588,10 @@
   "type": "object",
   "anyOf": [
     {
-      "$ref": "#/definitions/root"
+      "$ref": "#/definitions/hull"
     },
     {
-      "$ref": "#/definitions/hull"
+      "$ref": "#/definitions/root"
     }
   ]
 }
