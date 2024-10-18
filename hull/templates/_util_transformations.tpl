@@ -127,6 +127,13 @@
 
 
 
+{{- define "hull.util.string.trim.prefixes" -}}
+{{- $string := (index . "STRING") -}}
+{{- $string | trimPrefix "\n" | trimPrefix "\\n" | trimPrefix "\r\n" | trimPrefix "\\r\\n" -}}
+{{- end -}}
+
+
+
 {{- /*
 | Purpose:  
 |   
@@ -142,11 +149,12 @@
 {{- $value := (index . "VALUE") -}}
 {{- $serialize := false -}}
 {{- $result := dict -}}
+{{- $valueTrimmed := include "hull.util.string.trim.prefixes" (dict "STRING" $value) -}}
 {{- range $serializer := list "none" "toJson" "toPrettyJson" "toRawJson" "toYaml" "toString" -}}
-{{- if (hasPrefix (printf "%s|" $serializer) $value ) -}}
+{{- if (hasPrefix (printf "%s|" $serializer) $valueTrimmed) -}}
 {{- $serialize = true -}}
 {{- $result = set $result "serializer" $serializer -}}
-{{- $result = set $result "remainder" ($value | trimPrefix (printf "%s|" $serializer)) -}}
+{{- $result = set $result "remainder" ($valueTrimmed | trimPrefix (printf "%s|" $serializer)) -}}
 {{- end -}}
 {{- end -}}
 {{- $result = set $result "serialize" $serialize -}}
@@ -345,7 +353,7 @@
 {{- $serializer := default "" (index . "SERIALIZER") -}}
 {{- if typeIs "map[string]interface {}" $source -}}
 {{- if (and (ne $serializer "") (ne $serializer "none")) -}}
-{{- include "hull.util.transformation.serialize" (dict "VALUE" ($source) "SERIALIZER" $serializer) | toYaml -}}
+{{- include "hull.util.transformation.serialize" (dict "VALUE" $source "SERIALIZER" $serializer) | toYaml -}}
 {{- else -}}
 { 
   {{- range $k,$value := $source -}}
@@ -365,7 +373,11 @@
 ]
 {{- end -}}
 {{- else -}}
+{{- if typeIs "string" $source -}}
+{{ printf "%s" ($source | quote) }}
+{{- else -}}
 {{ $source }}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -477,6 +489,13 @@
 {{- $objectInstanceKey = index $sourcePath 3 -}}
 {{- end -}}
 {{- end -}}
+{{- $serializer := "" }}
+{{- $getValue := include "hull.util.transformation.serialize.get" (dict "VALUE" $content) | fromYaml -}}
+{{- $serializer := "" -}}
+{{- if $getValue.serialize -}}
+{{- $content = $getValue.remainder -}}
+{{- $serializer = $getValue.serializer -}}
+{{- end -}}
 {{- $getProcessing := (include "hull.util.process.get.paths" (dict "CONTENT" $content "PARENT_CONTEXT" . "SOURCE_PATH" $sourcePath)) | fromYaml -}}
 {{- if (ne $getProcessing.error "") -}}
 {{ $key }}: {{ $getProcessing.error }}
@@ -485,7 +504,17 @@
 {{- if (ne $includeProcessing.error "") -}}
 {{ $key }}: {{ $includeProcessing.error }}
 {{- else -}}
-{{ $key }}: {{ tpl $includeProcessing.content (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) }}
+{{- $trimmed := include "hull.util.string.trim.prefixes" (dict "STRING" $includeProcessing.content) -}}
+{{- $result := tpl $trimmed (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) -}}
+{{- $final := $result -}}
+{{- if (and (ne $serializer "") (ne $serializer "none")) -}}
+{{- $final = $result | fromYaml -}}
+{{- if (hasKey $final "Error")  -}}
+{{- $final = $result | fromYamlArray -}}
+{{- end -}}
+{{- $result = (include "hull.util.transformation.convert" (dict "SOURCE" $final "SERIALIZER" $serializer)) -}}
+{{- end -}}
+{{- $key }}: {{ $result }}
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -628,21 +657,33 @@
 {{- $tpl := tpl $call (merge (dict "Template" $parent.Template "PARENT" $parent "$" $parent "OBJECT_INSTANCE_KEY" $objectInstanceKey "OBJECT_TYPE" $objectType) .) -}}
 {{- $result := dict -}}
 {{- if (or (eq $serializer "") (eq $serializer "none")) -}}
-{{- $result = $tpl | fromYaml -}}
-{{- if (hasKey $result "Error")  -}}
-{{- $result = $tpl -}}
+    {{- $result = $tpl | fromYaml -}}
+    {{- if (hasKey $result "Error") -}}
+        {{- $result = $tpl | fromYamlArray -}}
+        {{- if (and (eq ($result | len) 1) (hasPrefix "error" (index $result 0))) -}}
+            {{- $result = $tpl -}}
+        {{- end -}}
+    {{- else -}}
+        {{- if (ne $resultKey "") -}}
+            {{- $result = index $result $resultKey -}}
+        {{- end -}}
+    {{- end -}}
 {{- else -}}
-{{- if (ne $resultKey "") -}}
-{{- $result = index $result $resultKey -}}
-{{- end -}}
-{{- end -}}
-{{- else -}}
-{{- if (ne $resultKey "") -}}
-{{- $result = index ($tpl | fromYaml) $resultKey -}}
-{{- else -}}
-{{- $result = $tpl | fromYaml -}}
-{{- end -}}
-{{- $result = include "hull.util.transformation.serialize" (dict "VALUE" $result "SERIALIZER" $serializer) -}}
+    {{- if (ne $resultKey "") -}}
+        {{- $result = index ($tpl | fromYaml) $resultKey -}}
+        {{- if (and (typeIs "map[string]interface {}" $result) (hasKey $result "Error")) -}}
+            {{- $result = index ($tpl | fromYamlArray) $resultKey -}}
+        {{- end -}}
+    {{- else -}}
+        {{- $result = $tpl | fromYaml -}}
+        {{- if (hasKey $result "Error") -}}
+            {{- $result = $tpl | fromYamlArray -}}
+            {{- if (and (eq ($result | len) 1) (hasPrefix "error" (index $result 0))) -}}
+                {{- $result = $tpl -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
+    {{- $result = include "hull.util.transformation.serialize" (dict "VALUE" $result "SERIALIZER" $serializer) -}}
 {{- end -}}
 {{ (dict $key $result) | toYaml }}
 {{- end -}}
