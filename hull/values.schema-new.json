@@ -6971,10 +6971,6 @@
             }
           ]
         },
-        "jobTemplate": {
-          "$ref": "#/definitions/io.k8s.api.batch.v1.JobTemplateSpec",
-          "description": "Specifies the job that will be created when executing a CronJob."
-        },
         "schedule": {
           "description": "The schedule in Cron format, see https://en.wikipedia.org/wiki/Cron.",
           "type": "string"
@@ -9266,21 +9262,14 @@
         "binaryData": {
           "additionalProperties": {
             "format": "byte",
-            "type": "string"
-          },
-          "description": "BinaryData contains the binary data. Each key must consist of alphanumeric characters, '-', '_' or '.'. BinaryData can contain byte sequences that are not in the UTF-8 range. The keys stored in BinaryData must not overlap with the ones in the Data field, this is enforced during validation process. Using this field will require 1.10+ apiserver and kubelet.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "object"
-            }
-          ]
-        },
-        "data": {
-          "additionalProperties": {
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "string"
+              }
+            ]
           },
           "description": "Data contains the configuration data. Each key must consist of alphanumeric characters, '-', '_' or '.'. Values with non-UTF-8 byte sequences must use the BinaryData field. The keys stored in Data must not overlap with the keys in the BinaryData field, this is enforced during validation process.",
           "anyOf": [
@@ -9691,48 +9680,21 @@
           ],
           "x-kubernetes-list-type": "atomic"
         },
-        "env": {
-          "description": "List of environment variables to set in the container. Cannot be updated.",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.EnvVar"
-          },
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "array"
-            }
-          ],
-          "x-kubernetes-list-map-keys": [
-            "name"
-          ],
-          "x-kubernetes-list-type": "map",
-          "x-kubernetes-patch-merge-key": "name",
-          "x-kubernetes-patch-strategy": "merge"
-        },
-        "envFrom": {
-          "description": "List of sources to populate environment variables in the container. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the container is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.EnvFromSource"
-          },
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "array"
-            }
-          ],
-          "x-kubernetes-list-type": "atomic"
-        },
-        "image": {
-          "description": "Container image name. More info: https://kubernetes.io/docs/concepts/containers/images This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets.",
-          "type": "string"
-        },
         "imagePullPolicy": {
           "description": "Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images",
-          "type": "string"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "string",
+              "enum": [
+                "Always",
+                "IfNotPresent",
+                "Never"
+              ]
+            }
+          ]
         },
         "lifecycle": {
           "$ref": "#/definitions/io.k8s.api.core.v1.Lifecycle",
@@ -9745,27 +9707,6 @@
         "name": {
           "description": "Name of the container specified as a DNS_LABEL. Each container in a pod must have a unique name (DNS_LABEL). Cannot be updated.",
           "type": "string"
-        },
-        "ports": {
-          "description": "List of ports to expose from the container. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default \"0.0.0.0\" address inside a container will be accessible from the network. Modifying this array with strategic merge patch may corrupt the data. For more information See https://github.com/kubernetes/kubernetes/issues/108255. Cannot be updated.",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.ContainerPort"
-          },
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "array"
-            }
-          ],
-          "x-kubernetes-list-map-keys": [
-            "containerPort",
-            "protocol"
-          ],
-          "x-kubernetes-list-type": "map",
-          "x-kubernetes-patch-merge-key": "containerPort",
-          "x-kubernetes-patch-strategy": "merge"
         },
         "readinessProbe": {
           "$ref": "#/definitions/io.k8s.api.core.v1.Probe",
@@ -9872,6 +9813,9 @@
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "null"
         },
         {
           "type": "object"
@@ -10587,21 +10531,6 @@
     "io.k8s.api.core.v1.Endpoints": {
       "description": "Endpoints is a collection of endpoints that implement the actual service. Example:\n\n\t Name: \"mysvc\",\n\t Subsets: [\n\t   {\n\t     Addresses: [{\"ip\": \"10.10.1.1\"}, {\"ip\": \"10.10.2.2\"}],\n\t     Ports: [{\"name\": \"a\", \"port\": 8675}, {\"name\": \"b\", \"port\": 309}]\n\t   },\n\t   {\n\t     Addresses: [{\"ip\": \"10.10.3.3\"}],\n\t     Ports: [{\"name\": \"a\", \"port\": 93}, {\"name\": \"b\", \"port\": 76}]\n\t   },\n\t]",
       "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string",
-          "enum": [
-            "Endpoints"
-          ]
-        },
-        "metadata": {
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta",
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
-        },
         "subsets": {
           "description": "The set of all endpoints is the union of all subsets. Addresses are placed into subsets according to the IPs they share. A single address with multiple ports, some of which are ready and some of which are not (because they come from different containers) will result in the address being displayed in different subsets for the different ports. No address will appear in both Addresses and NotReadyAddresses in the same subset. Sets of addresses and ports that comprise a service.",
           "items": {
@@ -10739,13 +10668,22 @@
     "io.k8s.api.core.v1.EnvVar": {
       "description": "EnvVar represents an environment variable present in a Container.",
       "properties": {
-        "name": {
-          "description": "Name of the environment variable. Must be a C_IDENTIFIER.",
-          "type": "string"
-        },
         "value": {
           "description": "Variable references $(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to \"\".",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "valueFrom": {
           "$ref": "#/definitions/io.k8s.api.core.v1.EnvVarSource",
@@ -10770,6 +10708,18 @@
         },
         {
           "type": "object"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
         }
       ]
     },
@@ -14960,6 +14910,7 @@
         "priority",
         "priorityClassName",
         "readinessGates",
+        "resources",
         "resourceClaims",
         "restartPolicy",
         "runtimeClassName",
@@ -15005,26 +14956,6 @@
               "type": "boolean"
             }
           ]
-        },
-        "containers": {
-          "description": "List of containers belonging to the pod. Containers cannot currently be added or removed. There must be at least one container in a Pod. Cannot be updated.",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.Container"
-          },
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "array"
-            }
-          ],
-          "x-kubernetes-list-map-keys": [
-            "name"
-          ],
-          "x-kubernetes-list-type": "map",
-          "x-kubernetes-patch-merge-key": "name",
-          "x-kubernetes-patch-strategy": "merge"
         },
         "dnsConfig": {
           "$ref": "#/definitions/io.k8s.api.core.v1.PodDNSConfig",
@@ -15146,30 +15077,6 @@
               "type": "array"
             }
           ],
-          "x-kubernetes-list-map-keys": [
-            "name"
-          ],
-          "x-kubernetes-list-type": "map",
-          "x-kubernetes-patch-merge-key": "name",
-          "x-kubernetes-patch-strategy": "merge"
-        },
-        "initContainers": {
-          "description": "List of initialization containers belonging to the pod. Init containers are executed in order prior to containers being started. If any init container fails, the pod is considered to have failed and is handled according to its restartPolicy. The name for an init container or normal container must be unique among all containers. Init containers may not have Lifecycle actions, Readiness probes, Liveness probes, or Startup probes. The resourceRequirements of an init container are taken into account during scheduling by finding the highest request/limit for each resource type, and then using the max of of that value or the sum of the normal containers. Limits are applied to init containers in a similar fashion. Init containers cannot currently be added or removed. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.Container"
-          },
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "array"
-            }
-          ],
-          "x-kubernetes-list-map-keys": [
-            "name"
-          ],
-          "x-kubernetes-list-type": "map",
           "x-kubernetes-patch-merge-key": "name",
           "x-kubernetes-patch-strategy": "merge"
         },
@@ -15386,26 +15293,6 @@
           "x-kubernetes-list-type": "map",
           "x-kubernetes-patch-merge-key": "topologyKey",
           "x-kubernetes-patch-strategy": "merge"
-        },
-        "volumes": {
-          "description": "List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.Volume"
-          },
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "array"
-            }
-          ],
-          "x-kubernetes-list-map-keys": [
-            "name"
-          ],
-          "x-kubernetes-list-type": "map",
-          "x-kubernetes-patch-merge-key": "name",
-          "x-kubernetes-patch-strategy": "merge,retainKeys"
         }
       },
       "required": [],
@@ -15901,6 +15788,9 @@
         },
         {
           "type": "object"
+        },
+        {
+          "type": "null"
         }
       ],
       "additionalProperties": false
@@ -17046,21 +16936,6 @@
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
           "type": "string"
         },
-        "data": {
-          "additionalProperties": {
-            "format": "byte",
-            "type": "string"
-          },
-          "description": "Data contains the secret data. Each key must consist of alphanumeric characters, '-', '_' or '.'. The serialized form of the secret data is a base64 encoded string, representing the arbitrary (possibly non-string) data value here. Described in https://tools.ietf.org/html/rfc4648#section-4",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "object"
-            }
-          ]
-        },
         "immutable": {
           "description": "Immutable, if set to true, ensures that data stored in the Secret cannot be updated (only object metadata can be modified). If not set to true, the field can be modified at any time. Defaulted to nil.",
           "anyOf": [
@@ -17135,6 +17010,28 @@
               "type": "boolean"
             }
           ]
+        },
+        "staticName": {
+          "description": "Specify whether the ConfigMap refers to an internally named ConfigMap",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "hashsumAnnotation": {
+          "description": "If true, adds annotations with hashsums of the values of all Secrets keys to the pods template annotations.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "anyOf": [
@@ -17160,6 +17057,28 @@
         },
         "optional": {
           "description": "Specify whether the Secret or its key must be defined",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "staticName": {
+          "description": "Specify whether the Secret refers to an internally named Secret",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "hashsumAnnotation": {
+          "description": "If true, adds an annotation with the hashsum of the Secrets key value to the pods template annotations.",
           "anyOf": [
             {
               "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -17952,29 +17871,7 @@
             {
               "type": "array"
             }
-          ],
-          "x-kubernetes-list-type": "atomic"
-        },
-        "ports": {
-          "description": "The list of ports that are exposed by this service. More info: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.ServicePort"
-          },
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "array"
-            }
-          ],
-          "x-kubernetes-list-map-keys": [
-            "port",
-            "protocol"
-          ],
-          "x-kubernetes-list-type": "map",
-          "x-kubernetes-patch-merge-key": "port",
-          "x-kubernetes-patch-strategy": "merge"
+          ]
         },
         "publishNotReadyAddresses": {
           "description": "publishNotReadyAddresses indicates that any agent which deals with endpoints for this Service should disregard any indications of ready/not-ready. The primary use case for setting this field is for a StatefulSet's Headless Service to propagate SRV DNS records for its Pods for the purpose of peer discovery. The Kubernetes controllers that generate Endpoints and EndpointSlice resources for Services interpret this to mean that all endpoints are considered \"ready\" even if the Pods themselves are not. Agents which consume only Kubernetes generated endpoints through the Endpoints or EndpointSlice resources can safely assume this behavior.",
@@ -18624,10 +18521,6 @@
           "$ref": "#/definitions/io.k8s.api.core.v1.ISCSIVolumeSource",
           "description": "iscsi represents an ISCSI Disk resource that is attached to a kubelet's host machine and then exposed to the pod. More info: https://examples.k8s.io/volumes/iscsi/README.md"
         },
-        "name": {
-          "description": "name of the volume. Must be a DNS_LABEL and unique within the pod. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
-          "type": "string"
-        },
         "nfs": {
           "$ref": "#/definitions/io.k8s.api.core.v1.NFSVolumeSource",
           "description": "nfs represents an NFS mount on the host that shares a pod's lifetime More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs"
@@ -18692,6 +18585,9 @@
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "null"
         },
         {
           "type": "object"
@@ -20510,25 +20406,10 @@
         }
       ]
     },
+    "io.k8s.api.networking.v1.HTTPIngressRuleValue.Names": {},
     "io.k8s.api.networking.v1.HTTPIngressRuleValue": {
       "description": "HTTPIngressRuleValue is a list of http selectors pointing to backends. In the example: http://<host>/<path>?<searchpart> -> backend where where parts of the url correspond to RFC 3986, this resource will be used to match against everything after the last '/' and before the first '?' or '#'.",
-      "properties": {
-        "paths": {
-          "description": "paths is a collection of paths that map requests to backends.",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.networking.v1.HTTPIngressPath"
-          },
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "array"
-            }
-          ],
-          "x-kubernetes-list-type": "atomic"
-        }
-      },
+      "properties": {},
       "required": [],
       "anyOf": [
         {
@@ -20961,9 +20842,6 @@
         "host": {
           "description": "host is the fully qualified domain name of a network host, as defined by RFC 3986. Note the following deviations from the \"host\" part of the URI as defined in RFC 3986: 1. IPs are not allowed. Currently an IngressRuleValue can only apply to\n   the IP in the Spec of the parent Ingress.\n2. The `:` delimiter is not respected because ports are not allowed.\n\t  Currently the port of an Ingress is implicitly :80 for http and\n\t  :443 for https.\nBoth these may change in the future. Incoming requests are matched against the host before the IngressRuleValue. If the host is unspecified, the Ingress routes all traffic based on the specified IngressRuleValue.\n\nhost can be \"precise\" which is a domain name without the terminating dot of a network host (e.g. \"foo.bar.com\") or \"wildcard\", which is a domain name prefixed with a single wildcard label (e.g. \"*.foo.com\"). The wildcard character '*' must appear by itself as the first DNS label and matches only a single label. You cannot have a wildcard label by itself (e.g. Host == \"*\"). Requests will be matched against the Host field in the following way: 1. If host is precise, the request matches this rule if the http host header is equal to Host. 2. If host is a wildcard, then the request matches this rule if the http host header is to equal to the suffix (removing the first label) of the wildcard rule.",
           "type": "string"
-        },
-        "http": {
-          "$ref": "#/definitions/io.k8s.api.networking.v1.HTTPIngressRuleValue"
         }
       },
       "anyOf": [
@@ -21025,36 +20903,6 @@
         "ingressClassName": {
           "description": "ingressClassName is the name of an IngressClass cluster resource. Ingress controller implementations use this field to know whether they should be serving this Ingress resource, by a transitive connection (controller -> IngressClass -> Ingress resource). Although the `kubernetes.io/ingress.class` annotation (simple constant name) was never formally defined, it was widely supported by Ingress controllers to create a direct binding between Ingress controller and Ingress resources. Newly created Ingress resources should prefer using the field. However, even though the annotation is officially deprecated, for backwards compatibility reasons, ingress controllers should still honor that annotation if present.",
           "type": "string"
-        },
-        "rules": {
-          "description": "rules is a list of host rules used to configure the Ingress. If unspecified, or no rule matches, all traffic is sent to the default backend.",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.networking.v1.IngressRule"
-          },
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "array"
-            }
-          ],
-          "x-kubernetes-list-type": "atomic"
-        },
-        "tls": {
-          "description": "tls represents the TLS configuration. Currently the Ingress only supports a single TLS port, 443. If multiple members of this list specify different hosts, they will be multiplexed on the same port according to the hostname specified through the SNI TLS extension, if the ingress controller fulfilling the ingress supports SNI.",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.networking.v1.IngressTLS"
-          },
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "array"
-            }
-          ],
-          "x-kubernetes-list-type": "atomic"
         }
       },
       "anyOf": [
@@ -22306,7 +22154,13 @@
               "$ref": "#/definitions/hull.Transformation.Pattern"
             },
             {
+              "type": "null"
+            },
+            {
               "type": "array"
+            },
+            {
+              "type": "object"
             }
           ]
         }
@@ -22632,7 +22486,13 @@
               "$ref": "#/definitions/hull.Transformation.Pattern"
             },
             {
+              "type": "null"
+            },
+            {
               "type": "array"
+            },
+            {
+              "type": "object"
             }
           ]
         }
@@ -25418,10 +25278,6 @@
     "io.k8s.api.scheduling.v1.PriorityClass": {
       "description": "PriorityClass defines mapping from a priority class name to the priority integer value. The value can be any valid integer.",
       "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
         "description": {
           "description": "description is an arbitrary string that usually provides guidelines on when this priority class should be used.",
           "type": "string"
@@ -25436,17 +25292,6 @@
               "type": "boolean"
             }
           ]
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string",
-          "enum": [
-            "PriorityClass"
-          ]
-        },
-        "metadata": {
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta",
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         },
         "preemptionPolicy": {
           "description": "preemptionPolicy is the Policy for preempting pods with lower priority. One of Never, PreemptLowerPriority. Defaults to PreemptLowerPriority if unset.",
@@ -28011,7 +27856,7 @@
       "additionalProperties": false
     },
     "io.k8s.apimachinery.pkg.api.resource.Quantity": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "string"
         },
@@ -29783,7 +29628,7 @@
       ]
     },
     "io.k8s.apimachinery.pkg.util.intstr.IntOrString": {
-      "oneOf": [
+      "anyOf": [
         {
           "type": "string"
         },
