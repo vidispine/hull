@@ -130,7 +130,7 @@ objects:
       annotations: {}
       labels: {}
     default:
-      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod) ""
+      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) ""
       annotations: {}
       labels: {}
 ###################################################
@@ -144,7 +144,7 @@ objects:
       rules:
         _HULL_OBJECT_TYPE_DEFAULT_: {}
     default:
-      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod) ""
+      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) ""
       rules: {}
 ###################################################
 
@@ -155,7 +155,7 @@ objects:
       annotations: {}
       labels: {}
     default:
-      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod) ""
+      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) ""
       roleRef:
         apiGroup: "rbac.authorization.k8s.io"
         kind: "Role"
