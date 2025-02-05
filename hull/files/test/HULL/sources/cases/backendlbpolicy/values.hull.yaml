@@ -1,0 +1,320 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # BACKENDLBPOLICY
+    backendlbpolicy:
+
+      disabled:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+       
+      static-name:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+        
+      metadata-merge:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+        
+      metadata-overwrite:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      metadata-custom-template-merge:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      metadata-custom-template-overwrite:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      metadata-custom-template-multi-merge:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      metadata-custom-template-multi-overwrite:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      metadata-no-template:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      metadata-default-template-as-source:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      metadata-default-custom-overwrite:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      metadata-object-info:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      disabled-transform:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      enabled-transform:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      disabled-transform-dict:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      enabled-transform-dict:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      disabled-transform-tpl-if:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      transformation-shortforms:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      transformation-doc-examples:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      enabled-transform-tpl-if:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      metadata-name-override:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      metadata-name-override-static:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      metadata-stringify:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      complex-gets:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      pod-get:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      imagepullsecrets-custom:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      imagepullsecrets-add-all:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      image-name-empty-registry:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+        
+      image-name-registry:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+        
+      image-name-tag:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+        
+      volume-test:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+        
+      env-test:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+        
+      envfrom-test:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+        
+      test-serializing:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      test-get-transformation-on-root:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      no-annotations:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      test-get-transformations-array:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+
+      namespace-override:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+      
+      empty-namespace-override:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+      
+      simple:
+        targetRefs: 
+          - group: group
+            kind: kind
+            name: name
+      
+      dictionary:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+      
+      full-example:
+        targetRefs: 
+          ref1:
+            group: group1
+            kind: kind1
+            name: name1
+          ref2:
+            group: group2
+            kind: kind2
+            name: name2
+        sessionPersistence:
+          sessionName: "lbsession"
+          absoluteTimeout: "1m"
+          idleTimeout: "2m"
+          type: Cookie
+          cookieConfig:
+            lifetimeType: Permanent
+              
+###################################################

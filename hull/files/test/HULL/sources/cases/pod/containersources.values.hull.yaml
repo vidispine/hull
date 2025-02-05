@@ -1,0 +1,68 @@
+hull:
+  config:
+    templates:
+      container: 
+        global:
+          resizePolicy:
+          - resourceName: resize
+            restartPolicy: NotRequired
+          env:
+            'I_AM_ALWAYS_THERE':
+              value: In all Containers!
+          terminationMessagePolicy: I am out of here!
+        more-metadata:
+          env:
+            'I_AM_ONLY_HERE':
+              value: In this Container only!
+        even-more-metadata:
+          env:
+            'I_AM_STILL_ONLY_HERE':
+              value: Also in this Container!
+          workingDir: /dont_care
+        other-stuff:
+          restartPolicy: Always
+          stdinOnce: true
+          workingDir: /start_here
+          terminationMessagePolicy: Still here!
+  objects:
+    <OBJECT_TYPE>:
+      test-container-template-global:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+          containers:
+            my-pod:
+              sources:
+              - global
+              image:
+                repository: hello-world
+      test-container-template-single:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+          containers:
+            my-pod:
+              sources:
+              - other-stuff
+              image:
+                repository: hello-world
+      test-container-template-single-overwrite:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+          containers:
+            my-pod:
+              sources:
+              - global
+              - more-metadata
+              image:
+                repository: hello-world
+      test-container-template-multi-overwrite:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+          containers:
+            my-pod:
+              sources:
+              - global
+              - more-metadata
+              - even-more-metadata
+              - other-stuff
+              image:
+                repository: hello-world

@@ -1,0 +1,148 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # GATEWAYCLASS
+    gatewayclass:
+
+      disabled:
+        controllerName: "example.net/gateway-controller"
+       
+      static-name:
+        controllerName: "example.net/gateway-controller"
+        
+      metadata-merge:
+        controllerName: "example.net/gateway-controller"
+        
+      metadata-overwrite:
+        controllerName: "example.net/gateway-controller"
+
+      metadata-custom-template-merge:
+        controllerName: "example.net/gateway-controller"
+
+      metadata-custom-template-overwrite:
+        controllerName: "example.net/gateway-controller"
+
+      metadata-custom-template-multi-merge:
+        controllerName: "example.net/gateway-controller"
+
+      metadata-custom-template-multi-overwrite:
+        controllerName: "example.net/gateway-controller"
+
+      metadata-no-template:
+        controllerName: "example.net/gateway-controller"
+
+      metadata-default-template-as-source:
+        controllerName: "example.net/gateway-controller"
+
+      metadata-default-custom-overwrite:
+        controllerName: "example.net/gateway-controller"
+
+      metadata-object-info:
+        controllerName: "example.net/gateway-controller"
+
+      disabled-transform:
+        controllerName: "example.net/gateway-controller"
+
+      enabled-transform:
+        controllerName: "example.net/gateway-controller"
+
+      disabled-transform-dict:
+        controllerName: "example.net/gateway-controller"
+
+      enabled-transform-dict:
+        controllerName: "example.net/gateway-controller"
+
+      disabled-transform-tpl-if:
+        controllerName: "example.net/gateway-controller"
+
+      transformation-shortforms:
+        controllerName: "example.net/gateway-controller"
+
+      transformation-doc-examples:
+        controllerName: "example.net/gateway-controller"
+
+      enabled-transform-tpl-if:
+        controllerName: "example.net/gateway-controller"
+
+      metadata-name-override:
+        controllerName: "example.net/gateway-controller"
+
+      metadata-name-override-static:
+        controllerName: "example.net/gateway-controller"
+
+      metadata-stringify:
+        controllerName: "example.net/gateway-controller"
+
+      complex-gets:
+        controllerName: "example.net/gateway-controller"
+
+      pod-get:
+        controllerName: "example.net/gateway-controller"
+
+      imagepullsecrets-custom:
+        controllerName: "example.net/gateway-controller"
+
+      imagepullsecrets-add-all:
+        controllerName: "example.net/gateway-controller"
+
+      image-name-empty-registry:
+        controllerName: "example.net/gateway-controller"
+        
+      image-name-registry:
+        controllerName: "example.net/gateway-controller"
+        
+      image-name-tag:
+        controllerName: "example.net/gateway-controller"
+        
+      volume-test:
+        controllerName: "example.net/gateway-controller"
+        
+      env-test:
+        controllerName: "example.net/gateway-controller"
+        
+      envfrom-test:
+        controllerName: "example.net/gateway-controller"
+        
+      simple:
+        labels:
+          team: frontend
+        controllerName: "example.net/gateway-controller"
+      
+      test-serializing:
+        controllerName: "example.net/gateway-controller"
+
+      test-get-transformation-on-root:
+        controllerName: "example.net/gateway-controller"
+
+      no-annotations:
+        controllerName: "example.net/gateway-controller"
+
+      test-get-transformations-array:
+        controllerName: "example.net/gateway-controller"
+
+      namespace-override:
+        controllerName: "example.net/gateway-controller"
+      
+      empty-namespace-override:
+        controllerName: "example.net/gateway-controller"
+
+      full-example:
+        controllerName: "example.net/gateway-controller"
+        description: "Hope this describes it well"
+        parametersRef:
+          group: group1
+          kind: kind1
+          name: name1
+          namespace: namespace1
+
+
+###################################################
