@@ -290,6 +290,14 @@ def test_object_has_key_with_list_value_that_has_count_greater(key, value):
     else:
         assert False
 
+@step("Test Object has key <key> with value <value> when env var <envvarkey> equals <envvarvalue> else pass") 
+def test_object_has_key_with_value_when_env_var_equals_else_pass(key, value, envvarkey, envvarvalue):
+    if os.environ.get(envvarkey, "") == envvarvalue:
+        test_object_has_key_with_value(key, value)
+    else:
+        True
+    
+
 @step("Test Object has key <key> with value <value>")
 def test_object_has_key_with_value(key, value):
     assert "test_object" in data_store.scenario != None, "No Test Object set!"

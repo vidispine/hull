@@ -300,20 +300,23 @@ ___
 
 * Set test object to "release-name-hull-test-multi-pass-test"
 * Test Object has key "spec§template§spec§containers§0§env§0§name" with value "RESOLVE_A"
-* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "_HT*hull.config.specific.field_c"
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "_HT*hull.config.specific.field_c" when env var "style" equals "single_file" else pass
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "Found me!" when env var "style" equals "multi_file" else pass
 
 * Prepare test case "Deployment" for kind "Deployment" and values file "values_multipass_2.yaml"
 * Lint and Render values file "values_multipass_2.hull.yaml"
 
 * Set test object to "release-name-hull-test-multi-pass-test"
 * Test Object has key "spec§template§spec§containers§0§env§0§name" with value "RESOLVE_A"
-* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "_HT*hull.config.specific.field_g"
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "_HT*hull.config.specific.field_g" when env var "style" equals "single_file" else pass
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "Found me!" when env var "style" equals "multi_file" else pass
 
 * Prepare test case "Deployment" for kind "Deployment" and values file "values_multipass_3.yaml"
 * Lint and Render values file "values_multipass_3.hull.yaml"
 
 * Set test object to "release-name-hull-test-multi-pass-test"
 * Test Object has key "spec§template§spec§containers§0§env§0§name" with value "RESOLVE_A"
-* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "Found me!"
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "Found me!" when env var "style" equals "single_file" else pass
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "Found me!" when env var "style" equals "multi_file" else pass
 
 * Clean the test execution folder
