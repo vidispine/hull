@@ -1,0 +1,50 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # REFERENCEGRANT
+    referencegrant:
+      simple:
+        from: 
+        - group: rggroup1
+          kind: rgkind1
+          namespace: rgnamespace1
+        - group: rggroup2
+          kind: rgkind2
+          namespace: rgnamespace2
+        to:
+        - group: togroup1
+          kind: tokind1
+          name: toname1
+        - group: togroup2
+          kind: tokind2
+          name: toname2
+      
+      full-example:
+        from: 
+          fromone:
+            group: rggroup1
+            kind: rgkind1
+            namespace: rgnamespace1
+          fromtwo:
+            group: rggroup2
+            kind: rgkind2
+            namespace: rgnamespace2
+        to:
+          toone:
+            group: togroup1
+            kind: tokind1
+            name: toname1
+          totwo:
+            group: togroup2
+            kind: tokind2
+            name: toname2
+###################################################
