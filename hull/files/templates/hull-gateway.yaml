@@ -1,0 +1,5 @@
+{{ $template := "hull.object.base.spec" }}
+{{ $type := "Gateway" }}
+{{ $objects := dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1" "DYNAMIC_FIELDS" (dict "addresses" "hull.object.base.dynamic.simple.array" "listeners" "hull.object.base.gateway.api.gateway.listener") }}
+
+{{ include "hull.objects.render" (dict "HULL_ROOT_KEY" "hull" "ROOT_CONTEXT" $ "HULL_OBJECTS" (dict $type $objects)) }}
