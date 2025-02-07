@@ -1,0 +1,51 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # UDPROUTE
+    udproute:
+
+      full-example:
+        parentRefs: 
+          ref1:
+            group: group1
+            kind: kind1
+            namespace: namespace1
+            name: name1
+            sectionName: testsection1
+            port: 1
+          ref2:
+            group: group2
+            kind: kind2
+            namespace: namespace2
+            name: name2
+            sectionName: testsection2
+            port: 2
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+          two:
+            backendRefs:
+              brref1: 
+                group: 2group1
+                kind: kind1
+                namespace: 2namespace1
+                name: 2name1
+                port: 21
+                weight: 2965
+###################################################

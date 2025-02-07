@@ -157,17 +157,26 @@ def copy_the_hull_chart_files_to_test_object_in_chart(case, chart):
         assert False
     assert True    
 
+
 @step("Fail to render the templates for values file <values_file> to test execution folder because error contains <expected_error>")
 def fail_to_render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, expected_error):
     fail_to_render_the_templates_to_namespace_namespace_for_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, "default", expected_error)
 
 @step("Fail to render the templates for values file <values_file> to test execution folder and namespace <namespace> because error contains <expected_error>")
 def fail_to_render_the_templates_to_namespace_namespace_for_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, namespace, expected_error):
-    fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_and_values_file(data_store.scenario.case, data_store.scenario.chart, values_file, namespace, expected_error)
+    fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_and_values_files(data_store.scenario.case, data_store.scenario.chart, [values_file], namespace, expected_error)
+
+@step("Fail to render the templates for additional values file <values_file> to test execution folder because error contains <expected_error>")
+def fail_to_render_the_templates_for_additional_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, expected_error):
+    fail_to_render_the_templates_to_namespace_namespace_for_additional_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, "default", expected_error)
+
+@step("Fail to render the templates for additional values file <values_file> to test execution folder and namespace <namespace> because error contains <expected_error>")
+def fail_to_render_the_templates_to_namespace_namespace_for_additional_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, namespace, expected_error):
+    fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_and_values_files(data_store.scenario.case, data_store.scenario.chart, ["values.hull.yaml", values_file], namespace, expected_error)
 
 @step("Fail to render the templates for test case <case> and chart <chart> and values file <values_file> to test execution folder and namespace <namespace> because error contains <expected_error>")
-def fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_and_values_file(case, chart, values_file, namespace, expected_error):
-    result = render_chart(case, chart, values_file, namespace)
+def fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_and_values_files(case, chart, values_files, namespace, expected_error):
+    result = render_chart(case, chart, values_files, namespace)
     expected_error = expected_error.replace(PLACEHOLDER_OBJECT_TYPE, case)
     if result.returncode != 0 and expected_error in str(result.stdout):
         assert True
@@ -184,7 +193,7 @@ def lint_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file, nam
 
 @step("Render the templates for values file <values_file> to test execution folder and namespace <namespace>")
 def render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file, namespace):
-    render = render_chart(data_store.scenario.case, data_store.scenario.chart, values_file, namespace)
+    render = render_chart(data_store.scenario.case, data_store.scenario.chart, [values_file], namespace)
     #if result.returncode == 0:
     #    render_path = get_render_path(data_store.scenario.case, data_store.scenario.chart, values_file)
     #    with open(render_path) as reader:
@@ -244,7 +253,7 @@ def test_object_has_key_with_array_value_that_has_items(key, value):
     if isinstance(data_store.scenario.test_object[key], list): 
         assert_values_equal(len(data_store.scenario.test_object[key]), int(value), data_store.scenario.case.lower(), key)
     else:
-        assert False
+        assert False, f"Array {key} not found"
 
 @step("Test Object has key <key> with dictionary value that has <count> items")
 def test_object_has_key_with_dictionary_value_that_has_items(key, value):
@@ -255,7 +264,7 @@ def test_object_has_key_with_dictionary_value_that_has_items(key, value):
             
         assert_values_equal(len(data_store.scenario.test_object[key].keys()), int(value), data_store.scenario.case.lower(),  key)
     else:
-        assert False
+        assert False, f"Dicionary {key} not found"
 
 @step("Test Object has key <key> with map value that has <count> items which are not empty")
 def test_object_has_key_with_map_value_that_has_non_empty_items(key, value):
@@ -280,6 +289,14 @@ def test_object_has_key_with_list_value_that_has_count_greater(key, value):
         assert len(yamlList) > int(value)
     else:
         assert False
+
+@step("Test Object has key <key> with value <value> when env var <envvarkey> equals <envvarvalue> else pass") 
+def test_object_has_key_with_value_when_env_var_equals_else_pass(key, value, envvarkey, envvarvalue):
+    if os.environ.get(envvarkey, "") == envvarvalue:
+        test_object_has_key_with_value(key, value)
+    else:
+        True
+    
 
 @step("Test Object has key <key> with value <value>")
 def test_object_has_key_with_value(key, value):
@@ -550,7 +567,7 @@ def lint_chart(case, chart, values_file, namespace):
     print('STDERR:\n', popen.stderr.decode("utf-8").replace("\n",os.linesep) if popen.stderr is not None else "")
     return popen
 
-def render_chart(case, chart, values_file, namespace):
+def render_chart(case, chart, values_files, namespace):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     chart_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart)
     render_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered')
@@ -564,8 +581,12 @@ def render_chart(case, chart, values_file, namespace):
         if '/' in suite:
             suite_file = suite.split('/')[1]
         suites += ("-f", os.path.join(chart_path, suite_file + ".values.hull.yaml"))
-    
-    args = ("helm", "template", chart_path, "--kube-version", data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION], "--name-template", "release-name", "--debug", "--output-dir", render_path, "--namespace", namespace) + ("-f",  os.path.join(chart_path, values_file)) + suites
+
+    values_files_command = ()
+    for values_file in values_files:
+        values_files_command += ("-f",  os.path.join(chart_path, values_file))
+        
+    args = ("helm", "template", chart_path, "--kube-version", data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION], "--name-template", "release-name", "--debug", "--output-dir", render_path, "--namespace", namespace) + values_files_command + suites
     
     popen = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     print('STDOUT:\n', popen.stdout.decode("utf-8").replace("\n",os.linesep))

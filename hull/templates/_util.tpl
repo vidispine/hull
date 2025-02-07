@@ -175,6 +175,48 @@ selector:
 {{- /*
 | Purpose:
 |
+|   Function to merge sources with specs
+|
+*/ -}}
+{{- define "hull.config.sources" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $lowerObjectType := (index . "OBJECT_TYPE") | lower -}}
+{{- $component := default "" (index . "COMPONENT") -}}
+{{- $sourceType := (index . "SOURCE_TYPE") -}}
+{{- $specKey := default "" (index . "SPEC_KEY") -}}
+{{- $spec := (index . "SPEC") -}}
+{{- $entry := $spec -}}
+{{- if (ne $specKey "") -}}
+{{- $entry = index $spec $specKey -}}
+{{- end -}}
+{{- $defaultTemplates := dig "sources" list $entry }}
+{{- $defaultSpec := dict }}
+{{- if (hasKey $entry "sources") -}}
+{{- $defaultSpec = dict -}}
+{{- range $source := $entry.sources -}}
+{{- if not (hasKey (index (index $parent.Values $hullRootKey).config.templates $sourceType) $source) -}}
+{{- fail (printf "No source with key %s found in hull.config.templates.%s" $source $sourceType) }}
+{{- end -}}
+{{- $_ := (mergeOverwrite $defaultSpec ( deepCopy (index (index (index $parent.Values $hullRootKey).config.templates $sourceType) $source))) -}}
+{{- end -}}
+{{- else -}}
+{{- $_ := (mergeOverwrite $defaultSpec ( deepCopy (index (index (index $parent.Values $hullRootKey).config.templates $sourceType) "global"))) -}}
+{{- end -}}
+{{- $_ := unset $entry "sources" -}}
+{{- if (ne $specKey "") -}}
+{{- $_ = set $spec $specKey (mergeOverwrite $defaultSpec (index $spec $specKey)) -}}
+{{- else -}}
+{{- $_ = (mergeOverwrite $defaultSpec $entry) | deepCopy -}}
+{{- end -}}
+{{ toYaml $defaultSpec }}
+{{ end }}
+
+
+
+{{- /*
+| Purpose:
+|
 |   Central function to determine defaults for an object instance
 |
 */ -}}

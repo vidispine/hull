@@ -1,5 +1,13 @@
 # History
 ------------------
+[1.31.3]
+------------------
+CHANGES:
+- added Gateway API objects in version 1.2.0-experimental as main object types to HULL: `backendlbpolicy`, `backendtlspolicy`, `gatewayclass`, `gateway`, `grpcroute`, `httproute`, `referencegrant`, `tcproute`, `tlsroute` and `udproute`. This should make it more comfortable to use them opposed to specifying them using the generic `customresource` object type. Thanks to suggestion from [ievgenii-shepeliuk](https://github.com/ievgenii-shepeliuk) made [here](https://github.com/vidispine/hull/issues/345)
+- introducing `sources` feature for pods (`pod` level in the workload specifications) and containers (`initContainers` and `containers` levels in the workload specifications). Using `souces` enables global defaulting of pod and container properties and flexible sharing plus stacking of sets of properties for both pods and containers. Potential usages range from globally enforcing workload security settings, specifying shared minimum or special resource requirements or harmonization of all pods and containers in a chart. See the [chart design guide](doc/chart_design.md) for details. This also closes issues [Add sharedContainers feature](https://github.com/vidispine/hull/issues/305) and [Default security settings](https://github.com/vidispine/hull/issues/310).
+- added configurable multi-pass rendering of HULL transformations. This enables forward referencing of values in the YAML tree which was previously not possible. For example, using only a single HULL transformation rendering pass, a field `.Values.hull.config.specific.field_a: _HT*hull.config.specific.field_b`, where `_HT*hull.config.specific.field_b: _HT*hull.config.specific.field_c`, will resolve `field_a` to literal string `_HT*hull.config.specific.field_c`. This is the case because at the time when `field_a` is resolved the value of `field_b` is not yet resolved due to the alphanumeric order of HULL transformation processing. With the new multi-pass default of `hull.config.general.render: 3`, the `field_a: _HT*hull.config.specific.field_c` value is fully resolved to the referenced value of `_HT*hull.config.specific.field_c` in the second pass.
+
+------------------
 [1.31.2]
 ------------------
 FIXES:

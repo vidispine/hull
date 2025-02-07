@@ -1,0 +1,5 @@
+{{ $template := "hull.object.base.spec" }}
+{{ $type := "UDPRoute" }}
+{{ $objects := dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1alpha2" "DYNAMIC_FIELDS" (dict "parentRefs" "hull.object.base.dynamic.simple.array" "rules" "hull.object.base.gateway.api.simple.route.rules") }}
+
+{{ include "hull.objects.render" (dict "HULL_ROOT_KEY" "hull" "ROOT_CONTEXT" $ "HULL_OBJECTS" (dict $type $objects)) }}

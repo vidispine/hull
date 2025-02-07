@@ -916,3 +916,101 @@ Test serialization functions
 * Test Object has key "spec§template§spec§containers§0§env§3§value" with value "Overwritten by custom template 1"
 * Test Object has key "spec§template§spec§containers§0§env§4§name" with value "OVERWRITE_ME_TWICE"
 * Test Object has key "spec§template§spec§containers§0§env§4§value" with value "Overwritten by custom template 2"
+
+
+
+* Prepare default test case for this kind including suites "pod,pod/containersources"
+* Lint and Render
+
+* All test objects have key "spec§template§spec§containers§0§resizePolicy§0§resourceName" with value "resize" except objects "release-name-hull-test-test-container-template-single"
+* All test objects have key "spec§template§spec§containers§0§resizePolicy§0§restartPolicy" with value "NotRequired" except objects "release-name-hull-test-test-container-template-single"
+* All test objects have key "spec§template§spec§containers§0§terminationMessagePolicy" with value "I am out of here!" except objects "release-name-hull-test-test-container-template-single,release-name-hull-test-test-container-template-multi-overwrite"
+
+
+* Set test object to "release-name-hull-test-test-container-template-global"
+* Test Object has key "spec§template§spec§containers§0§resizePolicy§0§resourceName" with value "resize"
+* Test Object has key "spec§template§spec§containers§0§resizePolicy§0§restartPolicy" with value "NotRequired"
+* Test Object has key "spec§template§spec§containers§0§env§0§name" with value "I_AM_ALWAYS_THERE"
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "In all Containers!"
+* Test Object has key "spec§template§spec§containers§0§terminationMessagePolicy" with value "I am out of here!"
+
+
+* Set test object to "release-name-hull-test-test-container-template-single"
+* Test Object has key "spec§template§spec§containers§0§restartPolicy" with value "Always"
+* Test Object has key "spec§template§spec§containers§0§stdinOnce" set to true
+* Test Object has key "spec§template§spec§containers§0§workingDir" with value "/start_here"
+* Test Object has key "spec§template§spec§containers§0§terminationMessagePolicy" with value "Still here!"
+* Test Object does not have key "spec§template§spec§containers§0§resources"
+* Test Object does not have key "spec§template§spec§containers§0§env"
+
+* Set test object to "release-name-hull-test-test-container-template-single-overwrite"
+* Test Object has key "spec§template§spec§containers§0§resizePolicy§0§resourceName" with value "resize"
+* Test Object has key "spec§template§spec§containers§0§resizePolicy§0§restartPolicy" with value "NotRequired"
+* Test Object has key "spec§template§spec§containers§0§env§0§name" with value "I_AM_ALWAYS_THERE"
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "In all Containers!"
+* Test Object has key "spec§template§spec§containers§0§env§1§name" with value "I_AM_ONLY_HERE"
+* Test Object has key "spec§template§spec§containers§0§env§1§value" with value "In this Container only!"
+* Test Object has key "spec§template§spec§containers§0§terminationMessagePolicy" with value "I am out of here!"
+
+* Set test object to "release-name-hull-test-test-container-template-multi-overwrite"
+* Test Object has key "spec§template§spec§containers§0§resizePolicy§0§resourceName" with value "resize"
+* Test Object has key "spec§template§spec§containers§0§resizePolicy§0§restartPolicy" with value "NotRequired"
+* Test Object has key "spec§template§spec§containers§0§env§0§name" with value "I_AM_ALWAYS_THERE"
+* Test Object has key "spec§template§spec§containers§0§env§0§value" with value "In all Containers!"
+* Test Object has key "spec§template§spec§containers§0§env§1§name" with value "I_AM_ONLY_HERE"
+* Test Object has key "spec§template§spec§containers§0§env§1§value" with value "In this Container only!"
+* Test Object has key "spec§template§spec§containers§0§env§2§name" with value "I_AM_STILL_ONLY_HERE"
+* Test Object has key "spec§template§spec§containers§0§env§2§value" with value "Also in this Container!"
+* Test Object has key "spec§template§spec§containers§0§terminationMessagePolicy" with value "Still here!"
+* Test Object has key "spec§template§spec§containers§0§restartPolicy" with value "Always"
+* Test Object has key "spec§template§spec§containers§0§stdinOnce" set to true
+* Test Object has key "spec§template§spec§containers§0§workingDir" with value "/start_here"
+
+* Prepare default test case for this kind including suites "pod,pod/podandcontainersources"
+* Lint and Render
+
+* Set test object to "release-name-hull-test-my-graphic-app"
+
+* Test Object has key "spec§template§spec§affinity§nodeAffinity§requiredDuringSchedulingIgnoredDuringExecution§nodeSelectorTerms§0§matchExpressions§0§key" with value "my.nodetype/graphic-card"
+* Test Object has key "spec§template§spec§affinity§nodeAffinity§requiredDuringSchedulingIgnoredDuringExecution§nodeSelectorTerms§0§matchExpressions§0§operator" with value "In"
+* Test Object has key "spec§template§spec§affinity§nodeAffinity§requiredDuringSchedulingIgnoredDuringExecution§nodeSelectorTerms§0§matchExpressions§0§values§0" with value "true"
+* Test Object has key "spec§template§spec§initContainers§0§env§0§name" with value "PROJECT"
+* Test Object has key "spec§template§spec§initContainers§0§env§0§value" with value "The name of this project"
+* Test Object has key "spec§template§spec§initContainers§1§resources§limits§cpu" with value "5.5"
+* Test Object has key "spec§template§spec§initContainers§1§resources§limits§memory" with value "9.9Gi"
+* Test Object has key "spec§template§spec§initContainers§1§resources§requests§cpu" with value "5.5"
+* Test Object has key "spec§template§spec§initContainers§1§resources§requests§memory" with value "9.9Gi"
+* Test Object has key "spec§template§spec§containers§0§env§0§name" with value "PROJECT"
+* Test Object has key "spec§template§spec§containers§0§resources§limits§cpu" with value "5.5"
+* Test Object has key "spec§template§spec§containers§0§resources§limits§memory" with value "9.9Gi"
+* Test Object has key "spec§template§spec§containers§0§resources§requests§cpu" with value "5.5"
+* Test Object has key "spec§template§spec§containers§0§resources§requests§memory" with value "9.9Gi"
+
+* Prepare default test case for this kind including suites "pod,pod/podsources"
+* Lint and Render
+
+* All test objects have key "spec§template§spec§serviceAccountName" with value "sa-always-to-use" except objects "release-name-hull-test-full-example-deployment,release-name-hull-test-service-account,release-name-hull-test-test-pod-template-single,release-name-hull-test-test-pod-template-single-overwrite,release-name-hull-test-source-enabled-disabled"
+
+* Test object "release-name-hull-test-default" of kind "ServiceAccount" does not exist
+* Test object "release-name-hull-test-default" of kind "Role" does not exist
+* Test object "release-name-hull-test-default" of kind "RoleBinding" does not exist
+
+* Set test object to "release-name-hull-test-full-example-deployment"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "full_example_serviceaccount"
+
+* Set test object to "release-name-hull-test-service-account"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "another_account"
+
+* Set test object to "release-name-hull-test-test-pod-template-global"
+* Test Object has key "spec§template§spec§securityContext§runAsNonRoot" set to true
+* Test Object has key "spec§template§spec§securityContext§runAsUser" with integer value "1000"
+
+* Set test object to "release-name-hull-test-test-pod-template-single"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "test-1"
+* Test Object has key "spec§template§spec§securityContext§runAsNonRoot" set to true
+* Test Object does not have key "spec§template§spec§securityContext§runAsUser"
+
+* Set test object to "release-name-hull-test-test-pod-template-single-overwrite"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "test-2"
+* Test Object has key "spec§template§spec§securityContext§runAsNonRoot" set to false
+* Test Object has key "spec§template§spec§securityContext§runAsUser" with integer value "1000"
