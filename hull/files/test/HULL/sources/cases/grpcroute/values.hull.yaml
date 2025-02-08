@@ -1,0 +1,165 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # GRPCROUTE
+    grpcroute:
+
+      full-example:
+        parentRefs: 
+          ref1:
+            group: group1
+            kind: kind1
+            namespace: namespace1
+            name: name1
+            sectionName: testsection1
+            port: 1
+          ref2:
+            group: group2
+            kind: kind2
+            namespace: namespace2
+            name: name2
+            sectionName: testsection2
+            port: 2
+        hostnames:
+          host1: host1
+          host2: host2
+        rules:
+          one:
+            name: one
+            sessionPersistence: 
+              absoluteTimeout: "456s"
+              type: "Cookie"
+              idleTimeout: "123s"
+              sessionName: sessionname
+              cookieConfig:
+                lifetimeType: "Permanent"
+            matches:
+              onematch:
+                method:
+                  type: Exact
+                  service: matchservice1
+                  method: matchmethod1
+                headers:
+                - name: firstheader
+                  type: Exact
+                  value: someheadervalue1
+              twomatch:
+                method:
+                  type: Exact
+                  service: matchservice2
+                  method: matchmethod2
+                headers:
+                - name: secheader
+                  type: Exact
+                  value: secheadervalue2
+            filters:
+              filter-one:
+                type: ExtensionRef
+                requestHeaderModifier:
+                  set:
+                  - name: Accept1
+                    value: json1
+                  - name: Accept2
+                    value: json2
+                  add:
+                  - name: Accept3
+                    value: json3
+                  - name: Accept4
+                    value: json4
+                  remove:
+                  - "oldheader1"
+                  - "oldheader2"
+                responseHeaderModifier:
+                  set:
+                  - name: Accept1
+                    value: json1
+                  - name: Accept2
+                    value: json2
+                  add:
+                  - name: Accept3
+                    value: json3
+                  - name: Accept4
+                    value: json4
+                  remove:
+                  - "oldheader1"
+                  - "oldheader2"
+                requestMirror:
+                  backendRef: 
+                    group: group1
+                    kind: kind1
+                    namespace: namespace1
+                    name: name1
+                    port: 1
+                  percent: 66
+                  fraction: 
+                    numerator: 11
+                    denominator: 22
+                extensionRef:
+                  group: group1
+                  kind: kind1
+                  name: name1
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+                filters:
+                  filter-one:
+                    type: ExtensionRef
+                    requestHeaderModifier:
+                      set:
+                      - name: Accept1
+                        value: json1
+                      - name: Accept2
+                        value: json2
+                      add:
+                      - name: Accept3
+                        value: json3
+                      - name: Accept4
+                        value: json4
+                      remove:
+                      - oldheader1
+                      - oldheader2
+                    responseHeaderModifier:
+                      set:
+                      - name: Accept1
+                        value: json1
+                      - name: Accept2
+                        value: json2
+                      add:
+                      - name: Accept3
+                        value: json3
+                      - name: Accept4
+                        value: json4
+                      remove:
+                      - oldheader1
+                      - oldheader2
+                    requestMirror:
+                      backendRef: 
+                        group: group1
+                        kind: kind1
+                        namespace: namespace1
+                        name: name1
+                        port: 1
+                      percent: 66
+                      fraction: 
+                        numerator: 11
+                        denominator: 22
+                    extensionRef:
+                      group: group1
+                      kind: kind1
+                      namespace: namespace1
+                      name: name1
+###################################################

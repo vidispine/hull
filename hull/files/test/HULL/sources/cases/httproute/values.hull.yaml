@@ -1,0 +1,204 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # HTTPROUTE
+    httproute:
+
+      full-example:
+        parentRefs: 
+          ref1:
+            group: group1
+            kind: kind1
+            namespace: namespace1
+            name: name1
+            sectionName: testsection1
+            port: 1
+          ref2:
+            group: group2
+            kind: kind2
+            namespace: namespace2
+            name: name2
+            sectionName: testsection2
+            port: 2
+        hostnames:
+          host1: host1
+          host2: host2
+        rules:
+          one:
+            name: one-name
+            timeouts:
+              request: "135s"
+              backendRequest: "531s"
+            retry:
+              codes:
+              - 500
+              - 502
+              - 504
+              attempts: 4
+              backoff: "931m"
+            sessionPersistence: 
+              absoluteTimeout: "456s"
+              type: "Cookie"
+              idleTimeout: "123s"
+              sessionName: sessionname
+              cookieConfig:
+                lifetimeType: "Permanent"
+            matches:
+              onematch:
+                method: CONNECT
+                headers:
+                - name: firstheader
+                  type: Exact
+                  value: someheadervalue1
+                path: 
+                  type: Exact
+                  value: /onepathmatch
+                queryParams:
+                - type: Exact
+                  name: oneparam1
+                  value: oneparam1val
+                - type: Exact
+                  name: oneparam2
+                  value: oneparam2val
+              twomatch:
+                method: GET
+                headers:
+                - name: secheader
+                  type: Exact
+                  value: secheadervalue2
+                path: 
+                  type: PathPrefix
+                  value: /twopathmatch
+                queryParams:
+                - type: Exact
+                  name: twoparam1
+                  value: twoparam1val
+                - type: Exact
+                  name: twoparam2
+                  value: twoparam2val
+            filters:
+              filter-one:
+                type: ExtensionRef
+                requestHeaderModifier:
+                  set:
+                  - name: Accept1
+                    value: json1
+                  - name: Accept2
+                    value: json2
+                  add:
+                  - name: Accept3
+                    value: json3
+                  - name: Accept4
+                    value: json4
+                  remove:
+                  - "oldheader1"
+                  - "oldheader2"
+                responseHeaderModifier:
+                  set:
+                  - name: Accept1
+                    value: json1
+                  - name: Accept2
+                    value: json2
+                  add:
+                  - name: Accept3
+                    value: json3
+                  - name: Accept4
+                    value: json4
+                  remove:
+                  - "oldheader1"
+                  - "oldheader2"
+                requestMirror:
+                  backendRef: 
+                    group: group1
+                    kind: kind1
+                    namespace: namespace1
+                    name: name1
+                    port: 1
+                  percent: 66
+                  fraction: 
+                    numerator: 11
+                    denominator: 22
+                requestRedirect:
+                  scheme: http
+                  hostname: rrhostname
+                  path: 
+                    type: ReplaceFullPath
+                    replaceFullPath: replaceme22
+                    replacePrefixMatch: replacemeprefix22
+                  port: 525
+                  statusCode: 301
+                urlRewrite:
+                  hostname: www.lot.com
+                  path: 
+                    type: ReplaceFullPath
+                    replaceFullPath: replaceme
+                    replacePrefixMatch: replacemeprefix
+                extensionRef:
+                  group: group1
+                  kind: kind1
+                  name: name1
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+                filters:
+                  filter-one:
+                    type: ExtensionRef
+                    requestHeaderModifier:
+                      set:
+                      - name: Accept1
+                        value: json1
+                      - name: Accept2
+                        value: json2
+                      add:
+                      - name: Accept3
+                        value: json3
+                      - name: Accept4
+                        value: json4
+                      remove:
+                      - oldheader1
+                      - oldheader2
+                    responseHeaderModifier:
+                      set:
+                      - name: Accept1
+                        value: json1
+                      - name: Accept2
+                        value: json2
+                      add:
+                      - name: Accept3
+                        value: json3
+                      - name: Accept4
+                        value: json4
+                      remove:
+                      - oldheader1
+                      - oldheader2
+                    requestMirror:
+                      backendRef: 
+                        group: group1
+                        kind: kind1
+                        namespace: namespace1
+                        name: name1
+                        port: 1
+                      percent: 66
+                      fraction: 
+                        numerator: 11
+                        denominator: 22
+                    extensionRef:
+                      group: group1
+                      kind: kind1
+                      namespace: namespace1
+                      name: name1
+###################################################

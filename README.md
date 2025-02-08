@@ -183,6 +183,7 @@ As highlighted above, when included in a Helm chart the HULL library chart can t
   - Additional custom labels and annotations metadata can be set hierarchically for:
     - all created Kubernetes objects or 
     - all created Kubernetes objects of a given type or 
+    - a group of objects of different object types or
     - any individual Kubernetes object. 
 
   For more details on metadata overwriting refer to the advanced example below.
@@ -493,6 +494,20 @@ HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> P
 `resourcequota` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**resourcequotaspec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#resourcequotaspec-v1-core)<br>`hard`<br>`scopeSelector`<br>`scopes`
 `networkpolicy` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` |  [**networkpolicyspec-v1-networking-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#networkpolicyspec-v1-networking-k8s-io)<br>`egress`<br>`ingress`<br>`podSelector`<br>`policyTypes`
 
+**[Gateway APIs](https://gateway-api.sigs.k8s.io/reference/spec/#api-specification)**
+HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> Properties
+------------------------------ | --------------------| ----------------------------------
+`backendlbpolicy` | [**hull.ObjectBase.v1**](doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.BackendLBPolicy.v1alpha2**](./hull/doc/objects_gateway_api.md)<br>`targetRefs` |  [**backendlbpolicyspec-v1alpha2-gateway-networking-k8s-io**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha2.BackendLBPolicySpec)<br>`sessionPersistence`
+`backendtlspolicy` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.BackendTLSPolicy.v1alpha3**](./hull/doc/objects_gateway_api.md)<br>`targetRefs` |  [**backendtlspolicyspec-v1alpha3-gateway-networking-k8s-io**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha3.BackendTLSPolicySpec)<br>`options`<br>`validation`
+`gatewayclass` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**gatewayclassspec-v1-gateway-networking-k8s-io**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.GatewayClassSpec)<br>`controllerName`<br>`description`<br>`parametersRef`
+`gateway` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Gateway.v1**](doc/objects_gateway_api.md)<br>`addresses`<br>`listeners` |  [**gatewayspec-v1-gateway-networking-k8s-io**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.GatewaySpec)<br>`backendTLS`<br>`gatewayClassName`<br>`infrastructure`
+`grpcroute` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.GRPCRoute.v1**](doc/objects_gateway_api.md)<br>`hostnames`<br>`parentRefs`<br>`rules`
+`httproute` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.HTTPRoute.v1**](doc/objects_gateway_api.md)<br>`hostnames`<br>`parentRefs`<br>`rules`
+`referencegrant` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.ReferenceGrant.v1beta1**](doc/objects_gateway_api.md)<br>`from`<br>`to`
+`tcproute` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.TCPRoute.v1alpha2**](doc/objects_gateway_api.md)<br>`parentRefs`<br>`rules`
+`tlsroute` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.TLSRoute.v1alpha2**](doc/objects_gateway_api.md)<br>`hostnames`<br>`parentRefs`<br>`rules`
+`udproute` | [**hull.ObjectBase.v1**](./hull/doc/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.UDPRoute.v1alpha2**](doc/objects_gateway_api.md)<br>`parentRefs`<br>`rules`
+
 **Other APIs**
 HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> Properties
 ------------------------------ | --------------------| ----------------------------------
@@ -726,6 +741,9 @@ hull:
                   # Applies a tpl transformation allowing to inject dynamic data based
                   # on values in this values.yaml into the resulting field (here the tag
                   # field of this container).
+                  # In this case of simply retrieving a value, the same can be achieved 
+                  # using a Get transformation like this:
+                  #   _HT*hull.config.specific.nginx_tag
                   # _HT! is the short form of the transformation that applies tpl to
                   # a given value. This example just references the value of the field 
                   # which is specified further above in the values.yaml and will 
