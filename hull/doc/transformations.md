@@ -12,7 +12,45 @@ In regular Helm, the templates provide the means to realize dependencies. In HUL
 
 Technically, the objects defined in the `values.yaml` are preprocessed before they are converted to Kubernetes objects. In the first internal step, Helm merges all fields of all `values.yaml`'s involved into a single YAML structure. This YAML tree is then processed key-by-key by HULL and at this stage it becomes possible to modify the YAML to the desired result by adding special keys and values to the YAML sections. When a transformation is detected during the `values.yaml` preprocessing by HULL an associated Go Templating function is called and the result replaces the transformation instruction in the resulting YAML.
 
-⚠️ It is important to consider the fact that when a dictionary is traversed in Go Templating it is done in an alphanumeric fashion. So in order to reference the resolved value of an transformation succesfully it must have a lower alphanumeric key in the dictionary hierarchy, meaning it must have been processed first. However, since typically you would want to resolve a global value for configuration of your `hull.objects` properties in multiple places you should put your referenced value in the `hull.config.specific` section and then you can access it anytime when creating the objects. When you keep the alphanumeric processing order in mind it is furthermore no problem to use transformations on `hull.config.specific` properties too and later have the transformation result referenced by a transformation in the `hull.objects` section.⚠️
+It is important to consider the fact that when a dictionary is traversed in Go Templating it is done in an alphanumeric fashion. So in order to reference the resolved value of an transformation succesfully it would need to have a lower alphanumeric key in the dictionary hierarchy, meaning it must have been processed first. However, since typically you would want to resolve a global value for configuration of your `hull.objects` properties in multiple places you should put your referenced value in the `hull.config.specific` section and then you can access it anytime when creating the objects. When you keep the alphanumeric processing order in mind it is furthermore no problem to use transformations on `hull.config.specific` properties too and later have the transformation result referenced by a transformation in the `hull.objects` section. Note also that the problem is leverageable to some degree by running multi-passes at HULL transformation rendering. By default, HULL will scan the YAML tree three times consecutively for HULL transformations, making it possible to use forward references via `_HT*` to later processed fields in the YAML tree that also have a HULL transformation as content. In a first pass, the literal content of a later processed key will be copied when using `_HT*` but in the second run the copied transformation will be resolved. To visualize multi-pass redndering please consider the following example:
+
+```
+hull:
+  config:
+    general:
+      render:
+        passes: 3
+    specific:
+      field_a: _HT*hull.config.specific.field_b
+      field_b: _HT*hull.config.specific.field_c
+      field_c: _HT*hull.config.specific.field_d
+      field_d: _HT*hull.config.specific.field_e
+      field_e: _HT*hull.config.specific.field_f
+      field_f: _HT*hull.config.specific.field_g
+      field_g: "Found me!"
+  objects:
+    deployment:
+      multi-pass-test:
+        pod:
+          containers:
+            main:
+              image: 
+                repository: myrepo/app-python-direct
+                tag: 23.3.2
+              env:
+                RESOLVE_A:
+                  value: _HT*hull.config.specific.field_a
+```
+
+When varying the `hull.config.general.render: 3` from 1 to 3 the value of `field_a` with its chain of forward references will get resolved in a different manner.
+
+With `hull.config.general.render.passes: 1`, the env var `RESOLVE_A` resolves to `_HT*hull.config.specific.field_c`, the yet unresolved literal value of `field_b`.
+
+With `hull.config.general.render.passed: 1`, the env var `RESOLVE_A` resolves to `_HT*hull.config.specific.field_g`, effectively already resolving a large number of forward references.
+
+With `hull.config.general.render.passed: 3`, the env var `RESOLVE_A` resolves to `Found me!`, thus all forward references were resolved successfully.
+
+
 
 The HULL library provides transformations for all needs which can be used out of the box. It is possible to process inline Go templating expressions (see `_HT!`) and call arbitrary functions via Helms include (see `_HT/`). Additional convenience transformations are provided for easily cross-referencing values in the `values.yaml` (see `_HT*`), evaualating boolean conditions (see `_HT?`) or create chart specific object instance names (see `_HT^`). All of HULLs transformations will be explained in detail in this documentation file.
 

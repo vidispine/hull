@@ -330,6 +330,223 @@ hull:
 
 In the output you can find the LOADED_FROM_JOB environment variable being set in the deployments container.
 
+### Using `sources` to share properties between pods and containers across workloads
+
+An extension of the `sources` templating mechanism allows to define reusable and combinable templates for pods and containers. While the `sources` on the object instance type allow to share traits between instances of the same object type, the pod `sources` can be reused between all pod-based workloads `pod` specifications and the container `sources` can be reused between `containers` and `initContainers` across all pods. The logic of working with pod and container `sources` is the same as with the object instance `sources`.
+
+#### Defining pod and container defaults
+
+To have a set of properties added to pod or container specs, refer to the following structure where sets of properties may be defined:
+
+```
+hull:
+  config:
+    templates:
+      pod:
+        global: {}
+      container:
+        global: {}
+```
+
+For pods, any property you want to generally set on all pods you may put into the `global` dictionary. By default, these properties will be added to the pod specifications. For example, if you want to make sure that all your pods use the same `serviceAccountName` and run without root rights you could add the following to `global`:
+
+```
+hull:
+  config:
+    templates:
+      pod:
+        global: 
+          serviceAccountName: my-service-account
+          securityContext:
+            runAsNonRoot: true
+```
+
+If you have other sets of properties you wish to reuse often, just define them under a self-chosen dictionary key. Assuming you have a fixed affinity (say to nodes with a particular graphic card) and you would like some of your pods to be placed on the corresponding nodes, you can specify this in the following manner:
+
+```
+hull:
+  config:
+    templates:
+      pod:
+        graphic-card-affinity: 
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: my.nodetype/graphic-card
+                    operator: "In"
+                    values:
+                    - "true"
+```
+
+The same flexibility is provided for defaulting containers. In this `hull.config.templates` context, `container` refers to both `containers` and `initContainers` (not `ephemeralContainers`). 
+
+To set globally applied properties on all containers again use the `global` dictionary. For example, to have an important environment vriable populated in all your containers use the `global` dictionary:
+
+```
+hull:
+  config:
+    templates:
+      container: 
+        global:
+          env:
+            'PROJECT':
+              value: "The name of this project"
+```
+
+Same as with the pod `sources`, you may freely define more templates for shared properties to assign them to `containers` or `initContainers` at will.
+
+#### Using pod and container defaults
+
+Similar to the object instance `sources`, to load particular sources use the `sources` property on the pod and container specification level. When not specifying `sources` on a pod or container, the respective `global` defaults are being applied. When specifying a list of `sources`, the listed `sources` will be merged in the given order and lastly the pod or container specification is merged on top. Any defaulted data that is being added via the object instance `sources` or `_HULL_OBJECT_TYPE_DEFAULT_` is merged prior to the step where `pod` and `container` templates are applied. Please note that when you specify `sources` on pods or containers, the `global` source needs to be explicitly added in the list, otherwise it is not being applied. This is mainly to stay congruent with how the `sources` feature works with the object instances.
+
+Here is a complex example combining pod and container `sources` usage. It sketches some fictional application that deals with graphic processing and has special requirements:
+
+```
+hull:
+  config:
+    templates:
+      container: 
+        global:
+          env:
+            'PROJECT':
+              value: "The name of this project"
+        high-resources:
+          resources:
+            limits:
+              cpu: "5.5"
+              memory: 9.9Gi
+            requests:
+              cpu: "5.5"
+              memory: 9.9Gi
+      pod:
+        graphic-card-affinity: 
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: my.nodetype/graphic-card
+                    operator: "In"
+                    values:
+                    - "true"
+  objects:
+    deployment:
+      my-graphic-app:
+        pod:
+          sources: 
+          - graphic-card-affinity
+          ...
+          initContainers:
+            get-graphics-card:
+              ...
+            prepare-job:
+              sources:
+              - high-resources
+              ...
+          containers:
+            renderer:
+              sources:
+              - global
+              - high-resources
+              ...
+```
+The following intentions are expressed in the example:
+
+- for containers, generally an env var is to set on all containers by default
+
+- a particular resource definition template is provided as `high-resources`
+
+- for pod `templates` a `graphic-card-affinity` is defined for pushing pods to the corresponding nodes
+
+- within the deployment `my-graphic-app` the following is configured:
+
+  - add affinity via `graphic-card-affinity` pod source
+
+  - the `get-graphics-card` initContainer does not have a `sources` field specified. Hence it will by default load the env var from the `container.global` source
+
+  - the `prepare-job` initContainer explicitly refers to `source` `high-resources` and thus will be equipped with the correponding resource settings. Note that it excludes global in the sources list and hence will not have the env var set!
+
+  - the `renderer` container does refer to `global` and `high-resources` `sources` and will therefore contain both the env var as well as the resource settings.
+
+The dry-run rendered output delivers on the expectations:
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: my-graphic-app
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: hull-test
+    app.kubernetes.io/part-of: undefined
+    app.kubernetes.io/version: 1.31.0
+    helm.sh/chart: hull-test-1.31.0
+  name: release-name-hull-test-my-graphic-app
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: my-graphic-app
+      app.kubernetes.io/instance: release-name
+      app.kubernetes.io/name: hull-test
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: my-graphic-app
+        app.kubernetes.io/instance: release-name
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: hull-test
+        app.kubernetes.io/part-of: undefined
+        app.kubernetes.io/version: 1.31.0
+        helm.sh/chart: hull-test-1.31.0
+      namespace: default
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: my.nodetype/graphic-card
+                operator: In
+                values:
+                - "true"
+      containers:
+      - env:
+        - name: PROJECT
+          value: The name of this project
+        image: renderer
+        name: renderer
+        resources:
+          limits:
+            cpu: "5.5"
+            memory: 9.9Gi
+          requests:
+            cpu: "5.5"
+            memory: 9.9Gi
+      imagePullSecrets:
+      - name: release-name-hull-test-example-registry
+      - name: release-name-hull-test-local-registry
+      initContainers:
+      - env:
+        - name: PROJECT
+          value: The name of this project
+        image: get-graphics-card
+        name: get-graphics-card
+      - image: prepare-job
+        name: prepare-job
+        resources:
+          limits:
+            cpu: "5.5"
+            memory: 9.9Gi
+          requests:
+            cpu: "5.5"
+            memory: 9.9Gi
+      serviceAccountName: release-name-hull-test-default
+```
+
 This wraps up the introduction into efficient chart building with HULL.
 
 ---

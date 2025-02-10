@@ -1,36 +1,6 @@
 {{- /*
 | Purpose:  
 |   
-|   Create a Webhook.
-|   Subfield webhooks: is key value based.
-|
-| Interface:
-|
-|   PARENT_CONTEXT: The Parent charts context
-|   SPEC: The dictionary to work with
-|
-*/ -}}
-{{- define "hull.object.base.webhook" -}}
-{{- $parent := (index . "PARENT_CONTEXT") -}}
-{{- $spec := default nil (index . "SPEC") -}}
-{{- $objectType := (index . "OBJECT_TYPE") -}}
-{{- $apiKind := default "" (index . "API_KIND") -}}
-{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
-{{- $forceEnabled := default false (index . "FORCE_ENABLED") -}}
-{{- $enabledDefault := dig "enabled" true (index . "DEFAULT_COMPONENT") -}}
-{{- $defaultWebhookBasePath := dig "webhooks" "_HULL_OBJECT_TYPE_DEFAULT_" dict (index . "DEFAULT_COMPONENT") }}
-{{- if or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault) $forceEnabled -}}
-{{ template "hull.metadata.header" . }}
-{{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" $defaultWebhookBasePath "SPEC" $spec "KEY" "webhooks" "OBJECT_TEMPLATE" "hull.object.base.webhook.webhooks" "HULL_ROOT_KEY" $hullRootKey) | indent 0 }}
-{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "webhooks")) | indent 0 }}
-{{- end -}}
-{{ end }}
-
-
-
-{{- /*
-| Purpose:  
-|   
 |   Create the webhooks: section for a webhook
 |
 | Interface:
