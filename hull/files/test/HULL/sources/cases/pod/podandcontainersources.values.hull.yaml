@@ -1,0 +1,52 @@
+hull:
+  config:
+    specific: 
+      access-source: "The name of this project"
+      source-env: _HT*hull.config.specific.access-source
+    templates:
+      container: 
+        global:
+          env:
+            'PROJECT':
+              value: _HT*hull.config.specific.source-env
+        high-resources:
+          resources:
+            limits:
+              cpu: "5.5"
+              memory: 9.9Gi
+            requests:
+              cpu: "5.5"
+              memory: 9.9Gi
+      pod:
+        graphic-card-affinity: 
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: my.nodetype/graphic-card
+                    operator: "In"
+                    values:
+                    - "true"
+  objects:
+    <OBJECT_TYPE>:
+      my-graphic-app:
+        pod:
+          sources: 
+          - graphic-card-affinity
+          initContainers:
+            get-graphics-card:
+              image:
+                repository: get-graphics-card
+            prepare-job:
+              sources:
+              - high-resources
+              image:
+                repository: prepare-job
+          containers:
+            renderer:
+              sources:
+              - global
+              - high-resources
+              image:
+                repository: renderer

@@ -1,0 +1,369 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # BACKENDTLSPOLICY
+    backendtlspolicy:
+
+      disabled:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+       
+      static-name:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+        
+      metadata-merge:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+        
+      metadata-overwrite:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      metadata-custom-template-merge:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      metadata-custom-template-overwrite:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      metadata-custom-template-multi-merge:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      metadata-custom-template-multi-overwrite:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      metadata-no-template:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      metadata-default-template-as-source:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      metadata-default-custom-overwrite:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      metadata-object-info:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      disabled-transform:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      enabled-transform:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      disabled-transform-dict:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      enabled-transform-dict:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      disabled-transform-tpl-if:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      transformation-shortforms:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      transformation-doc-examples:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      enabled-transform-tpl-if:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      metadata-name-override:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      metadata-name-override-static:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      metadata-stringify:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      complex-gets:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      pod-get:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      imagepullsecrets-custom:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      imagepullsecrets-add-all:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      image-name-empty-registry:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+        
+      image-name-registry:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+        
+      image-name-tag:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+        
+      volume-test:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+        
+      env-test:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+        
+      envfrom-test:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+        
+      simple:
+        labels:
+          team: frontend
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+      
+      test-serializing:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      test-get-transformation-on-root:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      no-annotations:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      test-get-transformations-array:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      namespace-override:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+      
+      empty-namespace-override:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
+
+      dictionary:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name
+        validation: 
+          hostname: "myhost"
+      
+      full-example:
+        targetRefs: 
+          ref1:
+            group: group1
+            kind: kind1
+            name: name1
+            sectionName: testsection
+          ref2:
+            group: group2
+            kind: kind2
+            name: name2
+        validation: 
+          hostname: "myhost"
+          wellKnownCACertificates: System
+          subjectAltNames:
+          - type: Hostname
+            hostname: salt
+          - type: URI
+            uri: http://sanuri
+        options:
+          bli: blu
+          bla: blo
+###################################################

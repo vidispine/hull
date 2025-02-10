@@ -11,7 +11,7 @@
 
 [PriorityClass](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#priorityclass-v1-scheduling-k8s-io) is a very simple structure so it can use `_objects_base_plain.tpl`
 
-### Add to the handled objects in `hull.yaml`
+### Add to the handled objects in `templates/_objects.tpl`
 
 ```yaml
 {{- /*
@@ -22,6 +22,20 @@
 {{- $allObjects = merge $allObjects (dict "StorageClass" (dict "HULL_TEMPLATE" $template "API_VERSION" "storage.k8s.io/v1")) }}
 {{- $allObjects = merge $allObjects (dict "CustomResource" (dict "HULL_TEMPLATE" $template)) }}
 {{- $allObjects = merge $allObjects (dict "PriorityClass" (dict "HULL_TEMPLATE" $template "API_VERSION" "scheduling.k8s.io/v1")) }}
+```
+
+### Add to the handled objects in `files/templates`
+
+Copying the files in  `files/templates` to your charts `template` folder provides an alternative to copying the `hull.yaml`. By copying the individual files your rendered output will be split across multiple files (one per object type) instead of rendering every object instance into the `hull.yaml`.
+
+Analogously to the edit of `templates/_objects.tpl`, a corresponding file needs to be added to `files/templates` to represent the new object type. The contents can be easily adapted from the line added to `templates/_objects.tpl`:
+
+```yaml
+{{ $template := "hull.object.base.plain" }}
+{{ $type := "PriorityClass" }}
+{{ $objects := dict "HULL_TEMPLATE" $template "API_VERSION" "scheduling.k8s.io/v1" }}
+
+{{ include "hull.objects.render" (dict "HULL_ROOT_KEY" "hull" "ROOT_CONTEXT" $ "HULL_OBJECTS" (dict $type $objects)) }}
 ```
 
 ### Add the defaults to `values.yaml`

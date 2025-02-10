@@ -1,0 +1,51 @@
+hull:
+  config:
+    general:
+      render:
+        passes: 3
+    specific:
+      field_a: _HT*hull.config.specific.field_b
+      field_b: _HT*hull.config.specific.field_c
+      field_c: _HT*hull.config.specific.field_d
+      field_d: _HT*hull.config.specific.field_e
+      field_e: _HT*hull.config.specific.field_f
+      field_f: _HT*hull.config.specific.field_g
+      field_g: "Found me!"
+        # - name: RESOLVE_A
+        #   value: Found me!
+        # - name: RESOLVE_B
+        #   value: Found me!
+        # - name: RESOLVE_C
+        #   value: Found me!
+        # - name: RESOLVE_D
+        #   value: Found me!
+        # - name: RESOLVE_E
+        #   value: Found me!
+        # - name: RESOLVE_F
+        #   value: Found me!
+        # - name: RESOLVE_G
+        #   value: Found me!
+  objects:
+    deployment:
+      multi-pass-test:
+        pod:
+          containers:
+            main:
+              image: 
+                repository: myrepo/app-python-direct
+                tag: 23.3.2
+              env:
+                RESOLVE_A:
+                  value: _HT*hull.config.specific.field_a
+                RESOLVE_B:
+                  value: _HT*hull.config.specific.field_b
+                RESOLVE_C:
+                  value: _HT*hull.config.specific.field_c
+                RESOLVE_D:
+                  value: _HT*hull.config.specific.field_d
+                RESOLVE_E:
+                  value: _HT*hull.config.specific.field_e
+                RESOLVE_F:
+                  value: _HT*hull.config.specific.field_f
+                RESOLVE_G:
+                  value: _HT*hull.config.specific.field_g

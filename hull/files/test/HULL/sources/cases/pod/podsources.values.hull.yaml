@@ -1,0 +1,46 @@
+hull:
+  config:
+    templates:
+      pod: 
+        global:
+          serviceAccountName: sa-always-to-use
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+        test-1:
+          serviceAccountName: test-1
+          securityContext:
+            runAsNonRoot: true
+        test-2:
+          serviceAccountName: test-2
+          securityContext:
+            runAsNonRoot: false
+  objects:
+    <OBJECT_TYPE>:
+      test-pod-template-global:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+      test-pod-template-single:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+          sources:
+          - test-1
+      test-pod-template-single-overwrite:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+          sources:
+          - global
+          - test-1
+          - test-2

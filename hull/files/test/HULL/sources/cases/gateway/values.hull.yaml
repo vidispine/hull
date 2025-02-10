@@ -1,0 +1,435 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # GATEWAY
+    gateway:
+
+      disabled:
+        gatewayClassName: "the-gateway-class"
+        listeners:
+          first:
+
+            port: 123
+            protocol: protocol
+
+      static-name:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+        
+      metadata-merge:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+        
+      metadata-overwrite:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      metadata-custom-template-merge:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      metadata-custom-template-overwrite:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      metadata-custom-template-multi-merge:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      metadata-custom-template-multi-overwrite:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      metadata-no-template:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      metadata-default-template-as-source:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      metadata-default-custom-overwrite:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      metadata-object-info:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      disabled-transform:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      enabled-transform:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      disabled-transform-dict:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      enabled-transform-dict:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      disabled-transform-tpl-if:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      transformation-shortforms:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+        - name: name
+          port: 123
+          protocol: protocol
+
+      transformation-doc-examples:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      enabled-transform-tpl-if:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      metadata-name-override:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      metadata-name-override-static:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      metadata-stringify:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      complex-gets:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      pod-get:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      imagepullsecrets-custom:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      imagepullsecrets-add-all:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+
+      image-name-empty-registry:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+        
+      image-name-registry:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+        
+      image-name-tag:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+
+            port: 123
+            protocol: protocol
+        
+      volume-test:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+            port: 123
+            protocol: protocol
+        
+      env-test:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+            port: 123
+            protocol: protocol
+        
+      envfrom-test:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+            port: 123
+            protocol: protocol
+        
+      simple:
+        labels:
+          team: frontend
+        gatewayClassName: "the-gateway-class"
+        listeners:
+        - name: name
+          port: 123
+          protocol: protocol
+      
+      test-serializing:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+            port: 123
+            protocol: protocol
+
+      test-get-transformation-on-root:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+            port: 123
+            protocol: protocol
+
+      no-annotations:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+            port: 123
+            protocol: protocol
+
+      test-get-transformations-array:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+            port: 123
+            protocol: protocol
+
+      namespace-override:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+            port: 123
+            protocol: protocol
+      
+      empty-namespace-override:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          first:
+            port: 123
+            protocol: protocol
+      
+      dictionary:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          name:
+            port: 123
+            protocol: protocol
+      
+      source:
+        enabled: false
+        addresses:
+          source-one:
+            type: IPAddress
+            value: source hostname
+        gatewayClassName: "the-gateway-class"
+        backendTLS:
+          clientCertificateRef:
+            group: onegroup
+        infrastructure:
+          labels:
+            label-source: labelvalue-source
+          annotations:
+            annotation-source: annotation-source
+        listeners: 
+          _HULL_OBJECT_TYPE_DEFAULT_:
+            tls:
+              mode: Passthrough
+              certificateRefs:
+                source-ref:
+                  name: sourcenamecert
+                  group: sourcegroupcert
+                  kind: sourcekindcert
+                  namespace: sourcenamespace
+              frontendValidation:
+                caCertificateRefs:
+                  cacertrefsource:
+                    name: sourcenamecacert
+                    group: sourcegroupcacert
+                    kind: sourcekindcacert
+                    namespace: sourcecanamespace
+              options:
+                option-source: optsource
+          source-listener:
+            hostname: "*.source.com"
+            port: 123456
+            protocol: protocol
+
+      full-example:
+        sources:
+        - source
+        addresses:
+          add-one:
+            type: IPAddress
+            value: some hostname
+        backendTLS:
+          clientCertificateRef:
+            name: onename
+            kind: onekind
+            namespace: onenamespace
+        infrastructure:
+          labels:
+            label-a: labelvalue-a
+          annotations:
+            annotation-a: annotation-a
+          parametersRef:
+            name: twoname
+            group: twogroup
+            kind: twokind
+        listeners: 
+          first-listener:
+            name: first-listener
+            hostname: "*.example.com"
+            port: 123
+            protocol: protocol
+            tls:
+              mode: Passthrough
+              certificateRefs:
+                im-a-ref:
+                  name: onenamecert
+                  group: onegroupcert
+                  kind: onekindcert
+                  namespace: onenamespace
+              frontendValidation:
+                caCertificateRefs:
+                  cacertref1:
+                    name: onenamecacert
+                    group: onegroupcacert
+                    kind: onekindcacert
+                    namespace: onecanamespace
+                  cacertref2:
+                    name: onenamecacert2
+                    group: onegroupcacert2
+                    kind: onekindcacert2
+                    namespace: onecanamespace2
+              options:
+                option-11: opt11
+                option-22: opt22
+            allowedRoutes:
+              namespaces: 
+                from: "All"
+                selector:
+                  matchLabels:
+                    labelmatch1: match1
+                    labelmatch2: match2
+              kinds:
+                kind1:
+                  group: networking.k8s.io
+                  kind: Service
+
+###################################################

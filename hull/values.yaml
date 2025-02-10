@@ -32,6 +32,7 @@ config:
           yml: toYaml
           yaml: toYaml
     render:
+      passes: 3
       emptyLabels: false
       emptyAnnotations: false
       emptyTemplateLabels: false
@@ -78,6 +79,11 @@ config:
         custom: {}
     data: {} 
   specific: {}
+  templates: 
+    pod: 
+      global: {}
+    container:
+      global: {}
 ###################################################
         
 ###################################################
@@ -124,7 +130,7 @@ objects:
       annotations: {}
       labels: {}
     default:
-      enabled: true
+      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) ""
       annotations: {}
       labels: {}
 ###################################################
@@ -138,7 +144,7 @@ objects:
       rules:
         _HULL_OBJECT_TYPE_DEFAULT_: {}
     default:
-      enabled: true
+      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) ""
       rules: {}
 ###################################################
 
@@ -149,14 +155,14 @@ objects:
       annotations: {}
       labels: {}
     default:
-      enabled: true
+      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) ""
       roleRef:
         apiGroup: "rbac.authorization.k8s.io"
         kind: "Role"
-        name:  _HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.makefullname>>><<<COMPONENT=default>>>
+        name: _HT^default
       subjects: 
       - kind: ServiceAccount
-        name: _HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.makefullname>>><<<COMPONENT=default>>>
+        name:  _HT^default
         namespace: _HT**Release.Namespace
 ###################################################
 
@@ -490,4 +496,148 @@ objects:
       enabled: true
       annotations: {}
       labels: {}
+##################################################
+
+# GATEWAY API - BACKENDLBPOLICY
+  backendlbpolicy:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+      targetRefs:
+        _HULL_OBJECT_TYPE_DEFAULT_: {}
+      
+##################################################
+
+# GATEWAY API - BACKENDTLSPOLICY
+  backendtlspolicy:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+      targetRefs:
+        _HULL_OBJECT_TYPE_DEFAULT_: {}
+##################################################
+
+# GATEWAY API - GATEWAYCLASS
+  gatewayclass:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+##################################################
+
+# GATEWAY API - GATEWAY
+  gateway:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+      addresses: 
+        _HULL_OBJECT_TYPE_DEFAULT_: {}
+      listeners:
+        _HULL_OBJECT_TYPE_DEFAULT_: 
+          tls:
+            certificateRefs:
+              _HULL_OBJECT_TYPE_DEFAULT_: {}
+            frontendValidation:
+              caCertificateRefs:
+                _HULL_OBJECT_TYPE_DEFAULT_: {}
+          allowedRoutes:
+            kinds:
+              _HULL_OBJECT_TYPE_DEFAULT_: {}
+##################################################
+
+# GATEWAY API - GRPCROUTE
+  grpcroute:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+      parentRefs: 
+        _HULL_OBJECT_TYPE_DEFAULT_: {}
+      rules:
+        _HULL_OBJECT_TYPE_DEFAULT_: 
+          matches:
+            _HULL_OBJECT_TYPE_DEFAULT_: {}
+          filters:
+            _HULL_OBJECT_TYPE_DEFAULT_: {}
+          backendRefs:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              filters:
+                _HULL_OBJECT_TYPE_DEFAULT_: {}
+##################################################
+
+# GATEWAY API - REFERENCEGRANT
+  referencegrant:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+      from: 
+        _HULL_OBJECT_TYPE_DEFAULT_: {}
+      to:
+        _HULL_OBJECT_TYPE_DEFAULT_: {}
+##################################################
+
+# GATEWAY API - TCPROUTE
+  tcproute:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+      parentRefs: 
+        _HULL_OBJECT_TYPE_DEFAULT_: {}
+      rules:
+        _HULL_OBJECT_TYPE_DEFAULT_: 
+          backendRefs:
+            _HULL_OBJECT_TYPE_DEFAULT_: {}
+##################################################
+
+# GATEWAY API - TLSROUTE
+  tlsroute:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+      parentRefs: 
+        _HULL_OBJECT_TYPE_DEFAULT_: {}
+      rules:
+        _HULL_OBJECT_TYPE_DEFAULT_: 
+          backendRefs:
+            _HULL_OBJECT_TYPE_DEFAULT_: {}
+##################################################
+
+# GATEWAY API - UDPROUTE
+  udproute:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+      parentRefs: 
+        _HULL_OBJECT_TYPE_DEFAULT_: {}
+      rules:
+        _HULL_OBJECT_TYPE_DEFAULT_: 
+          backendRefs:
+            _HULL_OBJECT_TYPE_DEFAULT_: {}
+##################################################
+
+# GATEWAY API - HTTPROUTE
+  httproute:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+      parentRefs: 
+        _HULL_OBJECT_TYPE_DEFAULT_: {}
+      rules:
+        _HULL_OBJECT_TYPE_DEFAULT_: 
+          matches:
+            _HULL_OBJECT_TYPE_DEFAULT_: {}
+          filters:
+            _HULL_OBJECT_TYPE_DEFAULT_: {}
+          backendRefs:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              filters:
+                _HULL_OBJECT_TYPE_DEFAULT_: {}
 ##################################################

@@ -49,6 +49,8 @@ metadata:
 {{- $allObjects = merge $allObjects (dict "PriorityClass" (dict "HULL_TEMPLATE" $template "API_VERSION" "scheduling.k8s.io/v1")) }}
 {{- $allObjects = merge $allObjects (dict "Endpoints" (dict "HULL_TEMPLATE" $template)) }}
 {{- $allObjects = merge $allObjects (dict "EndpointSlice" (dict "HULL_TEMPLATE" $template "API_VERSION" "discovery.k8s.io/v1")) }}
+{{- $allObjects = merge $allObjects (dict "MutatingWebhookConfiguration" (dict "HULL_TEMPLATE" $template "API_VERSION" "admissionregistration.k8s.io/v1" "DYNAMIC_FIELDS" (dict "webhooks" "hull.object.base.webhook.webhooks"))) }}
+{{- $allObjects = merge $allObjects (dict "ValidatingWebhookConfiguration" (dict "HULL_TEMPLATE" $template "API_VERSION" "admissionregistration.k8s.io/v1" "DYNAMIC_FIELDS" (dict "webhooks" "hull.object.base.webhook.webhooks"))) }}
 
 {{- /*
 ### Load pod based objects
@@ -71,6 +73,17 @@ metadata:
 {{- $allObjects = merge $allObjects (dict "NetworkPolicy" (dict "HULL_TEMPLATE" $template "API_VERSION" "networking.k8s.io/v1")) }}
 {{- $allObjects = merge $allObjects (dict "IngressClass" (dict "HULL_TEMPLATE" $template "API_VERSION" "networking.k8s.io/v1")) }}
 {{- $allObjects = merge $allObjects (dict "LimitRange" (dict "HULL_TEMPLATE" $template)) }}
+{{- $allObjects = merge $allObjects (dict "HorizontalPodAutoscaler" (dict "API_VERSION" "autoscaling/v2" "DYNAMIC_FIELDS" (dict "scaleTargetRef" "hull.object.horizontalpodautoscaler.scaleTargetRef"))) }}
+{{- $allObjects = merge $allObjects (dict "BackendLBPolicy" (dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1alpha2" "DYNAMIC_FIELDS" (dict "targetRefs" "hull.object.base.dynamic.simple.array"))) }}
+{{- $allObjects = merge $allObjects (dict "BackendTLSPolicy" (dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1alpha3" "DYNAMIC_FIELDS" (dict "targetRefs" "hull.object.base.dynamic.simple.array"))) }}
+{{- $allObjects = merge $allObjects (dict "GatewayClass" (dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1")) }}
+{{- $allObjects = merge $allObjects (dict "Gateway" (dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1" "DYNAMIC_FIELDS" (dict "addresses" "hull.object.base.dynamic.simple.array" "listeners" "hull.object.base.gateway.api.gateway.listener"))) }}
+{{- $allObjects = merge $allObjects (dict "GRPCRoute" (dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1" "DYNAMIC_FIELDS" (dict "parentRefs" "hull.object.base.dynamic.simple.array" "rules" "hull.object.base.gateway.api.extended.route.rules"))) }}
+{{- $allObjects = merge $allObjects (dict "ReferenceGrant" (dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1" "DYNAMIC_FIELDS" (dict "from" "hull.object.base.dynamic.simple.array" "to" "hull.object.base.dynamic.simple.array"))) }}
+{{- $allObjects = merge $allObjects (dict "TCPRoute" (dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1alpha2" "DYNAMIC_FIELDS" (dict "parentRefs" "hull.object.base.dynamic.simple.array" "rules" "hull.object.base.gateway.api.simple.route.rules"))) }}
+{{- $allObjects = merge $allObjects (dict "TLSRoute" (dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1alpha2" "DYNAMIC_FIELDS" (dict "parentRefs" "hull.object.base.dynamic.simple.array" "rules" "hull.object.base.gateway.api.simple.route.rules"))) }}
+{{- $allObjects = merge $allObjects (dict "UDPRoute" (dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1alpha2" "DYNAMIC_FIELDS" (dict "parentRefs" "hull.object.base.dynamic.simple.array" "rules" "hull.object.base.gateway.api.simple.route.rules"))) }}
+{{- $allObjects = merge $allObjects (dict "HTTPRoute" (dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1" "DYNAMIC_FIELDS" (dict "parentRefs" "hull.object.base.dynamic.simple.array" "rules" "hull.object.base.gateway.api.extended.route.rules"))) }}
 
 {{- /*
 ### Load rbac'ed objects
@@ -78,20 +91,9 @@ metadata:
 {{- $template = "hull.object.base.rbac" }}
 {{- $allObjects = merge $allObjects (dict "RoleBinding" (dict "HULL_TEMPLATE" $template "API_VERSION" "rbac.authorization.k8s.io/v1")) }}
 {{- $allObjects = merge $allObjects (dict "ClusterRoleBinding" (dict "HULL_TEMPLATE" $template "API_VERSION" "rbac.authorization.k8s.io/v1" "PARENT_TEMPLATE" "this.emptynamespace")) }}
-
+{{- $allObjects = merge $allObjects (dict "Role" (dict "HULL_TEMPLATE" $template "API_VERSION" "rbac.authorization.k8s.io/v1" "DYNAMIC_FIELDS" (dict "rules" "hull.object.base.role.rules"))) }}
+{{- $allObjects = merge $allObjects (dict "ClusterRole" (dict "HULL_TEMPLATE" $template "API_VERSION" "rbac.authorization.k8s.io/v1" "PARENT_TEMPLATE" "this.emptynamespace" "DYNAMIC_FIELDS" (dict "rules" "hull.object.base.role.rules"))) }}
 {{- /*
-### Load role objects
-*/ -}}
-{{- $template = "hull.object.base.role" }}
-{{- $allObjects = merge $allObjects (dict "Role" (dict "HULL_TEMPLATE" $template "API_VERSION" "rbac.authorization.k8s.io/v1")) }}
-{{- $allObjects = merge $allObjects (dict "ClusterRole" (dict "HULL_TEMPLATE" $template "API_VERSION" "rbac.authorization.k8s.io/v1" "PARENT_TEMPLATE" "this.emptynamespace")) }}
-{{- /*
-
-### Load webhook objects
-*/ -}}
-{{- $template = "hull.object.base.webhook" }}
-{{- $allObjects = merge $allObjects (dict "MutatingWebhookConfiguration" (dict "HULL_TEMPLATE" $template "API_VERSION" "admissionregistration.k8s.io/v1")) }}
-{{- $allObjects = merge $allObjects (dict "ValidatingWebhookConfiguration" (dict "HULL_TEMPLATE" $template "API_VERSION" "admissionregistration.k8s.io/v1")) }}
 
 {{- /*
 ### Load custom objects
@@ -102,7 +104,6 @@ metadata:
 {{- $allObjects = merge $allObjects (dict "Service" (dict)) }}
 {{- $allObjects = merge $allObjects (dict "Ingress" (dict "API_VERSION" "networking.k8s.io/v1")) }}
 {{- $allObjects = merge $allObjects (dict "CronJob" (dict "API_VERSION" "batch/v1")) }}
-{{- $allObjects = merge $allObjects (dict "HorizontalPodAutoscaler" (dict "API_VERSION" "autoscaling/v2")) }}
 {{- $temp := set . "HULL_OBJECTS" $allObjects }}
 {{- include "hull.objects.render" . }}
 {{- end -}}
@@ -117,6 +118,11 @@ metadata:
 {{- $rootContext := (index . "ROOT_CONTEXT") -}}
 {{- $allObjects := (index . "HULL_OBJECTS") -}}
 {{- $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $rootContext.Values.hull "HULL_ROOT_KEY" $hullRootKey "SOURCE_PATH" (list "hull")) | fromYaml }}
+{{- if gt ((index $rootContext.Values $hullRootKey).config.general.render.passes | int) 1 -}}
+{{- range $i, $e := untilStep 1 ((index $rootContext.Values $hullRootKey).config.general.render.passes | int) 1 -}}
+{{- $rendered = include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $rootContext.Values.hull "HULL_ROOT_KEY" $hullRootKey "SOURCE_PATH" (list "hull")) | fromYaml }}
+{{- end -}}
+{{- end -}}
 {{- $errorMessages := "" }}
 {{- range $objectType, $objectTypeSpec := $allObjects }}
 {{- $lowerObjectType := $objectType | lower }}
@@ -145,7 +151,7 @@ metadata:
 {{- if (hasKey $objectTypeSpec "NO_SELECTOR") }}
 {{- $noSelector = $objectTypeSpec.NO_SELECTOR }}
 {{- end }}
-
+{{- $dynamicFields := default dict (index $objectTypeSpec "DYNAMIC_FIELDS") -}}
 
 {{- range $objectKey, $spec := (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType) }}
 {{- /*
@@ -171,7 +177,7 @@ metadata:
 {{- $spec = unset $spec "metadataNameOverride" }}
 {{- end -}}
 {{- if true -}}
-{{- $objectSpec = include "hull.util.merge" (merge (dict "PARENT_CONTEXT" $rootContext "PARENT_TEMPLATE" $parentTemplate "API_VERSION" (default $apiVersion $spec.apiVersion) "API_KIND" (default $apiKind $spec.apiKind) "COMPONENT" $namingElement "SPEC" $spec "DEFAULT_COMPONENT" $defaultSpec "HULL_ROOT_KEY" $hullRootKey "NO_SELECTOR" $noSelector "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectKey) (dict "LOCAL_TEMPLATE" (printf "%s" $hullTemplate))) | fromYaml }}
+{{- $objectSpec = include "hull.util.merge" (merge (dict "PARENT_CONTEXT" $rootContext "PARENT_TEMPLATE" $parentTemplate "API_VERSION" (default $apiVersion $spec.apiVersion) "API_KIND" (default $apiKind $spec.apiKind) "COMPONENT" $namingElement "SPEC" $spec "DEFAULT_COMPONENT" $defaultSpec "HULL_ROOT_KEY" $hullRootKey "NO_SELECTOR" $noSelector "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectKey "DYNAMIC_FIELDS" $dynamicFields) (dict "LOCAL_TEMPLATE" (printf "%s" $hullTemplate))) | fromYaml }}
 {{- if (gt (len (keys (default dict $objectSpec))) 0) -}}
 {{- $errorMessage := include "hull.util.error.check" (dict "OBJECT" $objectSpec "OBJECT_TYPE" $lowerObjectType) -}}
 {{- if (and (hasKey $objectSpec "Error") (eq (len (keys ($objectSpec))) 1)) -}}
