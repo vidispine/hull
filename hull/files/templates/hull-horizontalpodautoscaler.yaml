@@ -1,5 +1,5 @@
-{{ $template := "hull.object.base.horizontalpodautoscaler" }}
+{{ $template := "hull.object.base.spec" }}
 {{ $type := "HorizontalPodAutoscaler" }}
-{{ $objects := dict "API_VERSION" "autoscaling/v2" }}
+{{ $objects := dict "API_VERSION" "autoscaling/v2" "DYNAMIC_FIELDS" (dict "scaleTargetRef" "hull.object.horizontalpodautoscaler.scaleTargetRef") }}
 
 {{ include "hull.objects.render" (dict "HULL_ROOT_KEY" "hull" "ROOT_CONTEXT" $ "HULL_OBJECTS" (dict $type $objects)) }}
