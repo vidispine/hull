@@ -8,6 +8,7 @@ Test creation of objects and features.
 
 * Lint and Render
 * Expected number of "16" objects were rendered on top of basic objects count
+* Validate with additional schemas in subfolder "gateway-api"
 
 ## Metadata
 
@@ -94,7 +95,7 @@ Test creation of objects and features.
 
 * Test Object has key "spec§listeners§1§name" with value "source-listener"
 * Test Object has key "spec§listeners§1§hostname" with value "*.source.com"
-* Test Object has key "spec§listeners§1§port" with integer value "123456"
+* Test Object has key "spec§listeners§1§port" with integer value "12345"
 * Test Object has key "spec§listeners§1§protocol" with value "protocol"
 * Test Object has key "spec§listeners§1§tls§mode" with value "Passthrough"
 * Test Object has key "spec§listeners§1§tls§certificateRefs" with array value that has "1" items
