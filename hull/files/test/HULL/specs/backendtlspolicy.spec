@@ -8,6 +8,7 @@ Test creation of objects and features.
 
 * Lint and Render
 * Expected number of "16" objects were rendered on top of basic objects count
+* Validate with additional schemas in subfolder "gateway-api"
 
 ## Metadata
 

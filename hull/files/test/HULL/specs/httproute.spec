@@ -7,7 +7,8 @@ Test creation of objects and features.
 ## Render and Validate
 
 * Lint and Render
-* Expected number of "1" objects were rendered on top of basic objects count
+* Expected number of "3" objects were rendered on top of basic objects count
+* Validate with additional schemas in subfolder "gateway-api"
 
 ## Metadata
 
@@ -28,8 +29,8 @@ Test creation of objects and features.
 * Test Object has key "spec§parentRefs§1§name" with value "name2"
 * Test Object has key "spec§parentRefs§1§sectionName" with value "testsection2"
 * Test Object has key "spec§parentRefs§1§port" with integer value "2"
-* Test Object has key "spec§hostnames§host1" with value "host1"
-* Test Object has key "spec§hostnames§host2" with value "host2"
+* Test Object has key "spec§hostnames§0" with value "host1"
+* Test Object has key "spec§hostnames§1" with value "host2"
 * Test Object has key "spec§rules§0§name" with value "one-name"
 * Test Object has key "spec§rules§0§timeouts§request" with value "135s"
 * Test Object has key "spec§rules§0§timeouts§backendRequest" with value "531s"
@@ -150,6 +151,29 @@ Test creation of objects and features.
 * Test Object has key "spec§rules§0§backendRefs§0§filters§0§extensionRef§kind" with value "kind1"
 * Test Object has key "spec§rules§0§backendRefs§0§filters§0§extensionRef§name" with value "name1"
 
+## Issue 354 Schema Problems
+* Lint and Render
+
+* Set test object to "release-name-hull-test-issue-354-port-problem"
+* Test Object has key "spec§parentRefs§0§group" with value "gateway.networking.k8s.io"
+* Test Object has key "spec§parentRefs§0§kind" with value "Gateway"
+* Test Object has key "spec§parentRefs§0§namespace" with value "envoy"
+* Test Object has key "spec§parentRefs§0§name" with value "envoy-default"
+* Test Object has key "spec§parentRefs§0§sectionName" with value "https"
+* Test Object has key "spec§hostnames§0" with value "localhost"
+* Test Object has key "spec§rules§0§backendRefs§0§name" with value "release-name-hull-test-default"
+* Test Object has key "spec§rules§0§backendRefs§0§port" with integer value "8080"
+
+* Set test object to "release-name-hull-test-issue-354-method-problem"
+* Test Object has key "spec§parentRefs§0§group" with value "gateway.networking.k8s.io"
+* Test Object has key "spec§parentRefs§0§kind" with value "Gateway"
+* Test Object has key "spec§parentRefs§0§namespace" with value "envoy"
+* Test Object has key "spec§parentRefs§0§name" with value "envoy-default"
+* Test Object has key "spec§parentRefs§0§sectionName" with value "https"
+* Test Object has key "spec§hostnames§0" with value "localhost"
+* Test Object has key "spec§rules§0§matches§0§path§type" with value "PathPrefix"
+* Test Object has key "spec§rules§0§matches§0§path§value" with value "/"
+* Test Object has key "spec§rules§0§matches§0§method" with value "GET"
 ___
 
 * Clean the test execution folder
