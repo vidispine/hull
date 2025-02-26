@@ -8,6 +8,7 @@ Test creation of objects and features.
 
 * Lint and Render
 * Expected number of "1" objects were rendered on top of basic objects count
+* Validate with additional schemas in subfolder "gateway-api"
 
 ## Metadata
 
@@ -28,8 +29,8 @@ Test creation of objects and features.
 * Test Object has key "spec§parentRefs§1§name" with value "name2"
 * Test Object has key "spec§parentRefs§1§sectionName" with value "testsection2"
 * Test Object has key "spec§parentRefs§1§port" with integer value "2"
-* Test Object has key "spec§hostnames§host1" with value "host1"
-* Test Object has key "spec§hostnames§host2" with value "host2"
+* Test Object has key "spec§hostnames§0" with value "host1"
+* Test Object has key "spec§hostnames§1" with value "host2"
 * Test Object has key "spec§rules§0§name" with value "one"
 * Test Object has key "spec§rules§0§sessionPersistence§absoluteTimeout" with value "456s"
 * Test Object has key "spec§rules§0§sessionPersistence§type" with value "Cookie"
