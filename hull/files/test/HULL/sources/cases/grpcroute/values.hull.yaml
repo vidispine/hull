@@ -30,8 +30,8 @@ hull:
             sectionName: testsection2
             port: 2
         hostnames:
-          host1: host1
-          host2: host2
+        - host1
+        - host2
         rules:
           one:
             name: one
