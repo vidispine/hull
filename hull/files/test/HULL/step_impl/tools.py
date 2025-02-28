@@ -489,6 +489,12 @@ def validate():
     for i in test_objects:
         validate_test_object_against_json_schema(i)
 
+@step("Validate with additional schemas in subfolder <folder>")
+def validate(folder=None):
+    test_objects = data_store.scenario.objects
+    for i in test_objects:
+        validate_test_object_against_json_schema(i, folder)
+
 @step("Fail to Validate because error contains <expected_error>")
 def fail_to_validate(expected_error):
     try:
@@ -502,9 +508,9 @@ def fail_to_validate(expected_error):
             assert False, "Expected error " + expected_error + " not found in Exception message: " + str(e.__str__)
 
 @step("Validate test object against JSON Schema")
-def validate_test_object_against_json_schema(test_object):
+def validate_test_object_against_json_schema(test_object, extra_folder=None):
     assert test_object != None    
-    validateJson(test_object)
+    validateJson(test_object, extra_folder)
 
 ### non-steps
 
@@ -522,18 +528,25 @@ def assert_values_equal(actual, expected, object_type, object_key):
         
     assert expected == actual, "For key '"+ object_key + "' there was expected value:\n\n" + str(expected) + "\n\nbut found:\n\n" + str(actual) + "\n\n"
 
-def validateJson(test_object):
-    
-    schema_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "./../schema")
+def get_schema_file(test_object, schema_folder):
+    schema_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), f"./../schema/{schema_folder}")
     schema_version_split = str(test_object["apiVersion"]).split("/")
     schema_version = schema_version_split[0].split(".")[0]
     if len(schema_version_split) > 1:
         schema_version = schema_version + "-" + schema_version_split[1]
-    schema_file = os.path.join(schema_dir, str(test_object["kind"]).lower().split(".")[0] + "-" + schema_version + ".json")
+    schema_file =  os.path.join(schema_dir, str(test_object["kind"]).lower().split(".")[0] + "-" + schema_version + ".json")
     if not os.path.exists(schema_file):
         schema_file = os.path.join(schema_dir, str(test_object["kind"]).lower().split(".")[0] + "-core-" + schema_version + ".json")
-        
-    with open(os.path.join(schema_dir, schema_file)) as json_file:
+    return schema_file
+
+def validateJson(test_object, extra_folder=None):
+    
+    schema_file = get_schema_file(test_object, "k8s")
+    if not os.path.exists(schema_file):
+        if extra_folder != None:
+            schema_file = get_schema_file(test_object, extra_folder)
+
+    with open(schema_file) as json_file:
         schema = json.load(json_file)
 
         jsonschema.validate(instance=test_object.to_dict(), schema=schema)
