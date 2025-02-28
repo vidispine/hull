@@ -13,6 +13,346 @@ hull:
   # TLSROUTE
     tlsroute:
 
+      disabled:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+
+      static-name:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+        
+      metadata-merge:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+        
+      metadata-overwrite:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      metadata-custom-template-merge:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      metadata-custom-template-overwrite:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      metadata-custom-template-multi-merge:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      metadata-custom-template-multi-overwrite:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      metadata-no-template:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      metadata-default-template-as-source:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      metadata-default-custom-overwrite:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      disabled-transform:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      enabled-transform:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      disabled-transform-dict:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      enabled-transform-dict:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      disabled-transform-tpl-if:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      enabled-transform-tpl-if:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      metadata-name-override:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+
+      metadata-name-override-static:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      metadata-object-info:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      metadata-stringify:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      test-serializing:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      test-get-transformation-on-root:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      no-annotations:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
+      test-get-transformations-array:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+        
+      namespace-override:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
+
       full-example:
         parentRefs: 
           ref1:

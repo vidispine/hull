@@ -367,7 +367,7 @@ hull:
                 option-source: optsource
           source-listener:
             hostname: "*.source.com"
-            port: 123456
+            port: 12345
             protocol: protocol
 
       full-example:
