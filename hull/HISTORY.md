@@ -1,6 +1,18 @@
 # History
 ------------------
+[1.31.5]
+------------------
+FIXES:
+- fix CronJob schema missing allowed property `timeZone` as reported [here](https://github.com/vidispine/hull/issues/360). Thanks for reporting [seniorquico](https://github.com/seniorquico)!
+
+------------------
 [1.31.4]
+------------------
+FIXES:
+- fix CronJob schema missing allowed property `timeZone` as reported [here](https://github.com/vidispine/hull/issues/360). Thanks for reporting [seniorquico](https://github.com/seniorquico)!
+
+------------------
+[1.32.2]
 ------------------
 FIXES:
 - added schema validation of Gateway API objects created in tests so they are validated properly
