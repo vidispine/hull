@@ -290,4 +290,20 @@ hull:
                 image:
                   repository: my/image/repo
                   tag: "99.9"
+      
+      issue-360-timezone:
+        schedule: "* * 5"
+        concurrencyPolicy: Replace
+        failedJobsHistoryLimit: 97
+        startingDeadlineSeconds: 79
+        successfulJobsHistoryLimit:  195
+        suspend: true
+        timeZone: "Berlin"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
   ###################################################
