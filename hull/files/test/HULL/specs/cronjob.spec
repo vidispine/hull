@@ -6,11 +6,22 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "0" objects were rendered on top of basic objects count
+* Expected number of "1" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
 * Check basic metadata functionality
+
+## Basic CronJob properties
+* Lint and Render
+* Set test object to "release-name-hull-test-issue-360-timezone"
+* Test Object has key "spec§schedule" with value "* * 5"
+* Test Object has key "spec§concurrencyPolicy" with value "Replace"
+* Test Object has key "spec§failedJobsHistoryLimit" with integer value "97"
+* Test Object has key "spec§startingDeadlineSeconds" with integer value "79"
+* Test Object has key "spec§successfulJobsHistoryLimit" with integer value "195"
+* Test Object has key "spec§suspend" set to true
+* Test Object has key "spec§timeZone" with value "Berlin"
 
 ## Secrets and ConfigMaps and CronJobs
 * Prepare default test case for this kind with test chart "hull-test" and values file "values_cronjob_secret_configmap.hull.yaml" including suites "basic"
