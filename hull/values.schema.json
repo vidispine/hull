@@ -7053,7 +7053,8 @@
         "job",
         "startingDeadlineSeconds",
         "successfulJobsHistoryLimit",
-        "suspend"
+        "suspend",
+        "timeZone"
       ]
     },
     "io.k8s.api.batch.v1.CronJobSpec": {
