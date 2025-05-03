@@ -1,6 +1,7 @@
 # Changelog
 ------------------
-[1.32.3]
+[1.33.0]
 ------------------
-FIXES:
-- fix CronJob schema missing allowed property `timeZone` as reported [here](https://github.com/vidispine/hull/issues/360). Thanks for reporting [seniorquico](https://github.com/seniorquico)!
+CHANGES:
+- initial K8S 1.33 release
+- deprecating 1.30 release

@@ -12,7 +12,8 @@
       "type": [
         "array",
         "null"
-      ]
+      ],
+      "x-kubernetes-list-type": "atomic"
     },
     "command": {
       "description": "Entrypoint array. Not executed within a shell. The image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
@@ -25,7 +26,8 @@
       "type": [
         "array",
         "null"
-      ]
+      ],
+      "x-kubernetes-list-type": "atomic"
     },
     "env": {
       "description": "List of environment variables to set in the container. Cannot be updated.",
@@ -54,7 +56,7 @@
                     "type": "string"
                   },
                   "name": {
-                    "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
+                    "description": "Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
                     "type": [
                       "string",
                       "null"
@@ -152,7 +154,7 @@
                     "type": "string"
                   },
                   "name": {
-                    "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
+                    "description": "Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
                     "type": [
                       "string",
                       "null"
@@ -197,19 +199,23 @@
         "array",
         "null"
       ],
+      "x-kubernetes-list-map-keys": [
+        "name"
+      ],
+      "x-kubernetes-list-type": "map",
       "x-kubernetes-patch-merge-key": "name",
       "x-kubernetes-patch-strategy": "merge"
     },
     "envFrom": {
       "description": "List of sources to populate environment variables in the container. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the container is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.",
       "items": {
-        "description": "EnvFromSource represents the source of a set of ConfigMaps",
+        "description": "EnvFromSource represents the source of a set of ConfigMaps or Secrets",
         "properties": {
           "configMapRef": {
             "description": "ConfigMapEnvSource selects a ConfigMap to populate the environment variables with.\n\nThe contents of the target ConfigMap's Data field will represent the key-value pairs as environment variables.",
             "properties": {
               "name": {
-                "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
+                "description": "Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
                 "type": [
                   "string",
                   "null"
@@ -230,7 +236,7 @@
             "additionalProperties": false
           },
           "prefix": {
-            "description": "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER.",
+            "description": "Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER.",
             "type": [
               "string",
               "null"
@@ -240,7 +246,7 @@
             "description": "SecretEnvSource selects a Secret to populate the environment variables with.\n\nThe contents of the target Secret's Data field will represent the key-value pairs as environment variables.",
             "properties": {
               "name": {
-                "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
+                "description": "Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
                 "type": [
                   "string",
                   "null"
@@ -270,7 +276,8 @@
       "type": [
         "array",
         "null"
-      ]
+      ],
+      "x-kubernetes-list-type": "atomic"
     },
     "image": {
       "description": "Container image name. More info: https://kubernetes.io/docs/concepts/containers/images",
@@ -306,7 +313,8 @@
                   "type": [
                     "array",
                     "null"
-                  ]
+                  ],
+                  "x-kubernetes-list-type": "atomic"
                 }
               },
               "type": [
@@ -352,7 +360,8 @@
                   "type": [
                     "array",
                     "null"
-                  ]
+                  ],
+                  "x-kubernetes-list-type": "atomic"
                 },
                 "path": {
                   "description": "Path to access on the HTTP server.",
@@ -472,7 +481,8 @@
                   "type": [
                     "array",
                     "null"
-                  ]
+                  ],
+                  "x-kubernetes-list-type": "atomic"
                 }
               },
               "type": [
@@ -518,7 +528,8 @@
                   "type": [
                     "array",
                     "null"
-                  ]
+                  ],
+                  "x-kubernetes-list-type": "atomic"
                 },
                 "path": {
                   "description": "Path to access on the HTTP server.",
@@ -620,6 +631,13 @@
             "null"
           ],
           "additionalProperties": false
+        },
+        "stopSignal": {
+          "description": "StopSignal defines which signal will be sent to a container when it is being stopped. If not specified, the default is defined by the container runtime in use. StopSignal can only be set for Pods with a non-empty .spec.os.name",
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "type": [
@@ -645,7 +663,8 @@
               "type": [
                 "array",
                 "null"
-              ]
+              ],
+              "x-kubernetes-list-type": "atomic"
             }
           },
           "type": [
@@ -663,6 +682,7 @@
           ]
         },
         "grpc": {
+          "description": "GRPCAction specifies an action involving a GRPC service.",
           "properties": {
             "port": {
               "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
@@ -723,7 +743,8 @@
               "type": [
                 "array",
                 "null"
-              ]
+              ],
+              "x-kubernetes-list-type": "atomic"
             },
             "path": {
               "description": "Path to access on the HTTP server.",
@@ -933,7 +954,8 @@
               "type": [
                 "array",
                 "null"
-              ]
+              ],
+              "x-kubernetes-list-type": "atomic"
             }
           },
           "type": [
@@ -951,6 +973,7 @@
           ]
         },
         "grpc": {
+          "description": "GRPCAction specifies an action involving a GRPC service.",
           "properties": {
             "port": {
               "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
@@ -1011,7 +1034,8 @@
               "type": [
                 "array",
                 "null"
-              ]
+              ],
+              "x-kubernetes-list-type": "atomic"
             },
             "path": {
               "description": "Path to access on the HTTP server.",
@@ -1177,6 +1201,13 @@
               "name": {
                 "description": "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container.",
                 "type": "string"
+              },
+              "request": {
+                "description": "Request is the name chosen for a request in the referenced claim. If empty, everything from the claim is made available, otherwise only the result of this request.",
+                "type": [
+                  "string",
+                  "null"
+                ]
               }
             },
             "required": [
@@ -1267,6 +1298,38 @@
             "null"
           ]
         },
+        "appArmorProfile": {
+          "description": "AppArmorProfile defines a pod or container's AppArmor settings.",
+          "properties": {
+            "localhostProfile": {
+              "description": "localhostProfile indicates a profile loaded on the node that should be used. The profile must be preconfigured on the node to work. Must match the loaded name of the profile. Must be set if and only if type is \"Localhost\".",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "type": {
+              "description": "type indicates which kind of AppArmor profile will be applied. Valid options are:\n  Localhost - a profile pre-loaded on the node.\n  RuntimeDefault - the container runtime's default profile.\n  Unconfined - no AppArmor enforcement.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": [
+            "object",
+            "null"
+          ],
+          "x-kubernetes-unions": [
+            {
+              "discriminator": "type",
+              "fields-to-discriminateBy": {
+                "localhostProfile": "LocalhostProfile"
+              }
+            }
+          ],
+          "additionalProperties": false
+        },
         "capabilities": {
           "description": "Adds and removes POSIX capabilities from running containers.",
           "properties": {
@@ -1281,7 +1344,8 @@
               "type": [
                 "array",
                 "null"
-              ]
+              ],
+              "x-kubernetes-list-type": "atomic"
             },
             "drop": {
               "description": "Removed capabilities",
@@ -1294,7 +1358,8 @@
               "type": [
                 "array",
                 "null"
-              ]
+              ],
+              "x-kubernetes-list-type": "atomic"
             }
           },
           "type": [
@@ -1311,7 +1376,7 @@
           ]
         },
         "procMount": {
-          "description": "procMount denotes the type of proc mount to use for the containers. The default is DefaultProcMount which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows.",
+          "description": "procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows.",
           "type": [
             "string",
             "null"
@@ -1479,7 +1544,8 @@
               "type": [
                 "array",
                 "null"
-              ]
+              ],
+              "x-kubernetes-list-type": "atomic"
             }
           },
           "type": [
@@ -1497,6 +1563,7 @@
           ]
         },
         "grpc": {
+          "description": "GRPCAction specifies an action involving a GRPC service.",
           "properties": {
             "port": {
               "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
@@ -1557,7 +1624,8 @@
               "type": [
                 "array",
                 "null"
-              ]
+              ],
+              "x-kubernetes-list-type": "atomic"
             },
             "path": {
               "description": "Path to access on the HTTP server.",
@@ -1752,6 +1820,10 @@
         "array",
         "null"
       ],
+      "x-kubernetes-list-map-keys": [
+        "devicePath"
+      ],
+      "x-kubernetes-list-type": "map",
       "x-kubernetes-patch-merge-key": "devicePath",
       "x-kubernetes-patch-strategy": "merge"
     },
@@ -1765,7 +1837,7 @@
             "type": "string"
           },
           "mountPropagation": {
-            "description": "mountPropagation determines how mounts are propagated from the host to container and the other way around. When not set, MountPropagationNone is used. This field is beta in 1.10.",
+            "description": "mountPropagation determines how mounts are propagated from the host to container and the other way around. When not set, MountPropagationNone is used. This field is beta in 1.10. When RecursiveReadOnly is set to IfPossible or to Enabled, MountPropagation must be None or unspecified (which defaults to None).",
             "type": [
               "string",
               "null"
@@ -1779,6 +1851,13 @@
             "description": "Mounted read-only if true, read-write otherwise (false or unspecified). Defaults to false.",
             "type": [
               "boolean",
+              "null"
+            ]
+          },
+          "recursiveReadOnly": {
+            "description": "RecursiveReadOnly specifies whether read-only mounts should be handled recursively.\n\nIf ReadOnly is false, this field has no meaning and must be unspecified.\n\nIf ReadOnly is true, and this field is set to Disabled, the mount is not made recursively read-only.  If this field is set to IfPossible, the mount is made recursively read-only, if it is supported by the container runtime.  If this field is set to Enabled, the mount is made recursively read-only if it is supported by the container runtime, otherwise the pod will not be started and an error will be generated to indicate the reason.\n\nIf this field is set to IfPossible or Enabled, MountPropagation must be set to None (or be unspecified, which defaults to None).\n\nIf this field is not specified, it is treated as an equivalent of Disabled.",
+            "type": [
+              "string",
               "null"
             ]
           },
@@ -1811,6 +1890,10 @@
         "array",
         "null"
       ],
+      "x-kubernetes-list-map-keys": [
+        "mountPath"
+      ],
+      "x-kubernetes-list-type": "map",
       "x-kubernetes-patch-merge-key": "mountPath",
       "x-kubernetes-patch-strategy": "merge"
     },
