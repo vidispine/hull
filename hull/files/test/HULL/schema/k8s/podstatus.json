@@ -29,6 +29,14 @@
               "null"
             ]
           },
+          "observedGeneration": {
+            "description": "If set, this represents the .metadata.generation that the pod condition was set based upon. This is an alpha field. Enable PodObservedGenerationTracking to be able to use this field.",
+            "format": "int64",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
           "reason": {
             "description": "Unique, one-word, CamelCase reason for the condition's last transition.",
             "type": [
@@ -59,11 +67,15 @@
         "array",
         "null"
       ],
+      "x-kubernetes-list-map-keys": [
+        "type"
+      ],
+      "x-kubernetes-list-type": "map",
       "x-kubernetes-patch-merge-key": "type",
       "x-kubernetes-patch-strategy": "merge"
     },
     "containerStatuses": {
-      "description": "The list has one entry per container in the manifest. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-and-container-status",
+      "description": "Statuses of containers in this pod. Each container in the pod should have at most one status in this list, and all statuses should be for containers in the pod. However this is not enforced. If a status for a non-existent container is present in the list, or the list has duplicate names, the behavior of various Kubernetes components is not defined and those statuses might be ignored. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-and-container-status",
       "items": {
         "description": "ContainerStatus contains details for the current status of this container.",
         "properties": {
@@ -89,6 +101,71 @@
               "object",
               "null"
             ]
+          },
+          "allocatedResourcesStatus": {
+            "description": "AllocatedResourcesStatus represents the status of various resources allocated for this Pod.",
+            "items": {
+              "description": "ResourceStatus represents the status of a single resource allocated to a Pod.",
+              "properties": {
+                "name": {
+                  "description": "Name of the resource. Must be unique within the pod and in case of non-DRA resource, match one of the resources from the pod spec. For DRA resources, the value must be \"claim:<claim_name>/<request>\". When this status is reported about a container, the \"claim_name\" and \"request\" must match one of the claims of this container.",
+                  "type": "string"
+                },
+                "resources": {
+                  "description": "List of unique resources health. Each element in the list contains an unique resource ID and its health. At a minimum, for the lifetime of a Pod, resource ID must uniquely identify the resource allocated to the Pod on the Node. If other Pod on the same Node reports the status with the same resource ID, it must be the same resource they share. See ResourceID type definition for a specific format it has in various use cases.",
+                  "items": {
+                    "description": "ResourceHealth represents the health of a resource. It has the latest device health information. This is a part of KEP https://kep.k8s.io/4680.",
+                    "properties": {
+                      "health": {
+                        "description": "Health of the resource. can be one of:\n - Healthy: operates as normal\n - Unhealthy: reported unhealthy. We consider this a temporary health issue\n              since we do not have a mechanism today to distinguish\n              temporary and permanent issues.\n - Unknown: The status cannot be determined.\n            For example, Device Plugin got unregistered and hasn't been re-registered since.\n\nIn future we may want to introduce the PermanentlyUnhealthy Status.",
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "resourceID": {
+                        "description": "ResourceID is the unique identifier of the resource. See the ResourceID type for more information.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "resourceID"
+                    ],
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "x-kubernetes-list-map-keys": [
+                    "resourceID"
+                  ],
+                  "x-kubernetes-list-type": "map"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": false
+            },
+            "type": [
+              "array",
+              "null"
+            ],
+            "x-kubernetes-list-map-keys": [
+              "name"
+            ],
+            "x-kubernetes-list-type": "map",
+            "x-kubernetes-patch-merge-key": "name",
+            "x-kubernetes-patch-strategy": "merge"
           },
           "containerID": {
             "description": "ContainerID is the ID of the container in the format '<type>://<container_id>'. Where type is a container runtime identifier, returned from Version call of CRI API (for example \"containerd\").",
@@ -239,6 +316,13 @@
                     "name": {
                       "description": "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container.",
                       "type": "string"
+                    },
+                    "request": {
+                      "description": "Request is the name chosen for a request in the referenced claim. If empty, everything from the claim is made available, otherwise only the result of this request.",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
                     }
                   },
                   "required": [
@@ -438,6 +522,111 @@
               "null"
             ],
             "additionalProperties": false
+          },
+          "stopSignal": {
+            "description": "StopSignal reports the effective stop signal for this container",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "user": {
+            "description": "ContainerUser represents user identity information",
+            "properties": {
+              "linux": {
+                "description": "LinuxContainerUser represents user identity information in Linux containers",
+                "properties": {
+                  "gid": {
+                    "description": "GID is the primary gid initially attached to the first process in the container",
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "supplementalGroups": {
+                    "description": "SupplementalGroups are the supplemental groups initially attached to the first process in the container",
+                    "items": {
+                      "format": "int64",
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "x-kubernetes-list-type": "atomic"
+                  },
+                  "uid": {
+                    "description": "UID is the primary uid initially attached to the first process in the container",
+                    "format": "int64",
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "uid",
+                  "gid"
+                ],
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false
+          },
+          "volumeMounts": {
+            "description": "Status of volume mounts.",
+            "items": {
+              "description": "VolumeMountStatus shows status of volume mounts.",
+              "properties": {
+                "mountPath": {
+                  "description": "MountPath corresponds to the original VolumeMount.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name corresponds to the name of the original VolumeMount.",
+                  "type": "string"
+                },
+                "readOnly": {
+                  "description": "ReadOnly corresponds to the original VolumeMount.",
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "recursiveReadOnly": {
+                  "description": "RecursiveReadOnly must be set to Disabled, Enabled, or unspecified (for non-readonly mounts). An IfPossible value in the original VolumeMount must be translated to Disabled or Enabled, depending on the mount result.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "mountPath"
+              ],
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": false
+            },
+            "type": [
+              "array",
+              "null"
+            ],
+            "x-kubernetes-list-map-keys": [
+              "mountPath"
+            ],
+            "x-kubernetes-list-type": "map",
+            "x-kubernetes-patch-merge-key": "mountPath",
+            "x-kubernetes-patch-strategy": "merge"
           }
         },
         "required": [
@@ -456,10 +645,11 @@
       "type": [
         "array",
         "null"
-      ]
+      ],
+      "x-kubernetes-list-type": "atomic"
     },
     "ephemeralContainerStatuses": {
-      "description": "Status for any ephemeral containers that have run in this pod.",
+      "description": "Statuses for any ephemeral containers that have run in this pod. Each ephemeral container in the pod should have at most one status in this list, and all statuses should be for containers in the pod. However this is not enforced. If a status for a non-existent container is present in the list, or the list has duplicate names, the behavior of various Kubernetes components is not defined and those statuses might be ignored. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-and-container-status",
       "items": {
         "description": "ContainerStatus contains details for the current status of this container.",
         "properties": {
@@ -485,6 +675,71 @@
               "object",
               "null"
             ]
+          },
+          "allocatedResourcesStatus": {
+            "description": "AllocatedResourcesStatus represents the status of various resources allocated for this Pod.",
+            "items": {
+              "description": "ResourceStatus represents the status of a single resource allocated to a Pod.",
+              "properties": {
+                "name": {
+                  "description": "Name of the resource. Must be unique within the pod and in case of non-DRA resource, match one of the resources from the pod spec. For DRA resources, the value must be \"claim:<claim_name>/<request>\". When this status is reported about a container, the \"claim_name\" and \"request\" must match one of the claims of this container.",
+                  "type": "string"
+                },
+                "resources": {
+                  "description": "List of unique resources health. Each element in the list contains an unique resource ID and its health. At a minimum, for the lifetime of a Pod, resource ID must uniquely identify the resource allocated to the Pod on the Node. If other Pod on the same Node reports the status with the same resource ID, it must be the same resource they share. See ResourceID type definition for a specific format it has in various use cases.",
+                  "items": {
+                    "description": "ResourceHealth represents the health of a resource. It has the latest device health information. This is a part of KEP https://kep.k8s.io/4680.",
+                    "properties": {
+                      "health": {
+                        "description": "Health of the resource. can be one of:\n - Healthy: operates as normal\n - Unhealthy: reported unhealthy. We consider this a temporary health issue\n              since we do not have a mechanism today to distinguish\n              temporary and permanent issues.\n - Unknown: The status cannot be determined.\n            For example, Device Plugin got unregistered and hasn't been re-registered since.\n\nIn future we may want to introduce the PermanentlyUnhealthy Status.",
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "resourceID": {
+                        "description": "ResourceID is the unique identifier of the resource. See the ResourceID type for more information.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "resourceID"
+                    ],
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "x-kubernetes-list-map-keys": [
+                    "resourceID"
+                  ],
+                  "x-kubernetes-list-type": "map"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": false
+            },
+            "type": [
+              "array",
+              "null"
+            ],
+            "x-kubernetes-list-map-keys": [
+              "name"
+            ],
+            "x-kubernetes-list-type": "map",
+            "x-kubernetes-patch-merge-key": "name",
+            "x-kubernetes-patch-strategy": "merge"
           },
           "containerID": {
             "description": "ContainerID is the ID of the container in the format '<type>://<container_id>'. Where type is a container runtime identifier, returned from Version call of CRI API (for example \"containerd\").",
@@ -635,6 +890,13 @@
                     "name": {
                       "description": "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container.",
                       "type": "string"
+                    },
+                    "request": {
+                      "description": "Request is the name chosen for a request in the referenced claim. If empty, everything from the claim is made available, otherwise only the result of this request.",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
                     }
                   },
                   "required": [
@@ -834,6 +1096,111 @@
               "null"
             ],
             "additionalProperties": false
+          },
+          "stopSignal": {
+            "description": "StopSignal reports the effective stop signal for this container",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "user": {
+            "description": "ContainerUser represents user identity information",
+            "properties": {
+              "linux": {
+                "description": "LinuxContainerUser represents user identity information in Linux containers",
+                "properties": {
+                  "gid": {
+                    "description": "GID is the primary gid initially attached to the first process in the container",
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "supplementalGroups": {
+                    "description": "SupplementalGroups are the supplemental groups initially attached to the first process in the container",
+                    "items": {
+                      "format": "int64",
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "x-kubernetes-list-type": "atomic"
+                  },
+                  "uid": {
+                    "description": "UID is the primary uid initially attached to the first process in the container",
+                    "format": "int64",
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "uid",
+                  "gid"
+                ],
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false
+          },
+          "volumeMounts": {
+            "description": "Status of volume mounts.",
+            "items": {
+              "description": "VolumeMountStatus shows status of volume mounts.",
+              "properties": {
+                "mountPath": {
+                  "description": "MountPath corresponds to the original VolumeMount.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name corresponds to the name of the original VolumeMount.",
+                  "type": "string"
+                },
+                "readOnly": {
+                  "description": "ReadOnly corresponds to the original VolumeMount.",
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "recursiveReadOnly": {
+                  "description": "RecursiveReadOnly must be set to Disabled, Enabled, or unspecified (for non-readonly mounts). An IfPossible value in the original VolumeMount must be translated to Disabled or Enabled, depending on the mount result.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "mountPath"
+              ],
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": false
+            },
+            "type": [
+              "array",
+              "null"
+            ],
+            "x-kubernetes-list-map-keys": [
+              "mountPath"
+            ],
+            "x-kubernetes-list-type": "map",
+            "x-kubernetes-patch-merge-key": "mountPath",
+            "x-kubernetes-patch-strategy": "merge"
           }
         },
         "required": [
@@ -852,7 +1219,8 @@
       "type": [
         "array",
         "null"
-      ]
+      ],
+      "x-kubernetes-list-type": "atomic"
     },
     "hostIP": {
       "description": "hostIP holds the IP address of the host to which the pod is assigned. Empty if the pod has not started yet. A pod can be assigned to a node that has a problem in kubelet which in turns mean that HostIP will not be updated even if there is a node is assigned to pod",
@@ -868,12 +1236,12 @@
         "properties": {
           "ip": {
             "description": "IP is the IP address assigned to the host",
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": "string"
           }
         },
+        "required": [
+          "ip"
+        ],
         "type": [
           "object",
           "null"
@@ -889,7 +1257,7 @@
       "x-kubernetes-patch-strategy": "merge"
     },
     "initContainerStatuses": {
-      "description": "The list has one entry per init container in the manifest. The most recent successful init container will have ready = true, the most recently started container will have startTime set. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-and-container-status",
+      "description": "Statuses of init containers in this pod. The most recent successful non-restartable init container will have ready = true, the most recently started container will have startTime set. Each init container in the pod should have at most one status in this list, and all statuses should be for containers in the pod. However this is not enforced. If a status for a non-existent container is present in the list, or the list has duplicate names, the behavior of various Kubernetes components is not defined and those statuses might be ignored. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-and-container-status",
       "items": {
         "description": "ContainerStatus contains details for the current status of this container.",
         "properties": {
@@ -915,6 +1283,71 @@
               "object",
               "null"
             ]
+          },
+          "allocatedResourcesStatus": {
+            "description": "AllocatedResourcesStatus represents the status of various resources allocated for this Pod.",
+            "items": {
+              "description": "ResourceStatus represents the status of a single resource allocated to a Pod.",
+              "properties": {
+                "name": {
+                  "description": "Name of the resource. Must be unique within the pod and in case of non-DRA resource, match one of the resources from the pod spec. For DRA resources, the value must be \"claim:<claim_name>/<request>\". When this status is reported about a container, the \"claim_name\" and \"request\" must match one of the claims of this container.",
+                  "type": "string"
+                },
+                "resources": {
+                  "description": "List of unique resources health. Each element in the list contains an unique resource ID and its health. At a minimum, for the lifetime of a Pod, resource ID must uniquely identify the resource allocated to the Pod on the Node. If other Pod on the same Node reports the status with the same resource ID, it must be the same resource they share. See ResourceID type definition for a specific format it has in various use cases.",
+                  "items": {
+                    "description": "ResourceHealth represents the health of a resource. It has the latest device health information. This is a part of KEP https://kep.k8s.io/4680.",
+                    "properties": {
+                      "health": {
+                        "description": "Health of the resource. can be one of:\n - Healthy: operates as normal\n - Unhealthy: reported unhealthy. We consider this a temporary health issue\n              since we do not have a mechanism today to distinguish\n              temporary and permanent issues.\n - Unknown: The status cannot be determined.\n            For example, Device Plugin got unregistered and hasn't been re-registered since.\n\nIn future we may want to introduce the PermanentlyUnhealthy Status.",
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "resourceID": {
+                        "description": "ResourceID is the unique identifier of the resource. See the ResourceID type for more information.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "resourceID"
+                    ],
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "x-kubernetes-list-map-keys": [
+                    "resourceID"
+                  ],
+                  "x-kubernetes-list-type": "map"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": false
+            },
+            "type": [
+              "array",
+              "null"
+            ],
+            "x-kubernetes-list-map-keys": [
+              "name"
+            ],
+            "x-kubernetes-list-type": "map",
+            "x-kubernetes-patch-merge-key": "name",
+            "x-kubernetes-patch-strategy": "merge"
           },
           "containerID": {
             "description": "ContainerID is the ID of the container in the format '<type>://<container_id>'. Where type is a container runtime identifier, returned from Version call of CRI API (for example \"containerd\").",
@@ -1065,6 +1498,13 @@
                     "name": {
                       "description": "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container.",
                       "type": "string"
+                    },
+                    "request": {
+                      "description": "Request is the name chosen for a request in the referenced claim. If empty, everything from the claim is made available, otherwise only the result of this request.",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
                     }
                   },
                   "required": [
@@ -1264,6 +1704,111 @@
               "null"
             ],
             "additionalProperties": false
+          },
+          "stopSignal": {
+            "description": "StopSignal reports the effective stop signal for this container",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "user": {
+            "description": "ContainerUser represents user identity information",
+            "properties": {
+              "linux": {
+                "description": "LinuxContainerUser represents user identity information in Linux containers",
+                "properties": {
+                  "gid": {
+                    "description": "GID is the primary gid initially attached to the first process in the container",
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "supplementalGroups": {
+                    "description": "SupplementalGroups are the supplemental groups initially attached to the first process in the container",
+                    "items": {
+                      "format": "int64",
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "x-kubernetes-list-type": "atomic"
+                  },
+                  "uid": {
+                    "description": "UID is the primary uid initially attached to the first process in the container",
+                    "format": "int64",
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "uid",
+                  "gid"
+                ],
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false
+          },
+          "volumeMounts": {
+            "description": "Status of volume mounts.",
+            "items": {
+              "description": "VolumeMountStatus shows status of volume mounts.",
+              "properties": {
+                "mountPath": {
+                  "description": "MountPath corresponds to the original VolumeMount.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name corresponds to the name of the original VolumeMount.",
+                  "type": "string"
+                },
+                "readOnly": {
+                  "description": "ReadOnly corresponds to the original VolumeMount.",
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "recursiveReadOnly": {
+                  "description": "RecursiveReadOnly must be set to Disabled, Enabled, or unspecified (for non-readonly mounts). An IfPossible value in the original VolumeMount must be translated to Disabled or Enabled, depending on the mount result.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "mountPath"
+              ],
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": false
+            },
+            "type": [
+              "array",
+              "null"
+            ],
+            "x-kubernetes-list-map-keys": [
+              "mountPath"
+            ],
+            "x-kubernetes-list-type": "map",
+            "x-kubernetes-patch-merge-key": "mountPath",
+            "x-kubernetes-patch-strategy": "merge"
           }
         },
         "required": [
@@ -1282,7 +1827,8 @@
       "type": [
         "array",
         "null"
-      ]
+      ],
+      "x-kubernetes-list-type": "atomic"
     },
     "message": {
       "description": "A human readable message indicating details about why the pod is in this condition.",
@@ -1295,6 +1841,14 @@
       "description": "nominatedNodeName is set only when this pod preempts other pods on the node, but it cannot be scheduled right away as preemption victims receive their graceful termination periods. This field does not guarantee that the pod will be scheduled on this node. Scheduler may decide to place the pod elsewhere if other nodes become available sooner. Scheduler may also decide to give the resources on this node to a higher priority pod that is created after preemption. As a result, this field may be different than PodSpec.nodeName when the pod is scheduled.",
       "type": [
         "string",
+        "null"
+      ]
+    },
+    "observedGeneration": {
+      "description": "If set, this represents the .metadata.generation that the pod status was set based upon. This is an alpha field. Enable PodObservedGenerationTracking to be able to use this field.",
+      "format": "int64",
+      "type": [
+        "integer",
         "null"
       ]
     },
@@ -1319,12 +1873,12 @@
         "properties": {
           "ip": {
             "description": "IP is the IP address assigned to the pod",
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": "string"
           }
         },
+        "required": [
+          "ip"
+        ],
         "type": [
           "object",
           "null"
@@ -1335,6 +1889,10 @@
         "array",
         "null"
       ],
+      "x-kubernetes-list-map-keys": [
+        "ip"
+      ],
+      "x-kubernetes-list-type": "map",
       "x-kubernetes-patch-merge-key": "ip",
       "x-kubernetes-patch-strategy": "merge"
     },
@@ -1353,7 +1911,7 @@
       ]
     },
     "resize": {
-      "description": "Status of resources resize desired for pod's containers. It is empty if no resources resize is pending. Any changes to container resources will automatically set this to \"Proposed\"",
+      "description": "Status of resources resize desired for pod's containers. It is empty if no resources resize is pending. Any changes to container resources will automatically set this to \"Proposed\" Deprecated: Resize status is moved to two pod conditions PodResizePending and PodResizeInProgress. PodResizePending will track states where the spec has been resized, but the Kubelet has not yet allocated the resources. PodResizeInProgress will track in-progress resizes, and should be present whenever allocated resources != acknowledged resources.",
       "type": [
         "string",
         "null"
@@ -1369,7 +1927,7 @@
             "type": "string"
           },
           "resourceClaimName": {
-            "description": "ResourceClaimName is the name of the ResourceClaim that was generated for the Pod in the namespace of the Pod. It this is unset, then generating a ResourceClaim was not necessary. The pod.spec.resourceClaims entry can be ignored in this case.",
+            "description": "ResourceClaimName is the name of the ResourceClaim that was generated for the Pod in the namespace of the Pod. If this is unset, then generating a ResourceClaim was not necessary. The pod.spec.resourceClaims entry can be ignored in this case.",
             "type": [
               "string",
               "null"

@@ -12,7 +12,8 @@
       "type": [
         "array",
         "null"
-      ]
+      ],
+      "x-kubernetes-list-type": "atomic"
     },
     "ip": {
       "description": "IP address of the host file entry.",
@@ -22,6 +23,9 @@
       ]
     }
   },
+  "required": [
+    "ip"
+  ],
   "type": "object",
   "additionalProperties": false,
   "$schema": "http://json-schema.org/schema#"

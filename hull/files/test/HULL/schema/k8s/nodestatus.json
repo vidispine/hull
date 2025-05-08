@@ -2,7 +2,7 @@
   "description": "NodeStatus is information about the current status of a node.",
   "properties": {
     "addresses": {
-      "description": "List of addresses reachable to the node. Queried from cloud provider, if available. More info: https://kubernetes.io/docs/concepts/nodes/node/#addresses Note: This field is declared as mergeable, but the merge key is not sufficiently unique, which can cause data corruption when it is merged. Callers should instead use a full-replacement patch. See https://pr.k8s.io/79391 for an example. Consumers should assume that addresses can change during the lifetime of a Node. However, there are some exceptions where this may not be possible, such as Pods that inherit a Node's address in its own status or consumers of the downward API (status.hostIP).",
+      "description": "List of addresses reachable to the node. Queried from cloud provider, if available. More info: https://kubernetes.io/docs/reference/node/node-status/#addresses Note: This field is declared as mergeable, but the merge key is not sufficiently unique, which can cause data corruption when it is merged. Callers should instead use a full-replacement patch. See https://pr.k8s.io/79391 for an example. Consumers should assume that addresses can change during the lifetime of a Node. However, there are some exceptions where this may not be possible, such as Pods that inherit a Node's address in its own status or consumers of the downward API (status.hostIP).",
       "items": {
         "description": "NodeAddress contains information for the node's address.",
         "properties": {
@@ -29,6 +29,10 @@
         "array",
         "null"
       ],
+      "x-kubernetes-list-map-keys": [
+        "type"
+      ],
+      "x-kubernetes-list-type": "map",
       "x-kubernetes-patch-merge-key": "type",
       "x-kubernetes-patch-strategy": "merge"
     },
@@ -72,14 +76,14 @@
           }
         ]
       },
-      "description": "Capacity represents the total resources of a node. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#capacity",
+      "description": "Capacity represents the total resources of a node. More info: https://kubernetes.io/docs/reference/node/node-status/#capacity",
       "type": [
         "object",
         "null"
       ]
     },
     "conditions": {
-      "description": "Conditions is an array of current observed node conditions. More info: https://kubernetes.io/docs/concepts/nodes/node/#condition",
+      "description": "Conditions is an array of current observed node conditions. More info: https://kubernetes.io/docs/reference/node/node-status/#condition",
       "items": {
         "description": "NodeCondition contains condition information for a node.",
         "properties": {
@@ -136,6 +140,10 @@
         "array",
         "null"
       ],
+      "x-kubernetes-list-map-keys": [
+        "type"
+      ],
+      "x-kubernetes-list-type": "map",
       "x-kubernetes-patch-merge-key": "type",
       "x-kubernetes-patch-strategy": "merge"
     },
@@ -337,6 +345,23 @@
       ],
       "additionalProperties": false
     },
+    "features": {
+      "description": "NodeFeatures describes the set of features implemented by the CRI implementation. The features contained in the NodeFeatures should depend only on the cri implementation independent of runtime handlers.",
+      "properties": {
+        "supplementalGroupsPolicy": {
+          "description": "SupplementalGroupsPolicy is set to true if the runtime supports SupplementalGroupsPolicy and ContainerUser.",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false
+    },
     "images": {
       "description": "List of container images on this node",
       "items": {
@@ -353,7 +378,8 @@
             "type": [
               "array",
               "null"
-            ]
+            ],
+            "x-kubernetes-list-type": "atomic"
           },
           "sizeBytes": {
             "description": "The size of the image in bytes.",
@@ -373,7 +399,8 @@
       "type": [
         "array",
         "null"
-      ]
+      ],
+      "x-kubernetes-list-type": "atomic"
     },
     "nodeInfo": {
       "description": "NodeSystemInfo is a set of ids/uuids to uniquely identify the node.",
@@ -395,7 +422,7 @@
           "type": "string"
         },
         "kubeProxyVersion": {
-          "description": "KubeProxy Version reported by the node.",
+          "description": "Deprecated: KubeProxy Version reported by the node.",
           "type": "string"
         },
         "kubeletVersion": {
@@ -413,6 +440,24 @@
         "osImage": {
           "description": "OS Image reported by the node from /etc/os-release (e.g. Debian GNU/Linux 7 (wheezy)).",
           "type": "string"
+        },
+        "swap": {
+          "description": "NodeSwapStatus represents swap memory information.",
+          "properties": {
+            "capacity": {
+              "description": "Total amount of swap memory in bytes.",
+              "format": "int64",
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          },
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false
         },
         "systemUUID": {
           "description": "SystemUUID reported by the node. For unique machine identification MachineID is preferred. This field is specific to Red Hat hosts https://access.redhat.com/documentation/en-us/red_hat_subscription_management/1/html/rhsm/uuid",
@@ -444,6 +489,55 @@
         "null"
       ]
     },
+    "runtimeHandlers": {
+      "description": "The available runtime handlers.",
+      "items": {
+        "description": "NodeRuntimeHandler is a set of runtime handler information.",
+        "properties": {
+          "features": {
+            "description": "NodeRuntimeHandlerFeatures is a set of features implemented by the runtime handler.",
+            "properties": {
+              "recursiveReadOnlyMounts": {
+                "description": "RecursiveReadOnlyMounts is set to true if the runtime handler supports RecursiveReadOnlyMounts.",
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "userNamespaces": {
+                "description": "UserNamespaces is set to true if the runtime handler supports UserNamespaces, including for volumes.",
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              }
+            },
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false
+          },
+          "name": {
+            "description": "Runtime handler name. Empty for the default runtime handler.",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ],
+        "additionalProperties": false
+      },
+      "type": [
+        "array",
+        "null"
+      ],
+      "x-kubernetes-list-type": "atomic"
+    },
     "volumesAttached": {
       "description": "List of volumes that are attached to the node.",
       "items": {
@@ -471,7 +565,8 @@
       "type": [
         "array",
         "null"
-      ]
+      ],
+      "x-kubernetes-list-type": "atomic"
     },
     "volumesInUse": {
       "description": "List of attachable volumes in use (mounted) by the node.",
@@ -484,7 +579,8 @@
       "type": [
         "array",
         "null"
-      ]
+      ],
+      "x-kubernetes-list-type": "atomic"
     }
   },
   "type": "object",
