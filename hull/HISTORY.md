@@ -1,5 +1,16 @@
 # History
 ------------------
+[1.34.0]
+------------------
+FIXES:
+- fixed error thrown due to calculation of hashsums attempted on `secret` and `configmap` object content when the object instance is implicitly disabled. Setting `enabled: false` in the corresponding `_HULL_OBJECT_TYPE_DEFAULT_` instance will implicitly disable rendering for instances which in this case don't explicitly set `enabled: true`. Now, when a `volumeMount` has property `hashsumAnnotation` set to `true` and the targeted `configmap` or `secret` is either implicitly or explicitly disabled in the chart, the calculation of the hashsum is skipped and no errors are thrown.
+
+CHANGES:
+- initial K8S 1.34 release
+- deprecating 1.31 release
+- deprecating `endpoint` object type in accordance with [Kubernetes deprecation](https://kubernetes.io/blog/2025/04/24/endpoints-deprecation/). `endpoint` remains as a configurable object type for the time being but tests for `endpoint` are removed because they fail linting starting with Kubernetes JSON schema version 1.34.
+
+------------------
 [1.33.0]
 ------------------
 CHANGES:
@@ -19,7 +30,7 @@ FIXES:
 - added schema validation of Gateway API objects created in tests so they are validated properly
 - corrected version of created ReferenceGrant objects from `v1` to `v1alpha2`
 - fixed Gateway API incorrect schema in field `hostnames` by changing it to an array
-- fixed usage of HULL transformations in all fields of Gateway API schema objects in `values.schema.json`. Additional JSON schema properties targeting regular, non-HULL transformation inputs (`pattern`, `default`, `enum`, ``minLength` and `maxLength` for strings, `format`, `minimum` and `maximum` for integers) were also applied to the `_HT` inputs which broke usage of them. Solved by strictly seperating inputs between `_HT` HULL transformation strings and regular inputs using the `anyOf` property. Thanks to [ievgenii-shepeliuk](https://github.com/ievgenii-shepeliuk) for raising the issue [here](https://github.com/vidispine/hull/issues/354)
+- fixed usage of HULL transformations in all fields of Gateway API schema objects in `values.schema.json`. Additional JSON schema properties targeting regular, non-HULL transformation inputs (`pattern`, `default`, `enum`, `minLength` and `maxLength` for strings, `format`, `minimum` and `maximum` for integers) were also applied to the `_HT` inputs which broke usage of them. Solved by strictly seperating inputs between `_HT` HULL transformation strings and regular inputs using the `anyOf` property. Thanks to [ievgenii-shepeliuk](https://github.com/ievgenii-shepeliuk) for raising the issue [here](https://github.com/vidispine/hull/issues/354)
 
 ------------------
 [1.32.1]
