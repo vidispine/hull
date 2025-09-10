@@ -19,90 +19,6 @@ jobs:
   strategy: 
     maxParallel: 5
     matrix:
-      Helm_3_13_0_single: 
-        HelmVersion: "3.13.0" 
-        TestType: single 
-      Helm_3_13_0_multi: 
-        HelmVersion: "3.13.0"  
-        TestType: multi
-      Helm_3_13_1_single: 
-        HelmVersion: "3.13.1" 
-        TestType: single 
-      Helm_3_13_1_multi: 
-        HelmVersion: "3.13.1"  
-        TestType: multi
-      Helm_3_13_2_single: 
-        HelmVersion: "3.13.2"  
-        TestType: single
-      Helm_3_13_2_multi: 
-        HelmVersion: "3.13.2"  
-        TestType: multi
-      Helm_3_13_3_single: 
-        HelmVersion: "3.13.3"  
-        TestType: single
-      Helm_3_13_3_multi: 
-        HelmVersion: "3.13.3"  
-        TestType: multi
-      Helm_3_14_0_single: 
-        HelmVersion: "3.14.0"  
-        TestType: single
-      Helm_3_14_0_multi: 
-        HelmVersion: "3.14.0"  
-        TestType: multi
-      Helm_3_14_1_single: 
-        HelmVersion: "3.14.1"  
-        TestType: single
-      Helm_3_14_1_multi: 
-        HelmVersion: "3.14.1"  
-        TestType: multi
-      Helm_3_14_2_single: 
-        HelmVersion: "3.14.2"  
-        TestType: single
-      Helm_3_14_2_multi: 
-        HelmVersion: "3.14.2"  
-        TestType: multi
-      Helm_3_14_3_single: 
-        HelmVersion: "3.14.3"  
-        TestType: single
-      Helm_3_14_3_multi: 
-        HelmVersion: "3.14.3"  
-        TestType: multi
-      Helm_3_14_4_single: 
-        HelmVersion: "3.14.4"  
-        TestType: single
-      Helm_3_14_4_multi: 
-        HelmVersion: "3.14.4"  
-        TestType: multi
-      Helm_3_15_0_single: 
-        HelmVersion: "3.15.0"  
-        TestType: single
-      Helm_3_15_0_multi: 
-        HelmVersion: "3.15.0"  
-        TestType: multi
-      Helm_3_15_1_single: 
-        HelmVersion: "3.15.1"
-        TestType: single
-      Helm_3_15_1_multi: 
-        HelmVersion: "3.15.1"
-        TestType: multi
-      Helm_3_15_2_single: 
-        HelmVersion: "3.15.2"
-        TestType: single
-      Helm_3_15_2_multi: 
-        HelmVersion: "3.15.2"
-        TestType: multi
-      Helm_3_15_3_single: 
-        HelmVersion: "3.15.3"
-        TestType: single
-      Helm_3_15_3_multi: 
-        HelmVersion: "3.15.3"
-        TestType: multi
-      Helm_3_15_4_single: 
-        HelmVersion: "3.15.4"
-        TestType: single
-      Helm_3_15_4_multi: 
-        HelmVersion: "3.15.4"
-        TestType: multi
       Helm_3_16_0_single: 
         HelmVersion: "3.16.0"
         TestType: single
@@ -156,6 +72,54 @@ jobs:
         TestType: single
       Helm_3_17_3_multi: 
         HelmVersion: "3.17.3"
+        TestType: multi
+      Helm_3_17_4_single: 
+        HelmVersion: "3.17.4"
+        TestType: single
+      Helm_3_17_4_multi: 
+        HelmVersion: "3.17.4"
+        TestType: multi
+      Helm_3_18_0_single: 
+        HelmVersion: "3.18.0"
+        TestType: single
+      Helm_3_18_0_multi: 
+        HelmVersion: "3.18.0"
+        TestType: multi
+      Helm_3_18_1_single: 
+        HelmVersion: "3.18.1"
+        TestType: single
+      Helm_3_18_1_multi: 
+        HelmVersion: "3.18.1"
+        TestType: multi
+      Helm_3_18_2_single: 
+        HelmVersion: "3.18.2"
+        TestType: single
+      Helm_3_18_2_multi: 
+        HelmVersion: "3.18.2"
+        TestType: multi
+      Helm_3_18_3_single: 
+        HelmVersion: "3.18.3"
+        TestType: single
+      Helm_3_18_3_multi: 
+        HelmVersion: "3.18.3"
+        TestType: multi
+      Helm_3_18_4_single: 
+        HelmVersion: "3.18.4"
+        TestType: single
+      Helm_3_18_4_multi: 
+        HelmVersion: "3.18.4"
+        TestType: multi
+      Helm_3_18_5_single: 
+        HelmVersion: "3.18.5"
+        TestType: single
+      Helm_3_18_5_multi: 
+        HelmVersion: "3.18.5"
+        TestType: multi
+      Helm_3_18_6_single: 
+        HelmVersion: "3.18.6"
+        TestType: single
+      Helm_3_18_6_multi: 
+        HelmVersion: "3.18.6"
         TestType: multi
   steps:
   - template: azure-pipelines-test.yml  # Template reference
