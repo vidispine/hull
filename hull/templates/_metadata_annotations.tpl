@@ -122,10 +122,12 @@ annotations: {}
 {{ end }}
 {{ range $type,$dict := dict "secret" $secrets "configmap" $configmaps }}
   {{ range $key, $spec := index (index $parent.Values $hullRootKey).objects $type }}
-    {{ if (and $spec (dig "enabled" true $spec)) }}
+    {{ $objectDefault := fromYaml (include "hull.objects.defaults" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $type) ) }}
+    {{ $enabledDefault := dig "enabled" true $objectDefault }}
+    {{ $specDisabled := and (hasKey $spec "enabled") (not $spec.enabled) }}
+    {{ if (and (not $specDisabled) (or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault))) }}
       {{ $fullName := include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "COMPONENT" $key) }}
       {{ if (hasKey $dict $fullName) }}
-        {{ $objectDefault := fromYaml (include "hull.objects.defaults" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $type) ) -}}
         {{ $objectSpec := include (printf "hull.object.%s" $type) (dict "PARENT_CONTEXT" $parent "SPEC" $spec "OBJECT_TYPE" $type "COMPONENT" $key "DEFAULT_COMPONENT" $objectDefault) | fromYaml }}
         {{ if (hasKey (index $dict $objectSpec.metadata.name) "_ALL_") }}
           {{ range $dataKey,$dataValue := $objectSpec.data }}
