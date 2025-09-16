@@ -1,0 +1,107 @@
+hull:
+  config:
+    templates:
+      pod: 
+        global:
+          serviceAccountName: sa-always-to-use
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+        test-1:
+          serviceAccountName: test-1
+          securityContext:
+            runAsNonRoot: true
+        test-2:
+          serviceAccountName: test-2
+          securityContext:
+            runAsNonRoot: false
+  objects:
+
+    configmap:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        enabled: false
+      enabled-configmap:
+        enabled: true
+        data:
+          a-value: 
+            inline: "Just randomness"
+      disabled-configmap:
+        enabled: false
+        data:
+          a-value: 
+            inline: "Just randomness"
+      default-disabled-configmap:
+        data:
+          a-value: 
+            inline: "Just randomness"
+
+    secret:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        enabled: false
+      enabled-secret:
+        enabled: true
+        data:
+          a-value: 
+            inline: "Just randomness"
+      disabled-secret:
+        enabled: false
+        data:
+          a-value: 
+            inline: "Just randomness"
+      default-disabled-secret:
+        data:
+          a-value: 
+            inline: "Just randomness"
+
+    <OBJECT_TYPE>:    
+      test-pod:
+        pod:
+          imagePullSecrets: _HT/result/hull.include.test.imagepullsecrets.nonemptylist
+          containers:
+            my-pod:
+              image:
+                repository: hello-world
+              volumeMounts:
+                default-disabled-configmap:
+                  name: default-disabled-configmap
+                  mountPath: /default-disabled-configmap
+                  hashsumAnnotation: true
+                disabled-configmap:
+                  name: disabled-configmap
+                  mountPath: /disabled-configmap
+                  hashsumAnnotation: true
+                enabled-configmap:
+                  name: enabled-configmap
+                  mountPath: /enabled-configmap
+                  hashsumAnnotation: true
+                default-disabled-secret:
+                  name: default-disabled-secret
+                  mountPath: /default-disabled-secret
+                  hashsumAnnotation: true
+                disabled-secret:
+                  name: disabled-secret
+                  mountPath: /disabled-secret
+                  hashsumAnnotation: true
+                enabled-secret:
+                  name: enabled-secret
+                  mountPath: /enabled-secret
+                  hashsumAnnotation: true
+          volumes:
+            enabled-configmap:
+              configMap:
+                name: enabled-configmap
+            disabled-configmap:
+              configMap:
+                name: disabled-configmap
+            default-disabled-configmap:
+              configMap:
+                name: default-disabled-configmap  
+            enabled-secret:
+              secret:
+                secretName: enabled-secret
+            disabled-secret:
+              secret:
+                secretName: disabled-secret
+            default-disabled-secret:
+              secret:
+                secretName: default-disabled-secret
