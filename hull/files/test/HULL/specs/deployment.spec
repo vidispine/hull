@@ -17,11 +17,11 @@ Test creation of objects and features.
 * Check pod functionality
 
 ## Fail
-* Fail to render the templates for values file "values_fail_bool.trans1.hull.yaml" to test execution folder because error contains "Does not match pattern"
+* Fail to render the templates for values file "values_fail_bool.trans1.hull.yaml" to test execution folder because error contains "not match pattern"
 * Lint and Render values file "values_fail_bool.trans2.hull.yaml"
 * Fail to Validate because error contains "'true' is not of type 'boolean'"
-* Fail to render the templates for values file "values_fail_integer.trans1.hull.yaml" to test execution folder because error contains "Does not match pattern"
-* Fail to render the templates for values file "values_fail_integer.trans2.hull.yaml" to test execution folder because error contains "Does not match pattern"
+* Fail to render the templates for values file "values_fail_integer.trans1.hull.yaml" to test execution folder because error contains "not match pattern"
+* Fail to render the templates for values file "values_fail_integer.trans2.hull.yaml" to test execution folder because error contains "not match pattern"
 * Lint and Render values file "values_fail_integer.trans3.hull.yaml"
 * Fail to Validate because error contains "True is not of type 'integer'"
 * Lint and Render values file "values_fail_integer.trans4.hull.yaml"
