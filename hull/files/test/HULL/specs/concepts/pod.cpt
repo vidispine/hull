@@ -1014,3 +1014,36 @@ Test serialization functions
 * Test Object has key "spec§template§spec§serviceAccountName" with value "test-2"
 * Test Object has key "spec§template§spec§securityContext§runAsNonRoot" set to false
 * Test Object has key "spec§template§spec§securityContext§runAsUser" with integer value "1000"
+
+* Prepare default test case for this kind including suites "pod/podhashsumdefaulting"
+* Lint and Render
+
+* Set test object to "release-name-hull-test-test-pod"
+
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§0§name" with value "default-disabled-configmap"
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§1§name" with value "default-disabled-secret"
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§2§name" with value "disabled-configmap"
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§3§name" with value "disabled-secret"
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§4§name" with value "enabled-configmap"
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§5§name" with value "enabled-secret"
+
+* Test Object has key "spec§template§spec§volumes§0§configMap§name" with value "release-name-hull-test-default-disabled-configmap"
+* Test Object has key "spec§template§spec§volumes§0§name" with value "default-disabled-configmap"
+* Test Object has key "spec§template§spec§volumes§1§secret§secretName" with value "release-name-hull-test-default-disabled-secret"
+* Test Object has key "spec§template§spec§volumes§1§name" with value "default-disabled-secret"
+* Test Object has key "spec§template§spec§volumes§2§configMap§name" with value "release-name-hull-test-disabled-configmap"
+* Test Object has key "spec§template§spec§volumes§2§name" with value "disabled-configmap"
+* Test Object has key "spec§template§spec§volumes§3§secret§secretName" with value "release-name-hull-test-disabled-secret"
+* Test Object has key "spec§template§spec§volumes§3§name" with value "disabled-secret"
+* Test Object has key "spec§template§spec§volumes§4§configMap§name" with value "release-name-hull-test-enabled-configmap"
+* Test Object has key "spec§template§spec§volumes§4§name" with value "enabled-configmap"
+* Test Object has key "spec§template§spec§volumes§5§secret§secretName" with value "release-name-hull-test-enabled-secret"
+* Test Object has key "spec§template§spec§volumes§5§name" with value "enabled-secret"
+
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§2§name" with value "disabled-configmap"
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§3§name" with value "disabled-secret"
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§4§name" with value "enabled-configmap"
+* Test Object has key "spec§template§spec§containers§0§volumeMounts§5§name" with value "enabled-secret"
+
+* Test Object has key "spec§template§metadata§annotations§hashsum.configmap.release-name-hull-test-enabled-configmap/a-value" with value "2cc0755df4ffc8daf249de2c1875c04dc13e8fc5a27d9ba5de6c1ff9a5d0c51a"
+* Test Object has key "spec§template§metadata§annotations§hashsum.secret.release-name-hull-test-enabled-secret/a-value" with value "2cc0755df4ffc8daf249de2c1875c04dc13e8fc5a27d9ba5de6c1ff9a5d0c51a"

@@ -2,4 +2,4 @@ getgauge
 pyyaml
 dotty-dict
 jsonschema
-protobuf==4.21
+protobuf==4.25.8
