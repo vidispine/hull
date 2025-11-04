@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "20" objects were rendered on top of basic objects count
+* Expected number of "24" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
