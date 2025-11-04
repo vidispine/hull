@@ -10,6 +10,9 @@ subdict:
 hull:
   config:
     specific: # Here you can put all that is particular configuration for your app
+      insert_into_template_json: i am a templated value in json
+      insert_into_template_code_1: 123
+      insert_into_template_code_2: 456
       value_to_resolve_1: trans
       value_to_resolve_2: formation
       resolve_me: |- 
@@ -306,7 +309,7 @@ hull:
             inline: _HT/hull.include.test.dockerconfigjson.code
           test-inline-include-code-dict-quote-json: 
             inline: _HT/toJson|hull.include.test.dockerconfigjson.code.quote
-          test-inline-include-code-dict-quote-none: 
+          test-inline-include-code-dict-quote-none:
             inline: _HT/none|hull.include.test.dockerconfigjson.code.quote
           test-inline-include-code-dict-quote-prettyjson: 
             inline: _HT/toPrettyJson|hull.include.test.dockerconfigjson.code.quote
@@ -856,6 +859,18 @@ hull:
       
       test-glob-import:
         data: _HT/hull.util.tools.virtualdata.data.glob:GLOB:"files/code-java-*.java"
+
+      test-glob-import-no-template:
+        data: _HT/hull.util.tools.virtualdata.data.glob:GLOB:"files/templated-*.*":NOTEMPLATING:true
+
+      test-glob-import-template:
+        data: _HT/hull.util.tools.virtualdata.data.glob:GLOB:"files/templated-*.*":NOTEMPLATING:false
+
+      test-glob-import-no-template-serialize:
+        data: _HT/hull.util.tools.virtualdata.data.glob:GLOB:"files/templated-json*.*":NOTEMPLATING:true:SERIALIZATION:"toYaml"
+
+      test-glob-import-template-serialize:
+        data: _HT/hull.util.tools.virtualdata.data.glob:GLOB:"files/templated-json.*":NOTEMPLATING:false:SERIALIZATION:"toYaml"
 
       multiline-string-preserve-linebreaks:
         annotations:
