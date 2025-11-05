@@ -435,6 +435,27 @@ code-java-simple.java: "class Main {\r\n\r\n  public static void main(String[] a
   {\r\n    \r\n    int first = 10;\r\n    int second = 20;\r\n\r\n    \r\n    int
   sum = first + second;\r\n    System.out.println(first + \" + \" + second + \"
   = \"  + sum);\r\n  }\r\n}"
+templated-code-template.java: "class Main {\n\n  public static void main(String[] args) {\n
+    \   \n    int first = 123;\n    int second = 456;\n\n    int sum = first + second;\n
+    \   System.out.println(first + \" + \" + second + \" = \"  + sum);\n  }\n}"
+templated-code-no-template.java: "class Main {\n\n  public static void main(String[] args) {\n
+    \   \n    int first = {{ .Values.hull.config.specific.insert_into_template_code_1 }};\n    int second = {{ .Values.hull.config.specific.insert_into_template_code_2 }};\n\n    int sum = first + second;\n
+    \   System.out.println(first + \" + \" + second + \" = \"  + sum);\n  }\n}"
+templated-json-template.json: '{ "b2": 77 , "a1": "jsonjson", "c3": true, "d4": {"dd": "i
+    am a templated value in json"} }'
+templated-json-no-template.json: '{ "b2": 77 , "a1": "jsonjson", "c3": true, "d4": {"dd": "{{ .Values.hull.config.specific.insert_into_template_json }}"} }'
+templated-json-template-serialize.yaml: |-
+    a1: jsonjson
+    b2: 77
+    c3: true
+    d4:
+      dd: i am a templated value in json
+templated-json-no-template-serialize.yaml: |-
+    a1: jsonjson
+    b2: 77
+    c3: true
+    d4:
+      dd: '{{ .Values.hull.config.specific.insert_into_template_json }}'
 multiline-string: "This could\nbe a \nSSH key\nor \na \ncertificate\nwith\ndata
   \nlike\nASDADWADAASDASDASDASDASDADASD\nBASDASDASDASDASDASD\nCASDECEACSADSADSDA"
 simple-string: This is a simple string to be written to a ConfigMap
