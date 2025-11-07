@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "18" objects were rendered on top of basic objects count
+* Expected number of "22" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -359,6 +359,20 @@ Test creation of objects and features.
 * Test Object has key "data§code-java-simple.java" with value of key "code-java-simple.java" from expected.yaml of suite "virtualfolderdata"
 * Test Object has key "data§code-java-medium.java" with value of key "code-java-medium.java" from expected.yaml of suite "virtualfolderdata"
 * Test Object has key "data§code-java-complex.java" with value of key "code-java-complex.java" from expected.yaml of suite "virtualfolderdata"
+
+* Set test object to "release-name-hull-test-test-glob-import-template"
+* Test Object has key "data§templated-code.java" with value of key "templated-code-template.java" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§templated-json.json" with value of key "templated-json-template.json" from expected.yaml of suite "virtualfolderdata"
+
+* Set test object to "release-name-hull-test-test-glob-import-no-template"
+* Test Object has key "data§templated-code.java" with value of key "templated-code-no-template.java" from expected.yaml of suite "virtualfolderdata"
+* Test Object has key "data§templated-json.json" with value of key "templated-json-no-template.json" from expected.yaml of suite "virtualfolderdata"
+
+* Set test object to "release-name-hull-test-test-glob-import-template-serialize"
+* Test Object has key "data§templated-json.json" with value of key "templated-json-template-serialize.yaml" from expected.yaml of suite "virtualfolderdata"
+
+* Set test object to "release-name-hull-test-test-glob-import-no-template-serialize"
+* Test Object has key "data§templated-json.json" with value of key "templated-json-no-template-serialize.yaml" from expected.yaml of suite "virtualfolderdata"
 
 ## String handling
 * Prepare default test case for this kind including suites "virtualfolderdata"
