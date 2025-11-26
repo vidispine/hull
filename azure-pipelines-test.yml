@@ -52,9 +52,10 @@ steps:
   - script: |
       set -euo pipefail
       echo installing helm
-      wget https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-      sudo chmod +x ./get-helm-3
-      sudo ./get-helm-3 --version v${{ version.version }}
+      helmmajor=$(echo "${{ version.version }}" | cut -d. -f1)
+      wget https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-${helmmajor}
+      sudo chmod +x ./get-helm-${helmmajor}
+      sudo ./get-helm-${helmmajor} --version v${{ version.version }}
       helm version
     displayName: 'install helm v${{ version.version }}'
     condition: and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','True'))
