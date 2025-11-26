@@ -136,23 +136,6 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-special-cases"
 * Test Object has key "data§empty" with Base64 encoded value of ""
 
-## Secret Types
-* Lint and Render
-* Set test object to "release-name-hull-test-type-default"
-* Test Object has key "type" with value "Opaque"
-
-* Set test object to "release-name-hull-test-type-opaque"
-* Test Object has key "type" with value "Opaque"
-
-* Set test object to "release-name-hull-test-type-dockerconfigjson"
-* Test Object has key "type" with value "kubernetes.io/dockerconfigjson"
-
-* Set test object to "release-name-hull-test-type-serviceaccounttoken"
-* Test Object has key "type" with value "kubernetes.io/service-account-token"
-
-* Set test object to "release-name-hull-test-type-custom"
-* Test Object has key "type" with value "custom.com/secret-type"
-
 ## Test serialization functions disabled
 * Prepare default test case for this kind including suites "virtualfolderdata,serializationdisabled"
 * Lint and Render
