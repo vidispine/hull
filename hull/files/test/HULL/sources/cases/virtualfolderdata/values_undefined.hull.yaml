@@ -1,0 +1,17 @@
+hull:
+  ###################################################
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+    <OBJECT_TYPE>:
+
+      test-get-undefined-variants:
+        data:
+          bool_undefined:
+            inline: _HT*hull.config.specific.bool_undefined
+          string_undefined:
+            inline: _HT*hull.config.specific.string_undefined
+          number_undefined:
+            inline: _HT*hull.config.specific.number_undefined

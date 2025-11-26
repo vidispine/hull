@@ -1,5 +1,15 @@
 # History
 ------------------
+[1.34.2]
+------------------
+FIXES:
+- fixed inconsistency in usage of ConfigMap `binaryData` entries. Previously, it was possible to provide the binary data via the `binaryData` entries' value dictionary `path` property when it is stored in an external file or directly as a string value to the `binaryData` entries key, omitting the dictionary structure in the value. To restore the symmetry in usage with a value dictionary, it is now possible to alternatively use the `inline` property in the value dictionary to submit `binaryData` entries, this works the same way as using a string value for the `binaryData` directly.
+
+CHANGES:
+- added optional boolean parameter `preEncoded` to Secret `data` entries. If set, the value read from the `inline` property or from an external file with path `path` will not be Base64 encoded by HULL. Instead, if `preEncoded` is set to `true`, the corresponding data content is expected to already be Base64 encoded and HULL will skip auto-encoding it. Setting `preEncoded` to `true` foremost allows to import Base64 encoded (binary) data as from a Secret `data` entry into a pod. Note that when `preEncoded` is set to `true`, the data must be correctly Base64 encoded, otherwise the Kubernetes API will not accept it. The `preEncoded` property applies to Secret `data` only and is ignored on ConfigMap `data` entries. Thanks Armin [sanarena](https://github.com/sanarena) for the feature request!
+- added convenient way to replace a customizable string pattern with double opening and closing curly braces in the rendered final YAML. This is especially helpful when packaging `customresource` objects which in its spec may contain templating expressions using double curly braces, popular examples are CRDs for [External Secrets Operator](https://external-secrets.io/latest/) and [Kyverno](https://kyverno.io/). Since these applications have their own templating engine included, their CustomResources typically contain double curly braces. Using this last minute string replacement technique, it becomes possible to execute HULL transformations on such content containing templating expressions partially targeted for Helm and partially targeted for the downstream application. The post-render string replacement of the downstream applications double curly braces allows for a clear separation of the templating stages. To enable the feature, set both `hull.config.general.postRender.globalStringReplacements.openingDoubleCurlyBraces.enabled` and `hull.config.general.postRender.globalStringReplacements.closingDoubleCurlyBraces.enabled` to `true`. Then, whenever down stream double curly braces need replacing in the rendered result, use `{+{` for opening and `}+}` for closing double curly braces and the placeholders will be replaced with `{{` and `}}` respectively last-minute before submittal to the Kubernetes API. If needed, the placeholder values can be customized in the `hull.config.general.postRender.globalStringReplacements` chart configuration.
+
+------------------
 [1.34.1]
 ------------------
 CHANGES:

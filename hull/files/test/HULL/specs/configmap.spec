@@ -55,7 +55,6 @@ Test creation of objects and features.
 ## Ordering
 * Prepare test case "configmap" for kind "ConfigMap" with test chart "hull-test" and values file "values_order_test.hull.yaml" including suites "virtualfolderdata"
 * Lint and Render values file "values_order_test.hull.yaml"
-
 * Test object "release-name-hull-test-aaddheaders" does not exist
 * Test object "release-name-hull-test-baddheaders" does not exist
 * Set test object to "release-name-hull-test-caddheaders"
@@ -67,13 +66,25 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-test-get-variants"
 * Test Object has key "data§bool_defined_true" with value "true"
 * Test Object has key "data§bool_defined_false" with value "false"
-* Test Object has key "data§bool_undefined" with value ""
 * Test Object has key "data§string_defined" with value "i_am_string"
 * Test Object has key "data§string_empty" with value ""
-* Test Object has key "data§string_undefined" with value ""
 * Test Object has key "data§number_defined" with value "999"
-* Test Object has key "data§number_undefined" with value ""
 * Test Object has key "data§key_with_dots_in_it" with value "hello dots!"
+
+## Undefined Handling
+* Begin Tests for Helm version "3"
+* Lint and Render values file "values_undefined.hull.yaml"
+* Set test object to "release-name-hull-test-test-get-undefined-variants"
+* Test Object has key "data§bool_undefined" with value ""
+* Test Object has key "data§string_undefined" with value ""
+* Test Object has key "data§number_undefined" with value ""
+* End Tests for specific Helm version
+* Begin Tests for Helm version "4"
+* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element bool_undefined in path hull.config.specific.bool_undefined was not found]"
+* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element number_undefined in path hull.config.specific.number_undefined was not found]"
+* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element string_undefined in path hull.config.specific.string_undefined was not found]"
+* End Tests for specific Helm version
+
 
 ## Include Transformation 
 * Lint and Render
@@ -124,18 +135,6 @@ Test creation of objects and features.
 * Lint and Render
 * Set test object to "release-name-hull-test-special-cases"
 * Test Object has key "data§empty" with value ""
-
-## Binary Data
-* Lint and Render
-* Set test object to "release-name-hull-test-binary-data-hull"
-* Test Object has key "binaryData§binary_from_file" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
-
-* Set test object to "release-name-hull-test-binary-data"
-* Test Object has key "binaryData§binary" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
-
-* Set test object to "release-name-hull-test-binary-data-mixed"
-* Test Object has key "binaryData§binary" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
-* Test Object has key "binaryData§binary_from_file" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
 
 ## Test serialization functions disabled
 * Prepare default test case for this kind including suites "virtualfolderdata,serializationdisabled"
@@ -387,6 +386,21 @@ Test creation of objects and features.
 * Test Object has key "data§simple-string" with value of key "simple-string" from expected.yaml of suite "virtualfolderdata"
 * Test Object has key "data§custom-ca-certificates-cert-a" with value of key "custom-ca-certificates-cert-a" from expected.yaml of suite "virtualfolderdata"
 * Test Object has key "data§custom-ca-certificates-cert-b" with value of key "custom-ca-certificates-cert-b" from expected.yaml of suite "virtualfolderdata"
+
+
+## Binary Data
+* Lint and Render
+* Set test object to "release-name-hull-test-binary-data-hull"
+* Test Object has key "binaryData§binary_from_file" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+* Test Object has key "binaryData§binary_from_inline" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+
+* Set test object to "release-name-hull-test-binary-data"
+* Test Object has key "binaryData§binary" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+
+* Set test object to "release-name-hull-test-binary-data-mixed"
+* Test Object has key "binaryData§binary" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+* Test Object has key "binaryData§binary_from_file" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+* Test Object has key "binaryData§binary_from_inline" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
 
 ___
 
