@@ -516,8 +516,14 @@ Test get transformation on root level
 * Test Object has key "metadata§labels§test-get-capabilities-kubeversion-legacy" with map value that has "3" items which are not empty
 * Test Object has key "metadata§labels§test-get-capabilities-kubeversion" with map value that has "3" items which are not empty
 * Test Object has key "metadata§labels§test-get-capabilities-kubeversion-major" with value of key "test-get-capabilities-kubeversion-major" from expected.yaml of suite "basic"
+* Begin Tests for Helm version "3"
+* Test Object has key "metadata§labels§test-get-capabilities-helmversion-legacy" with map value that has "4" items which are not empty
+* Test Object has key "metadata§labels§test-get-capabilities-helmversion" with map value that has "4" items which are not empty
+* End Tests for specific Helm version
+* Begin Tests for Helm version "4"
 * Test Object has key "metadata§labels§test-get-capabilities-helmversion-legacy" with map value that has "5" items which are not empty
 * Test Object has key "metadata§labels§test-get-capabilities-helmversion" with map value that has "5" items which are not empty
+* End Tests for specific Helm version
 
 * Test Object has key "metadata§labels§test-get-template-basepath" with value of key "test-get-template-basepath" from expected.yaml of suite "basic"
 
