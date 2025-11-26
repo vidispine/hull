@@ -55,7 +55,6 @@ Test creation of objects and features.
 ## Ordering
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_order_test.hull.yaml" including suites "virtualfolderdata"
 * Lint and Render values file "values_order_test.hull.yaml"
-
 * Test object "release-name-hull-test-aaddheaders" does not exist
 * Test object "release-name-hull-test-baddheaders" does not exist
 * Set test object to "release-name-hull-test-caddheaders"
@@ -67,13 +66,25 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-test-get-variants"
 * Test Object has key "data§bool_defined_true" with Base64 encoded value of "true"
 * Test Object has key "data§bool_defined_false" with Base64 encoded value of "false"
-* Test Object has key "data§bool_undefined" with Base64 encoded value of ""
 * Test Object has key "data§string_defined" with Base64 encoded value of "i_am_string"
 * Test Object has key "data§string_empty" with Base64 encoded value of ""
-* Test Object has key "data§string_undefined" with Base64 encoded value of ""
 * Test Object has key "data§number_defined" with Base64 encoded value of "999"
-* Test Object has key "data§number_undefined" with Base64 encoded value of ""
 * Test Object has key "data§key_with_dots_in_it" with Base64 encoded value of "hello dots!"
+
+## Undefined Handling
+* Begin Tests for Helm version "3"
+* Lint and Render values file "values_undefined.hull.yaml"
+* Set test object to "release-name-hull-test-test-get-undefined-variants"
+* Test Object has key "data§bool_undefined" with Base64 encoded value of ""
+* Test Object has key "data§string_undefined" with Base64 encoded value of ""
+* Test Object has key "data§number_undefined" with Base64 encoded value of ""
+* End Tests for specific Helm version
+* Begin Tests for Helm version "4"
+* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element bool_undefined in path hull.config.specific.bool_undefined was not found]"
+* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element number_undefined in path hull.config.specific.number_undefined was not found]"
+* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element string_undefined in path hull.config.specific.string_undefined was not found]"
+* End Tests for specific Helm version
+
 
 ## Include Transformation 
 * Lint and Render
@@ -124,6 +135,23 @@ Test creation of objects and features.
 * Lint and Render
 * Set test object to "release-name-hull-test-special-cases"
 * Test Object has key "data§empty" with Base64 encoded value of ""
+
+## Secret Types
+* Lint and Render
+* Set test object to "release-name-hull-test-type-default"
+* Test Object has key "type" with value "Opaque"
+
+* Set test object to "release-name-hull-test-type-opaque"
+* Test Object has key "type" with value "Opaque"
+
+* Set test object to "release-name-hull-test-type-dockerconfigjson"
+* Test Object has key "type" with value "kubernetes.io/dockerconfigjson"
+
+* Set test object to "release-name-hull-test-type-serviceaccounttoken"
+* Test Object has key "type" with value "kubernetes.io/service-account-token"
+
+* Set test object to "release-name-hull-test-type-custom"
+* Test Object has key "type" with value "custom.com/secret-type"
 
 ## Test serialization functions disabled
 * Prepare default test case for this kind including suites "virtualfolderdata,serializationdisabled"
