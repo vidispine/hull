@@ -34421,7 +34421,8 @@
         "inline",
         "path",
         "noTemplating",
-        "serialization"
+        "serialization",
+        "preEncoded"
       ]
     },
     "hull.VirtualFolderData.v1": {
@@ -34478,6 +34479,19 @@
         },
         "noTemplating": {
           "title": "HullVirtualFolderNoTemplating",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "properties": {},
+          "required": []
+        },
+        "preEncoded": {
+          "title": "HullVirtualFolderPreEncoded",
           "anyOf": [
             {
               "$ref": "#/definitions/hull.Transformation.Pattern"

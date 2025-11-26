@@ -125,18 +125,6 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-special-cases"
 * Test Object has key "data§empty" with value ""
 
-## Binary Data
-* Lint and Render
-* Set test object to "release-name-hull-test-binary-data-hull"
-* Test Object has key "binaryData§binary_from_file" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
-
-* Set test object to "release-name-hull-test-binary-data"
-* Test Object has key "binaryData§binary" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
-
-* Set test object to "release-name-hull-test-binary-data-mixed"
-* Test Object has key "binaryData§binary" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
-* Test Object has key "binaryData§binary_from_file" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
-
 ## Test serialization functions disabled
 * Prepare default test case for this kind including suites "virtualfolderdata,serializationdisabled"
 * Lint and Render
@@ -387,6 +375,21 @@ Test creation of objects and features.
 * Test Object has key "data§simple-string" with value of key "simple-string" from expected.yaml of suite "virtualfolderdata"
 * Test Object has key "data§custom-ca-certificates-cert-a" with value of key "custom-ca-certificates-cert-a" from expected.yaml of suite "virtualfolderdata"
 * Test Object has key "data§custom-ca-certificates-cert-b" with value of key "custom-ca-certificates-cert-b" from expected.yaml of suite "virtualfolderdata"
+
+
+## Binary Data
+* Lint and Render
+* Set test object to "release-name-hull-test-binary-data-hull"
+* Test Object has key "binaryData§binary_from_file" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+* Test Object has key "binaryData§binary_from_inline" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+
+* Set test object to "release-name-hull-test-binary-data"
+* Test Object has key "binaryData§binary" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+
+* Set test object to "release-name-hull-test-binary-data-mixed"
+* Test Object has key "binaryData§binary" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+* Test Object has key "binaryData§binary_from_file" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+* Test Object has key "binaryData§binary_from_inline" with value "QÖÚ¼ˆ”¬µÖó¼ñƒ"
 
 ___
 

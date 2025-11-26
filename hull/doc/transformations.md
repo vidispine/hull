@@ -46,9 +46,9 @@ When varying the `hull.config.general.render: 3` from 1 to 3 the value of `field
 
 With `hull.config.general.render.passes: 1`, the env var `RESOLVE_A` resolves to `_HT*hull.config.specific.field_c`, the yet unresolved literal value of `field_b`.
 
-With `hull.config.general.render.passed: 1`, the env var `RESOLVE_A` resolves to `_HT*hull.config.specific.field_g`, effectively already resolving a large number of forward references.
+With `hull.config.general.render.passes: 2`, the env var `RESOLVE_A` resolves to `_HT*hull.config.specific.field_g`, effectively already resolving a large number of forward references.
 
-With `hull.config.general.render.passed: 3`, the env var `RESOLVE_A` resolves to `Found me!`, thus all forward references were resolved successfully.
+With `hull.config.general.render.passes: 3`, the env var `RESOLVE_A` resolves to `Found me!`, thus all forward references were resolved successfully.
 
 
 

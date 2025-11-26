@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "24" objects were rendered on top of basic objects count
+* Expected number of "25" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -124,24 +124,6 @@ Test creation of objects and features.
 * Lint and Render
 * Set test object to "release-name-hull-test-special-cases"
 * Test Object has key "data§empty" with Base64 encoded value of ""
-
-
-## Secret Types
-* Lint and Render
-* Set test object to "release-name-hull-test-type-default"
-* Test Object has key "type" with value "Opaque"
-
-* Set test object to "release-name-hull-test-type-opaque"
-* Test Object has key "type" with value "Opaque"
-
-* Set test object to "release-name-hull-test-type-dockerconfigjson"
-* Test Object has key "type" with value "kubernetes.io/dockerconfigjson"
-
-* Set test object to "release-name-hull-test-type-serviceaccounttoken"
-* Test Object has key "type" with value "kubernetes.io/service-account-token"
-
-* Set test object to "release-name-hull-test-type-custom"
-* Test Object has key "type" with value "custom.com/secret-type"
 
 ## Test serialization functions disabled
 * Prepare default test case for this kind including suites "virtualfolderdata,serializationdisabled"
@@ -370,6 +352,22 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-test-glob-import-no-template-serialize"
 * Test Object has key "data§templated-json.json" with Base64 encoded value of key "templated-json-no-template-serialize.yaml" from expected.yaml of suite "virtualfolderdata"
 
+## Secret Types
+* Lint and Render
+* Set test object to "release-name-hull-test-type-default"
+* Test Object has key "type" with value "Opaque"
+
+* Set test object to "release-name-hull-test-type-opaque"
+* Test Object has key "type" with value "Opaque"
+
+* Set test object to "release-name-hull-test-type-dockerconfigjson"
+* Test Object has key "type" with value "kubernetes.io/dockerconfigjson"
+
+* Set test object to "release-name-hull-test-type-serviceaccounttoken"
+* Test Object has key "type" with value "kubernetes.io/service-account-token"
+
+* Set test object to "release-name-hull-test-type-custom"
+* Test Object has key "type" with value "custom.com/secret-type"
 
 ## Verify sources are not muddled together
 * Prepare default test case for this kind including suites "virtualfolderdata"
@@ -465,6 +463,21 @@ Test creation of objects and features.
 * Test Object has key "data§KEYCLOAK_MANAGEMENT_PASSWORD" with Base64 encoded value of ""
 * Test Object has key "data§VIDISPINE_REALM_ADMIN" with Base64 encoded value of "admin"
 * Test Object has key "data§VIDISPINE_REALM_ADMIN_PASSWORD" with Base64 encoded value of ""
-___
+
+## Preencoded Secret data
+* Lint and Render
+* Set test object to "release-name-hull-test-encoding"
+* Test Object has key "data§text_unencoded_encode_inline" with Base64 encoded value of "This text is encoded in Base64 format"
+* Test Object has key "data§text_encoded_encode_inline" with Base64 encoded value of "VGhpcyB0ZXh0IGlzIGVuY29kZWQgaW4gQmFzZTY0IGZvcm1hdA=="
+* Test Object has key "data§text_encoded_unencode_inline" with Base64 encoded value of "This text is encoded in Base64 format"
+* Test Object has key "data§binary_unencoded_encode_inline" with Base64 encoded value of "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+* Test Object has key "data§binary_encoded_encode_inline" with Base64 encoded value of "UcOWw5rCvMuG4oCdwqzCtcOWw7PCvMOxxpI="
+* Test Object has key "data§binary_encoded_unencode_inline" with Base64 encoded value of "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+* Test Object has key "data§text_unencoded_encode_path" with Base64 encoded value of "This text is encoded in Base64 format"
+* Test Object has key "data§text_encoded_encode_path" with Base64 encoded value of "VGhpcyB0ZXh0IGlzIGVuY29kZWQgaW4gQmFzZTY0IGZvcm1hdA=="
+* Test Object has key "data§text_encoded_unencode_path" with Base64 encoded value of "This text is encoded in Base64 format"
+* Test Object has key "data§binary_unencoded_encode_path" with Base64 encoded value of "QÖÚ¼ˆ”¬µÖó¼ñƒ"
+* Test Object has key "data§binary_encoded_encode_path" with Base64 encoded value of "UcOWw5rCvMuG4oCdwqzCtcOWw7PCvMOxxpI="
+* Test Object has key "data§binary_encoded_unencode_path" with Base64 encoded value of "QÖÚ¼ˆ”¬µÖó¼ñƒ"
 
 * Clean the test execution folder
