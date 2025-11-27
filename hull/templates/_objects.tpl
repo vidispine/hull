@@ -194,7 +194,9 @@ metadata:
 {{- $printedObject := toYaml $objectSpec -}}
 {{- range $replacementName, $replacementValue := (index $rootContext.Values $hullRootKey).config.general.postRender.globalStringReplacements -}}
 {{- if $replacementValue.enabled -}}
-{{- $targetValue := ""}}
+{{- $targetValue := $replacementValue.replacement -}}
+{{- $replacementStaticKeys := list "OBJECT_INSTANCE_KEY" "OBJECT_INSTANCE_KEY_RESOLVED" "OBJECT_INSTANCE_NAME" -}}
+{{- if has $replacementValue.replacement $replacementStaticKeys  -}}
 {{- if eq $replacementValue.replacement "OBJECT_INSTANCE_KEY" -}}
 {{- $targetValue = $objectKey -}}
 {{- end -}}
@@ -204,9 +206,8 @@ metadata:
 {{- if eq $replacementValue.replacement "OBJECT_INSTANCE_NAME" -}}
 {{- $targetValue = printf "%s" $objectSpec.metadata.name -}}
 {{- end -}}
-{{- if ne $targetValue "" -}}
-{{- $printedObject = $printedObject | replace $replacementValue.string $targetValue -}}
 {{- end -}}
+{{- $printedObject = $printedObject | replace $replacementValue.string $targetValue -}}
 {{- end -}}
 {{- end -}}
 {{ $printedObject }}
