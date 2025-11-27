@@ -22,6 +22,37 @@ One major design aspect of [Helm](https://helm.sh) is that it forces the user to
 
 The primary feature of the HULL library is the ability to remove customized YAML template files entirely from Helm chart workflows and thereby allowing to remove a level of abstraction. Using the HULL library chart, Kubernetes objects including all their properties can be completely and transparently specified in the `values.yaml`. The HULL library chart itself provides the uniform layer to streamline specification, configuration and rendering of Helm charts to achieve this. You can also think of it as a thin layer on top of the Kubernetes API to avoid the middleman between Helm Chart and Kubernetes API object configuration, yet providing flexibility when it is required to customize individual configuration options instead of requiring you to add each configuration switch manually to the templates. JSON schema validation based on the [Helm JSON validation feature](https://helm.sh/docs/topics/charts/#schema-files) (via `values.schema.json`) aids in writing Kubernetes API conforming objects right from the beginning when [using an IDE that supports live JSON schema validation](./hull/doc/json_schema_validation.md). Additional benefits (uniform inheritable object metadata, simplified inclusion of ConfigMaps/Secrets, cross-referencing values within the `values.yaml`, ...) are available with HULL which you can read about below in the **Key Features Overview**. But maybe most importantly, the HULL library can be added as a dependency to any existing Helm chart and be used side-by-side without breaking any existing Helm charts functionalities, see [adding the HULL library chart to a Helm chart](./hull/doc/setup.md) for more information. And lastly, by being a library chart itself, everything works 100% within the functionality that plain Helm offers - no additional tooling is introduced or involved.
 
+### Versioning
+HULL release versions are closely tied to Kubernetes release versions due to the incorporation of the release specific Kubernetes API schemas. Each HULL release branch therefore matches a Kubernetes release branch (such as `1.34`). Kubernetes patch releases provide non-breaking updates to a Kubernetes release while maintaining API stability and therefore play no role in the HULL versioning process. HULL's patch releases contain fixes and changes to HULL alone while maintaining compatibility to the Kubernetes releases API schema. 
+
+HULLs compatibility with Helm matches the respective Kubernetes versions compatibility with Helm, see [Helm Version Support Policy for Helm 4](https://helm.sh/docs/topics/version_skew) and [Helm Version Support Policy for Helm 3](https://helm.sh/docs/v3/topics/version_skew) for the matching version ranges.
+
+Each new release of HULL is thoroughly tested and, unless explicitly noted in the `CHANGELOG.md`, they do not contain breaking changes. Hence, it is usually safe to keep HULL versions up-to-date keeping compatibility with targeted Kubernetes cluster versions in mind.
+
+### Helm v3 vs Helm v4
+
+HULL remains compatible with existing Helm 3 releases and is fully compatible with Helm v4 starting with versions `1.34.2`, `1.33.3` and `1.32.6`. 
+
+However, note that minor (however potentially chart-breaking) differences were introduced on the Helm side when moving to Helm v4:
+
+- (technical) property names under the `Chart` object in the Helm root context have changed. This is with respect to capitalization of first letters mostly (eg. `maintainers` is now `Maintainers`), but for some properties capitalization is changed in multiple places (eg. `apiVersion` is now `APIVersion`).
+
+- treatment of unset values has changed. To clarify what is mean with 'unset', consider property `field_unset` in this snippet:
+
+  ```
+  field_string: "some_text" # string text
+  field_int: 123 # number
+  field_bool: true # boolean
+  field_unset: 
+  field_dict: 
+    key_1: value_1
+  ```
+
+  The behavior of Helm 3, when accessing such a field's property value, was to treat it as an empty string value from observation. This means, the key value pair exists in the `.Values` object tree and it's value is empty and of string type. With Helm 4 on the other hand, the field is absent from the object tree and accessing it will lead to an error.
+
+Both aspects should typically be less relevant for HULL based charts, however it shall be documented here to avoid confusion. More detailed information can be found in the [related Helm issue](https://github.com/helm/helm/issues/31344).
+
+
 **Your feedback on this project is valued, hence please comment or start a discussion in the `Issues` section or create feature wishes and bug reports. Thank you!**
 
 The HULL library chart idea is partly inspired by the [common](
