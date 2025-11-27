@@ -114,7 +114,7 @@
     {{- else -}}
       {{- $value = $value | toString -}}
     {{- end -}}
-    {{- if (eq $virtualfolderType "secret") -}}
+    {{- if (and (eq $virtualfolderType "secret") (not (and (hasKey $innerValue "preEncoded") $innerValue.preEncoded))) -}}
       {{- $value = b64enc $value -}}
     {{- end -}}
     {{- $data = set $data (base $innerKey) $value -}}
