@@ -19,6 +19,8 @@ hull:
         binaryData:
           binary_from_file:
             path: files/binary
+          binary_from_inline:
+            inline: "QÖÚ¼ˆ”¬µÖó¼ñƒ"
 
       binary-data:
         binaryData:
@@ -28,6 +30,8 @@ hull:
         binaryData:
           binary_from_file:
             path: files/binary
+          binary_from_inline:
+            inline: "QÖÚ¼ˆ”¬µÖó¼ñƒ"
           binary: "QÖÚ¼ˆ”¬µÖó¼ñƒ"
           test: _HT!{{ toString ((index . "PARENT").Files.Get "files/test.txt") | b64enc }}
 

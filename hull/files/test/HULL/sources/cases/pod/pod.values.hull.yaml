@@ -1235,9 +1235,6 @@ hull:
                 string_empty:
                   enabled: true
                   value: _HT*hull.config.specific.string_empty
-                string_undefined:
-                  enabled: true
-                  value: _HT*hull.config.specific.string_undefined
               envFrom:
                 bool_defined_false:
                   configMapRef:

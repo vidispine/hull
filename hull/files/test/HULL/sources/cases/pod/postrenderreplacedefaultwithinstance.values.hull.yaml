@@ -8,6 +8,10 @@ hull:
           instanceName:
             enabled: true
             string: ___INSTANCE_NAME___
+          openingDoubleCurlyBraces:
+            enabled: true
+          closingDoubleCurlyBraces:
+            enabled: true
   
   objects:
     <OBJECT_TYPE>:
@@ -17,7 +21,8 @@ hull:
           instance-key-embedded-in-string: abc_HULL_OBJECT_TYPE_DEFAULT_def
           instance-name-from-string: ___INSTANCE_NAME___
           instance-key-from-transformation: _HT!{{ printf "%s" (index . "OBJECT_INSTANCE_KEY") }}
-
+          double-curly-braces: "{+{ .some.thirdparty.templating.engine }+}"
+          double-curly-braces-transformed: _HT!{{ printf "%s" "Look, i transformed a downstream templating expression like {+{ .some.thirdparty.templating.engine }+} to upper!" | upper }}
         pod:
           containers:
             _HULL_OBJECT_TYPE_DEFAULT_:
