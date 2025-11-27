@@ -8,6 +8,7 @@ import sys
 import jsonschema
 import yaml
 import re
+import inspect
 
 from dotty_dict import Dotty
 from getgauge.python import Messages, before_scenario, before_step, data_store, step
@@ -20,14 +21,21 @@ UNIX_LINE_ENDING = '\n'
 PLACEHOLDER_OBJECT_TYPE = "<OBJECT_TYPE>"
 PLACEHOLDER_K8S_MAJOR_VERSION = "<K8S_MAJOR_VERSION>"
 BASIC_OBJECTS_COUNT = "<BASIC_OBJECTS_COUNT>"
+SKIPPING_TESTS = False
+
+HELM_BINARY = os.environ.get("helm_binary", "helm")
 
 @step("Fill data store with kind <kind> and case <case>")
 def fill_data_store_with_kind_and_case(kind, case):
+    if SKIPPING_TESTS:
+        return
     data_store.scenario.kind = kind
     data_store.scenario.case = case.lower()
 
 @step("Fill data store with chart <chart> and suites <suites>")
 def fill_data_store_with_chart_and_suites(chart, suites):
+    if SKIPPING_TESTS:
+        return    
     data_store.scenario.chart = chart
     s = list()
     if not suites == "":
@@ -36,6 +44,8 @@ def fill_data_store_with_chart_and_suites(chart, suites):
     data_store.scenario.suites = s
 
 def fill_data_store_with_environment_info():
+    if SKIPPING_TESTS:
+        return
     data_store.scenario.environment = {}
     dir_path = os.path.dirname(os.path.realpath(__file__))
     chart_yaml_path = os.path.join(dir_path,'./../../../../Chart.yaml')
@@ -51,12 +61,16 @@ def fill_data_store_with_environment_info():
 
 @step("Fill data store with kind <kind>, case <case>, chart <chart> and suites <suites>")
 def fill_data_store(kind, case, chart, suites):
+    if SKIPPING_TESTS:
+        return
     fill_data_store_with_kind_and_case(kind, case)
     fill_data_store_with_chart_and_suites(chart, suites)
     fill_data_store_with_environment_info()
     
 @step("Copy folders to test execution folder")
 def copy_folders_to_TEST_EXECUTION_FOLDER():
+    if SKIPPING_TESTS:
+        return
     copy_the_test_suites_source_folders_to_TEST_EXECUTION_FOLDER()
     copy_the_test_source_folder_to_TEST_EXECUTION_FOLDER()
     copy_the_test_chart_folders_to(data_store.scenario.case, data_store.scenario.chart)
@@ -64,10 +78,14 @@ def copy_folders_to_TEST_EXECUTION_FOLDER():
 
 @step("Copy the test source folder to test execution folder")
 def copy_the_test_source_folder_to_TEST_EXECUTION_FOLDER():
+    if SKIPPING_TESTS:
+        return
     copy_the_test_chart_folders_to(data_store.scenario.case, data_store.scenario.chart)
 
 @step("Copy the test source folder for case <case> and chart <chart> to test execution folder")
 def copy_the_test_chart_folders_to(case, chart):
+    if SKIPPING_TESTS:
+        return
     dir_path = os.path.dirname(os.path.realpath(__file__))
     src_path_case = os.path.join(dir_path,'./../sources/cases', case)
     src_path_chart = os.path.join(dir_path,'./../sources/charts', chart)
@@ -93,11 +111,15 @@ def copy_the_test_chart_folders_to(case, chart):
 
 @step("Copy the suites source folders to test execution folder")
 def copy_the_test_suites_source_folders_to_TEST_EXECUTION_FOLDER():
+    if SKIPPING_TESTS:
+        return
     for suite in data_store.scenario.suites:
         copy_the_suite_source_folder_for_case_and_chart_and_suite_to_TEST_EXECUTION_FOLDER(data_store.scenario.case, data_store.scenario.chart, suite)    
 
 @step("Copy the suite source folder for case <case> and chart <chart> and suite <suite> to test execution folder")
 def copy_the_suite_source_folder_for_case_and_chart_and_suite_to_TEST_EXECUTION_FOLDER(case, chart, suite):
+    if SKIPPING_TESTS:
+        return
     dir_path = os.path.dirname(os.path.realpath(__file__))
     suite_folder = suite
     suite_file = suite
@@ -124,6 +146,8 @@ def copy_the_suite_source_folder_for_case_and_chart_and_suite_to_TEST_EXECUTION_
 
 @step("Clean the test execution folder")
 def delete_the_TEST_EXECUTION_FOLDER():
+    if SKIPPING_TESTS:
+        return
     if os.environ.get("no_cleanup") != 'true':
         dir_path = os.path.dirname(os.path.realpath(__file__))
         dst_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, "case", data_store.scenario.case)
@@ -135,10 +159,14 @@ def delete_the_TEST_EXECUTION_FOLDER():
 
 @step("Copy the HULL chart files to test execution folder")
 def copy_the_hull_chart_files_to_test_execution_folder():
+    if SKIPPING_TESTS:
+        return
     copy_the_hull_chart_files_to_test_object_in_chart(data_store.scenario.case, data_store.scenario.chart)
 
 @step("Copy the HULL chart files for test case <case> and chart <chart> to test execution folder")
 def copy_the_hull_chart_files_to_test_object_in_chart(case, chart):
+    if SKIPPING_TESTS:
+        return
     dir_path = os.path.dirname(os.path.realpath(__file__))
     hull_path = os.path.join(dir_path,'./../../../../')
     dst_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'chart', chart, "charts/hull-1.0.0/")
@@ -160,22 +188,32 @@ def copy_the_hull_chart_files_to_test_object_in_chart(case, chart):
 
 @step("Fail to render the templates for values file <values_file> to test execution folder because error contains <expected_error>")
 def fail_to_render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, expected_error):
+    if SKIPPING_TESTS:
+        return
     fail_to_render_the_templates_to_namespace_namespace_for_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, "default", expected_error)
 
 @step("Fail to render the templates for values file <values_file> to test execution folder and namespace <namespace> because error contains <expected_error>")
 def fail_to_render_the_templates_to_namespace_namespace_for_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, namespace, expected_error):
+    if SKIPPING_TESTS:
+        return
     fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_and_values_files(data_store.scenario.case, data_store.scenario.chart, [values_file], namespace, expected_error)
 
 @step("Fail to render the templates for additional values file <values_file> to test execution folder because error contains <expected_error>")
 def fail_to_render_the_templates_for_additional_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, expected_error):
+    if SKIPPING_TESTS:
+        return
     fail_to_render_the_templates_to_namespace_namespace_for_additional_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, "default", expected_error)
 
 @step("Fail to render the templates for additional values file <values_file> to test execution folder and namespace <namespace> because error contains <expected_error>")
 def fail_to_render_the_templates_to_namespace_namespace_for_additional_values_file_to_TEST_EXECUTION_FOLDER_because_error_contains(values_file, namespace, expected_error):
+    if SKIPPING_TESTS:
+        return
     fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_and_values_files(data_store.scenario.case, data_store.scenario.chart, ["values.hull.yaml", values_file], namespace, expected_error)
 
 @step("Fail to render the templates for test case <case> and chart <chart> and values file <values_file> to test execution folder and namespace <namespace> because error contains <expected_error>")
 def fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_and_values_files(case, chart, values_files, namespace, expected_error):
+    if SKIPPING_TESTS:
+        return
     result = render_chart(case, chart, values_files, namespace)
     expected_error = expected_error.replace(PLACEHOLDER_OBJECT_TYPE, case)
     if result.returncode != 0 and expected_error in str(result.stdout):
@@ -185,6 +223,8 @@ def fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_
 
 @step("Lint the templates for values file <values_file> to namespace <namespace>")
 def lint_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file, namespace):
+    if SKIPPING_TESTS:
+        return
     if os.environ.get("no_lint") == 'true':
         print('Skipping Linting')
     else: 
@@ -193,6 +233,8 @@ def lint_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file, nam
 
 @step("Render the templates for values file <values_file> to test execution folder and namespace <namespace>")
 def render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file, namespace):
+    if SKIPPING_TESTS:
+        return
     render = render_chart(data_store.scenario.case, data_store.scenario.chart, [values_file], namespace)
     #if result.returncode == 0:
     #    render_path = get_render_path(data_store.scenario.case, data_store.scenario.chart, values_file)
@@ -203,23 +245,33 @@ def render_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file, n
 
 @step("Fill data store with rendered objects")
 def fill_data_store_with_rendered_objects():
+    if SKIPPING_TESTS:
+        return
     get_objects(data_store.scenario.case, data_store.scenario.chart)
 
 @step("Expected number of <count> objects of kind <kind> were rendered")
 def check_that_expected_number_of_objects_of_kind_was_rendered(count, kind):
+    if SKIPPING_TESTS:
+        return
     found = len(data_store.scenario["objects_" + kind])
     assert int(count) == found, "Expected " + str(count) + " but found " + str(found)
 
 @step("Expected number of <count> objects were rendered on top of basic objects count")
 def check_that_expected_number_of_objects_was_rendered_on_top_of_basic_objects_count(count):
+    if SKIPPING_TESTS:
+        return
     check_that_expected_number_of_objects_of_kind_was_rendered(data_store.scenario.environment[BASIC_OBJECTS_COUNT] + int(count), data_store.scenario.kind)
 
 @step("Expected number of <count> objects were rendered")
 def check_that_expected_number_of_objects_was_rendered(count):
+    if SKIPPING_TESTS:
+        return
     check_that_expected_number_of_objects_of_kind_was_rendered(count, data_store.scenario.kind)
 
 @step("Set test object to <name> of kind <kind>")
 def set_test_object_to_of_kind(name, kind):
+    if SKIPPING_TESTS:
+        return
     objects_of_kind = "objects_" + kind
     assert name in data_store.scenario[objects_of_kind], f"Object with name {name} not found in objects of kind {kind}!"
     data_store.scenario.test_object = data_store.scenario[objects_of_kind][name]
@@ -229,12 +281,16 @@ def set_test_object_to_of_kind(name, kind):
 
 @step("Set test object to <name>")
 def set_test_object_to(name):
+    if SKIPPING_TESTS:
+        return
     objects_of_kind = "objects_" + data_store.scenario.kind
     assert objects_of_kind in data_store.scenario, f"No object kind set!"
     return set_test_object_to_of_kind(name, data_store.scenario.kind)
 
 @step("Test object <name> of kind <kind> does not exist")
 def test_object_of_kind_does_not_exist(name, kind):
+    if SKIPPING_TESTS:
+        return
     try:
         data_store.scenario["objects_" + kind][name]
     except Exception as e:
@@ -245,10 +301,14 @@ def test_object_of_kind_does_not_exist(name, kind):
 
 @step("Test object <name> does not exist")
 def test_object_does_not_exist(name):
+    if SKIPPING_TESTS:
+        return
     return test_object_of_kind_does_not_exist(name, data_store.scenario.kind)
 
 @step("Test Object has key <key> with array value that has <count> items")
 def test_object_has_key_with_array_value_that_has_items(key, value):
+    if SKIPPING_TESTS:
+        return
     assert data_store.scenario.test_object != None
     if isinstance(data_store.scenario.test_object[key], list): 
         assert_values_equal(len(data_store.scenario.test_object[key]), int(value), data_store.scenario.case.lower(), key)
@@ -257,6 +317,8 @@ def test_object_has_key_with_array_value_that_has_items(key, value):
 
 @step("Test Object has key <key> with dictionary value that has <count> items")
 def test_object_has_key_with_dictionary_value_that_has_items(key, value):
+    if SKIPPING_TESTS:
+        return
     assert data_store.scenario.test_object != None
     if isinstance(data_store.scenario.test_object[key], dict): 
         for key in data_store.scenario.test_object[key].keys():            
@@ -268,6 +330,8 @@ def test_object_has_key_with_dictionary_value_that_has_items(key, value):
 
 @step("Test Object has key <key> with map value that has <count> items which are not empty")
 def test_object_has_key_with_map_value_that_has_non_empty_items(key, value):
+    if SKIPPING_TESTS:
+        return
     assert data_store.scenario.test_object != None
     dictionary = yaml.safe_load(data_store.scenario.test_object[key])
     if isinstance(dictionary, dict):
@@ -281,6 +345,8 @@ def test_object_has_key_with_map_value_that_has_non_empty_items(key, value):
 
 @step("Test Object has key <key> with list value that has count of items greater than <count>")
 def test_object_has_key_with_list_value_that_has_count_greater(key, value):
+    if SKIPPING_TESTS:
+        return
     assert data_store.scenario.test_object != None
     yamlList = yaml.safe_load(data_store.scenario.test_object[key])
     if isinstance(yamlList, list):
@@ -292,6 +358,8 @@ def test_object_has_key_with_list_value_that_has_count_greater(key, value):
 
 @step("Test Object has key <key> with value <value> when env var <envvarkey> equals <envvarvalue> else pass") 
 def test_object_has_key_with_value_when_env_var_equals_else_pass(key, value, envvarkey, envvarvalue):
+    if SKIPPING_TESTS:
+        return
     if os.environ.get(envvarkey, "") == envvarvalue:
         test_object_has_key_with_value(key, value)
     else:
@@ -300,16 +368,22 @@ def test_object_has_key_with_value_when_env_var_equals_else_pass(key, value, env
 
 @step("Test Object has key <key> with value <value>")
 def test_object_has_key_with_value(key, value):
+    if SKIPPING_TESTS:
+        return
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert_values_equal(data_store.scenario.test_object[key], value, data_store.scenario.case.lower(), key)
 
 @step("Test Object has key <key> with value of key <expectedkey> from expected.yaml")
 def test_object_has_key_with_value_of_key_from_expected_yaml(key, expectedkey):
+    if SKIPPING_TESTS:
+        return
     return test_object_has_key_with_value_of_key_from_expected_yaml_of_suite(key, expectedkey, data_store.scenario.case)
 
 @step("Test Object has key <key> with value of key <expectedkey> from expected.yaml of suite <suite>")
 def test_object_has_key_with_value_of_key_from_expected_yaml_of_suite(key, expectedkey, suite):
+    if SKIPPING_TESTS:
+        return
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert key in data_store.scenario.test_object, f"Key {key} not found in Test Object!"
@@ -320,6 +394,8 @@ def test_object_has_key_with_value_of_key_from_expected_yaml_of_suite(key, expec
 
 @step("Test Object has key <key> with Base64 encoded value of key <expectedkey> from expected.yaml of suite <suite>")
 def test_object_has_key_with_base64_encoded_value_of_key_from_expected_yaml_of_suite(key, expectedkey, suite):
+    if SKIPPING_TESTS:
+        return
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     decoded = base64.b64decode(data_store.scenario.test_object[key]).decode()
@@ -328,24 +404,32 @@ def test_object_has_key_with_base64_encoded_value_of_key_from_expected_yaml_of_s
 
 @step("Test Object has key <key> with value equaling object type")
 def test_object_has_key_with_value_equaling_object_type(key):
+    if SKIPPING_TESTS:
+        return
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.case.lower(), data_store.scenario.case.lower(), key)
 
 @step("Test Object has key <key> with value equaling object instance name")
 def test_object_has_key_with_value_equaling_object_instance_name(key):
+    if SKIPPING_TESTS:
+        return
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.name, data_store.scenario.case.lower(), key)
 
 @step("Test Object has key <key> with value equaling object instance key")
 def test_object_has_key_with_value_equaling_object_instance_key(key):
+    if SKIPPING_TESTS:
+        return
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert_values_equal(data_store.scenario.test_object[key], data_store.scenario.name.removeprefix("release-name-hull-test-"), data_store.scenario.case.lower(), key)
 
 @step("Test Object has key <key> with value matching regex <regex>")
 def test_object_has_key_with_value_matching_regex(key, regex):
+    if SKIPPING_TESTS:
+        return
     assert "test_object" in data_store.scenario != None, "No Test Object set!"    
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert regex != None, "Regex cannot be empty!"
@@ -354,6 +438,8 @@ def test_object_has_key_with_value_matching_regex(key, regex):
 
 @step("Test Object has key <key> with value containing <contains>")
 def test_object_has_key_with_value_containing(key, contains):
+    if SKIPPING_TESTS:
+        return
     assert "test_object" in data_store.scenario != None, "No Test Object set!"    
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert contains != None, "Contains string cannot be empty!"
@@ -361,6 +447,8 @@ def test_object_has_key_with_value_containing(key, contains):
 
 @step("Test Object has key <key> with value not containing <contains>")
 def test_object_has_key_with_value_containing(key, contains):
+    if SKIPPING_TESTS:
+        return
     assert "test_object" in data_store.scenario != None, "No Test Object set!"    
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert contains != None, "Contains string cannot be empty!"
@@ -368,15 +456,21 @@ def test_object_has_key_with_value_containing(key, contains):
 
 @step("Test Object has key <key> set to true")
 def test_object_has_key_set_to_true(key):
+    if SKIPPING_TESTS:
+        return
     test_object_has_key_with_value(key, True)
 
 @step("Test Object has key <key> set to false")
 def test_object_has_key_set_to_false(key):
+    if SKIPPING_TESTS:
+        return
     test_object_has_key_with_value(key, False)
 
 
 @step("Test Object does not have key <key>")
 def test_object_does_not_have_key(key):
+    if SKIPPING_TESTS:
+        return
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     try:
@@ -389,18 +483,24 @@ def test_object_does_not_have_key(key):
 
 @step("Test Object has key <key> with integer value <value>")
 def test_object_has_key_with_integer_value(key, value):
+    if SKIPPING_TESTS:
+        return
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert_values_equal(data_store.scenario.test_object[key], int(value), data_store.scenario.case.lower(), key)
 
 @step("Test Object has key <key> with null value")
 def test_object_has_key_with_null_value(key):
+    if SKIPPING_TESTS:
+        return
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert_values_equal(data_store.scenario.test_object[key], None, data_store.scenario.case.lower(), key)
 
 @step("Test Object has key <key> with Base64 encoded value of <value>")
 def test_object_has_key_with_base64_encoded_value(key, value):
+    if SKIPPING_TESTS:
+        return
     assert data_store.scenario.test_object != None
     decoded = base64.b64decode(data_store.scenario.test_object[key]).decode()
     assert_values_equal(
@@ -408,9 +508,13 @@ def test_object_has_key_with_base64_encoded_value(key, value):
     
 @step("Test Object has key <key> with value <value> of key <scenario_key> from scenario data_store")
 def test_object_has_key_with_value_of_key_from_scenario_data_store(key, scenario_key):
+    if SKIPPING_TESTS:
+        return
     test_object_has_key_with_value(key, data_store.scenario[scenario_key])
 
 def load_from_serialized_value(key, serialization):
+    if SKIPPING_TESTS:
+        return
     assert "test_object" in data_store.scenario != None, "No Test Object set!"
     assert data_store.scenario.test_object != None, "Test Object set to None!"
     assert serialization in ["YAML"], f"The value {serialization} for serialization is not in range of supported values [YAML]!"
@@ -421,14 +525,20 @@ def load_from_serialized_value(key, serialization):
 
 @step("Test Object has key <key> containing serialized <serialization> having key <serialized_key> with value <serialized_value>")
 def test_object_has_key_containing_serialized_having_key_with_value(key, serialization, serialized_key, serialized_value):
+    if SKIPPING_TESTS:
+        return
     assert_values_equal(load_from_serialized_value(key, serialization)[serialized_key],serialized_value, data_store.scenario.case.lower(), serialized_key)
 
 @step("Test Object has key <key> containing serialized <serialization> having key <serialized_key> with integer value <serialized_value>")
 def test_object_has_key_containing_serialized_having_key_with_value(key, serialization, serialized_key, serialized_value):
+    if SKIPPING_TESTS:
+        return
     assert_values_equal(load_from_serialized_value(key, serialization)[serialized_key],int(serialized_value), data_store.scenario.case.lower(), serialized_key)
 
 @step("All test objects have key <key> with value <value>")
 def all_test_objects_have_key_with_value(key, value):
+    if SKIPPING_TESTS:
+        return
     test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
     for i in test_objects:
         set_test_object_to(i)
@@ -436,6 +546,8 @@ def all_test_objects_have_key_with_value(key, value):
 
 @step("All test objects have key <key> with value <value> except objects <exceptions>")
 def all_test_objects_have_key_with_value_except_objects(key, value, exceptions):
+    if SKIPPING_TESTS:
+        return
     test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
     to_skip = exceptions.split(',')
     for i in test_objects:
@@ -450,6 +562,8 @@ def all_test_objects_have_key_with_value_except_objects(key, value, exceptions):
 
 @step("All test objects have key <key> with value matching regex <regex>")
 def all_test_objects_have_key_with_value_matching_regex(key, regex):
+    if SKIPPING_TESTS:
+        return
     test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
     for i in test_objects:
         set_test_object_to(i)
@@ -457,6 +571,8 @@ def all_test_objects_have_key_with_value_matching_regex(key, regex):
 
 @step("All test objects have key <key> with value of key <scenario_key> from scenario data_store")
 def all_test_objects_have_key_with_value_of_key_from_data_store(key, scenario_key):
+    if SKIPPING_TESTS:
+        return
     test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
     for i in test_objects:
         set_test_object_to(i)
@@ -464,6 +580,8 @@ def all_test_objects_have_key_with_value_of_key_from_data_store(key, scenario_ke
 
 @step("All test objects have key <key> with Base64 encoded value of <value>")
 def all_test_objects_have_key_with_base64_value(key, value):
+    if SKIPPING_TESTS:
+        return
     test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
     for i in test_objects:
         set_test_object_to(i)
@@ -471,6 +589,8 @@ def all_test_objects_have_key_with_base64_value(key, value):
 
 @step("All test objects have key <key> with Base64 encoded value of key <expectedkey> from expected.yaml of suite <suite>")
 def all_test_objects_have_key_with_base64_encoded_value_of_key_from_expected_yaml_of_suite(key, expectedkey, suite):
+    if SKIPPING_TESTS:
+        return
     test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
     for i in test_objects:
         set_test_object_to(i)
@@ -478,6 +598,8 @@ def all_test_objects_have_key_with_base64_encoded_value_of_key_from_expected_yam
 
 @step("All test objects have key <key> with value of key <expectedkey> from expected.yaml of suite <suite>")
 def all_test_objects_have_key_with_value_of_key_from_expected_yaml_of_suite(key, expectedkey, suite):
+    if SKIPPING_TESTS:
+        return
     test_objects = data_store.scenario["objects_" + data_store.scenario.kind]
     for i in test_objects:
         set_test_object_to(i)
@@ -485,18 +607,24 @@ def all_test_objects_have_key_with_value_of_key_from_expected_yaml_of_suite(key,
 
 @step("Validate")
 def validate():
+    if SKIPPING_TESTS:
+        return
     test_objects = data_store.scenario.objects
     for i in test_objects:
         validate_test_object_against_json_schema(i)
 
 @step("Validate with additional schemas in subfolder <folder>")
 def validate(folder=None):
+    if SKIPPING_TESTS:
+        return
     test_objects = data_store.scenario.objects
     for i in test_objects:
         validate_test_object_against_json_schema(i, folder)
 
 @step("Fail to Validate because error contains <expected_error>")
 def fail_to_validate(expected_error):
+    if SKIPPING_TESTS:
+        return
     try:
         validate()
     except Exception as e:
@@ -509,9 +637,26 @@ def fail_to_validate(expected_error):
 
 @step("Validate test object against JSON Schema")
 def validate_test_object_against_json_schema(test_object, extra_folder=None):
+    if SKIPPING_TESTS:
+        return
     assert test_object != None    
     validateJson(test_object, extra_folder)
 
+@step("Begin Tests for Helm version <version>")
+def begin_tests_for_helm_version(helm_version):
+    global SKIPPING_TESTS
+    args = (HELM_BINARY, "version", "--template='{{.Version}}'")
+    popen = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    response = popen.stdout.decode("utf-8").replace("\n",os.linesep)
+    print('STDOUT:\n', response)
+    SKIPPING_TESTS = not response.strip("'").startswith(f"v{helm_version}")
+    print('STDOUT:\n', response)
+
+@step("End Tests for specific Helm version")
+def end_tests_for_helm_version():
+    global SKIPPING_TESTS
+    SKIPPING_TESTS = False
+    
 ### non-steps
 
 def assert_values_equal(actual, expected, object_type, object_key):
@@ -573,7 +718,7 @@ def lint_chart(case, chart, values_file, namespace):
             suite_file = suite.split('/')[1]
         suites += ("-f", os.path.join(chart_path, suite_file + ".values.hull.yaml"))
     
-    args = ("helm", "lint", chart_path, "--debug", "--strict", "--namespace", namespace) + suites + ("-f",  os.path.join(chart_path, values_file))
+    args = (HELM_BINARY, "lint", chart_path, "--quiet", "--strict", "--namespace", namespace) + suites + ("-f",  os.path.join(chart_path, values_file))
     
     popen = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     print('STDOUT:\n', popen.stdout.decode("utf-8").replace("\n",os.linesep))
@@ -599,7 +744,7 @@ def render_chart(case, chart, values_files, namespace):
     for values_file in values_files:
         values_files_command += ("-f",  os.path.join(chart_path, values_file))
         
-    args = ("helm", "template", chart_path, "--kube-version", data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION], "--name-template", "release-name", "--debug", "--output-dir", render_path, "--namespace", namespace) + values_files_command + suites
+    args = (HELM_BINARY, "template", chart_path, "--kube-version", data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION], "--name-template", "release-name", "--output-dir", render_path, "--namespace", namespace) + values_files_command + suites
     
     popen = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     print('STDOUT:\n', popen.stdout.decode("utf-8").replace("\n",os.linesep))

@@ -258,8 +258,14 @@
 {{- $isChartSpecialCase = true -}}
 {{- end -}}
 {{- range $pathIndex, $pathElement := $path -}}
-{{- if (and ($isChartSpecialCase) (eq $pathIndex 1)) -}}
+{{- if (and ($isChartSpecialCase) (eq $pathIndex 1) (not (contains "v4" $parent.Capabilities.HelmVersion.Version ))) -}}
 {{- $pathElement = $pathElement | untitle -}}
+{{- end -}}
+{{- if (and ($isChartSpecialCase) (eq $pathIndex 1) (contains "v4" $parent.Capabilities.HelmVersion.Version )) -}}
+{{- if (eq $pathElement "apiVersion") -}}
+{{- $pathElement = "APIVersion" -}}
+{{- end -}}
+{{- $pathElement = $pathElement | title -}}
 {{- end -}}
 {{- if eq $pathElement "§OBJECT_TYPE§" -}}
   {{- if ne $objectType "" -}}

@@ -52,6 +52,14 @@ config:
           enabled: false
           string: _HULL_OBJECT_TYPE_DEFAULT_
           replacement: OBJECT_INSTANCE_NAME
+        openingDoubleCurlyBraces:
+          enabled: false
+          string: "{+{"
+          replacement: "{{"
+        closingDoubleCurlyBraces:
+          enabled: false
+          string: "}+}"
+          replacement: "}}"
     errorChecks:
       objectYamlValid: true
       hullGetTransformationReferenceValid: true

@@ -70,6 +70,9 @@ binaryData:
 {{ base $innerKey | indent 2 }}: |-
 {{ toString ($parent.Files.Get (printf "%s" $innerValue.path) ) | indent 4 }}
 {{ end }}
+{{ if hasKey $innerValue "inline" -}}
+{{ base $innerKey | indent 2 }}: {{ $innerValue.inline }}
+{{ end }}
 {{ end }}
 {{- else -}}
 {{ base $innerKey | indent 2 }}: {{ $innerValue }}

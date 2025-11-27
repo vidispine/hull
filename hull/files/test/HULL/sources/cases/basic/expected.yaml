@@ -243,8 +243,10 @@ test-get-chart-type: application
 test-get-chart-keywords: '[hull test]'
 test-get-chart-home: https://vidispine.github.io/hull
 test-get-chart-sources: '[https://vidispine.github.io/hull https://github.com/vidispine/hull/blob/gh-pages/hull.png]'
-test-get-chart-dependencies: '[map[enabled:true name:hull repository:https://vidispine.github.io/hull version:<K8S_MAJOR_VERSION>.0]]'
-test-get-chart-maintainers: '[map[email:person1@test.com name:testperson1 url:https://person1.com] map[email:person2@test.com name:testperson2 url:https://person2.com]]'
+test-get-chart-dependencies-helm-3: '[map[enabled:true name:hull repository:https://vidispine.github.io/hull version:<K8S_MAJOR_VERSION>.0]]'
+test-get-chart-dependencies-helm-4: '[map[Alias: Condition: Enabled:true ImportValues:[] Name:hull Repository:https://vidispine.github.io/hull Tags:[] Version:1.34.0]]'
+test-get-chart-maintainers-helm-3: '[map[email:person1@test.com name:testperson1 url:https://person1.com] map[email:person2@test.com name:testperson2 url:https://person2.com]]'
+test-get-chart-maintainers-helm-4: '[map[Email:person1@test.com Name:testperson1 URL:https://person1.com] map[Email:person2@test.com Name:testperson2 URL:https://person2.com]]'
 test-get-chart-icon: https://github.com/vidispine/hull/blob/gh-pages/hull.png
 test-get-chart-appversion: <K8S_MAJOR_VERSION>.0
 test-get-chart-deprecated: "true"

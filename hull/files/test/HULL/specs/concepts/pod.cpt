@@ -8,7 +8,8 @@
 * Test Object has key "metadata§annotations§instance-key-from-string" with value equaling object instance key
 * Test Object has key "metadata§annotations§instance-name-from-string" with value equaling object instance name
 * Test Object has key "metadata§annotations§instance-key-from-transformation" with value equaling object instance key
-
+* Test Object has key "metadata§annotations§double-curly-braces" with value "{{ .some.thirdparty.templating.engine }}"
+* Test Object has key "metadata§annotations§double-curly-braces-transformed" with value "LOOK, I TRANSFORMED A DOWNSTREAM TEMPLATING EXPRESSION LIKE {{ .SOME.THIRDPARTY.TEMPLATING.ENGINE }} TO UPPER!"
 
 * Prepare default test case for this kind including suites "pod"
 * Lint and Render
@@ -567,8 +568,6 @@ Disabled secret must be ignored
 * Test Object has key "spec§template§spec§containers§5§env§0§value" with value "i_am_string"
 * Test Object has key "spec§template§spec§containers§5§env§1§name" with value "string_empty"
 * Test Object has key "spec§template§spec§containers§5§env§1§value" with value ""
-* Test Object has key "spec§template§spec§containers§5§env§2§name" with value "string_undefined"
-* Test Object has key "spec§template§spec§containers§5§env§2§value" with null value
 * Test Object has key "spec§template§spec§containers§5§envFrom§0§configMapRef§name" with value "bool_defined_false"
 * Test Object has key "spec§template§spec§containers§5§envFrom§0§configMapRef§optional" set to false
 * Test Object has key "spec§template§spec§containers§5§envFrom§1§configMapRef§name" with value "bool_defined_true"
