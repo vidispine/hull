@@ -14,3 +14,5 @@ nav:
 plugins:
   - search
   - include_dir_to_nav
+markdown_extensions:
+  - pymdownx.superfences

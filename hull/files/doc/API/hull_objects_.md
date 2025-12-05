@@ -13,17 +13,17 @@ By having keys that identify instances you can:
 
   For example, assuming the parent Helm chart is named `my_webservice` and the release named `staging` and given this specification in `values.yaml`:
 
-  ```yaml
-  hull:
-    objects:
-      deployment:
-        nginx:
-          pod:
-            containers:
-              nginx:
-                repository: nginx
-                tag: 1.14.2
-  ```
+    ```yaml
+    hull:
+      objects:
+        deployment:
+          nginx:
+            pod:
+              containers:
+                nginx:
+                  repository: nginx
+                  tag: 1.14.2
+    ```
 
   a Kubernetes deployment object with the following `metadata.name` is created:
 
