@@ -13,17 +13,18 @@ By having keys that identify instances you can:
 
   For example, assuming the parent Helm chart is named `my_webservice` and the release named `staging` and given this specification in `values.yaml`:
 
-    ```yaml
-    hull:
-      objects:
-        deployment:
-          nginx:
-            pod:
-              containers:
-                nginx:
-                  repository: nginx
-                  tag: 1.14.2
-    ```
+
+      ```yaml
+      hull:
+        objects:
+          deployment:
+            nginx:
+              pod:
+                containers:
+                  nginx:
+                    repository: nginx
+                    tag: 1.14.2
+      ```
 
   a Kubernetes deployment object with the following `metadata.name` is created:
 
@@ -40,7 +41,7 @@ By having keys that identify instances you can:
     - a ConfigMap or Secret behind an environment value added to a container spec.
   - when referencing Services in the backend of an ingress' host you can specify the key to reference the backend service.
   
-  > Note that you can in these cases opt to refer to a static name instead too. Adding a property `staticName: true` to the dictionary with your reference will force the referenced objects name to exactly match the name you entered.
+    > Note that you can in these cases opt to refer to a static name instead too. Adding a property `staticName: true` to the dictionary with your reference will force the referenced objects name to exactly match the name you entered.
 
 ## _Values of object instances_
 
