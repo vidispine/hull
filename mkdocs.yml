@@ -1,2 +1,5 @@
 site_name: HULL
 docs_dir: ./hull/doc
+site_url: https://github.com/vidispine/hull
+theme:
+  name: material
