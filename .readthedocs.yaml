@@ -12,6 +12,7 @@ build:
   jobs:
     pre_install:
     - pip install mkdocs-material
+    - pip install mkdocs-include-dir-to-nav
 
 # Build documentation with Mkdocs
 mkdocs:
