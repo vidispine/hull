@@ -14,4 +14,4 @@ However the properties listed below are overwritten or added by HULL:
 | --------  | -------------| ------- | --------
 | `scaleTargetRef.staticName` | Specifies whether the `name` key of this `scaleTargetRef` refers to a fixed name of an object the cluster or not. 
 ---
-Back to [README.md](./../../../../README.md)
+Back to [README.md](/README.md)

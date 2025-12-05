@@ -15,4 +15,4 @@ Only for this object type you need to explicitly provide the `kind` and `apiVers
 | `spec` | The free-form spec of the CR which must follow the structure given in the matching CRD. | 
 
 ---
-Back to [README.md](./../../../../README.md)
+Back to [README.md](/README.md)

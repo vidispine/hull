@@ -371,4 +371,4 @@ explicit-from-yaml.yaml: |-
 If maintaing the order of elements is important you need to use raw string method of specifying your object.
 
 ---
-Back to [README.md](./../../../../README.md)
+Back to [README.md](/README.md)

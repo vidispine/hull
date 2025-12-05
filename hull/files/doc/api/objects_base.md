@@ -20,4 +20,4 @@ You can add the following optional properties to any object specified via HULL:
 
 
 ---
-Back to [README.md](./../../../../README.md)
+Back to [README.md](/README.md)
