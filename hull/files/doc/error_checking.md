@@ -29,4 +29,4 @@ The following list is an overview of the currently implemented error checks:
 
     Note: if `hull.config.debug.renderNilWhenInlineIsNil` is set to `true`, the legacy behavior where `<nil>` is written to the `inline` entries field if the source is not a value or `null`. This is not recommended, instead you should either leave an empty value by letting `hull.config.debug.virtualFolderDataInlineValid: false` or raise an error by `virtualFolderDataInlineValid: true`!
 ---
-Back to [README.md](./../README.md)
+Back to [README.md](./../../../README.md)

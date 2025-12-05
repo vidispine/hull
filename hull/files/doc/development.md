@@ -398,4 +398,4 @@ The changelog has just the most recent information, copy this entry over in to t
 Check whether a new release of Helm has been published since the last release(s). If so, update the pipeline code in `azure-pipelines-gated.yaml` and `azure-pipelines.yaml` to include the new release in the tests. For `azure-pipelines-gated.yaml` it is sufficient to replace the latest minor version with the newly released one since the gated tests run only on the latest minor versions on each supported Helm branch. For `azure-pipelines.yaml` extend the list of Helm versions to test against with the new Helm release version.
 
 ---
-Back to [README.md](./../README.md)
+Back to [README.md](./../../../README.md)

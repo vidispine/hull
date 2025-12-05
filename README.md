@@ -364,9 +364,9 @@ By having keys that identify instances you can:
 
 The values of object instance keys reflects the Kubernetes objects to create for the chart. To specify these objects efficiently, the available properties for configuration can be split into three groups:
 
-1. Basic HULL object configuration with [hull.ObjectBase.v1](/hull/files/doc/object_base.md) whose properties are available for all object types and instances. These are `enabled`, `staticName`, `annotations` and `labels`. 
+1. Basic HULL object configuration with [hull.ObjectBase.v1](/hull/files/doc/api/object_base.md) whose properties are available for all object types and instances. These are `enabled`, `staticName`, `annotations` and `labels`. 
 
-    Given the example of a `deployment` named `nginx` you can add the following properties of [hull.ObjectBase.v1](/hull/files/doc/object_base.md) to the object instance:
+    Given the example of a `deployment` named `nginx` you can add the following properties of [hull.ObjectBase.v1](/hull/files/doc/api/object_base.md) to the object instance:
 
     ```yaml
     hull:

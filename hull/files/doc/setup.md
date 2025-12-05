@@ -29,4 +29,4 @@ To add the HULL library chart to an existing Helm chart:
 If these preliminary steps have been taken you can start using the HULL chart to render Kubernetes objects from your Helm chart.
 
 ---
-Back to [README.md](./../README.md)
+Back to [README.md](./../../../README.md)

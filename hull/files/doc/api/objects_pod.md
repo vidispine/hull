@@ -143,5 +143,5 @@ However the properties listed below are overwritten or added by HULL:
 | `secret.staticName` | Specifies whether the `name` key of this `secret` refers to a fixed name of a Secret in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `secret` references a key defined in this helm chart. | `false` | `true`
 
 ---
-Back to [README.md](./../README.md)
+Back to [README.md](./../../../../README.md)
 
