@@ -6,3 +6,13 @@ theme:
 validation:
   links:
     absolute_links: relative_to_docs
+nav:
+  - About: 'README.md'
+  - Changelog: 'CHANGELOG.md'
+  - History: 'HISTORY.md'
+  - "hull/files/doc"
+plugins:
+  - search
+  - include_dir_to_nav
+markdown_extensions:
+  - pymdownx.superfences

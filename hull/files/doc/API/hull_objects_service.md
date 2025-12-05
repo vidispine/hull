@@ -1,4 +1,4 @@
-properties# Creating Services
+# Creating Services
 
 The HULL Service object is a thin wrapper around the Kubernetes Service providing the possibility to specify the `ports` via keys.
 
@@ -30,4 +30,4 @@ However the properties listed below are overwritten or added by HULL:
 
 
 ---
-Back to [README.md](./../README.md)
+Back to [README.md](/README.md)

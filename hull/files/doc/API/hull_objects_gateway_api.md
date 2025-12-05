@@ -1,4 +1,4 @@
-# Working with the Gateway API 
+# Creating Gateway API Objects
 
 The Gateway API has been currently implemented in version 1.2.0-experimental.
 
@@ -412,4 +412,4 @@ The below tree is from `values.yaml` and indicates which properties are treated 
 ```
 
 ---
-Back to [README.md](./../README.md)
+Back to [README.md](/README.md)

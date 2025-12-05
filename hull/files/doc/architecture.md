@@ -67,13 +67,13 @@ But there are also people who maintain and/or consume a larger number of charts 
 
 ## Components
 
-At the core of the HULL library is the interplay between `values.yaml`, [`values.schema.json`](./../values.schema.json), [`hull.yaml`](./../hull.yaml) and the template files in [`/templates`](./../templates) that come with HULL.
+At the core of the HULL library is the interplay between `values.yaml`, [`values.schema.json`](https://github.com/vidispine/hull/blob/main/hull/values.schema.json), [`hull.yaml`](https://github.com/vidispine/hull/blob/main/hull/hull.yaml) and the template files in [`/templates`](https://github.com/vidispine/hull/tree/main/hull/templates) that come with HULL.
 
 ### The parent charts `values.yaml`
 
 For the HULL related functionalities only entries under the `hull` sub-key are relevant. No other top level key is relevant for HULL so it can co-exist with any other Helm chart configuration properties.
 
-### The [`values.schema.json`](./../values.schema.json)
+### The [`values.schema.json`](https://github.com/vidispine/hull/blob/main/hull/values.schema.json)
 
 The `values.schema.json` of each HULL library release is built from the respective version of the Kubernetes API JSON Schema which is:
 - extended with the HULL specific properties to provide the HULL specific functionalities and
@@ -81,11 +81,11 @@ The `values.schema.json` of each HULL library release is built from the respecti
 
 This means that misconfigurations of the `values.yaml` `hull` subsection are either visible on input directly or catched on rendering the objects.
 
-### The [`hull.yaml`](./../hull.yaml)
+### The [`hull.yaml`](https://github.com/vidispine/hull/blob/main/hull/hull.yaml)
 
 The `hull.yaml` needs to be placed in the parents charts `/templates` folder. It contains a loop over all handled object types and their specific configurational properties. Within the loop all objects of the handled object types (as specified in `values.yaml`) are iterated over and the corresponding rendering function is called for the specified and enabled object. 
 
-### The [`/templates`](./../templates)
+### The [`/templates`](https://github.com/vidispine/hull/tree/main/hull/templates)
 
 The templates folder in HULL contains only functions as it is mandatory for Helm library charts. 
 
@@ -147,10 +147,10 @@ The end to end process using HULL contains the following phases:
         Then each object is processed individually:
         
         1. Apply object type defaults from the `_HULL_OBJECT_TYPE_DEFAULT_` instances and merge referenced `sources` into the object source specification. 
-        2. Create the [metadata section](metadata.md) of the object
+        2. Create the metadata section of the object
         3. Process all properties handled by HULL
         4. Add remaining Kubernetes API schema properties that were defined
 
     3. The output is all defined objects concatenated in one file with `template` command or handed over to the Kubernetes cluster API for deployment with `install` command.
 ---
-Back to [README.md](./../README.md)
+Back to [README.md](/README.md)

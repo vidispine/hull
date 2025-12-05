@@ -13,4 +13,4 @@ Registry Secrets can be created by specifying only the needed information and le
 | `password` | Docker Registry password. | `""` | `the_pAsSwOrD`
 
 ---
-Back to [README.md](./../README.md)
+Back to [README.md](/README.md)

@@ -34,4 +34,4 @@ A few steps are needed to enable this feature in VSCode:
   If you design charts with the HULL library you might want to associate `values.yaml` too so that your `values.yaml` files are validated in the IDE too.
 
 ---
-Back to [README.md](./../README.md)
+Back to [README.md](/README.md)
