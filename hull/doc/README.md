@@ -1,1 +1,0 @@
-This folder contains the detailed documentation of the HULL library.
