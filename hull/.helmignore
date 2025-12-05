@@ -20,4 +20,4 @@
 .idea/
 *.tmproj
 files/test/
-files/mkdocs/
+files/mkdocs/*.md
