@@ -6,3 +6,8 @@ theme:
 validation:
   links:
     absolute_links: relative_to_docs
+nav:
+  - About: 'README.md'
+  - Changelog: 'CHANGELOG.md'
+  - History: 'HISTORY.md'
+  - Docs: "hull/files/doc"
