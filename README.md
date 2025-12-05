@@ -974,4 +974,4 @@ metadata:
   name: release-name-hull-test-nginx_configmap
 ```
 
-Read the additional documentation in the [documentation folder](./doc) on how to utilize the features of the HULL library to the full effect.
+Read the additional documentation in the [documentation folder](/hull/files/doc) on how to utilize the features of the HULL library to the full effect.

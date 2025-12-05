@@ -67,7 +67,7 @@ But there are also people who maintain and/or consume a larger number of charts 
 
 ## Components
 
-At the core of the HULL library is the interplay between `values.yaml`, [`values.schema.json`](https://github.com/vidispine/hull/blob/main/hull/values.schema.json), [`hull.yaml`](https://github.com/vidispine/hull/blob/main/hull/hull.yaml) and the template files in [`/templates`](./../templates) that come with HULL.
+At the core of the HULL library is the interplay between `values.yaml`, [`values.schema.json`](https://github.com/vidispine/hull/blob/main/hull/values.schema.json), [`hull.yaml`](https://github.com/vidispine/hull/blob/main/hull/hull.yaml) and the template files in [`/templates`](https://github.com/vidispine/hull/tree/main/hull/templates) that come with HULL.
 
 ### The parent charts `values.yaml`
 
@@ -147,7 +147,7 @@ The end to end process using HULL contains the following phases:
         Then each object is processed individually:
         
         1. Apply object type defaults from the `_HULL_OBJECT_TYPE_DEFAULT_` instances and merge referenced `sources` into the object source specification. 
-        2. Create the [metadata section](metadata.md) of the object
+        2. Create the metadata section of the object
         3. Process all properties handled by HULL
         4. Add remaining Kubernetes API schema properties that were defined
 
