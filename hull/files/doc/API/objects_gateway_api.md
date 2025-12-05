@@ -1,4 +1,4 @@
-# Working with the Gateway API 
+# Creating Gateway API Objects
 
 The Gateway API has been currently implemented in version 1.2.0-experimental.
 
