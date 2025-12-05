@@ -191,7 +191,7 @@ Branch must be named `release-1.x` where x is the minor version of the Kubernete
 
 ### Create JSON schema 
 
-Create new matching JSON schema files in the `kubernetes-json-schema` folder with the instructions given in the [README.md](./../../kubernetes-json-schema/README.md) there. Patch version can be the highest available. It is expected no object properties are changed between patch versions.
+Create new matching JSON schema files in the `kubernetes-json-schema` folder with the instructions given in the [README.md](https://github.com/vidispine/hull/blob/main/kubernetes-json-schema/README.md) there. Patch version can be the highest available. It is expected no object properties are changed between patch versions.
 
 ### Adapt the JSON schema
 

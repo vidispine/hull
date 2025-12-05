@@ -1,8 +1,13 @@
 # Adding the HULL library chart to a Helm chart
 
-If you do not have a Helm chart to start with you can make a copy of the [_hull-test_ Helm chart](./../files/test/HULL/sources/charts/hull-test) which is used for unit testing. You then need to rename the chart folder to your desired Helm chart's name and adjust the `Chart.yaml` to your desired charts name. 
 
-To add the HULL library chart to an existing Helm chart:
+## The fast way
+
+The by far easiest way to get started with HULL is to download the latest `hull-demo` release from the Releases page. It contains everything to directly start using HULL.
+
+## The manual way
+
+To manually add the HULL library chart to an existing Helm chart:
 
 - choose a version that fits your targeted Kubernetes API versions best. The HULL chart version matches the implemented Kubernetes API version that is used for validation, so it should be at least the minimum version of the cluster(s) you target.
 

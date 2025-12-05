@@ -364,9 +364,9 @@ By having keys that identify instances you can:
 
 The values of object instance keys reflects the Kubernetes objects to create for the chart. To specify these objects efficiently, the available properties for configuration can be split into three groups:
 
-1. Basic HULL object configuration with [hull.ObjectBase.v1](/hull/files/doc/API/object_base.md) whose properties are available for all object types and instances. These are `enabled`, `staticName`, `annotations` and `labels`. 
+1. Basic HULL object configuration with [hull.ObjectBase.v1](/hull/files/doc/API/objects_base.md) whose properties are available for all object types and instances. These are `enabled`, `staticName`, `annotations` and `labels`. 
 
-    Given the example of a `deployment` named `nginx` you can add the following properties of [hull.ObjectBase.v1](/hull/files/doc/API/object_base.md) to the object instance:
+    Given the example of a `deployment` named `nginx` you can add the following properties of [hull.ObjectBase.v1](/hull/files/doc/API/objects_base.md) to the object instance:
 
     ```yaml
     hull:
@@ -495,9 +495,9 @@ HULL<br> Object Type<br>&#160; | HULL <br>Properties | Kubernetes/External<br> P
 `customresource` | [**hull.ObjectBase.v1**](/hull/files/doc/API/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.CustomResource.v1**](/hull/files/doc/API/objects_customresource.md)<br>`apiVersion`<br>`kind`<br>`spec`
 `limitrange` | [**hull.ObjectBase.v1**](/hull/files/doc/API/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**limitrange-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.34/#limitrange-v1-core)<br>`limits`
 `horizontalpodautoscaler` | [**hull.ObjectBase.v1**](/hull/files/doc/API/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.HorizontalPodAutoscaler.v1**](/hull/files/doc/API/objects_horizontalpodautoscaler.md)<br>`scaleTargetRef` | [**horizontalpodautoscalerspec-v2-autoscaling**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.34/#horizontalpodautoscalerspec-v2-autoscaling)<br>`behavior`<br>`maxReplicas`<br>`metrics`<br>`minReplicas`
-`mutatingwebhookconfiguration` | [**hull.ObjectBase.v1**](/hull/files/doc/API/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.MutatingWebhook.v1**](/hull/files/doc/API/objects_base_webhook.md)<br>`webhooks`
+`mutatingwebhookconfiguration` | [**hull.ObjectBase.v1**](/hull/files/doc/API/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.MutatingWebhook.v1**](/hull/files/doc/API/objects_webhook.md)<br>`webhooks`
 `poddisruptionbudget` | [**hull.ObjectBase.v1**](/hull/files/doc/API/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**poddisruptionbudgetspec-v1-policy**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.34/#poddisruptionbudgetspec-v1-policy)<br>`maxUnavailable`<br>`minAvailable`<br>`selector`<br>`unhealthyPodEvictionPolicy`
-`validatingwebhookconfiguration` | [**hull.ObjectBase.v1**](/hull/files/doc/API/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.ValidatingWebhook.v1**](/hull/files/doc/API/objects_base_webhook.md)<br>`webhooks` 
+`validatingwebhookconfiguration` | [**hull.ObjectBase.v1**](/hull/files/doc/API/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.ValidatingWebhook.v1**](/hull/files/doc/API/objects_webhook.md)<br>`webhooks` 
 `priorityclass` | [**hull.ObjectBase.v1**](/hull/files/doc/API/objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**priorityclass-v1-scheduling-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.34/#priorityclass-v1-scheduling-k8s-io)<br>`description`<br>`globalDefault`<br>`preemptionPolicy`<br>`value`
 
 **[Cluster APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.34/#-strong-cluster-apis-strong-)**
