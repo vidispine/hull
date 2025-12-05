@@ -10,7 +10,7 @@ nav:
   - About: 'README.md'
   - Changelog: 'CHANGELOG.md'
   - History: 'HISTORY.md'
-  - Docs: "hull/files/doc"
+  - "hull/files/doc"
 plugins:
   - search
   - include_dir_to_nav
