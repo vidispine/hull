@@ -6,7 +6,9 @@ Within the `config` section you can configure general settings for your Helm cha
 
 In contrast to the `hull.config.specific` section, which should be populated with arbitrary data that is specific only to a single helm chart, the `hull.config.general` section should be used to define everything that is not particular to a unique application. On the one hand it holds configuration options which are relevant for all HULL based charts but also leaves room under the `hull.config.general.data` entry to define your own data fields which ideally are modeled the same way in other helm charts. For example, if several applications in a product suite depend on the same endpoints, you could model these endpoints uniformly under the `hull.config.general.data` property in all relevant charts and thereby having your helm charts interface in the same way with e.g. a continuous deployment pipeline.
 
-<br><br>`hull.config.general` has only the following sub-fields: <br><br>`nameOverride`<br>`fullnameOverride`<br>`namespaceOverride`<br>`noObjectNamePrefixes`<br>`createImagePullSecretsFromRegistries`<br>`globalImageRegistryServer`<br>`globalImageRegistryToFirstRegistrySecretServer`<br>`debug`<br>`rbac`<br>`data`<br>`serialization`<br>`postRender`<br>`errorChecks`<br>`metadata`
+<br><br>`hull.config.general` has only the following sub-fields: <br><br>`nameOverride`<br>`fullnameOverride`<br>`namespaceOverride`<br>`noObjectNamePrefixes`<br>`createImagePullSecretsFromRegistries`<br>`globalImageRegistryServer`<br>`globalImageRegistryToFirstRegistrySecretServer`<br>`errorChecks`<br>`debug`<br>`render`<br>`postRender`<br>`serialization`<br>`rbac`<br>`data`<br>`metadata`
+
+The following table gives more details on all available fields and subfields:
 
 | Parameter                       | Description                                                     | Default                      |                  Example |
 | ------------------------------- | ----------------------------------------------------------------| -----------------------------| -----------------------------------------|
@@ -45,22 +47,33 @@ In contrast to the `hull.config.specific` section, which should be populated wit
 | `serialization.configmap.fileExtensions` | A dictionary of mappings from file extensions to serialization methods. | `fileExtensions:`<br>&#160;&#160;`json:`&#160;`toPrettyJson`<br>&#160;&#160;`yaml:`&#160;`toYaml`<br>&#160;&#160;`yml:`&#160;`toYaml`
 | `serialization.secret.enabled` | If `enabled`, the mapped file extensions under `fileExtensions` are serialized with the given serialization method by default. If the `data` key ends with one of the mapped extensions the serialization method in the value is used to write the content to string. A specific `serialization` field on a secrets `data` entry overwrites any default settings. | `true`
 | `serialization.secret.fileExtensions` | A dictionary of mappings from file extensions to serialization methods. | `fileExtensions:`<br>&#160;&#160;`json:`&#160;`toPrettyJson`<br>&#160;&#160;`yaml:`&#160;`toYaml`<br>&#160;&#160;`yml:`&#160;`toYaml`
-| `config.general.rbac` | Global switch which enables RBAC objects for installation. <br><br> If `true` all enabled RBAC objects are deployed to the cluster, if `false` no RBAC objects are created at all.<br><br> RBAC objects that are deployable are:<br>`roles`<br>`rolebindings`<br>`clusterroles`<br>`clusterrolebindings`  | `true` | `false` |
-| `config.general.data` | Free form field whereas subfields of this field should have a clearly defined meaning in the context of your product suite. <br><br>For example, assume all of your products or microservices (each coming as a separate helm chart) depends on the same given endpoints (authentication, configuration, ...). You might have a shared Kubernetes job executed by each helm chart which targets those endpoints. Now you could specify an external HULL `values.yaml` containing the job specification and the endpoint definition here in a way you see fit and construct an overlay `values.yaml` rendered on top of each deployment and have a unified mechanism in place.  | `{}` |
-| `config.general.metadata` | Defined metadata fields here will be automatically added to all objects metadata. <br><br>Has only the following sub-fields: <br><br>`labels`<br>`annotations`| | 
-| `config.general.metadata.labels` | Labels that are added to all objects. The `common` labels refer to the Kubernetes and Helm common labels and `custom` labels can be freely specified. <br><br>Has only the following sub-fields: <br><br>`common`<br>`custom`| | 
-| `config.general.metadata.labels.common` | Common labels specification as defined in https://helm.sh/docs/chart_best_practices/labels/ and https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/. <br><br>Unless specifically overwritten with empty values (`''`) all metadata labels are automatically added to all objects according to their default definition. It should be considered to set a value for `config.general.metadata.labels.common.'app.kubernetes.io/part-of'` if the helm chart is part-of a product suite. | | 
-| `config.general.metadata.labels.common.'app.kubernetes.io/managed-by'` | Managed by metadata. | `{{ .Release.Service }}` |
-| `config.general.metadata.labels.common.'app.kubernetes.io/version'` | Version metadata. | `{{ .Chart.AppVersion }}` |
-| `config.general.metadata.labels.common.'app.kubernetes.io/part-of'` | Part-of metadata. | `"unspecified"` |
-| `config.general.metadata.labels.common.'app.kubernetes.io/name'` | Name metadata. | `{{ printf "%s-%s" .ChartName <hullObjectKey> }}`
-| `config.general.metadata.labels.common.'app.kubernetes.io/instance'` | Instance metadata. | `{{ .Release.Name }}`
-| `config.general.metadata.labels.common.'app.kubernetes.io/component'` | Component metadata. | `<hullObjectKey>`
-| `config.general.metadata.labels.common.'helm.sh/chart'` | Helm metadata. | `{{ (printf "%s-%s" .Chart.Name .Chart.Version) | replace "+" "_" }}`
-| `config.general.metadata.labels.custom` | All specified custom labels are automatically added to all objects of this helm chart. | `{}`| 
-| `config.general.metadata.annotations` | Annotations that are added to all objects. The `custom` labels can be freely specified. <br><br>Has only the following sub-fields: <br><br>`custom`. | 
-| `config.general.metadata.annotations.custom` | All specified custom annotations are automatically added to all objects of this helm chart. | `{}`| 
+| `rbac` | Global switch which enables RBAC objects for installation. <br><br> If `true` all enabled RBAC objects are deployed to the cluster, if `false` no RBAC objects are created at all.<br><br> RBAC objects that are deployable are:<br>`roles`<br>`rolebindings`<br>`clusterroles`<br>`clusterrolebindings`  | `true` | `false` |
+| `data` | Free form field whereas subfields of this field should have a clearly defined meaning in the context of your product suite. <br><br>For example, assume all of your products or microservices (each coming as a separate helm chart) depends on the same given endpoints (authentication, configuration, ...). You might have a shared Kubernetes job executed by each helm chart which targets those endpoints. Now you could specify an external HULL `values.yaml` containing the job specification and the endpoint definition here in a way you see fit and construct an overlay `values.yaml` rendered on top of each deployment and have a unified mechanism in place.  | `{}` |
+| `metadata` | Defined metadata fields here will be automatically added to all objects metadata. <br><br>Has only the following sub-fields: <br><br>`labels`<br>`annotations`| | 
+| `metadata.labels` | Labels that are added to all objects. The `common` labels refer to the Kubernetes and Helm common labels and `custom` labels can be freely specified. <br><br>Has only the following sub-fields: <br><br>`common`<br>`custom`| | 
+| `metadata.labels.common` | Common labels specification as defined in https://helm.sh/docs/chart_best_practices/labels/ and https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/. <br><br>Unless specifically overwritten with empty values (`''`) all metadata labels are automatically added to all objects according to their default definition. It should be considered to set a value for `config.general.metadata.labels.common.'app.kubernetes.io/part-of'` if the helm chart is part-of a product suite. | | 
+| `metadata.labels.common.'app.kubernetes.io/managed-by'` | Managed by metadata. | `{{ .Release.Service }}` |
+| `metadata.labels.common.'app.kubernetes.io/version'` | Version metadata. | `{{ .Chart.AppVersion }}` |
+| `metadata.labels.common.'app.kubernetes.io/part-of'` | Part-of metadata. | `"unspecified"` |
+| `metadata.labels.common.'app.kubernetes.io/name'` | Name metadata. | `{{ printf "%s-%s" .ChartName <hullObjectKey> }}`
+| `metadata.labels.common.'app.kubernetes.io/instance'` | Instance metadata. | `{{ .Release.Name }}`
+| `metadata.labels.common.'app.kubernetes.io/component'` | Component metadata. | `<hullObjectKey>`
+| `metadata.labels.common.'helm.sh/chart'` | Helm metadata. | `{{ (printf "%s-%s" .Chart.Name .Chart.Version) | replace "+" "_" }}`
+| `metadata.labels.custom` | All specified custom labels are automatically added to all objects of this helm chart. | `{}`| 
+| `metadata.annotations` | Annotations that are added to all objects. The `custom` labels can be freely specified. <br><br>Has only the following sub-fields: <br><br>`custom`. | 
+| `metadata.annotations.custom` | All specified custom annotations are automatically added to all objects of this helm chart. | `{}`| 
 
 ## _The `hull.config.specific` section_
 
-| `config.specific` | Free form field that holds configuration options that are specific to the specific product contained in the helm chart. Typically the values specified here ought to be used to populate the contents of configuration files that a particular applications read their configuration from at startup. Hence the `config.specific` fields are typically being consumed in ConfigMaps or Secrets. | `{}` | `maxDatepickerRange:`&#160;`50`<br>`defaultPoolColor:`&#160;`"#FB6350"`<br>`updateInterval:`&#160;`60000`
+The `hull.config.specific` dictionary is a free form field that holds configuration options that are specific to the specific product contained in the helm chart. Typically the values specified here ought to be used to populate the contents of configuration files that a particular applications read their configuration from at startup. Hence the `config.specific` fields are typically being consumed in ConfigMaps or Secrets or represent otherwise shared values. 
+
+An example of may look like this:
+
+```
+hull:
+  config:
+    specific:
+      maxDatepickerRange: 50
+      defaultPoolColor: #FB6350
+      updateInterval: 60000
+```

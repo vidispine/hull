@@ -219,7 +219,7 @@ The single interface of the HULL library is used to both create and configure ob
 
 Flexible handling of ConfigMap and Secret input by choosing between inline specification of contents in `values.yaml` or import from external files for contents of larger sizes. When importing data from files the data can be either run through the templating engine or imported un-templated 'as is' if it already contains templating expressions that shall be passed on to the consuming application. With a focus on convenient handling of standard scenarios, you can also define file contents as a regular YAML structure in the `values.yaml` and have HULL serialize it automatically to JSON or YAML by the file extension or explicily to any representation of your choice. HULL takes care of the Base64 encoding of Secrets so writing ConfigMaps and Secrets works the exact same way and **adding ConfigMaps or Secrets to your deployment requires only a few lines of code.**
 
-  For more details refer to the documentation on [ConfigMaps and Secrets](/hull/files/doc/API/objects_configmaps_secrets.md).
+  For more details refer to the documentation on [ConfigMaps and Secrets](/hull/files/doc/API/hull_objects_configmaps_secrets.md).
 
 ### Advanced defaulting capabilities to reduce unnecessary repetitions
 
@@ -237,7 +237,7 @@ For more complex scenarios where actual values in the target YAML are subject to
 
 Enable automatic hashing of referenced ConfigMaps and Secrets to facilitate pod restarts on changes of configuration when required.
 
-  For more details refer to the documentation on [Pods](/hull/files/doc/API/objects_pod.md).
+  For more details refer to the documentation on [Pods](/hull/files/doc/API/hull_objects_pod.md).
 
 To learn more about the general architecture and features of the HULL library see the [Architecture Overview](/hull/files/doc/architecture.md)
 
