@@ -1,5 +1,5 @@
 site_name: HULL
-docs_dir: ./hull/doc
+docs_dir: ./src
 site_url: https://github.com/vidispine/hull
 theme:
   name: material
