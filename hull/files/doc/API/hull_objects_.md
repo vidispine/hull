@@ -13,8 +13,7 @@ By having keys that identify instances you can:
 
   For example, assuming the parent Helm chart is named `my_webservice` and the release named `staging` and given this specification in `values.yaml`:
 
-
-      ```yaml
+    ```yaml
       hull:
         objects:
           deployment:
@@ -24,13 +23,13 @@ By having keys that identify instances you can:
                   nginx:
                     repository: nginx
                     tag: 1.14.2
-      ```
+    ```
 
-  a Kubernetes deployment object with the following `metadata.name` is created:
+    a Kubernetes deployment object with the following `metadata.name` is created:
 
-  `my_webservice-staging-nginx`
+    `my_webservice-staging-nginx`
 
-  > Note that you can opt to define a static name for instances you create by adding a property `staticName: true` to your objects definition. If you do so the objects name will exactly match the key name you chose.
+    > Note that you can opt to define a static name for instances you create by adding a property `staticName: true` to your objects definition. If you do so the objects name will exactly match the key name you chose.
 
 - each particular instance can have an `enabled` sub-field set to `true` or `false`. This way you can predefine instances of object types in your helm charts `values.yaml` but not deploy them in a default scenario. Or enable them by default and refrain from deploying them in a particular environment by disabling them in an superimposed system specific `values.yaml`. Note that unless you explicitly specify `enabled: false` each instance you define will be created by default, a missing `enabled` key is equivalent to `enabled: true`.
 
