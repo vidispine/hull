@@ -41,8 +41,7 @@ Both aspects should typically be less relevant for HULL based charts, however it
 
 **Your feedback on this project is valued, hence please comment or start a discussion in the `Issues` section or create feature wishes and bug reports. Thank you!**
 
-The HULL library chart idea is partly inspired by the [common](
-https://github.com/helm/charts/tree/master/incubator/common) Helm chart concept and for testing 
+The HULL library chart idea is partly inspired by the [common](https://github.com/helm/charts/tree/master/incubator/common) Helm chart concept and for testing 
 
 [![Gauge Badge](https://gauge.org/Gauge_Badge.svg)](https://gauge.org).
 
