@@ -9,7 +9,8 @@ One major design aspect of [Helm](https://helm.sh) is that it forces the user to
 The primary feature of the HULL library is the ability to remove customized YAML template files entirely from Helm chart workflows and thereby allowing to remove a level of abstraction. Using the HULL library chart, Kubernetes objects including all their properties can be completely and transparently specified in the `values.yaml`. The HULL library chart itself provides the uniform layer to streamline specification, configuration and rendering of Helm charts to achieve this. You can also think of it as a thin layer on top of the Kubernetes API to avoid the middleman between Helm Chart and Kubernetes API object configuration, yet providing flexibility when it is required to customize individual configuration options instead of requiring you to add each configuration switch manually to the templates. JSON schema validation based on the [Helm JSON validation feature](https://helm.sh/docs/topics/charts/#schema-files) (via `values.schema.json`) aids in writing Kubernetes API conforming objects right from the beginning when [using an IDE that supports live JSON schema validation](/hull/files/doc/json_schema_validation.md). Additional benefits (uniform inheritable object metadata, simplified inclusion of ConfigMaps/Secrets, cross-referencing values within the `values.yaml`, ...) are available with HULL which you can read about below in the **Key Features Overview**. But maybe most importantly, the HULL library can be added as a dependency to any existing Helm chart and be used side-by-side without breaking any existing Helm charts functionalities, see [adding the HULL library chart to a Helm chart](/hull/files/doc/setup.md) for more information. And lastly, by being a library chart itself, everything works 100% within the functionality that plain Helm offers - no additional tooling is introduced or involved.
 
 ### Versioning
-HULL release versions are closely tied to Kubernetes release versions due to the incorporation of the release specific Kubernetes API schemas. Each HULL release branch therefore matches a Kubernetes release branch (such as `1.34`). Kubernetes patch releases provide non-breaking updates to a Kubernetes release while maintaining API stability and therefore play no role in the HULL versioning process. HULL's patch releases contain fixes and changes to HULL alone while maintaining compatibility to the Kubernetes releases API schema. 
+
+HULL release versions are closely tied to Kubernetes release versions due to the incorporation of the release specific Kubernetes API schemas. Each HULL release branch therefore matches a Kubernetes release branch (such as `1.34`). Kubernetes patch releases provide non-breaking updates to a Kubernetes release while maintaining API stability and therefore play no role in the HULL versioning process. HULL's patch releases contain fixes and changes to HULL alone while maintaining compatibility to the Kubernetes releases API schema.
 
 HULLs compatibility with Helm matches the respective Kubernetes versions compatibility with Helm, see [Helm Version Support Policy for Helm 4](https://helm.sh/docs/topics/version_skew) and [Helm Version Support Policy for Helm 3](https://helm.sh/docs/v3/topics/version_skew) for the matching version ranges.
 
@@ -17,7 +18,7 @@ Each new release of HULL is thoroughly tested and, unless explicitly noted in th
 
 ### Helm v3 vs Helm v4
 
-HULL remains compatible with existing Helm 3 releases and is fully compatible with Helm v4 starting with versions `1.34.2`, `1.33.3` and `1.32.6`. 
+HULL remains compatible with existing Helm 3 releases and is fully compatible with Helm v4 starting with versions `1.34.2`, `1.33.3` and `1.32.6`.
 
 However, note that minor (however potentially chart-breaking) differences were introduced on the Helm side when moving to Helm v4:
 
@@ -25,7 +26,7 @@ However, note that minor (however potentially chart-breaking) differences were i
 
 - treatment of unset values has changed. To clarify what is mean with 'unset', consider property `field_unset` in this snippet:
 
-    ```
+    ```yaml
     field_string: "some_text" # string text
     field_int: 123 # number
     field_bool: true # boolean
@@ -38,10 +39,9 @@ However, note that minor (however potentially chart-breaking) differences were i
 
 Both aspects should typically be less relevant for HULL based charts, however it shall be documented here to avoid confusion. More detailed information can be found in the [related Helm issue](https://github.com/helm/helm/issues/31344).
 
-
 **Your feedback on this project is valued, hence please comment or start a discussion in the `Issues` section or create feature wishes and bug reports. Thank you!**
 
-The HULL library chart idea is partly inspired by the [common](https://github.com/helm/charts/tree/master/incubator/common) Helm chart concept and for testing 
+The HULL library chart idea is partly inspired by the [common](https://github.com/helm/charts/tree/master/incubator/common) Helm chart concept and for testing
 
 [![Gauge Badge](https://gauge.org/Gauge_Badge.svg)](https://gauge.org).
 
@@ -51,7 +51,7 @@ The HULL library chart idea is partly inspired by the [common](https://github.co
 
 Before diving into the details of HULL, here is a first glimpse at how it works. You can simply download the latest version of the `hull-demo` Helm chart from the Releases section of this page, it has everything bootstrapped for testing out HULL or setting up a new Helm Chart based on HULL with minimal effort.  
 
-The `hull-demo` chart wraps a fictional application `myapp` with a `frontend` and `backend` deployment and service pair. There is a config file for the server configuration that is mounted to the `backend` pods. The `frontend` pods need to know about the `backend` service address via environment variables. Moreover, the setup should by default be easily switchable from a `debug` setup (using a NodePort for accessing the frontend) to a production-like setup (using a ClusterIP service and an ingress). 
+The `hull-demo` chart wraps a fictional application `myapp` with a `frontend` and `backend` deployment and service pair. There is a config file for the server configuration that is mounted to the `backend` pods. The `frontend` pods need to know about the `backend` service address via environment variables. Moreover, the setup should by default be easily switchable from a `debug` setup (using a NodePort for accessing the frontend) to a production-like setup (using a ClusterIP service and an ingress).
 
 A bare default structure to capture these aspects may look like this (with added line comments for explanation):
 
@@ -154,29 +154,29 @@ hull: # HULL is configured via subchart key 'hull'
 
 This is the example constituting as `hull-demo`'s `values.yaml`, if you download the latest `hull-demo` release and execute:
 
-```
+```yaml
 helm template hull-demo-<version>.tgz
 ```
 
 it renders out a set of objects based on above `values.yaml` containing:
 
-  - a deployment for `myapp-frontend` that has a centrally configured image `tag` set (by default `v23.1`), and environment variables pointing to the `myapp-backend`'s service in-cluster address
-  - a deployment for `myapp-backend` that has a centrally configured image `tag` set (by default `v23.1`) and a configuration mounted from the `myappconfig` ConfigMap
-  - a `myappconfig` ConfigMap with a JSON file that is dynamically built by incorporating templating expressions and referencing values defined elsewhere in `values.yaml`
-  - a simple ClusterIP Service fronting `myapp-backend` Deployment
-  - a service fronting `myapp-frontend` deployment whose type and port configuration is dependend on the central `debug` switch - either type `NodePort` in a `debug` setup mode or type `ClusterIP` in combination with a `myapp` ingress in non-debug setups
-  - an ingress object `myapp` which is only rendered/created in case the `debug: false` value is set
+- a deployment for `myapp-frontend` that has a centrally configured image `tag` set (by default `v23.1`), and environment variables pointing to the `myapp-backend`'s service in-cluster address
+- a deployment for `myapp-backend` that has a centrally configured image `tag` set (by default `v23.1`) and a configuration mounted from the `myappconfig` ConfigMap
+- a `myappconfig` ConfigMap with a JSON file that is dynamically built by incorporating templating expressions and referencing values defined elsewhere in `values.yaml`
+- a simple ClusterIP Service fronting `myapp-backend` Deployment
+- a service fronting `myapp-frontend` deployment whose type and port configuration is dependend on the central `debug` switch - either type `NodePort` in a `debug` setup mode or type `ClusterIP` in combination with a `myapp` ingress in non-debug setups
+- an ingress object `myapp` which is only rendered/created in case the `debug: false` value is set
 
 Every aspect of this configuration can be changed or overwritten at deployment time using additional `values.yaml` overlay files, for example:
 
 - switching the overall configuration from and to `debug` mode by settings `debug: true` or `debug: false`
 - adding resource definitions to the deployments
-- setting hostname and path for the ingress 
+- setting hostname and path for the ingress
 - add further environment variables to pods
 - change `myapp` ConfigMaps source values (`rate_limit` and `max_connections`) or overwrite it completely
 - ...
 
-All objects and logic was created with under a hundred lines of overall configuration code in the `hull-demo`'s `values.yaml`. You can test all of the above mentioned aspects or simply experiment by adding additional `values.yaml` overlay files to the `helm template` command above. For bootstrapping your own Helm chart, just empty the `values.yaml` configuration, rename the charts folder and `name` in `Chart.yaml` to whatever you want and you are ready to go. 
+All objects and logic was created with under a hundred lines of overall configuration code in the `hull-demo`'s `values.yaml`. You can test all of the above mentioned aspects or simply experiment by adding additional `values.yaml` overlay files to the `helm template` command above. For bootstrapping your own Helm chart, just empty the `values.yaml` configuration, rename the charts folder and `name` in `Chart.yaml` to whatever you want and you are ready to go.
 
 This is a first demo of how HULL could be used but there is a lot more functionality and supported use-cases. Check the key features and the detailed documentation for more information.
 
@@ -190,12 +190,11 @@ Concentrate on what is needed to specify Kubernetes objects without having to ad
 
   For more details refer to the documentation on [JSON Schema Validation](/hull/files/doc/json_schema_validation.md).
 
-
 ### Directly specify any property of a Kubernetes object
 
-For all Kubernetes object types supported by HULL, **full configurational access to the Kubernetes object types properties is directly available**. This relieves chart maintainers from having to add missing configuration options one by one and the Helm chart users from forking the Helm chart to add just the properties they need for their configuration. Only updating the HULL chart to a newer version with matching Kubernetes API version is required to enable configuration of properties added to Kubernetes objects meanwhile in newer API versions. The HULL charts are versioned to reflect the minimal Kubernetes API versions supported by them. 
+For all Kubernetes object types supported by HULL, **full configurational access to the Kubernetes object types properties is directly available**. This relieves chart maintainers from having to add missing configuration options one by one and the Helm chart users from forking the Helm chart to add just the properties they need for their configuration. Only updating the HULL chart to a newer version with matching Kubernetes API version is required to enable configuration of properties added to Kubernetes objects meanwhile in newer API versions. The HULL charts are versioned to reflect the minimal Kubernetes API versions supported by them.
 
-   For more details refer to the documentation on [Architecture Overview](/hull/files/doc/architecture.md).
+  For more details refer to the documentation on [Architecture Overview](/hull/files/doc/architecture.md).
 
 ### Unified interface for defining and configuring Helm charts backed by JSON schema
 
@@ -205,16 +204,18 @@ The single interface of the HULL library is used to both create and configure ob
 
 ### Automatic and configurable metadata enrichment of Kubernetes objects
 
-**Uniform and rich metadata is automatically attached to all objects created by the HULL library.** 
+**Uniform and rich metadata is automatically attached to all objects created by the HULL library.**
 
-  - Kubernetes standard labels as defined for [Kubernetes](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/) and [Helm](https://helm.sh/docs/chart_best_practices/labels/#standard-labels) are added to all objects metadata automatically. 
-  - Additional custom labels and annotations metadata can be set hierarchically for:
-    - all created Kubernetes objects or 
-    - all created Kubernetes objects of a given type or 
-    - a group of objects of different object types or
-    - any individual Kubernetes object. 
+Kubernetes standard labels as defined for [Kubernetes](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/) and [Helm](https://helm.sh/docs/chart_best_practices/labels/#standard-labels) are added to all objects metadata automatically.
 
-  For more details on metadata overwriting refer to the advanced example below.
+Additional custom labels and annotations metadata can be set hierarchically for:
+
+- all created Kubernetes objects or
+- all created Kubernetes objects of a given type or
+- a group of objects of different object types or
+- any individual Kubernetes object.
+
+For more details on metadata overwriting refer to the advanced example below.
 
 ### Flexible and comfortable integration of ConfigMaps and Secrets into your Helm chart
 
@@ -260,10 +261,11 @@ If you like a hands on approach you are invited to take a look at the [new HULL 
 
 ## Creating and configuring a HULL based chart
 
-To get started on configuring your HULL based chart please refer to the [API documentation](/hull/files/doc/API). 
+To get started on configuring your HULL based chart please refer to the [API documentation](/hull/files/doc/API).
 
 ## Testing and installing a HULL based chart
-To test or install a chart based on HULL the standard Helm v3 tooling is usable. See also the Helm documentation at the [Helm website](https://helm.sh). 
+
+To test or install a chart based on HULL the standard Helm v3 tooling is usable. See also the Helm documentation at the [Helm website](https://helm.sh).
 
 ### Testing a HULL based chart
 
@@ -271,16 +273,15 @@ To inspect the outcome of a specific `values.yaml` configuration you can simply 
 
   `<PATH_TO_HELM_V3_BINARY> template --debug --namespace <CHART_RELEASE_NAMESPACE> --kubeconfig <PATH_TO_K8S_CLUSTER_KUBECONFIG> -f <PATH_TO_SYSTEM_SPECIFIC_VALUES_YAML> --output-dir <PATH_TO_OUTPUT_DIRECTORY> <PATH_TO_CHART_DIRECTORY>`
 
-### Install or upgrade a release: 
+### Install or upgrade a release
 
 Installing or upgrading a chart using HULL follows the standard procedures for every Helm chart:
 
   `<PATH_TO_HELM_V3_BINARY> upgrade --install --debug --create-namespace --atomic --namespace <CHART_RELEASE_NAMESPACE> --kubeconfig <PATH_TO_K8S_CLUSTER_KUBECONFIG> -f <PATH_TO_SYSTEM_SPECIFIC_VALUES_YAML> <RELEASE_NAME> <PATH_TO_CHART_DIRECTORY>`
 
-
 ## First Examples
 
-Using the nginx deployment example from the Kubernetes documentation https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment as something we want to create with our HULL based Helm chart:
+Using the nginx deployment example from the Kubernetes documentation [for nginx](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment) as something we want to create with our HULL based Helm chart:
 
 ```yaml
 apiVersion: apps/v1
@@ -404,7 +405,7 @@ spec:
 
 ### Advanced Example
 
-Now to render the nginx deployment example showcasing extra features of the HULL library you can could create the below `values.yaml` file in your parent chart. Note that this is a very advanced example of what is possible using this library chart. 
+Now to render the nginx deployment example showcasing extra features of the HULL library you can could create the below `values.yaml` file in your parent chart. Note that this is a very advanced example of what is possible using this library chart.
 
 This example highlights:
 
