@@ -156,12 +156,8 @@ This is the example constituting as `hull-demo`'s `values.yaml`, if you download
 
 list text
 
-- a deployment for `myapp-frontend` that has a centrally configured image `tag` set (by default `v23.1`), and environment variables pointing to the `myapp-backend`'s service in-cluster address
-- a deployment for `myapp-backend` that has a centrally configured image `tag` set (by default `v23.1`) and a configuration mounted from the `myappconfig` ConfigMap
-- a `myappconfig` ConfigMap with a JSON file that is dynamically built by incorporating templating expressions and referencing values defined elsewhere in `values.yaml`
-- a simple ClusterIP Service fronting `myapp-backend` Deployment
-- a service fronting `myapp-frontend` deployment whose type and port configuration is dependend on the central `debug` switch - either type `NodePort` in a `debug` setup mode or type `ClusterIP` in combination with a `myapp` ingress in non-debug setups
-- an ingress object `myapp` which is only rendered/created in case the `debug: false` value is set
+- aasdsad
+- adac
 
 Every aspect of this configuration can be changed or overwritten at deployment time using additional `values.yaml` overlay files, for example:
 
