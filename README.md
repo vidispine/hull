@@ -154,6 +154,8 @@ hull: # HULL is configured via subchart key 'hull'
 
 This is the example constituting as `hull-demo`'s `values.yaml`, if you download the latest `hull-demo` release and execute: it renders out a set of objects based on above `values.yaml` containing:
 
+list text
+
 - a deployment for `myapp-frontend` that has a centrally configured image `tag` set (by default `v23.1`), and environment variables pointing to the `myapp-backend`'s service in-cluster address
 - a deployment for `myapp-backend` that has a centrally configured image `tag` set (by default `v23.1`) and a configuration mounted from the `myappconfig` ConfigMap
 - a `myappconfig` ConfigMap with a JSON file that is dynamically built by incorporating templating expressions and referencing values defined elsewhere in `values.yaml`
