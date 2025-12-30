@@ -56,6 +56,7 @@ The `hull-demo` chart wraps a fictional application `myapp` with a `frontend` an
 
 
 it renders out a set of objects based on above `values.yaml` containing:
+
 - at
 - jz
 
