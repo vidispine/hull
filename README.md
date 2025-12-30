@@ -56,7 +56,7 @@ The `hull-demo` chart wraps a fictional application `myapp` with a `frontend` an
 A bare default structure to capture these aspects may look like this (with added line comments for explanation):
 This is the example constituting as `hull-demo`'s `values.yaml`, if you download the latest `hull-demo` release and execute: it renders out a set of objects based on above `values.yaml` containing:
 
-list text
+list text jnolnpnmp
 
 - aasdsad
 - adac
