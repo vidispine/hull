@@ -6,7 +6,7 @@ The HULL Webhook objects allows to reference a chart internal webhook by simple 
 
 ### The `hull.MutatingWebhook.v1` properties
 
-Properties can be set as they are defined in the [Kubernetes API's mutatingwebhookconfiguration spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#mutatingwebhookconfiguration-v1-admissionregistration-k8s-io). 
+Properties can be set as they are defined in the [Kubernetes API's mutatingwebhookconfiguration spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#mutatingwebhookconfiguration-v1-admissionregistration-k8s-io). 
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -18,7 +18,7 @@ However the properties listed below are overwritten or added by HULL:
 
 > The key-value pairs of value type `hull.MutatingWebhook.Webhook.v1` are converted to an array on rendering
 
-Properties can be set as they are defined in the [Kubernetes API's mutatingwebhook spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#mutatingwebhook-v1-admissionregistration-k8s-io). 
+Properties can be set as they are defined in the [Kubernetes API's mutatingwebhook spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#mutatingwebhook-v1-admissionregistration-k8s-io). 
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -28,7 +28,7 @@ However the properties listed below are overwritten or added by HULL:
 
 ### The `hull.ValidatingWebhook.v1` properties
 
-Properties can be set as they are defined in the [Kubernetes API's validatingwebhookconfiguration spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#validatingwebhookconfiguration-v1-admissionregistration-k8s-io). 
+Properties can be set as they are defined in the [Kubernetes API's validatingwebhookconfiguration spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#validatingwebhookconfiguration-v1-admissionregistration-k8s-io). 
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -40,7 +40,7 @@ However the properties listed below are overwritten or added by HULL:
 
 > The key-value pairs of value type `hull.ValidatingWebhook.Webhook.v1` are converted to an array on rendering
 
-Properties can be set as they are defined in the [Kubernetes API's validatingwebhook spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#validatingwebhook-v1-admissionregistration-k8s-io). 
+Properties can be set as they are defined in the [Kubernetes API's validatingwebhook spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#validatingwebhook-v1-admissionregistration-k8s-io). 
 
 However the properties listed below are overwritten or added by HULL:
 

@@ -3572,7 +3572,7 @@
           ]
         },
         "terminatingReplicas": {
-          "description": "Total number of terminating pods targeted by this deployment. Terminating pods have a non-null .metadata.deletionTimestamp and have not yet reached the Failed or Succeeded .status.phase.\n\nThis is an alpha field. Enable DeploymentReplicaSetTerminatingReplicas to be able to use this field.",
+          "description": "Total number of terminating pods targeted by this deployment. Terminating pods have a non-null .metadata.deletionTimestamp and have not yet reached the Failed or Succeeded .status.phase.\n\nThis is a beta field and requires enabling DeploymentReplicaSetTerminatingReplicas feature (enabled by default).",
           "format": "int32",
           "anyOf": [
             {
@@ -3901,7 +3901,7 @@
           ]
         },
         "terminatingReplicas": {
-          "description": "The number of terminating pods for this replica set. Terminating pods have a non-null .metadata.deletionTimestamp and have not yet reached the Failed or Succeeded .status.phase.\n\nThis is an alpha field. Enable DeploymentReplicaSetTerminatingReplicas to be able to use this field.",
+          "description": "The number of terminating pods for this replica set. Terminating pods have a non-null .metadata.deletionTimestamp and have not yet reached the Failed or Succeeded .status.phase.\n\nThis is a beta field and requires enabling DeploymentReplicaSetTerminatingReplicas feature (enabled by default).",
           "format": "int32",
           "anyOf": [
             {
@@ -3973,7 +3973,7 @@
       "properties": {
         "maxUnavailable": {
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.util.intstr.IntOrString",
-          "description": "The maximum number of pods that can be unavailable during the update. Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). Absolute number is calculated from percentage by rounding up. This can not be 0. Defaults to 1. This field is alpha-level and is only honored by servers that enable the MaxUnavailableStatefulSet feature. The field applies to all pods in the range 0 to Replicas-1. That means if there is any unavailable pod in the range 0 to Replicas-1, it will be counted towards MaxUnavailable."
+          "description": "The maximum number of pods that can be unavailable during the update. Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). Absolute number is calculated from percentage by rounding up. This can not be 0. Defaults to 1. This field is beta-level and is enabled by default. The field applies to all pods in the range 0 to Replicas-1. That means if there is any unavailable pod in the range 0 to Replicas-1, it will be counted towards MaxUnavailable. This setting might not be effective for the OrderedReady podManagementPolicy. That policy ensures pods are created and become ready one at a time."
         },
         "partition": {
           "description": "Partition indicates the ordinal at which the StatefulSet should be partitioned for updates. During a rolling update, all pods from ordinal Replicas-1 to Partition are updated. All pods from ordinal Partition-1 to 0 remain untouched. This is helpful in being able to do a canary based deployment. The default value is 0.",
@@ -6010,7 +6010,7 @@
       "additionalProperties": false
     },
     "io.k8s.api.autoscaling.v2.HPAScalingRules": {
-      "description": "HPAScalingRules configures the scaling behavior for one direction via scaling Policy Rules and a configurable metric tolerance.\n\nScaling Policy Rules are applied after calculating DesiredReplicas from metrics for the HPA. They can limit the scaling velocity by specifying scaling policies. They can prevent flapping by specifying the stabilization window, so that the number of replicas is not set instantly, instead, the safest value from the stabilization window is chosen.\n\nThe tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations. (Note that setting a tolerance requires enabling the alpha HPAConfigurableTolerance feature gate.)",
+      "description": "HPAScalingRules configures the scaling behavior for one direction via scaling Policy Rules and a configurable metric tolerance.\n\nScaling Policy Rules are applied after calculating DesiredReplicas from metrics for the HPA. They can limit the scaling velocity by specifying scaling policies. They can prevent flapping by specifying the stabilization window, so that the number of replicas is not set instantly, instead, the safest value from the stabilization window is chosen.\n\nThe tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations. (Note that setting a tolerance requires the beta HPAConfigurableTolerance feature gate to be enabled.)",
       "properties": {
         "policies": {
           "description": "policies is a list of potential scaling polices which can be used during scaling. If not set, use the default values: - For scale up: allow doubling the number of pods, or an absolute change of 4 pods in a 15s window. - For scale down: allow all pods to be removed in a 15s window.",
@@ -6045,7 +6045,7 @@
         },
         "tolerance": {
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity",
-          "description": "tolerance is the tolerance on the ratio between the current and desired metric value under which no updates are made to the desired number of replicas (e.g. 0.01 for 1%). Must be greater than or equal to zero. If not set, the default cluster-wide tolerance is applied (by default 10%).\n\nFor example, if autoscaling is configured with a memory consumption target of 100Mi, and scale-down and scale-up tolerances of 5% and 1% respectively, scaling will be triggered when the actual consumption falls below 95Mi or exceeds 101Mi.\n\nThis is an alpha field and requires enabling the HPAConfigurableTolerance feature gate."
+          "description": "tolerance is the tolerance on the ratio between the current and desired metric value under which no updates are made to the desired number of replicas (e.g. 0.01 for 1%). Must be greater than or equal to zero. If not set, the default cluster-wide tolerance is applied (by default 10%).\n\nFor example, if autoscaling is configured with a memory consumption target of 100Mi, and scale-down and scale-up tolerances of 5% and 1% respectively, scaling will be triggered when the actual consumption falls below 95Mi or exceeds 101Mi.\n\nThis is an beta field and requires the HPAConfigurableTolerance feature gate to be enabled."
         }
       },
       "anyOf": [
@@ -7116,7 +7116,7 @@
           ]
         },
         "managedBy": {
-          "description": "ManagedBy field indicates the controller that manages a Job. The k8s Job controller reconciles jobs which don't have this field at all or the field value is the reserved string `kubernetes.io/job-controller`, but skips reconciling Jobs with a custom value for this field. The value must be a valid domain-prefixed path (e.g. acme.io/foo) - all characters before the first \"/\" must be a valid subdomain as defined by RFC 1123. All characters trailing the first \"/\" must be valid HTTP Path characters as defined by RFC 3986. The value cannot exceed 63 characters. This field is immutable.\n\nThis field is beta-level. The job controller accepts setting the field when the feature gate JobManagedBy is enabled (enabled by default).",
+          "description": "ManagedBy field indicates the controller that manages a Job. The k8s Job controller reconciles jobs which don't have this field at all or the field value is the reserved string `kubernetes.io/job-controller`, but skips reconciling Jobs with a custom value for this field. The value must be a valid domain-prefixed path (e.g. acme.io/foo) - all characters before the first \"/\" must be a valid subdomain as defined by RFC 1123. All characters trailing the first \"/\" must be valid HTTP Path characters as defined by RFC 3986. The value cannot exceed 63 characters. This field is immutable.",
           "type": "string"
         },
         "manualSelector": {
@@ -7768,8 +7768,7 @@
         "request": {
           "description": "request contains an x509 certificate signing request encoded in a \"CERTIFICATE REQUEST\" PEM block. When serialized as JSON or YAML, the data is additionally base64-encoded.",
           "format": "byte",
-          "type": "string",
-          "x-kubernetes-list-type": "atomic"
+          "type": "string"
         },
         "signerName": {
           "description": "signerName indicates the requested signer, and is a qualified name.\n\nList/watch requests for CertificateSigningRequests can filter on this field using a \"spec.signerName=NAME\" fieldSelector.\n\nWell-known Kubernetes signers are:\n 1. \"kubernetes.io/kube-apiserver-client\": issues client certificates that can be used to authenticate to kube-apiserver.\n  Requests for this signer are never auto-approved by kube-controller-manager, can be issued by the \"csrsigning\" controller in kube-controller-manager.\n 2. \"kubernetes.io/kube-apiserver-client-kubelet\": issues client certificates that kubelets use to authenticate to kube-apiserver.\n  Requests for this signer can be auto-approved by the \"csrapproving\" controller in kube-controller-manager, and can be issued by the \"csrsigning\" controller in kube-controller-manager.\n 3. \"kubernetes.io/kubelet-serving\" issues serving certificates that kubelets use to serve TLS endpoints, which kube-apiserver can connect to securely.\n  Requests for this signer are never auto-approved by kube-controller-manager, and can be issued by the \"csrsigning\" controller in kube-controller-manager.\n\nMore details are available at https://k8s.io/docs/reference/access-authn-authz/certificate-signing-requests/#kubernetes-signers\n\nCustom signerNames can also be specified. The signer defines:\n 1. Trust distribution: how trust (CA bundles) are distributed.\n 2. Permitted subjects: and behavior when a disallowed subject is requested.\n 3. Required, permitted, or forbidden x509 extensions in the request (including whether subjectAltNames are allowed, which types, restrictions on allowed values) and behavior when a disallowed extension is requested.\n 4. Required, permitted, or forbidden key usages / extended key usages.\n 5. Expiration/certificate lifetime: whether it is fixed by the signer, configurable by the admin.\n 6. Whether or not requests for CA certificates are allowed.",
@@ -7816,8 +7815,7 @@
         "certificate": {
           "description": "certificate is populated with an issued certificate by the signer after an Approved condition is present. This field is set via the /status subresource. Once populated, this field is immutable.\n\nIf the certificate signing request is denied, a condition of type \"Denied\" is added and this field remains empty. If the signer cannot issue the certificate, a condition of type \"Failed\" is added and this field remains empty.\n\nValidation requirements:\n 1. certificate must contain one or more PEM blocks.\n 2. All PEM blocks must have the \"CERTIFICATE\" label, contain no headers, and the encoded data\n  must be a BER-encoded ASN.1 Certificate structure as described in section 4 of RFC5280.\n 3. Non-PEM content may appear before or after the \"CERTIFICATE\" PEM blocks and is unvalidated,\n  to allow for explanatory text as described in section 5.2 of RFC7468.\n\nIf more than one PEM block is present, and the definition of the requested spec.signerName does not indicate otherwise, the first block is the issued certificate, and subsequent blocks should be treated as intermediate certificates and presented in TLS handshakes.\n\nThe certificate is encoded in PEM format.\n\nWhen serialized as JSON or YAML, the data is additionally base64-encoded, so it consists of:\n\n    base64(\n    -----BEGIN CERTIFICATE-----\n    ...\n    -----END CERTIFICATE-----\n    )",
           "format": "byte",
-          "type": "string",
-          "x-kubernetes-list-type": "atomic"
+          "type": "string"
         },
         "conditions": {
           "description": "conditions applied to the request. Known conditions are \"Approved\", \"Denied\", and \"Failed\".",
@@ -7963,217 +7961,6 @@
       ],
       "additionalProperties": false
     },
-    "io.k8s.api.certificates.v1alpha1.PodCertificateRequest": {
-      "description": "PodCertificateRequest encodes a pod requesting a certificate from a given signer.\n\nKubelets use this API to implement podCertificate projected volumes",
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string",
-          "enum": [
-            "PodCertificateRequest"
-          ]
-        },
-        "metadata": {
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta",
-          "description": "metadata contains the object metadata."
-        },
-        "spec": {
-          "$ref": "#/definitions/io.k8s.api.certificates.v1alpha1.PodCertificateRequestSpec",
-          "description": "spec contains the details about the certificate being requested."
-        },
-        "status": {
-          "$ref": "#/definitions/io.k8s.api.certificates.v1alpha1.PodCertificateRequestStatus",
-          "description": "status contains the issued certificate, and a standard set of conditions."
-        }
-      },
-      "required": [],
-      "anyOf": [
-        {
-          "$ref": "#/definitions/hull.Transformation.Pattern"
-        },
-        {
-          "type": "object"
-        }
-      ],
-      "x-kubernetes-group-version-kind": [
-        {
-          "group": "certificates.k8s.io",
-          "kind": "PodCertificateRequest",
-          "version": "v1alpha1"
-        }
-      ],
-      "additionalProperties": false
-    },
-    "io.k8s.api.certificates.v1alpha1.PodCertificateRequestList": {
-      "description": "PodCertificateRequestList is a collection of PodCertificateRequest objects",
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "items": {
-          "description": "items is a collection of PodCertificateRequest objects",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.certificates.v1alpha1.PodCertificateRequest"
-          },
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "array"
-            }
-          ]
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string",
-          "enum": [
-            "PodCertificateRequestList"
-          ]
-        },
-        "metadata": {
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta",
-          "description": "metadata contains the list metadata."
-        }
-      },
-      "required": [],
-      "anyOf": [
-        {
-          "$ref": "#/definitions/hull.Transformation.Pattern"
-        },
-        {
-          "type": "object"
-        }
-      ],
-      "x-kubernetes-group-version-kind": [
-        {
-          "group": "certificates.k8s.io",
-          "kind": "PodCertificateRequestList",
-          "version": "v1alpha1"
-        }
-      ],
-      "additionalProperties": false
-    },
-    "io.k8s.api.certificates.v1alpha1.PodCertificateRequestSpec": {
-      "description": "PodCertificateRequestSpec describes the certificate request.  All fields are immutable after creation.",
-      "properties": {
-        "maxExpirationSeconds": {
-          "description": "maxExpirationSeconds is the maximum lifetime permitted for the certificate.\n\nIf omitted, kube-apiserver will set it to 86400(24 hours). kube-apiserver will reject values shorter than 3600 (1 hour).  The maximum allowable value is 7862400 (91 days).\n\nThe signer implementation is then free to issue a certificate with any lifetime *shorter* than MaxExpirationSeconds, but no shorter than 3600 seconds (1 hour).  This constraint is enforced by kube-apiserver. `kubernetes.io` signers will never issue certificates with a lifetime longer than 24 hours.",
-          "format": "int32",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "nodeName": {
-          "description": "nodeName is the name of the node the pod is assigned to.",
-          "type": "string"
-        },
-        "nodeUID": {
-          "description": "nodeUID is the UID of the node the pod is assigned to.",
-          "type": "string"
-        },
-        "pkixPublicKey": {
-          "description": "pkixPublicKey is the PKIX-serialized public key the signer will issue the certificate to.\n\nThe key must be one of RSA3072, RSA4096, ECDSAP256, ECDSAP384, ECDSAP521, or ED25519. Note that this list may be expanded in the future.\n\nSigner implementations do not need to support all key types supported by kube-apiserver and kubelet.  If a signer does not support the key type used for a given PodCertificateRequest, it must deny the request by setting a status.conditions entry with a type of \"Denied\" and a reason of \"UnsupportedKeyType\". It may also suggest a key type that it does support in the message field.",
-          "format": "byte",
-          "type": "string"
-        },
-        "podName": {
-          "description": "podName is the name of the pod into which the certificate will be mounted.",
-          "type": "string"
-        },
-        "podUID": {
-          "description": "podUID is the UID of the pod into which the certificate will be mounted.",
-          "type": "string"
-        },
-        "proofOfPossession": {
-          "description": "proofOfPossession proves that the requesting kubelet holds the private key corresponding to pkixPublicKey.\n\nIt is contructed by signing the ASCII bytes of the pod's UID using `pkixPublicKey`.\n\nkube-apiserver validates the proof of possession during creation of the PodCertificateRequest.\n\nIf the key is an RSA key, then the signature is over the ASCII bytes of the pod UID, using RSASSA-PSS from RFC 8017 (as implemented by the golang function crypto/rsa.SignPSS with nil options).\n\nIf the key is an ECDSA key, then the signature is as described by [SEC 1, Version 2.0](https://www.secg.org/sec1-v2.pdf) (as implemented by the golang library function crypto/ecdsa.SignASN1)\n\nIf the key is an ED25519 key, the the signature is as described by the [ED25519 Specification](https://ed25519.cr.yp.to/) (as implemented by the golang library crypto/ed25519.Sign).",
-          "format": "byte",
-          "type": "string"
-        },
-        "serviceAccountName": {
-          "description": "serviceAccountName is the name of the service account the pod is running as.",
-          "type": "string"
-        },
-        "serviceAccountUID": {
-          "description": "serviceAccountUID is the UID of the service account the pod is running as.",
-          "type": "string"
-        },
-        "signerName": {
-          "description": "signerName indicates the requested signer.\n\nAll signer names beginning with `kubernetes.io` are reserved for use by the Kubernetes project.  There is currently one well-known signer documented by the Kubernetes project, `kubernetes.io/kube-apiserver-client-pod`, which will issue client certificates understood by kube-apiserver.  It is currently unimplemented.",
-          "type": "string"
-        }
-      },
-      "required": [],
-      "anyOf": [
-        {
-          "$ref": "#/definitions/hull.Transformation.Pattern"
-        },
-        {
-          "type": "object"
-        }
-      ],
-      "additionalProperties": false
-    },
-    "io.k8s.api.certificates.v1alpha1.PodCertificateRequestStatus": {
-      "description": "PodCertificateRequestStatus describes the status of the request, and holds the certificate data if the request is issued.",
-      "properties": {
-        "beginRefreshAt": {
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time",
-          "description": "beginRefreshAt is the time at which the kubelet should begin trying to refresh the certificate.  This field is set via the /status subresource, and must be set at the same time as certificateChain.  Once populated, this field is immutable.\n\nThis field is only a hint.  Kubelet may start refreshing before or after this time if necessary."
-        },
-        "certificateChain": {
-          "description": "certificateChain is populated with an issued certificate by the signer. This field is set via the /status subresource. Once populated, this field is immutable.\n\nIf the certificate signing request is denied, a condition of type \"Denied\" is added and this field remains empty. If the signer cannot issue the certificate, a condition of type \"Failed\" is added and this field remains empty.\n\nValidation requirements:\n 1. certificateChain must consist of one or more PEM-formatted certificates.\n 2. Each entry must be a valid PEM-wrapped, DER-encoded ASN.1 Certificate as\n    described in section 4 of RFC5280.\n\nIf more than one block is present, and the definition of the requested spec.signerName does not indicate otherwise, the first block is the issued certificate, and subsequent blocks should be treated as intermediate certificates and presented in TLS handshakes.  When projecting the chain into a pod volume, kubelet will drop any data in-between the PEM blocks, as well as any PEM block headers.",
-          "type": "string"
-        },
-        "conditions": {
-          "description": "conditions applied to the request.\n\nThe types \"Issued\", \"Denied\", and \"Failed\" have special handling.  At most one of these conditions may be present, and they must have status \"True\".\n\nIf the request is denied with `Reason=UnsupportedKeyType`, the signer may suggest a key type that will work in the message field.",
-          "items": {
-            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
-          },
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "array"
-            }
-          ],
-          "x-kubernetes-list-map-keys": [
-            "type"
-          ],
-          "x-kubernetes-list-type": "map",
-          "x-kubernetes-patch-merge-key": "type",
-          "x-kubernetes-patch-strategy": "merge"
-        },
-        "notAfter": {
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time",
-          "description": "notAfter is the time at which the certificate expires.  The value must be the same as the notAfter value in the leaf certificate in certificateChain.  This field is set via the /status subresource.  Once populated, it is immutable.  The signer must set this field at the same time it sets certificateChain."
-        },
-        "notBefore": {
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time",
-          "description": "notBefore is the time at which the certificate becomes valid.  The value must be the same as the notBefore value in the leaf certificate in certificateChain.  This field is set via the /status subresource.  Once populated, it is immutable. The signer must set this field at the same time it sets certificateChain."
-        }
-      },
-      "anyOf": [
-        {
-          "$ref": "#/definitions/hull.Transformation.Pattern"
-        },
-        {
-          "type": "object"
-        }
-      ],
-      "additionalProperties": false
-    },
     "io.k8s.api.certificates.v1beta1.ClusterTrustBundle": {
       "description": "ClusterTrustBundle is a cluster-scoped container for X.509 trust anchors (root certificates).\n\nClusterTrustBundle objects are considered to be readable by any authenticated user in the cluster, because they can be mounted by pods using the `clusterTrustBundle` projection.  All service accounts have read access to ClusterTrustBundles by default.  Users who only have namespace-level access to a cluster can read ClusterTrustBundles by impersonating a serviceaccount that they have access to.\n\nIt can be optionally associated with a particular assigner, in which case it contains one valid set of trust anchors for that signer. Signers may have multiple associated ClusterTrustBundles; each is an independent set of trust anchors for that signer. Admission control is used to enforce that only users with permissions on the signer can create or modify the corresponding bundle.",
       "properties": {
@@ -8279,6 +8066,231 @@
         }
       },
       "required": [],
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "additionalProperties": false
+    },
+    "io.k8s.api.certificates.v1beta1.PodCertificateRequest": {
+      "description": "PodCertificateRequest encodes a pod requesting a certificate from a given signer.\n\nKubelets use this API to implement podCertificate projected volumes",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string",
+          "enum": [
+            "PodCertificateRequest"
+          ]
+        },
+        "metadata": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta",
+          "description": "metadata contains the object metadata."
+        },
+        "spec": {
+          "$ref": "#/definitions/io.k8s.api.certificates.v1beta1.PodCertificateRequestSpec",
+          "description": "spec contains the details about the certificate being requested."
+        },
+        "status": {
+          "$ref": "#/definitions/io.k8s.api.certificates.v1beta1.PodCertificateRequestStatus",
+          "description": "status contains the issued certificate, and a standard set of conditions."
+        }
+      },
+      "required": [],
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "x-kubernetes-group-version-kind": [
+        {
+          "group": "certificates.k8s.io",
+          "kind": "PodCertificateRequest",
+          "version": "v1beta1"
+        }
+      ],
+      "additionalProperties": false
+    },
+    "io.k8s.api.certificates.v1beta1.PodCertificateRequestList": {
+      "description": "PodCertificateRequestList is a collection of PodCertificateRequest objects",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is a collection of PodCertificateRequest objects",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.certificates.v1beta1.PodCertificateRequest"
+          },
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "array"
+            }
+          ]
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string",
+          "enum": [
+            "PodCertificateRequestList"
+          ]
+        },
+        "metadata": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta",
+          "description": "metadata contains the list metadata."
+        }
+      },
+      "required": [],
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "x-kubernetes-group-version-kind": [
+        {
+          "group": "certificates.k8s.io",
+          "kind": "PodCertificateRequestList",
+          "version": "v1beta1"
+        }
+      ],
+      "additionalProperties": false
+    },
+    "io.k8s.api.certificates.v1beta1.PodCertificateRequestSpec": {
+      "description": "PodCertificateRequestSpec describes the certificate request.  All fields are immutable after creation.",
+      "properties": {
+        "maxExpirationSeconds": {
+          "description": "maxExpirationSeconds is the maximum lifetime permitted for the certificate.\n\nIf omitted, kube-apiserver will set it to 86400(24 hours). kube-apiserver will reject values shorter than 3600 (1 hour).  The maximum allowable value is 7862400 (91 days).\n\nThe signer implementation is then free to issue a certificate with any lifetime *shorter* than MaxExpirationSeconds, but no shorter than 3600 seconds (1 hour).  This constraint is enforced by kube-apiserver. `kubernetes.io` signers will never issue certificates with a lifetime longer than 24 hours.",
+          "format": "int32",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "nodeName": {
+          "description": "nodeName is the name of the node the pod is assigned to.",
+          "type": "string"
+        },
+        "nodeUID": {
+          "description": "nodeUID is the UID of the node the pod is assigned to.",
+          "type": "string"
+        },
+        "pkixPublicKey": {
+          "description": "pkixPublicKey is the PKIX-serialized public key the signer will issue the certificate to.\n\nThe key must be one of RSA3072, RSA4096, ECDSAP256, ECDSAP384, ECDSAP521, or ED25519. Note that this list may be expanded in the future.\n\nSigner implementations do not need to support all key types supported by kube-apiserver and kubelet.  If a signer does not support the key type used for a given PodCertificateRequest, it must deny the request by setting a status.conditions entry with a type of \"Denied\" and a reason of \"UnsupportedKeyType\". It may also suggest a key type that it does support in the message field.",
+          "format": "byte",
+          "type": "string"
+        },
+        "podName": {
+          "description": "podName is the name of the pod into which the certificate will be mounted.",
+          "type": "string"
+        },
+        "podUID": {
+          "description": "podUID is the UID of the pod into which the certificate will be mounted.",
+          "type": "string"
+        },
+        "proofOfPossession": {
+          "description": "proofOfPossession proves that the requesting kubelet holds the private key corresponding to pkixPublicKey.\n\nIt is contructed by signing the ASCII bytes of the pod's UID using `pkixPublicKey`.\n\nkube-apiserver validates the proof of possession during creation of the PodCertificateRequest.\n\nIf the key is an RSA key, then the signature is over the ASCII bytes of the pod UID, using RSASSA-PSS from RFC 8017 (as implemented by the golang function crypto/rsa.SignPSS with nil options).\n\nIf the key is an ECDSA key, then the signature is as described by [SEC 1, Version 2.0](https://www.secg.org/sec1-v2.pdf) (as implemented by the golang library function crypto/ecdsa.SignASN1)\n\nIf the key is an ED25519 key, the the signature is as described by the [ED25519 Specification](https://ed25519.cr.yp.to/) (as implemented by the golang library crypto/ed25519.Sign).",
+          "format": "byte",
+          "type": "string"
+        },
+        "serviceAccountName": {
+          "description": "serviceAccountName is the name of the service account the pod is running as.",
+          "type": "string"
+        },
+        "serviceAccountUID": {
+          "description": "serviceAccountUID is the UID of the service account the pod is running as.",
+          "type": "string"
+        },
+        "signerName": {
+          "description": "signerName indicates the requested signer.\n\nAll signer names beginning with `kubernetes.io` are reserved for use by the Kubernetes project.  There is currently one well-known signer documented by the Kubernetes project, `kubernetes.io/kube-apiserver-client-pod`, which will issue client certificates understood by kube-apiserver.  It is currently unimplemented.",
+          "type": "string"
+        },
+        "unverifiedUserAnnotations": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "unverifiedUserAnnotations allow pod authors to pass additional information to the signer implementation.  Kubernetes does not restrict or validate this metadata in any way.\n\nEntries are subject to the same validation as object metadata annotations, with the addition that all keys must be domain-prefixed. No restrictions are placed on values, except an overall size limitation on the entire field.\n\nSigners should document the keys and values they support.  Signers should deny requests that contain keys they do not recognize.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "additionalProperties": false
+    },
+    "io.k8s.api.certificates.v1beta1.PodCertificateRequestStatus": {
+      "description": "PodCertificateRequestStatus describes the status of the request, and holds the certificate data if the request is issued.",
+      "properties": {
+        "beginRefreshAt": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time",
+          "description": "beginRefreshAt is the time at which the kubelet should begin trying to refresh the certificate.  This field is set via the /status subresource, and must be set at the same time as certificateChain.  Once populated, this field is immutable.\n\nThis field is only a hint.  Kubelet may start refreshing before or after this time if necessary."
+        },
+        "certificateChain": {
+          "description": "certificateChain is populated with an issued certificate by the signer. This field is set via the /status subresource. Once populated, this field is immutable.\n\nIf the certificate signing request is denied, a condition of type \"Denied\" is added and this field remains empty. If the signer cannot issue the certificate, a condition of type \"Failed\" is added and this field remains empty.\n\nValidation requirements:\n 1. certificateChain must consist of one or more PEM-formatted certificates.\n 2. Each entry must be a valid PEM-wrapped, DER-encoded ASN.1 Certificate as\n    described in section 4 of RFC5280.\n\nIf more than one block is present, and the definition of the requested spec.signerName does not indicate otherwise, the first block is the issued certificate, and subsequent blocks should be treated as intermediate certificates and presented in TLS handshakes.  When projecting the chain into a pod volume, kubelet will drop any data in-between the PEM blocks, as well as any PEM block headers.",
+          "type": "string"
+        },
+        "conditions": {
+          "description": "conditions applied to the request.\n\nThe types \"Issued\", \"Denied\", and \"Failed\" have special handling.  At most one of these conditions may be present, and they must have status \"True\".\n\nIf the request is denied with `Reason=UnsupportedKeyType`, the signer may suggest a key type that will work in the message field.",
+          "items": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
+          },
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "array"
+            }
+          ],
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map",
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "notAfter": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time",
+          "description": "notAfter is the time at which the certificate expires.  The value must be the same as the notAfter value in the leaf certificate in certificateChain.  This field is set via the /status subresource.  Once populated, it is immutable.  The signer must set this field at the same time it sets certificateChain."
+        },
+        "notBefore": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time",
+          "description": "notBefore is the time at which the certificate becomes valid.  The value must be the same as the notBefore value in the leaf certificate in certificateChain.  This field is set via the /status subresource.  Once populated, it is immutable. The signer must set this field at the same time it sets certificateChain."
+        }
+      },
       "anyOf": [
         {
           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -10015,7 +10027,7 @@
           "description": "Periodic probe of container service readiness. Container will be removed from service endpoints if the probe fails. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
         },
         "resizePolicy": {
-          "description": "Resources resize policy for the container.",
+          "description": "Resources resize policy for the container. This field cannot be set on ephemeral containers.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.core.v1.ContainerResizePolicy"
           },
@@ -13800,6 +13812,21 @@
           "$ref": "#/definitions/io.k8s.api.core.v1.NodeDaemonEndpoints",
           "description": "Endpoints of daemons running on the Node."
         },
+        "declaredFeatures": {
+          "description": "DeclaredFeatures represents the features related to feature gates that are declared by the node.",
+          "items": {
+            "type": "string"
+          },
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "array"
+            }
+          ],
+          "x-kubernetes-list-type": "atomic"
+        },
         "features": {
           "$ref": "#/definitions/io.k8s.api.core.v1.NodeFeatures",
           "description": "Features describes the set of features implemented by the CRI implementation."
@@ -14254,7 +14281,7 @@
         },
         "resources": {
           "$ref": "#/definitions/io.k8s.api.core.v1.VolumeResourceRequirements",
-          "description": "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
+          "description": "resources represents the minimum resources the volume should have. Users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
         },
         "selector": {
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector",
@@ -14308,7 +14335,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "description": "allocatedResourceStatuses stores status of resource being resized for the given PVC. Key names follow standard Kubernetes label syntax. Valid values are either:\n\t* Un-prefixed keys:\n\t\t- storage - the capacity of the volume.\n\t* Custom resources must use implementation-defined prefixed names such as \"example.com/my-custom-resource\"\nApart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used.\n\nClaimResourceStatus can be in any of following states:\n\t- ControllerResizeInProgress:\n\t\tState set when resize controller starts resizing the volume in control-plane.\n\t- ControllerResizeFailed:\n\t\tState set when resize has failed in resize controller with a terminal error.\n\t- NodeResizePending:\n\t\tState set when resize controller has finished resizing the volume but further resizing of\n\t\tvolume is needed on the node.\n\t- NodeResizeInProgress:\n\t\tState set when kubelet starts resizing the volume.\n\t- NodeResizeFailed:\n\t\tState set when resizing has failed in kubelet with a terminal error. Transient errors don't set\n\t\tNodeResizeFailed.\nFor example: if expanding a PVC for more capacity - this field can be one of the following states:\n\t- pvc.status.allocatedResourceStatus['storage'] = \"ControllerResizeInProgress\"\n     - pvc.status.allocatedResourceStatus['storage'] = \"ControllerResizeFailed\"\n     - pvc.status.allocatedResourceStatus['storage'] = \"NodeResizePending\"\n     - pvc.status.allocatedResourceStatus['storage'] = \"NodeResizeInProgress\"\n     - pvc.status.allocatedResourceStatus['storage'] = \"NodeResizeFailed\"\nWhen this field is not set, it means that no resize operation is in progress for the given PVC.\n\nA controller that receives PVC update with previously unknown resourceName or ClaimResourceStatus should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC.\n\nThis is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.",
+          "description": "allocatedResourceStatuses stores status of resource being resized for the given PVC. Key names follow standard Kubernetes label syntax. Valid values are either:\n\t* Un-prefixed keys:\n\t\t- storage - the capacity of the volume.\n\t* Custom resources must use implementation-defined prefixed names such as \"example.com/my-custom-resource\"\nApart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used.\n\nClaimResourceStatus can be in any of following states:\n\t- ControllerResizeInProgress:\n\t\tState set when resize controller starts resizing the volume in control-plane.\n\t- ControllerResizeFailed:\n\t\tState set when resize has failed in resize controller with a terminal error.\n\t- NodeResizePending:\n\t\tState set when resize controller has finished resizing the volume but further resizing of\n\t\tvolume is needed on the node.\n\t- NodeResizeInProgress:\n\t\tState set when kubelet starts resizing the volume.\n\t- NodeResizeFailed:\n\t\tState set when resizing has failed in kubelet with a terminal error. Transient errors don't set\n\t\tNodeResizeFailed.\nFor example: if expanding a PVC for more capacity - this field can be one of the following states:\n\t- pvc.status.allocatedResourceStatus['storage'] = \"ControllerResizeInProgress\"\n     - pvc.status.allocatedResourceStatus['storage'] = \"ControllerResizeFailed\"\n     - pvc.status.allocatedResourceStatus['storage'] = \"NodeResizePending\"\n     - pvc.status.allocatedResourceStatus['storage'] = \"NodeResizeInProgress\"\n     - pvc.status.allocatedResourceStatus['storage'] = \"NodeResizeFailed\"\nWhen this field is not set, it means that no resize operation is in progress for the given PVC.\n\nA controller that receives PVC update with previously unknown resourceName or ClaimResourceStatus should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC.",
           "anyOf": [
             {
               "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -14323,7 +14350,7 @@
           "additionalProperties": {
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
           },
-          "description": "allocatedResources tracks the resources allocated to a PVC including its capacity. Key names follow standard Kubernetes label syntax. Valid values are either:\n\t* Un-prefixed keys:\n\t\t- storage - the capacity of the volume.\n\t* Custom resources must use implementation-defined prefixed names such as \"example.com/my-custom-resource\"\nApart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used.\n\nCapacity reported here may be larger than the actual capacity when a volume expansion operation is requested. For storage quota, the larger value from allocatedResources and PVC.spec.resources is used. If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation. If a volume expansion capacity request is lowered, allocatedResources is only lowered if there are no expansion operations in progress and if the actual volume capacity is equal or lower than the requested capacity.\n\nA controller that receives PVC update with previously unknown resourceName should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC.\n\nThis is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.",
+          "description": "allocatedResources tracks the resources allocated to a PVC including its capacity. Key names follow standard Kubernetes label syntax. Valid values are either:\n\t* Un-prefixed keys:\n\t\t- storage - the capacity of the volume.\n\t* Custom resources must use implementation-defined prefixed names such as \"example.com/my-custom-resource\"\nApart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used.\n\nCapacity reported here may be larger than the actual capacity when a volume expansion operation is requested. For storage quota, the larger value from allocatedResources and PVC.spec.resources is used. If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation. If a volume expansion capacity request is lowered, allocatedResources is only lowered if there are no expansion operations in progress and if the actual volume capacity is equal or lower than the requested capacity.\n\nA controller that receives PVC update with previously unknown resourceName should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC.",
           "anyOf": [
             {
               "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -14654,7 +14681,7 @@
         },
         "nodeAffinity": {
           "$ref": "#/definitions/io.k8s.api.core.v1.VolumeNodeAffinity",
-          "description": "nodeAffinity defines constraints that limit what nodes this volume can be accessed from. This field influences the scheduling of pods that use this volume."
+          "description": "nodeAffinity defines constraints that limit what nodes this volume can be accessed from. This field influences the scheduling of pods that use this volume. This field is mutable if MutablePVNodeAffinity feature gate is enabled."
         },
         "persistentVolumeReclaimPolicy": {
           "description": "persistentVolumeReclaimPolicy defines what happens to a persistent volume when released from its claim. Valid options are Retain (default for manually created PersistentVolumes), Delete (default for dynamically provisioned PersistentVolumes), and Recycle (deprecated). Recycle must be supported by the volume plugin underlying this PersistentVolume. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#reclaiming",
@@ -15001,6 +15028,20 @@
         "signerName": {
           "description": "Kubelet's generated CSRs will be addressed to this signer.",
           "type": "string"
+        },
+        "userAnnotations": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "userAnnotations allow pod authors to pass additional information to the signer implementation.  Kubernetes does not restrict or validate this metadata in any way.\n\nThese values are copied verbatim into the `spec.unverifiedUserAnnotations` field of the PodCertificateRequest objects that Kubelet creates.\n\nEntries are subject to the same validation as object metadata annotations, with the addition that all keys must be domain-prefixed. No restrictions are placed on values, except an overall size limitation on the entire field.\n\nSigners should document the keys and values they support. Signers should deny requests that contain keys they do not recognize.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "object"
+            }
+          ]
         }
       },
       "required": [],
@@ -15030,7 +15071,7 @@
           "type": "string"
         },
         "observedGeneration": {
-          "description": "If set, this represents the .metadata.generation that the pod condition was set based upon. This is an alpha field. Enable PodObservedGenerationTracking to be able to use this field.",
+          "description": "If set, this represents the .metadata.generation that the pod condition was set based upon. The PodObservedGenerationTracking feature gate must be enabled to use this field.",
           "format": "int64",
           "anyOf": [
             {
@@ -15756,7 +15797,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "resourceClaims": {
-          "description": "ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.\n\nThis is an alpha field and requires enabling the DynamicResourceAllocation feature gate.\n\nThis field is immutable.",
+          "description": "ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.\n\nThis is a stable field but requires that the DynamicResourceAllocation feature gate is enabled.\n\nThis field is immutable.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.core.v1.PodResourceClaim"
           },
@@ -15911,6 +15952,20 @@
     "io.k8s.api.core.v1.PodStatus": {
       "description": "PodStatus represents information about the status of a pod. Status may trail the actual state of a system, especially if the node that hosts the pod cannot contact the control plane.",
       "properties": {
+        "allocatedResources": {
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          },
+          "description": "AllocatedResources is the total requests allocated for this pod by the node. If pod-level requests are not set, this will be the total requests aggregated across containers in the pod.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "object"
+            }
+          ]
+        },
         "conditions": {
           "description": "Current service state of pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-conditions",
           "items": {
@@ -16010,7 +16065,7 @@
           "type": "string"
         },
         "observedGeneration": {
-          "description": "If set, this represents the .metadata.generation that the pod status was set based upon. This is an alpha field. Enable PodObservedGenerationTracking to be able to use this field.",
+          "description": "If set, this represents the .metadata.generation that the pod status was set based upon. The PodObservedGenerationTracking feature gate must be enabled to use this field.",
           "format": "int64",
           "anyOf": [
             {
@@ -16080,6 +16135,10 @@
           "x-kubernetes-list-type": "map",
           "x-kubernetes-patch-merge-key": "name",
           "x-kubernetes-patch-strategy": "merge,retainKeys"
+        },
+        "resources": {
+          "$ref": "#/definitions/io.k8s.api.core.v1.ResourceRequirements",
+          "description": "Resources represents the compute resource requests and limits that have been applied at the pod level if pod-level requests or limits are set in PodSpec.Resources"
         },
         "startTime": {
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time",
@@ -18798,7 +18857,7 @@
           "type": "string"
         },
         "operator": {
-          "description": "Operator represents a key's relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.",
+          "description": "Operator represents a key's relationship to the value. Valid operators are Exists, Equal, Lt, and Gt. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category. Lt and Gt perform numeric comparisons (requires feature gate TaintTolerationComparisonOperators).",
           "type": "string"
         },
         "tolerationSeconds": {
@@ -19555,6 +19614,33 @@
       ],
       "additionalProperties": false
     },
+    "io.k8s.api.core.v1.WorkloadReference": {
+      "description": "WorkloadReference identifies the Workload object and PodGroup membership that a Pod belongs to. The scheduler uses this information to apply workload-aware scheduling semantics.",
+      "properties": {
+        "name": {
+          "description": "Name defines the name of the Workload object this Pod belongs to. Workload must be in the same namespace as the Pod. If it doesn't match any existing Workload, the Pod will remain unschedulable until a Workload object is created and observed by the kube-scheduler. It must be a DNS subdomain.",
+          "type": "string"
+        },
+        "podGroup": {
+          "description": "PodGroup is the name of the PodGroup within the Workload that this Pod belongs to. If it doesn't match any existing PodGroup within the Workload, the Pod will remain unschedulable until the Workload object is recreated and observed by the kube-scheduler. It must be a DNS label.",
+          "type": "string"
+        },
+        "podGroupReplicaKey": {
+          "description": "PodGroupReplicaKey specifies the replica key of the PodGroup to which this Pod belongs. It is used to distinguish pods belonging to different replicas of the same pod group. The pod group policy is applied separately to each replica. When set, it must be a DNS label.",
+          "type": "string"
+        }
+      },
+      "required": [],
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "additionalProperties": false
+    },
     "io.k8s.api.discovery.v1.Endpoint": {
       "description": "Endpoint represents a single logical \"backend\" implementing a service.",
       "properties": {
@@ -19674,7 +19760,7 @@
       "description": "EndpointHints provides hints describing how an endpoint should be consumed.",
       "properties": {
         "forNodes": {
-          "description": "forNodes indicates the node(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries. This is an Alpha feature and is only used when the PreferSameTrafficDistribution feature gate is enabled.",
+          "description": "forNodes indicates the node(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.discovery.v1.ForNode"
           },
@@ -23724,7 +23810,7 @@
           "type": "string"
         },
         "driver": {
-          "description": "Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.",
+          "description": "Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.",
           "type": "string"
         },
         "networkData": {
@@ -23908,13 +23994,13 @@
       "additionalProperties": false
     },
     "io.k8s.api.resource.v1.CounterSet": {
-      "description": "CounterSet defines a named set of counters that are available to be used by devices defined in the ResourceSlice.\n\nThe counters are not allocatable by themselves, but can be referenced by devices. When a device is allocated, the portion of counters it uses will no longer be available for use by other devices.",
+      "description": "CounterSet defines a named set of counters that are available to be used by devices defined in the ResourcePool.\n\nThe counters are not allocatable by themselves, but can be referenced by devices. When a device is allocated, the portion of counters it uses will no longer be available for use by other devices.",
       "properties": {
         "counters": {
           "additionalProperties": {
             "$ref": "#/definitions/io.k8s.api.resource.v1.Counter"
           },
-          "description": "Counters defines the set of counters for this CounterSet The name of each counter must be unique in that set and must be a DNS label.\n\nThe maximum number of counters in all sets is 32.",
+          "description": "Counters defines the set of counters for this CounterSet The name of each counter must be unique in that set and must be a DNS label.\n\nThe maximum number of counters is 32.",
           "anyOf": [
             {
               "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24035,7 +24121,7 @@
           ]
         },
         "consumesCounters": {
-          "description": "ConsumesCounters defines a list of references to sharedCounters and the set of counters that the device will consume from those counter sets.\n\nThere can only be a single entry per counterSet.\n\nThe total number of device counter consumption entries must be <= 32. In addition, the total number in the entire ResourceSlice must be <= 1024 (for example, 64 devices with 16 counters each).",
+          "description": "ConsumesCounters defines a list of references to sharedCounters and the set of counters that the device will consume from those counter sets.\n\nThere can only be a single entry per counterSet.\n\nThe maximum number of device counter consumptions per device is 2.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.resource.v1.DeviceCounterConsumption"
           },
@@ -24062,7 +24148,7 @@
           "description": "NodeSelector defines the nodes where the device is available.\n\nMust use exactly one term.\n\nMust only be set if Spec.PerDeviceNodeSelection is set to true. At most one of NodeName, NodeSelector and AllNodes can be set."
         },
         "taints": {
-          "description": "If specified, these are the driver-defined taints.\n\nThe maximum number of taints is 4.\n\nThis is an alpha field and requires enabling the DRADeviceTaints feature gate.",
+          "description": "If specified, these are the driver-defined taints.\n\nThe maximum number of taints is 16. If taints are set for any device in a ResourceSlice, then the maximum number of allowed devices per ResourceSlice is 64 instead of 128.\n\nThis is an alpha field and requires enabling the DRADeviceTaints feature gate.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.resource.v1.DeviceTaint"
           },
@@ -24536,7 +24622,7 @@
           "additionalProperties": {
             "$ref": "#/definitions/io.k8s.api.resource.v1.Counter"
           },
-          "description": "Counters defines the counters that will be consumed by the device.\n\nThe maximum number counters in a device is 32. In addition, the maximum number of all counters in all devices is 1024 (for example, 64 devices with 16 counters each).",
+          "description": "Counters defines the counters that will be consumed by the device.\n\nThe maximum number of counters is 32.",
           "anyOf": [
             {
               "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -24659,7 +24745,7 @@
           "type": "string"
         },
         "driver": {
-          "description": "Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.",
+          "description": "Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.",
           "type": "string"
         },
         "pool": {
@@ -24796,7 +24882,7 @@
       "description": "The device this taint is attached to has the \"effect\" on any claim which does not tolerate the taint and, through the claim, to pods using the claim.",
       "properties": {
         "effect": {
-          "description": "The effect of the taint on claims that do not tolerate the taint and through such claims on the pods using them. Valid effects are NoSchedule and NoExecute. PreferNoSchedule as used for nodes is not valid here.",
+          "description": "The effect of the taint on claims that do not tolerate the taint and through such claims on the pods using them.\n\nValid effects are None, NoSchedule and NoExecute. PreferNoSchedule as used for nodes is not valid here. More effects may get added in the future. Consumers must treat unknown effects like None.",
           "type": "string"
         },
         "key": {
@@ -24986,7 +25072,7 @@
       "description": "OpaqueDeviceConfiguration contains configuration parameters for a driver in a format defined by the driver vendor.",
       "properties": {
         "driver": {
-          "description": "Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.\n\nAn admission policy provided by the driver developer could use this to decide whether it needs to validate them.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.",
+          "description": "Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.\n\nAn admission policy provided by the driver developer could use this to decide whether it needs to validate them.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.",
           "type": "string"
         },
         "parameters": {
@@ -25474,7 +25560,7 @@
           ]
         },
         "devices": {
-          "description": "Devices lists some or all of the devices in this pool.\n\nMust not have more than 128 entries.",
+          "description": "Devices lists some or all of the devices in this pool.\n\nMust not have more than 128 entries. If any device uses taints or consumes counters the limit is 64.\n\nOnly one of Devices and SharedCounters can be set in a ResourceSlice.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.resource.v1.Device"
           },
@@ -25489,7 +25575,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "driver": {
-          "description": "Driver identifies the DRA driver providing the capacity information. A field selector can be used to list only ResourceSlice objects with a certain driver name.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. This field is immutable.",
+          "description": "Driver identifies the DRA driver providing the capacity information. A field selector can be used to list only ResourceSlice objects with a certain driver name.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters. This field is immutable.",
           "type": "string"
         },
         "nodeName": {
@@ -25516,7 +25602,7 @@
           "description": "Pool describes the pool that this ResourceSlice belongs to."
         },
         "sharedCounters": {
-          "description": "SharedCounters defines a list of counter sets, each of which has a name and a list of counters available.\n\nThe names of the SharedCounters must be unique in the ResourceSlice.\n\nThe maximum number of counters in all sets is 32.",
+          "description": "SharedCounters defines a list of counter sets, each of which has a name and a list of counters available.\n\nThe names of the counter sets must be unique in the ResourcePool.\n\nOnly one of Devices and SharedCounters can be set in a ResourceSlice.\n\nThe maximum number of counter sets is 8.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.resource.v1.CounterSet"
           },
@@ -25542,48 +25628,11 @@
       ],
       "additionalProperties": false
     },
-    "io.k8s.api.resource.v1alpha3.CELDeviceSelector": {
-      "description": "CELDeviceSelector contains a CEL expression for selecting a device.",
-      "properties": {
-        "expression": {
-          "description": "Expression is a CEL expression which evaluates a single device. It must evaluate to true when the device under consideration satisfies the desired criteria, and false when it does not. Any other result is an error and causes allocation of devices to abort.\n\nThe expression's input is an object named \"device\", which carries the following properties:\n - driver (string): the name of the driver which defines this device.\n - attributes (map[string]object): the device's attributes, grouped by prefix\n   (e.g. device.attributes[\"dra.example.com\"] evaluates to an object with all\n   of the attributes which were prefixed by \"dra.example.com\".\n - capacity (map[string]object): the device's capacities, grouped by prefix.\n\nExample: Consider a device with driver=\"dra.example.com\", which exposes two attributes named \"model\" and \"ext.example.com/family\" and which exposes one capacity named \"modules\". This input to this expression would have the following fields:\n\n    device.driver\n    device.attributes[\"dra.example.com\"].model\n    device.attributes[\"ext.example.com\"].family\n    device.capacity[\"dra.example.com\"].modules\n\nThe device.driver field can be used to check for a specific driver, either as a high-level precondition (i.e. you only want to consider devices from this driver) or as part of a multi-clause expression that is meant to consider devices from different drivers.\n\nThe value type of each attribute is defined by the device definition, and users who write these expressions must consult the documentation for their specific drivers. The value type of each capacity is Quantity.\n\nIf an unknown prefix is used as a lookup in either device.attributes or device.capacity, an empty map will be returned. Any reference to an unknown field will cause an evaluation error and allocation to abort.\n\nA robust expression should check for the existence of attributes before referencing them.\n\nFor ease of use, the cel.bind() function is enabled, and can be used to simplify expressions that access multiple attributes with the same domain. For example:\n\n    cel.bind(dra, device.attributes[\"dra.example.com\"], dra.someBool && dra.anotherBool)\n\nThe length of the expression must be smaller or equal to 10 Ki. The cost of evaluating it is also limited based on the estimated number of logical steps.",
-          "type": "string"
-        }
-      },
-      "required": [],
-      "anyOf": [
-        {
-          "$ref": "#/definitions/hull.Transformation.Pattern"
-        },
-        {
-          "type": "object"
-        }
-      ],
-      "additionalProperties": false
-    },
-    "io.k8s.api.resource.v1alpha3.DeviceSelector": {
-      "description": "DeviceSelector must have exactly one field set.",
-      "properties": {
-        "cel": {
-          "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.CELDeviceSelector",
-          "description": "CEL contains a CEL expression for selecting a device."
-        }
-      },
-      "anyOf": [
-        {
-          "$ref": "#/definitions/hull.Transformation.Pattern"
-        },
-        {
-          "type": "object"
-        }
-      ],
-      "additionalProperties": false
-    },
     "io.k8s.api.resource.v1alpha3.DeviceTaint": {
       "description": "The device this taint is attached to has the \"effect\" on any claim which does not tolerate the taint and, through the claim, to pods using the claim.",
       "properties": {
         "effect": {
-          "description": "The effect of the taint on claims that do not tolerate the taint and through such claims on the pods using them. Valid effects are NoSchedule and NoExecute. PreferNoSchedule as used for nodes is not valid here.",
+          "description": "The effect of the taint on claims that do not tolerate the taint and through such claims on the pods using them.\n\nValid effects are None, NoSchedule and NoExecute. PreferNoSchedule as used for nodes is not valid here. More effects may get added in the future. Consumers must treat unknown effects like None.",
           "type": "string"
         },
         "key": {
@@ -25631,6 +25680,10 @@
         "spec": {
           "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.DeviceTaintRuleSpec",
           "description": "Spec specifies the selector and one taint.\n\nChanging the spec automatically increments the metadata.generation number."
+        },
+        "status": {
+          "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.DeviceTaintRuleStatus",
+          "description": "Status provides information about what was requested in the spec."
         }
       },
       "required": [],
@@ -25707,7 +25760,7 @@
       "properties": {
         "deviceSelector": {
           "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.DeviceTaintSelector",
-          "description": "DeviceSelector defines which device(s) the taint is applied to. All selector criteria must be satified for a device to match. The empty selector matches all devices. Without a selector, no devices are matches."
+          "description": "DeviceSelector defines which device(s) the taint is applied to. All selector criteria must be satisfied for a device to match. The empty selector matches all devices. Without a selector, no devices are matches."
         },
         "taint": {
           "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.DeviceTaint",
@@ -25725,29 +25778,13 @@
       ],
       "additionalProperties": false
     },
-    "io.k8s.api.resource.v1alpha3.DeviceTaintSelector": {
-      "description": "DeviceTaintSelector defines which device(s) a DeviceTaintRule applies to. The empty selector matches all devices. Without a selector, no devices are matched.",
+    "io.k8s.api.resource.v1alpha3.DeviceTaintRuleStatus": {
+      "description": "DeviceTaintRuleStatus provides information about an on-going pod eviction.",
       "properties": {
-        "device": {
-          "description": "If device is set, only devices with that name are selected. This field corresponds to slice.spec.devices[].name.\n\nSetting also driver and pool may be required to avoid ambiguity, but is not required.",
-          "type": "string"
-        },
-        "deviceClassName": {
-          "description": "If DeviceClassName is set, the selectors defined there must be satisfied by a device to be selected. This field corresponds to class.metadata.name.",
-          "type": "string"
-        },
-        "driver": {
-          "description": "If driver is set, only devices from that driver are selected. This fields corresponds to slice.spec.driver.",
-          "type": "string"
-        },
-        "pool": {
-          "description": "If pool is set, only devices in that pool are selected.\n\nAlso setting the driver name may be useful to avoid ambiguity when different drivers use the same pool name, but this is not required because selecting pools from different drivers may also be useful, for example when drivers with node-local devices use the node name as their pool name.",
-          "type": "string"
-        },
-        "selectors": {
-          "description": "Selectors contains the same selection criteria as a ResourceClaim. Currently, CEL expressions are supported. All of these selectors must be satisfied.",
+        "conditions": {
+          "description": "Conditions provide information about the state of the DeviceTaintRule and the cluster at some point in time, in a machine-readable and human-readable format.\n\nThe following condition is currently defined as part of this API, more may get added: - Type: EvictionInProgress - Status: True if there are currently pods which need to be evicted, False otherwise\n  (includes the effects which don't cause eviction).\n- Reason: not specified, may change - Message: includes information about number of pending pods and already evicted pods\n  in a human-readable format, updated periodically, may change\n\nFor `effect: None`, the condition above gets set once for each change to the spec, with the message containing information about what would happen if the effect was `NoExecute`. This feedback can be used to decide whether changing the effect to `NoExecute` will work as intended. It only gets set once to avoid having to constantly update the status.\n\nMust have 8 or fewer entries.",
           "items": {
-            "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.DeviceSelector"
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
           },
           "anyOf": [
             {
@@ -25757,7 +25794,38 @@
               "type": "array"
             }
           ],
-          "x-kubernetes-list-type": "atomic"
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map",
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        }
+      },
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "additionalProperties": false
+    },
+    "io.k8s.api.resource.v1alpha3.DeviceTaintSelector": {
+      "description": "DeviceTaintSelector defines which device(s) a DeviceTaintRule applies to. The empty selector matches all devices. Without a selector, no devices are matched.",
+      "properties": {
+        "device": {
+          "description": "If device is set, only devices with that name are selected. This field corresponds to slice.spec.devices[].name.\n\nSetting also driver and pool may be required to avoid ambiguity, but is not required.",
+          "type": "string"
+        },
+        "driver": {
+          "description": "If driver is set, only devices from that driver are selected. This fields corresponds to slice.spec.driver.",
+          "type": "string"
+        },
+        "pool": {
+          "description": "If pool is set, only devices in that pool are selected.\n\nAlso setting the driver name may be useful to avoid ambiguity when different drivers use the same pool name, but this is not required because selecting pools from different drivers may also be useful, for example when drivers with node-local devices use the node name as their pool name.",
+          "type": "string"
         }
       },
       "anyOf": [
@@ -25800,7 +25868,7 @@
           "type": "string"
         },
         "driver": {
-          "description": "Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.",
+          "description": "Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.",
           "type": "string"
         },
         "networkData": {
@@ -25948,7 +26016,7 @@
           ]
         },
         "consumesCounters": {
-          "description": "ConsumesCounters defines a list of references to sharedCounters and the set of counters that the device will consume from those counter sets.\n\nThere can only be a single entry per counterSet.\n\nThe total number of device counter consumption entries must be <= 32. In addition, the total number in the entire ResourceSlice must be <= 1024 (for example, 64 devices with 16 counters each).",
+          "description": "ConsumesCounters defines a list of references to sharedCounters and the set of counters that the device will consume from those counter sets.\n\nThere can only be a single entry per counterSet.\n\nThe maximum number of device counter consumptions per device is 2.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.resource.v1beta1.DeviceCounterConsumption"
           },
@@ -25971,7 +26039,7 @@
           "description": "NodeSelector defines the nodes where the device is available.\n\nMust use exactly one term.\n\nMust only be set if Spec.PerDeviceNodeSelection is set to true. At most one of NodeName, NodeSelector and AllNodes can be set."
         },
         "taints": {
-          "description": "If specified, these are the driver-defined taints.\n\nThe maximum number of taints is 4.\n\nThis is an alpha field and requires enabling the DRADeviceTaints feature gate.",
+          "description": "If specified, these are the driver-defined taints.\n\nThe maximum number of taints is 16. If taints are set for any device in a ResourceSlice, then the maximum number of allowed devices per ResourceSlice is 64 instead of 128.\n\nThis is an alpha field and requires enabling the DRADeviceTaints feature gate.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.resource.v1beta1.DeviceTaint"
           },
@@ -26127,7 +26195,7 @@
       "additionalProperties": false
     },
     "io.k8s.api.resource.v1beta1.CounterSet": {
-      "description": "CounterSet defines a named set of counters that are available to be used by devices defined in the ResourceSlice.\n\nThe counters are not allocatable by themselves, but can be referenced by devices. When a device is allocated, the portion of counters it uses will no longer be available for use by other devices.",
+      "description": "CounterSet defines a named set of counters that are available to be used by devices defined in the ResourcePool.\n\nThe counters are not allocatable by themselves, but can be referenced by devices. When a device is allocated, the portion of counters it uses will no longer be available for use by other devices.",
       "properties": {
         "counters": {
           "additionalProperties": {
@@ -26630,7 +26698,7 @@
           "additionalProperties": {
             "$ref": "#/definitions/io.k8s.api.resource.v1beta1.Counter"
           },
-          "description": "Counters defines the counters that will be consumed by the device.\n\nThe maximum number counters in a device is 32. In addition, the maximum number of all counters in all devices is 1024 (for example, 64 devices with 16 counters each).",
+          "description": "Counters defines the counters that will be consumed by the device.\n\nThe maximum number of counters is 32.",
           "anyOf": [
             {
               "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -26814,7 +26882,7 @@
           "type": "string"
         },
         "driver": {
-          "description": "Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.",
+          "description": "Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.",
           "type": "string"
         },
         "pool": {
@@ -26951,7 +27019,7 @@
       "description": "The device this taint is attached to has the \"effect\" on any claim which does not tolerate the taint and, through the claim, to pods using the claim.",
       "properties": {
         "effect": {
-          "description": "The effect of the taint on claims that do not tolerate the taint and through such claims on the pods using them. Valid effects are NoSchedule and NoExecute. PreferNoSchedule as used for nodes is not valid here.",
+          "description": "The effect of the taint on claims that do not tolerate the taint and through such claims on the pods using them.\n\nValid effects are None, NoSchedule and NoExecute. PreferNoSchedule as used for nodes is not valid here. More effects may get added in the future. Consumers must treat unknown effects like None.",
           "type": "string"
         },
         "key": {
@@ -27061,7 +27129,7 @@
       "description": "OpaqueDeviceConfiguration contains configuration parameters for a driver in a format defined by the driver vendor.",
       "properties": {
         "driver": {
-          "description": "Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.\n\nAn admission policy provided by the driver developer could use this to decide whether it needs to validate them.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.",
+          "description": "Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.\n\nAn admission policy provided by the driver developer could use this to decide whether it needs to validate them.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.",
           "type": "string"
         },
         "parameters": {
@@ -27549,7 +27617,7 @@
           ]
         },
         "devices": {
-          "description": "Devices lists some or all of the devices in this pool.\n\nMust not have more than 128 entries.",
+          "description": "Devices lists some or all of the devices in this pool.\n\nMust not have more than 128 entries. If any device uses taints or consumes counters the limit is 64.\n\nOnly one of Devices and SharedCounters can be set in a ResourceSlice.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.resource.v1beta1.Device"
           },
@@ -27564,7 +27632,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "driver": {
-          "description": "Driver identifies the DRA driver providing the capacity information. A field selector can be used to list only ResourceSlice objects with a certain driver name.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. This field is immutable.",
+          "description": "Driver identifies the DRA driver providing the capacity information. A field selector can be used to list only ResourceSlice objects with a certain driver name.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters. This field is immutable.",
           "type": "string"
         },
         "nodeName": {
@@ -27591,7 +27659,7 @@
           "description": "Pool describes the pool that this ResourceSlice belongs to."
         },
         "sharedCounters": {
-          "description": "SharedCounters defines a list of counter sets, each of which has a name and a list of counters available.\n\nThe names of the SharedCounters must be unique in the ResourceSlice.\n\nThe maximum number of SharedCounters is 32.",
+          "description": "SharedCounters defines a list of counter sets, each of which has a name and a list of counters available.\n\nThe names of the counter sets must be unique in the ResourcePool.\n\nOnly one of Devices and SharedCounters can be set in a ResourceSlice.\n\nThe maximum number of counter sets is 8.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.resource.v1beta1.CounterSet"
           },
@@ -27647,7 +27715,7 @@
           "type": "string"
         },
         "driver": {
-          "description": "Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.",
+          "description": "Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.",
           "type": "string"
         },
         "networkData": {
@@ -27831,13 +27899,13 @@
       "additionalProperties": false
     },
     "io.k8s.api.resource.v1beta2.CounterSet": {
-      "description": "CounterSet defines a named set of counters that are available to be used by devices defined in the ResourceSlice.\n\nThe counters are not allocatable by themselves, but can be referenced by devices. When a device is allocated, the portion of counters it uses will no longer be available for use by other devices.",
+      "description": "CounterSet defines a named set of counters that are available to be used by devices defined in the ResourcePool.\n\nThe counters are not allocatable by themselves, but can be referenced by devices. When a device is allocated, the portion of counters it uses will no longer be available for use by other devices.",
       "properties": {
         "counters": {
           "additionalProperties": {
             "$ref": "#/definitions/io.k8s.api.resource.v1beta2.Counter"
           },
-          "description": "Counters defines the set of counters for this CounterSet The name of each counter must be unique in that set and must be a DNS label.\n\nThe maximum number of counters in all sets is 32.",
+          "description": "Counters defines the set of counters for this CounterSet The name of each counter must be unique in that set and must be a DNS label.\n\nThe maximum number of counters is 32.",
           "anyOf": [
             {
               "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -27958,7 +28026,7 @@
           ]
         },
         "consumesCounters": {
-          "description": "ConsumesCounters defines a list of references to sharedCounters and the set of counters that the device will consume from those counter sets.\n\nThere can only be a single entry per counterSet.\n\nThe total number of device counter consumption entries must be <= 32. In addition, the total number in the entire ResourceSlice must be <= 1024 (for example, 64 devices with 16 counters each).",
+          "description": "ConsumesCounters defines a list of references to sharedCounters and the set of counters that the device will consume from those counter sets.\n\nThere can only be a single entry per counterSet.\n\nThe maximum number of device counter consumptions per device is 2.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.resource.v1beta2.DeviceCounterConsumption"
           },
@@ -27985,7 +28053,7 @@
           "description": "NodeSelector defines the nodes where the device is available.\n\nMust use exactly one term.\n\nMust only be set if Spec.PerDeviceNodeSelection is set to true. At most one of NodeName, NodeSelector and AllNodes can be set."
         },
         "taints": {
-          "description": "If specified, these are the driver-defined taints.\n\nThe maximum number of taints is 4.\n\nThis is an alpha field and requires enabling the DRADeviceTaints feature gate.",
+          "description": "If specified, these are the driver-defined taints.\n\nThe maximum number of taints is 16. If taints are set for any device in a ResourceSlice, then the maximum number of allowed devices per ResourceSlice is 64 instead of 128.\n\nThis is an alpha field and requires enabling the DRADeviceTaints feature gate.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.resource.v1beta2.DeviceTaint"
           },
@@ -28459,7 +28527,7 @@
           "additionalProperties": {
             "$ref": "#/definitions/io.k8s.api.resource.v1beta2.Counter"
           },
-          "description": "Counters defines the counters that will be consumed by the device.\n\nThe maximum number counters in a device is 32. In addition, the maximum number of all counters in all devices is 1024 (for example, 64 devices with 16 counters each).",
+          "description": "Counters defines the counters that will be consumed by the device.\n\nThe maximum number of counters is 32.",
           "anyOf": [
             {
               "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -28582,7 +28650,7 @@
           "type": "string"
         },
         "driver": {
-          "description": "Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.",
+          "description": "Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.",
           "type": "string"
         },
         "pool": {
@@ -28719,7 +28787,7 @@
       "description": "The device this taint is attached to has the \"effect\" on any claim which does not tolerate the taint and, through the claim, to pods using the claim.",
       "properties": {
         "effect": {
-          "description": "The effect of the taint on claims that do not tolerate the taint and through such claims on the pods using them. Valid effects are NoSchedule and NoExecute. PreferNoSchedule as used for nodes is not valid here.",
+          "description": "The effect of the taint on claims that do not tolerate the taint and through such claims on the pods using them.\n\nValid effects are None, NoSchedule and NoExecute. PreferNoSchedule as used for nodes is not valid here. More effects may get added in the future. Consumers must treat unknown effects like None.",
           "type": "string"
         },
         "key": {
@@ -28909,7 +28977,7 @@
       "description": "OpaqueDeviceConfiguration contains configuration parameters for a driver in a format defined by the driver vendor.",
       "properties": {
         "driver": {
-          "description": "Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.\n\nAn admission policy provided by the driver developer could use this to decide whether it needs to validate them.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.",
+          "description": "Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.\n\nAn admission policy provided by the driver developer could use this to decide whether it needs to validate them.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.",
           "type": "string"
         },
         "parameters": {
@@ -29397,7 +29465,7 @@
           ]
         },
         "devices": {
-          "description": "Devices lists some or all of the devices in this pool.\n\nMust not have more than 128 entries.",
+          "description": "Devices lists some or all of the devices in this pool.\n\nMust not have more than 128 entries. If any device uses taints or consumes counters the limit is 64.\n\nOnly one of Devices and SharedCounters can be set in a ResourceSlice.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.resource.v1beta2.Device"
           },
@@ -29412,7 +29480,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "driver": {
-          "description": "Driver identifies the DRA driver providing the capacity information. A field selector can be used to list only ResourceSlice objects with a certain driver name.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. This field is immutable.",
+          "description": "Driver identifies the DRA driver providing the capacity information. A field selector can be used to list only ResourceSlice objects with a certain driver name.\n\nMust be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters. This field is immutable.",
           "type": "string"
         },
         "nodeName": {
@@ -29439,7 +29507,7 @@
           "description": "Pool describes the pool that this ResourceSlice belongs to."
         },
         "sharedCounters": {
-          "description": "SharedCounters defines a list of counter sets, each of which has a name and a list of counters available.\n\nThe names of the SharedCounters must be unique in the ResourceSlice.\n\nThe maximum number of counters in all sets is 32.",
+          "description": "SharedCounters defines a list of counter sets, each of which has a name and a list of counters available.\n\nThe names of the counter sets must be unique in the ResourcePool.\n\nOnly one of Devices and SharedCounters can be set in a ResourceSlice.\n\nThe maximum number of counter sets is 8.",
           "items": {
             "$ref": "#/definitions/io.k8s.api.resource.v1beta2.CounterSet"
           },
@@ -29572,6 +29640,245 @@
           "group": "scheduling.k8s.io",
           "kind": "PriorityClassList",
           "version": "v1"
+        }
+      ],
+      "additionalProperties": false
+    },
+    "io.k8s.api.scheduling.v1alpha1.BasicSchedulingPolicy": {
+      "description": "BasicSchedulingPolicy indicates that standard Kubernetes scheduling behavior should be used.",
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "io.k8s.api.scheduling.v1alpha1.GangSchedulingPolicy": {
+      "description": "GangSchedulingPolicy defines the parameters for gang scheduling.",
+      "properties": {
+        "minCount": {
+          "description": "MinCount is the minimum number of pods that must be schedulable or scheduled at the same time for the scheduler to admit the entire group. It must be a positive integer.",
+          "format": "int32",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "additionalProperties": false
+    },
+    "io.k8s.api.scheduling.v1alpha1.PodGroup": {
+      "description": "PodGroup represents a set of pods with a common scheduling policy.",
+      "properties": {
+        "name": {
+          "description": "Name is a unique identifier for the PodGroup within the Workload. It must be a DNS label. This field is immutable.",
+          "type": "string"
+        },
+        "policy": {
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.PodGroupPolicy",
+          "description": "Policy defines the scheduling policy for this PodGroup."
+        }
+      },
+      "required": [],
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "additionalProperties": false
+    },
+    "io.k8s.api.scheduling.v1alpha1.PodGroupPolicy": {
+      "description": "PodGroupPolicy defines the scheduling configuration for a PodGroup.",
+      "properties": {
+        "basic": {
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.BasicSchedulingPolicy",
+          "description": "Basic specifies that the pods in this group should be scheduled using standard Kubernetes scheduling behavior."
+        },
+        "gang": {
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.GangSchedulingPolicy",
+          "description": "Gang specifies that the pods in this group should be scheduled using all-or-nothing semantics."
+        }
+      },
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "additionalProperties": false
+    },
+    "io.k8s.api.scheduling.v1alpha1.TypedLocalObjectReference": {
+      "description": "TypedLocalObjectReference allows to reference typed object inside the same namespace.",
+      "properties": {
+        "apiGroup": {
+          "description": "APIGroup is the group for the resource being referenced. If APIGroup is empty, the specified Kind must be in the core API group. For any other third-party types, setting APIGroup is required. It must be a DNS subdomain.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is the type of resource being referenced. It must be a path segment name.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name is the name of resource being referenced. It must be a path segment name.",
+          "type": "string"
+        }
+      },
+      "required": [],
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "additionalProperties": false
+    },
+    "io.k8s.api.scheduling.v1alpha1.Workload": {
+      "description": "Workload allows for expressing scheduling constraints that should be used when managing lifecycle of workloads from scheduling perspective, including scheduling, preemption, eviction and other phases.",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string",
+          "enum": [
+            "Workload"
+          ]
+        },
+        "metadata": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta",
+          "description": "Standard object's metadata. Name must be a DNS subdomain."
+        },
+        "spec": {
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.WorkloadSpec",
+          "description": "Spec defines the desired behavior of a Workload."
+        }
+      },
+      "required": [],
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "x-kubernetes-group-version-kind": [
+        {
+          "group": "scheduling.k8s.io",
+          "kind": "Workload",
+          "version": "v1alpha1"
+        }
+      ],
+      "additionalProperties": false
+    },
+    "io.k8s.api.scheduling.v1alpha1.WorkloadList": {
+      "description": "WorkloadList contains a list of Workload resources.",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of Workloads.",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.Workload"
+          },
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "array"
+            }
+          ]
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string",
+          "enum": [
+            "WorkloadList"
+          ]
+        },
+        "metadata": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta",
+          "description": "Standard list metadata."
+        }
+      },
+      "required": [],
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "x-kubernetes-group-version-kind": [
+        {
+          "group": "scheduling.k8s.io",
+          "kind": "WorkloadList",
+          "version": "v1alpha1"
+        }
+      ],
+      "additionalProperties": false
+    },
+    "io.k8s.api.scheduling.v1alpha1.WorkloadSpec": {
+      "description": "WorkloadSpec defines the desired state of a Workload.",
+      "properties": {
+        "controllerRef": {
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.TypedLocalObjectReference",
+          "description": "ControllerRef is an optional reference to the controlling object, such as a Deployment or Job. This field is intended for use by tools like CLIs to provide a link back to the original workload definition. When set, it cannot be changed."
+        },
+        "podGroups": {
+          "description": "PodGroups is the list of pod groups that make up the Workload. The maximum number of pod groups is 8. This field is immutable.",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.PodGroup"
+          },
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "array"
+            }
+          ],
+          "x-kubernetes-list-map-keys": [
+            "name"
+          ],
+          "x-kubernetes-list-type": "map"
+        }
+      },
+      "required": [],
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
         }
       ],
       "additionalProperties": false
@@ -29722,6 +30029,17 @@
         },
         "seLinuxMount": {
           "description": "seLinuxMount specifies if the CSI driver supports \"-o context\" mount option.\n\nWhen \"true\", the CSI driver must ensure that all volumes provided by this CSI driver can be mounted separately with different `-o context` options. This is typical for storage backends that provide volumes as filesystems on block devices or as independent shared volumes. Kubernetes will call NodeStage / NodePublish with \"-o context=xyz\" mount option when mounting a ReadWriteOncePod volume used in Pod that has explicitly set SELinux context. In the future, it may be expanded to other volume AccessModes. In any case, Kubernetes will ensure that the volume is mounted only with a single SELinux context.\n\nWhen \"false\", Kubernetes won't pass any special SELinux mount options to the driver. This is typical for volumes that represent subdirectories of a bigger shared filesystem.\n\nDefault is \"false\".",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "serviceAccountTokenInSecrets": {
+          "description": "serviceAccountTokenInSecrets is an opt-in for CSI drivers to indicate that service account tokens should be passed via the Secrets field in NodePublishVolumeRequest instead of the VolumeContext field. The CSI specification provides a dedicated Secrets field for sensitive information like tokens, which is the appropriate mechanism for handling credentials. This addresses security concerns where sensitive tokens were being logged as part of volume context.\n\nWhen \"true\", kubelet will pass the tokens only in the Secrets field with the key \"csi.storage.k8s.io/serviceAccount.tokens\". The CSI driver must be updated to read tokens from the Secrets field instead of VolumeContext.\n\nWhen \"false\" or not set, kubelet will pass the tokens in VolumeContext with the key \"csi.storage.k8s.io/serviceAccount.tokens\" (existing behavior). This maintains backward compatibility with existing CSI drivers.\n\nThis field can only be set when TokenRequests is configured. The API server will reject CSIDriver specs that set this field without TokenRequests.\n\nDefault behavior if unset is to pass tokens in the VolumeContext field.",
           "anyOf": [
             {
               "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -30611,112 +30929,6 @@
       ],
       "additionalProperties": false
     },
-    "io.k8s.api.storage.v1alpha1.VolumeAttributesClass": {
-      "description": "VolumeAttributesClass represents a specification of mutable volume attributes defined by the CSI driver. The class can be specified during dynamic provisioning of PersistentVolumeClaims, and changed in the PersistentVolumeClaim spec after provisioning.",
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "driverName": {
-          "description": "Name of the CSI driver This field is immutable.",
-          "type": "string"
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string",
-          "enum": [
-            "VolumeAttributesClass"
-          ]
-        },
-        "metadata": {
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta",
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
-        },
-        "parameters": {
-          "additionalProperties": {
-            "type": "string"
-          },
-          "description": "parameters hold volume attributes defined by the CSI driver. These values are opaque to the Kubernetes and are passed directly to the CSI driver. The underlying storage provider supports changing these attributes on an existing volume, however the parameters field itself is immutable. To invoke a volume update, a new VolumeAttributesClass should be created with new parameters, and the PersistentVolumeClaim should be updated to reference the new VolumeAttributesClass.\n\nThis field is required and must contain at least one key/value pair. The keys cannot be empty, and the maximum number of parameters is 512, with a cumulative max size of 256K. If the CSI driver rejects invalid parameters, the target PersistentVolumeClaim will be set to an \"Infeasible\" state in the modifyVolumeStatus field.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "object"
-            }
-          ]
-        }
-      },
-      "required": [],
-      "anyOf": [
-        {
-          "$ref": "#/definitions/hull.Transformation.Pattern"
-        },
-        {
-          "type": "object"
-        }
-      ],
-      "x-kubernetes-group-version-kind": [
-        {
-          "group": "storage.k8s.io",
-          "kind": "VolumeAttributesClass",
-          "version": "v1alpha1"
-        }
-      ],
-      "additionalProperties": false
-    },
-    "io.k8s.api.storage.v1alpha1.VolumeAttributesClassList": {
-      "description": "VolumeAttributesClassList is a collection of VolumeAttributesClass objects.",
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "items": {
-          "description": "items is the list of VolumeAttributesClass objects.",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.storage.v1alpha1.VolumeAttributesClass"
-          },
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "array"
-            }
-          ]
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string",
-          "enum": [
-            "VolumeAttributesClassList"
-          ]
-        },
-        "metadata": {
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta",
-          "description": "Standard list metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
-        }
-      },
-      "required": [],
-      "anyOf": [
-        {
-          "$ref": "#/definitions/hull.Transformation.Pattern"
-        },
-        {
-          "type": "object"
-        }
-      ],
-      "x-kubernetes-group-version-kind": [
-        {
-          "group": "storage.k8s.io",
-          "kind": "VolumeAttributesClassList",
-          "version": "v1alpha1"
-        }
-      ],
-      "additionalProperties": false
-    },
     "io.k8s.api.storage.v1beta1.VolumeAttributesClass": {
       "description": "VolumeAttributesClass represents a specification of mutable volume attributes defined by the CSI driver. The class can be specified during dynamic provisioning of PersistentVolumeClaims, and changed in the PersistentVolumeClaim spec after provisioning.",
       "properties": {
@@ -30823,68 +31035,7 @@
       ],
       "additionalProperties": false
     },
-    "io.k8s.api.storagemigration.v1alpha1.GroupVersionResource": {
-      "description": "The names of the group, the version, and the resource.",
-      "properties": {
-        "group": {
-          "description": "The name of the group.",
-          "type": "string"
-        },
-        "resource": {
-          "description": "The name of the resource.",
-          "type": "string"
-        },
-        "version": {
-          "description": "The name of the version.",
-          "type": "string"
-        }
-      },
-      "anyOf": [
-        {
-          "$ref": "#/definitions/hull.Transformation.Pattern"
-        },
-        {
-          "type": "object"
-        }
-      ],
-      "additionalProperties": false
-    },
-    "io.k8s.api.storagemigration.v1alpha1.MigrationCondition": {
-      "description": "Describes the state of a migration at a certain point.",
-      "properties": {
-        "lastUpdateTime": {
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time",
-          "description": "The last time this condition was updated."
-        },
-        "message": {
-          "description": "A human readable message indicating details about the transition.",
-          "type": "string"
-        },
-        "reason": {
-          "description": "The reason for the condition's last transition.",
-          "type": "string"
-        },
-        "status": {
-          "description": "Status of the condition, one of True, False, Unknown.",
-          "type": "string"
-        },
-        "type": {
-          "description": "Type of the condition.",
-          "type": "string"
-        }
-      },
-      "required": [],
-      "anyOf": [
-        {
-          "$ref": "#/definitions/hull.Transformation.Pattern"
-        },
-        {
-          "type": "object"
-        }
-      ],
-      "additionalProperties": false
-    },
-    "io.k8s.api.storagemigration.v1alpha1.StorageVersionMigration": {
+    "io.k8s.api.storagemigration.v1beta1.StorageVersionMigration": {
       "description": "StorageVersionMigration represents a migration of stored data to the latest storage version.",
       "properties": {
         "apiVersion": {
@@ -30903,11 +31054,11 @@
           "description": "Standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata"
         },
         "spec": {
-          "$ref": "#/definitions/io.k8s.api.storagemigration.v1alpha1.StorageVersionMigrationSpec",
+          "$ref": "#/definitions/io.k8s.api.storagemigration.v1beta1.StorageVersionMigrationSpec",
           "description": "Specification of the migration."
         },
         "status": {
-          "$ref": "#/definitions/io.k8s.api.storagemigration.v1alpha1.StorageVersionMigrationStatus",
+          "$ref": "#/definitions/io.k8s.api.storagemigration.v1beta1.StorageVersionMigrationStatus",
           "description": "Status of the migration."
         }
       },
@@ -30923,12 +31074,12 @@
         {
           "group": "storagemigration.k8s.io",
           "kind": "StorageVersionMigration",
-          "version": "v1alpha1"
+          "version": "v1beta1"
         }
       ],
       "additionalProperties": false
     },
-    "io.k8s.api.storagemigration.v1alpha1.StorageVersionMigrationList": {
+    "io.k8s.api.storagemigration.v1beta1.StorageVersionMigrationList": {
       "description": "StorageVersionMigrationList is a collection of storage version migrations.",
       "properties": {
         "apiVersion": {
@@ -30938,7 +31089,7 @@
         "items": {
           "description": "Items is the list of StorageVersionMigration",
           "items": {
-            "$ref": "#/definitions/io.k8s.api.storagemigration.v1alpha1.StorageVersionMigration"
+            "$ref": "#/definitions/io.k8s.api.storagemigration.v1beta1.StorageVersionMigration"
           },
           "anyOf": [
             {
@@ -30947,13 +31098,7 @@
             {
               "type": "array"
             }
-          ],
-          "x-kubernetes-list-map-keys": [
-            "type"
-          ],
-          "x-kubernetes-list-type": "map",
-          "x-kubernetes-patch-merge-key": "type",
-          "x-kubernetes-patch-strategy": "merge"
+          ]
         },
         "kind": {
           "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
@@ -30980,20 +31125,16 @@
         {
           "group": "storagemigration.k8s.io",
           "kind": "StorageVersionMigrationList",
-          "version": "v1alpha1"
+          "version": "v1beta1"
         }
       ],
       "additionalProperties": false
     },
-    "io.k8s.api.storagemigration.v1alpha1.StorageVersionMigrationSpec": {
+    "io.k8s.api.storagemigration.v1beta1.StorageVersionMigrationSpec": {
       "description": "Spec of the storage version migration.",
       "properties": {
-        "continueToken": {
-          "description": "The token used in the list options to get the next chunk of objects to migrate. When the .status.conditions indicates the migration is \"Running\", users can use this token to check the progress of the migration.",
-          "type": "string"
-        },
         "resource": {
-          "$ref": "#/definitions/io.k8s.api.storagemigration.v1alpha1.GroupVersionResource",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.GroupResource",
           "description": "The resource that is being migrated. The migrator sends requests to the endpoint serving the resource. Immutable."
         }
       },
@@ -31008,13 +31149,13 @@
       ],
       "additionalProperties": false
     },
-    "io.k8s.api.storagemigration.v1alpha1.StorageVersionMigrationStatus": {
+    "io.k8s.api.storagemigration.v1beta1.StorageVersionMigrationStatus": {
       "description": "Status of the storage version migration.",
       "properties": {
         "conditions": {
           "description": "The latest available observations of the migration's current state.",
           "items": {
-            "$ref": "#/definitions/io.k8s.api.storagemigration.v1alpha1.MigrationCondition"
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
           },
           "anyOf": [
             {
@@ -31171,6 +31312,18 @@
         "message": {
           "description": "message is a human-readable message indicating details about last transition.",
           "type": "string"
+        },
+        "observedGeneration": {
+          "description": "observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.",
+          "format": "int64",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         },
         "reason": {
           "description": "reason is a unique, one-word, CamelCase reason for the condition's last transition.",
@@ -31389,6 +31542,18 @@
             "type"
           ],
           "x-kubernetes-list-type": "map"
+        },
+        "observedGeneration": {
+          "description": "The generation observed by the CRD controller.",
+          "format": "int64",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         },
         "storedVersions": {
           "description": "storedVersions lists all versions of CustomResources that were ever persisted. Tracking these versions allows a migration path for stored versions in etcd. The field is mutable so a migration controller can finish a migration to another version (ensuring no old objects are left in storage), and then remove the rest of the versions from this list. Versions may not be removed from `spec.versions` while they exist in this list.",
@@ -32964,7 +33129,7 @@
         {
           "group": "storagemigration.k8s.io",
           "kind": "DeleteOptions",
-          "version": "v1alpha1"
+          "version": "v1beta1"
         }
       ],
       "additionalProperties": false
@@ -33017,6 +33182,27 @@
           "type": "object"
         }
       ]
+    },
+    "io.k8s.apimachinery.pkg.apis.meta.v1.GroupResource": {
+      "description": "GroupResource specifies a Group and a Resource, but does not force a version.  This is useful for identifying concepts during lookup stages without having partially valid types",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "resource": {
+          "type": "string"
+        }
+      },
+      "required": [],
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "additionalProperties": false
     },
     "io.k8s.apimachinery.pkg.apis.meta.v1.GroupVersionForDiscovery": {
       "description": "GroupVersion contains the \"group/version\" and \"version\" string of a version. It is made a struct to keep extensibility.",
@@ -33488,8 +33674,7 @@
         },
         "details": {
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.StatusDetails",
-          "description": "Extended data associated with the reason.  Each reason may define its own extended details. This field is optional and the data returned is not guaranteed to conform to any schema except that defined by the reason type.",
-          "x-kubernetes-list-type": "atomic"
+          "description": "Extended data associated with the reason.  Each reason may define its own extended details. This field is optional and the data returned is not guaranteed to conform to any schema except that defined by the reason type."
         },
         "kind": {
           "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
@@ -33949,7 +34134,7 @@
         {
           "group": "storagemigration.k8s.io",
           "kind": "WatchEvent",
-          "version": "v1alpha1"
+          "version": "v1beta1"
         }
       ],
       "additionalProperties": false
