@@ -35,7 +35,7 @@ However, note that minor (however potentially chart-breaking) differences were i
     key_1: value_1
   ```
 
-  The behavior of Helm 3, when accessing such a field's property value, was to treat it as an empty string value from observation. This means, the key value pair exists in the `.Values` object tree and it's value is empty and of string type. With Helm 4 on the other hand, the field is absent from the object tree and accessing it will lead to an error.
+    The behavior of Helm 3, when accessing such a field's property value, was to treat it as an empty string value from observation. This means, the key value pair exists in the `.Values` object tree and it's value is empty and of string type. With Helm 4 on the other hand, the field is absent from the object tree and accessing it will lead to an error.
 
 Both aspects should typically be less relevant for HULL based charts, however it shall be documented here to avoid confusion. More detailed information can be found in the [related Helm issue](https://github.com/helm/helm/issues/31344).
 
