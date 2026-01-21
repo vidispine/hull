@@ -27,7 +27,7 @@ However the properties listed below are overwritten or added by HULL:
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
 
-`enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` | `true`<br>`false`<br><br>`"_HULL_TRANSFORMATION_<<<NAME=hull.util.transformation.tpl>>><<<CONTENT=`<br>&#160;&#160;`{{`&#160;`(index`&#160;`.`&#160;`\"PARENT\").Values.hull.config.specific.enable_addon`&#160;`}}>>>"`
+`enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` | `true`<br>`false`<br><br>`_HT?hull.config.specific.enable_addon`
 `http.paths` | Dictionary with **`hull.Ingress.Rule.Path.v1`** values to add to the `http.paths` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.Ingress.Rule.Path.v1`** properties of the container. See below for reference.  | `{}` |
 
 ### The `hull.Ingress.Rule.Path.v1` properties

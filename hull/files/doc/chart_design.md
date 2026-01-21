@@ -484,8 +484,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.31.0
-    helm.sh/chart: hull-test-1.31.0
+    app.kubernetes.io/version: 1.35.0
+    helm.sh/chart: hull-test-1.35.0
   name: release-name-hull-test-my-graphic-app
   namespace: default
 spec:
@@ -502,8 +502,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.31.0
-        helm.sh/chart: hull-test-1.31.0
+        app.kubernetes.io/version: 1.35.0
+        helm.sh/chart: hull-test-1.35.0
       namespace: default
     spec:
       affinity:

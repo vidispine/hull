@@ -148,8 +148,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.31.0
-    helm.sh/chart: hull-test-1.31.0
+    app.kubernetes.io/version: 1.35.0
+    helm.sh/chart: hull-test-1.35.0
   name: release-name-hull-test-external_app
 spec:
   selector:
@@ -166,8 +166,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.31.0
-        helm.sh/chart: hull-test-1.31.0
+        app.kubernetes.io/version: 1.35.0
+        helm.sh/chart: hull-test-1.35.0
    spec:
       containers:
       - image: quay.io/external_app:latest
@@ -560,7 +560,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.31.0
+    app.kubernetes.io/version: 1.35.0
 ...
 ```
 
@@ -586,7 +586,7 @@ metadata:
       app.kubernetes.io/managed-by: Helm
       app.kubernetes.io/name: hull-test
       app.kubernetes.io/part-of: undefined
-      app.kubernetes.io/version: 1.31.0
+      app.kubernetes.io/version: 1.35.0
 ...
 ```
 
@@ -706,7 +706,7 @@ value: |-
 This will render similar to the below, depending on your parents helm charts name and version:
 
 ```yaml
-value: hull-test-1.31.0 is the chart reference value
+value: hull-test-1.35.0 is the chart reference value
 ```
 
 In the same vein, the following two calls:
@@ -926,8 +926,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.31.0
-    helm.sh/chart: hull-test-1.31.0
+    app.kubernetes.io/version: 1.35.0
+    helm.sh/chart: hull-test-1.35.0
   name: release-name-hull-test-custom-args
 spec:
   selector:
@@ -943,7 +943,7 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.31.0
+        app.kubernetes.io/version: 1.35.0
     spec:
       containers:
       - args:
