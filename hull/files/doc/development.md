@@ -10,7 +10,7 @@
 - `_objects_base_pod.tpl`: objects that internally use a pod template
 - `_objects_xyz.tpl`: any other more complex object with array structures that should be converted to dictionaries requires a custom template
 
-[PriorityClass](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#priorityclass-v1-scheduling-k8s-io) is a very simple structure so it can use `_objects_base_plain.tpl`
+[PriorityClass](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#priorityclass-v1-scheduling-k8s-io) is a very simple structure so it can use `_objects_base_plain.tpl`
 
 ### Add to the handled objects in `templates/_objects.tpl`
 

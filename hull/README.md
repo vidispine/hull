@@ -10,7 +10,7 @@ The primary feature of the HULL library is the ability to remove customized YAML
 
 ### Versioning
 
-HULL release versions are closely tied to Kubernetes release versions due to the incorporation of the release specific Kubernetes API schemas. Each HULL release branch therefore matches a Kubernetes release branch (such as `1.34`). Kubernetes patch releases provide non-breaking updates to a Kubernetes release while maintaining API stability and therefore play no role in the HULL versioning process. HULL's patch releases contain fixes and changes to HULL alone while maintaining compatibility to the Kubernetes releases API schema.
+HULL release versions are closely tied to Kubernetes release versions due to the incorporation of the release specific Kubernetes API schemas. Each HULL release branch therefore matches a Kubernetes release branch (such as `1.35`). Kubernetes patch releases provide non-breaking updates to a Kubernetes release while maintaining API stability and therefore play no role in the HULL versioning process. HULL's patch releases contain fixes and changes to HULL alone while maintaining compatibility to the Kubernetes releases API schema.
 
 HULLs compatibility with Helm matches the respective Kubernetes versions compatibility with Helm, see [Helm Version Support Policy for Helm 4](https://helm.sh/docs/topics/version_skew) and [Helm Version Support Policy for Helm 3](https://helm.sh/docs/v3/topics/version_skew) for the matching version ranges.
 
@@ -252,7 +252,7 @@ Some important things to mention first before looking at the library in more det
 
 ⚠️ **At this time HULL releases are tested against all existing non-beta and non-alpha Helm 3 CLI versions. Note that Helm CLI versions `3.0.x` are not compatible with HULL, all other currently existing non-beta and non-alpha versions are compatible.** ⚠️
 
-⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases. At this time Kubernetes versions `1.32` and `1.33` and `1.34` have a matching and maintained HULL release.** ⚠️
+⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases. At this time Kubernetes versions `1.33` and `1.34` and `1.35` have a matching and maintained HULL release.** ⚠️
 
 ## NEW! The HULL Tutorials
 
