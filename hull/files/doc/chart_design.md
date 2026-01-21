@@ -1,6 +1,6 @@
 # Chart Design Guide
 
-HULL offers multiple means to reduce the effort and repetition often associated with writing Helm charts. 
+HULL offers multiple means to reduce the effort and repetition often associated with writing Helm charts.
 Within a single Helm charts you often want to define a particular value once and reference it in several places. There are multiple ways to achieve this and which one to select depends on the specific scenario. This page aims at giving an introduction on the methods that are at your disposal and helping you to choose the best one for each scenario.
 
 ## Referencing source values via transformations
@@ -11,7 +11,7 @@ For example, assume we have a Helm chart with applications depending on the same
 
 To efficiently solve this you could create dedicated source fields:
 
-```
+```yaml
 hull:
   config:
     specific:
@@ -25,7 +25,7 @@ hull:
 
 which are handed over as environment variables to `app-python`:
 
-```
+```yaml
 hull:
   objects:
     deployment:
@@ -51,7 +51,7 @@ hull:
 
 and are combined to a database connection string for `app-java` maybe like this:
 
-```
+```yaml
 hull:
   objects:
     deployment:
@@ -80,7 +80,7 @@ So for direct references without the need to change the source value it is feasi
 
 ## Object Type Defaulting methods
 
-In other scenarios the formerly discussed method of using transformations to reference shared source values is not efficient enough to significantly reduce the data required for writing the chart. This is mostly when there is a large part of intended similarity between _all_ or _many_ instances of an object type. For this HULL offers mechanisms to default object instances from templates. 
+In other scenarios the formerly discussed method of using transformations to reference shared source values is not efficient enough to significantly reduce the data required for writing the chart. This is mostly when there is a large part of intended similarity between _all_ or _many_ instances of an object type. For this HULL offers mechanisms to default object instances from templates.
 
 First we will discuss the older `_HULL_OBJECT_TYPE_DEFAULT_` method and then the enhanced `sources` method for object instance defaulting.
 
@@ -90,7 +90,7 @@ For any object type which is covered by HULL it is possible to set properties to
 
 To e.g. set some helm hook annotations on all `configmap` instances you can simply do this:
 
-```
+```yaml
 hull:
   objects:
     configmap:
@@ -111,7 +111,7 @@ After rendering, the `appconfig` ConfigMap (and all other ConfigMaps that may be
 
 There is however more to this than just setting fixed values because you can also apply defaults to lower level properties of the same type. This example shows how you can add a liveness and a ready probe to all containers of all your `deployment`s:
 
-```
+```yaml
 hull:
   objects:
     deployment:
@@ -139,27 +139,27 @@ hull:
                 timeoutSeconds: 20
 ```
 
-For many sub elements in the object definitions - those which are treated explicitly as key-value dictionaries by HULL instead of the Kubernetes arrays as which they are rendered - it is allowed to also use the `_HULL_OBJECT_TYPE_DEFAULT_` special instance key word and the defined properties under this key will be merged into all subelements of this type. 
+For many sub elements in the object definitions - those which are treated explicitly as key-value dictionaries by HULL instead of the Kubernetes arrays as which they are rendered - it is allowed to also use the `_HULL_OBJECT_TYPE_DEFAULT_` special instance key word and the defined properties under this key will be merged into all subelements of this type.
 
 You can check the `values.yaml` for a extensive listing of where this is possible, in short you can use `_HULL_OBJECT_TYPE_DEFAULT_` for defaulting subelements for these properties:
 
 - for `rules` fields in `role` and `clusterrole` definitions
 - for `ports` fields in `service` definitions
-- for `tls` and `rules` fields in `ingress` definitions. 
+- for `tls` and `rules` fields in `ingress` definitions.
 
   Within the `rules` the `http.paths` are also defaultable this way
-- for `initContainers`, `containers` and `volumes` fields in `pod` definitions. 
+- for `initContainers`, `containers` and `volumes` fields in `pod` definitions.
 
   Within `containers` and `initContainers` the `env`, `envFrom` and `volumeMounts` are also defaultable this way
 - for `webhooks` fields in `mutatingwebhookconfiguration` and `validatingwebhookconfiguration` definitions
 
-The described mechanism is in this regard different to the transformation method described above since it allows to apply default values to a large number of properties in an efficient manner. 
+The described mechanism is in this regard different to the transformation method described above since it allows to apply default values to a large number of properties in an efficient manner.
 
 ⚠️ Note that in terms of processing, HULL first applies transformations to all values in the `hull` dictionary before applying any `_HULL_OBJECT_TYPE_DEFAULT_` defaulting and copying of values. This sequence can be used to your advantage since you can use transformations in the `_HULL_OBJECT_TYPE_DEFAULT_` blocks which are processed first before the calculated values are written to all instances of the given object type. ⚠️
 
 Returning to the database connection example, to set the database connection env vars to all containers of all deployments this is how you can combine both methods:
 
-```
+```yaml
 hull:
   objects:
     deployment:
@@ -205,19 +205,19 @@ hull:
                 tag: 23.3.2
 ```
 
-To some degree using `required` properties in the JSON schema can interfere with the `_HULL_OBJECT_TYPE_DEFAULT_` mechanism. It may be required to specify some fields such as the `image` definition to satisfy the schemas required field restrictions since the schema is not aware of the `_HULL_OBJECT_TYPE_DEFAULT_` defaulting possibility and hence cannot know if a required property is set at a later stage after rendering. It is up to discussion if required schema definitions may be removed to allow more extensive usage of the `_HULL_OBJECT_TYPE_DEFAULT_` method. 
+To some degree using `required` properties in the JSON schema can interfere with the `_HULL_OBJECT_TYPE_DEFAULT_` mechanism. It may be required to specify some fields such as the `image` definition to satisfy the schemas required field restrictions since the schema is not aware of the `_HULL_OBJECT_TYPE_DEFAULT_` defaulting possibility and hence cannot know if a required property is set at a later stage after rendering. It is up to discussion if required schema definitions may be removed to allow more extensive usage of the `_HULL_OBJECT_TYPE_DEFAULT_` method.
 
 ### Using `sources` field to combine _multiple_ default templates in a flexible manner
 
-While the described methods of using HULL transformations and `_HULL_OBJECT_TYPE_DEFAULT_` defaulting (and the combination of both) are good means to reduce unnecessary repetetive code, there are still some frequent usecases which are not covered efficiently so far. 
+While the described methods of using HULL transformations and `_HULL_OBJECT_TYPE_DEFAULT_` defaulting (and the combination of both) are good means to reduce unnecessary repetetive code, there are still some frequent usecases which are not covered efficiently so far.
 
-Assume you have not one class of deployments where all instances are similar but maybe two or three classes where each class shares similar properties but the classes themselves are pretty much different from each other. Using `_HULL_OBJECT_TYPE_DEFAULT_` defaulting will not work great because it will always affect all object instances and there may be no suitable subset of properties which is sharable efficiently between the different classes. 
+Assume you have not one class of deployments where all instances are similar but maybe two or three classes where each class shares similar properties but the classes themselves are pretty much different from each other. Using `_HULL_OBJECT_TYPE_DEFAULT_` defaulting will not work great because it will always affect all object instances and there may be no suitable subset of properties which is sharable efficiently between the different classes.
 
 To support these use cases, HULL now offers the usage of the `sources` field which is a property of `hull.ObjectBase.v1` and can be applied to any object instance. `sources` is an array field and each entry must reference an instance key. By default the isntance key referenced must be of the same object type but you can even refernce instances from a different type as explained later. The source values of all `sources` entries are copied to the referencing object instance in the order they are defined.
 
 Again using the database example, as you might have noticed the previous solution was not covering the different needs of `app-python` and `app-java` very good when obtaining the database connection data. In the `_HULL_OBJECT_TYPE_DEFAULT_` based example, all environment variables where shared by all pods which is actually not the intention. To improve upon that we define dedicated source objects and refer to them in the `sources` field. As you can see it is now efficient and precise to create even more deployments based on this setup:
 
-```
+```yaml
 hull:
   objects:
     deployment:
@@ -293,18 +293,19 @@ hull:
 ```
 
 An important things to note on how using `sources` works is that the introduction of `sources` should not break the `_HULL_OBJECT_TYPE_DEFAULT_` method of supplying defaults. To achieve this the following rules apply:
-  - when no `sources` field is present, defaults are loaded from `_HULL_OBJECT_TYPE_DEFAULT_` if there are any defined. This way down-ward compatibility is preserved to existing charts.
-  - when `sources` is present and empty, no defaults are loaded at all. This allows to opt out of applying `_HULL_OBJECT_TYPE_DEFAULT_` for particular object instances
-  - when `sources` is present and only contains single entry `_HULL_OBJECT_TYPE_DEFAULT_`, the behavior is effectively the same as omiting the `sources` key altogether. Only the `_HULL_OBJECT_TYPE_DEFAULT_` defaults are loaded if any are provided.
-  - otherwise any entries in the `sources` field are merged in the provided order (potentially including `_HULL_OBJECT_TYPE_DEFAULT_` if included in the list)
 
-⚠️ Normally you would want to set `enabled: false` on the instances that serve as a basis for defaulting but technically this is not a strict requirement, they may also be rendered out with `enabled: true` if that is desired and the definitions are fledged out fully. 
+- when no `sources` field is present, defaults are loaded from `_HULL_OBJECT_TYPE_DEFAULT_` if there are any defined. This way down-ward compatibility is preserved to existing charts.
+- when `sources` is present and empty, no defaults are loaded at all. This allows to opt out of applying `_HULL_OBJECT_TYPE_DEFAULT_` for particular object instances
+- when `sources` is present and only contains single entry `_HULL_OBJECT_TYPE_DEFAULT_`, the behavior is effectively the same as omiting the `sources` key altogether. Only the `_HULL_OBJECT_TYPE_DEFAULT_` defaults are loaded if any are provided.
+- otherwise any entries in the `sources` field are merged in the provided order (potentially including `_HULL_OBJECT_TYPE_DEFAULT_` if included in the list)
+
+⚠️ Normally you would want to set `enabled: false` on the instances that serve as a basis for defaulting but technically this is not a strict requirement, they may also be rendered out with `enabled: true` if that is desired and the definitions are fledged out fully.
 
 However, setting `enabled: false` on any object instance will disable JSON schema validation for the specified object instance. Hence specifying only partial fragments for defaulting is feasible and the disabled instance as a whole does not need to pass any JSON schema validation making it suitable for use as individual building blocks. ⚠️
 
 In some cases it may be desirable to share default data between objects of different types. Consider for example a scenario where pods should share an identical set of environment variables or volume mounts. To cater for this it is possible to reference an object instance from another (structure compatible!) object type by appending the `hull.object` type in brackets. To illustrate, this example sketches how defaults for a deployment may be loaded from a job instance:
 
-```
+```yaml
 hull:
   objects:
     job:
@@ -338,7 +339,7 @@ An extension of the `sources` templating mechanism allows to define reusable and
 
 To have a set of properties added to pod or container specs, refer to the following structure where sets of properties may be defined:
 
-```
+```yaml
 hull:
   config:
     templates:
@@ -350,7 +351,7 @@ hull:
 
 For pods, any property you want to generally set on all pods you may put into the `global` dictionary. By default, these properties will be added to the pod specifications. For example, if you want to make sure that all your pods use the same `serviceAccountName` and run without root rights you could add the following to `global`:
 
-```
+```yaml
 hull:
   config:
     templates:
@@ -363,7 +364,7 @@ hull:
 
 If you have other sets of properties you wish to reuse often, just define them under a self-chosen dictionary key. Assuming you have a fixed affinity (say to nodes with a particular graphic card) and you would like some of your pods to be placed on the corresponding nodes, you can specify this in the following manner:
 
-```
+```yaml
 hull:
   config:
     templates:
@@ -380,11 +381,11 @@ hull:
                     - "true"
 ```
 
-The same flexibility is provided for defaulting containers. In this `hull.config.templates` context, `container` refers to both `containers` and `initContainers` (not `ephemeralContainers`). 
+The same flexibility is provided for defaulting containers. In this `hull.config.templates` context, `container` refers to both `containers` and `initContainers` (not `ephemeralContainers`).
 
 To set globally applied properties on all containers again use the `global` dictionary. For example, to have an important environment vriable populated in all your containers use the `global` dictionary:
 
-```
+```yaml
 hull:
   config:
     templates:
@@ -403,7 +404,7 @@ Similar to the object instance `sources`, to load particular sources use the `so
 
 Here is a complex example combining pod and container `sources` usage. It sketches some fictional application that deals with graphic processing and has special requirements:
 
-```
+```yaml
 hull:
   config:
     templates:
@@ -452,6 +453,7 @@ hull:
               - high-resources
               ...
 ```
+
 The following intentions are expressed in the example:
 
 - for containers, generally an env var is to set on all containers by default
@@ -472,7 +474,7 @@ The following intentions are expressed in the example:
 
 The dry-run rendered output delivers on the expectations:
 
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -482,8 +484,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.31.0
-    helm.sh/chart: hull-test-1.31.0
+    app.kubernetes.io/version: 1.35.0
+    helm.sh/chart: hull-test-1.35.0
   name: release-name-hull-test-my-graphic-app
   namespace: default
 spec:
@@ -500,8 +502,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.31.0
-        helm.sh/chart: hull-test-1.31.0
+        app.kubernetes.io/version: 1.35.0
+        helm.sh/chart: hull-test-1.35.0
       namespace: default
     spec:
       affinity:

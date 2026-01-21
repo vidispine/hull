@@ -2,11 +2,12 @@
 
 ## Adding a new Kubernetes object type (Example: PriorityClass)
 
-### Check which object template is right for the type to implement:
+### Check which object template is right for the type to implement
+
 - `_objects_base_plain.tpl`: simple object without array structures that should be converted to dictionaries
 - `_objects_base_rbac.tpl`: simple object without array structures that should be converted to dictionaries and subject to RBAC enablement
 - `_objects_base_spec.tpl`: simple object without array structures that should be converted to dictionaries having a `spec` property
-- `_objects_base_pod.tpl`: objects that internally use a pod template 
+- `_objects_base_pod.tpl`: objects that internally use a pod template
 - `_objects_xyz.tpl`: any other more complex object with array structures that should be converted to dictionaries requires a custom template
 
 [PriorityClass](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#priorityclass-v1-scheduling-k8s-io) is a very simple structure so it can use `_objects_base_plain.tpl`
@@ -70,7 +71,7 @@ priorityclass :
 - remove the `additionalProperties: false` attribute so schema checking can handle coexistence of multiple schemas
 - add a `.Names` schema element to list the allowed property names
 - if referenced K8S schema element is a 'root' object remove the properties `apiVersion`, `kind` and `metadata` since the are handled by `#/definitions/hull.ObjectBase.v1`
-    
+
 ```yaml
 ...
 
@@ -173,6 +174,7 @@ priorityclass :
 
     ...
 ```
+
 ### Add tests for object type
 
 - Create folder at `files/test/HULL/sources/cases` for object type (eg. `files/test/HULL/sources/priorityclass`)
@@ -189,7 +191,7 @@ priorityclass :
 
 Branch must be named `release-1.x` where x is the minor version of the Kubernetes release. Switch to this branch.
 
-### Create JSON schema 
+### Create JSON schema
 
 Create new matching JSON schema files in the `kubernetes-json-schema` folder with the instructions given in the [README.md](https://github.com/vidispine/hull/blob/main/kubernetes-json-schema/README.md) there. Patch version can be the highest available. It is expected no object properties are changed between patch versions.
 
@@ -198,8 +200,10 @@ Create new matching JSON schema files in the `kubernetes-json-schema` folder wit
 Copy the `_definition.json` from the newly created schema folder to `values.schema.json` in the `hull` charts root library overwriting the existing content. Compare the `values.schema.json` content with that of the previous release version branch and adapt as needed (the complicated part). Consider copying the changes related to the objects that HULL deals with and leave other API changes alone. Use a side-by-side tool such as BeyondCompare to do the comparison.
 
 General hints for doing this when starting comparing top to bottom:
+
 - before going through the new `values.schema.json` line by line you should do some global replacements in the new file to adapt the types of objects to the HULL types:
-  - ```
+
+  - ```yaml
     "type": "object"
     --> 
     "anyOf": [
@@ -211,7 +215,8 @@ General hints for doing this when starting comparing top to bottom:
       }
     ]
     ```
-  - ```
+
+  - ```yaml
     "type": "array"
     --> 
     "anyOf": [
@@ -223,7 +228,8 @@ General hints for doing this when starting comparing top to bottom:
       }
     ]
     ```
-  - ```
+
+  - ```yaml
     "type": "integer"
     --> 
     "anyOf": [
@@ -235,7 +241,8 @@ General hints for doing this when starting comparing top to bottom:
       }
     ]
     ```
-  - ```
+
+  - ```yaml
     "type": "number"
     --> 
     "anyOf": [
@@ -247,7 +254,8 @@ General hints for doing this when starting comparing top to bottom:
       }
     ]
     ```
-  - ```
+
+  - ```yaml
     "type": "boolean"
     --> 
     "anyOf": [
@@ -259,8 +267,10 @@ General hints for doing this when starting comparing top to bottom:
       }
     ]
     ```
+
   - the `required` properties need to be removed to improve defaulting capabilities. When you have `required` properties you would need to set them on each object instance's fields which defeats the purpose of efficient defaulting via `sources` or `_HULL_OBJECT_TYPE_DEFAULT_`. To remove all required properties the following regex search and replacement can be used. Note that the below syntax is guarenteed to be working with VSCode, it may need to be adapted when using other editors for the regex replacing.
-  - ```
+
+  - ```yaml
     ^(\s+)"required":\s\[(.|\S|\r|\n)*?\]
     -->
     $1"required": []
@@ -325,15 +335,15 @@ Replace the files for the Kubernetes JSON schema in `hull/files/test/HULL/schema
 
 All tests need to run successfully.
 
-## Run tests
+## Execute tests
 
 HULL has a large number of test cases aiming to cover a large amount of usage scenarios. The testing framework in use is [Gauge](https://gauge.org/index.html). To run the tests it is advised to use VisualStudio Code or the `gauge` CLI.
 
-Before any tests can be executed you need to have `Python` and `pip` installed, preferrably in the latest version. Then run `pip install -r requirements.txt` when in the `hull/files/test/HULL` folder. This installs the necessary Python libraries for test execution. 
+Before any tests can be executed you need to have `Python` and `pip` installed, preferrably in the latest version. Then run `pip install -r requirements.txt` when in the `hull/files/test/HULL` folder. This installs the necessary Python libraries for test execution.
 
 Now you should be able to run a first test suite, for example on the `job` scenario:
 
-```
+```yaml
 gauge run --hide-suggestion --simple-console hull\files\test\HULL\specs\job.spec
 ```
 
@@ -359,8 +369,8 @@ A tried and tested practice for doing minor release updates is this:
 - on a folder level, apply same functional changes to other two `fixes-x` branches. **Take care to respect the differences between release branches such as different Kubernetes versions mentioned and sometimes changed APIs!**
 - Once all three `fixes-1.x` branches are ready they can be commited.
 - Issue PRs in GitHub for all three `fixes-1.x` branches to merge the matching `fixes-1.x` branch to the respective `release-1.x` branch. **When creating the PRs make sure to click "Update Branch" directly so the Gated tests don't need to run twice in case you missed this early on!**
-- Once gated Tests and thus PRs are successfully reviewed (the gated tests run against all latest version of each supported Helm minor release), the PRs can be completed. 
-- The HULL release creation process itself requires external action by a HULL maintainer with access to the release pipeline! 
+- Once gated Tests and thus PRs are successfully reviewed (the gated tests run against all latest version of each supported Helm minor release), the PRs can be completed.
+- The HULL release creation process itself requires external action by a HULL maintainer with access to the release pipeline!
 
   _As a note to people creating releases, sometimes the last stage of publishing the Helm chart fails due to GitHub authentication issues and potentially timing. If so, retrying this failed step a couple of times resolves the problem usually._
 - After all three new releases have been successfully created, make sure to mark the release of `hull-demo` in the latest branch in GitHub as the current release. This is to foster download of the demo chart to start local testing of it. Marking the `hull` release itself has no added benefit since in almost all cases you would not download it from GitHub directly but pull it in via `helm dep update`.
@@ -380,11 +390,11 @@ Make the changes required for the version update.
 
 Add or modify test cases so that the new changes are covered adequately.
 
-### Run tests
+### Run tests again
 
 All tests need to run successfully to create a new release.
 
-### Update documentation 
+### Update documentation
 
 Document the new feature or effects of a bug fix in the respective places. There are two `README.md` which have for the most part identical content (one is embedded in the chart and one represents the git repositories `README.md`) which may require an update. Also the remaining documentation is to be found in the `doc` folder, please check if one of the covered aspects has changed and update the documentation therefore.
 
