@@ -160,6 +160,7 @@ helm template hull-demo-<version>.tgz
 ```
 
 it renders out a set of objects based on above `values.yaml` containing:
+
 - a deployment for `myapp-frontend` that has a centrally configured image `tag` set (by default `v23.1`), and environment variables pointing to the `myapp-backend`'s service in-cluster address
 - a deployment for `myapp-backend` that has a centrally configured image `tag` set (by default `v23.1`) and a configuration mounted from the `myappconfig` ConfigMap
 - a `myappconfig` ConfigMap with a JSON file that is dynamically built by incorporating templating expressions and referencing values defined elsewhere in `values.yaml`
@@ -168,6 +169,7 @@ it renders out a set of objects based on above `values.yaml` containing:
 - an ingress object `myapp` which is only rendered/created in case the `debug: false` value is set
 
 Every aspect of this configuration can be changed or overwritten at deployment time using additional `values.yaml` overlay files, for example:
+
 - switching the overall configuration from and to `debug` mode by settings `debug: true` or `debug: false`
 - adding resource definitions to the deployments
 - setting hostname and path for the ingress 
