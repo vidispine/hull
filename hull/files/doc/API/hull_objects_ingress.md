@@ -12,9 +12,8 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-
-| `rules` | Dictionary with **`hull.Ingress.Rule.v1`** values to add to the ingresses `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.Ingress.Rule.v1`** properties of the ingress. See below for reference.  | `{}` |
-| `tls` | Dictionary with **`hull.IngressTls.v1`** values to add to the ingresses `tls` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.IngressTls.v1`** properties of the ingress. See below for reference.  | `{}` |
+| `rules` | Dictionary with **`hull.Ingress.Rule.v1`** values to add to the ingresses `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.Ingress.Rule.v1`** properties of the ingress. See below for reference. | `{}` | |
+| `tls` | Dictionary with **`hull.IngressTls.v1`** values to add to the ingresses `tls` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.IngressTls.v1`** properties of the ingress. See below for reference. | `{}` | |
 
 ### The `hull.Ingress.Rule.v1` properties
 
