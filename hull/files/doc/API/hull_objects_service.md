@@ -12,7 +12,7 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `ports` | Dictionary with **`hull.ServicePort.v1`** values to add to the containers `ports` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.ServicePort.v1`** properties of the container. See below for reference.  | `{}` |
+| `ports` | Dictionary with **`hull.ServicePort.v1`** values to add to the containers `ports` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.ServicePort.v1`** properties of the container. See below for reference. | `{}` | |
 
 ### The `hull.ServicePort.v1` properties
 
