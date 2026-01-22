@@ -147,7 +147,7 @@ Here is an overview of which top level properties are available for which object
 ### **[Workloads APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#-strong-workloads-apis-strong-)**
 
 | HULL<br> Object Type<br> | HULL <br>Properties | Kubernetes/External<br> Properties |
-| ------------------------------ | ------------------- | ---------------------------------- |
+| ------------------------ | ------------------- | ---------------------------------- |
 | `deployment` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](/hull/files/doc/API/hull_objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**deploymentspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#deploymentspec-v1-apps)<br>`minReadySeconds`<br>`paused`<br>`progressDeadlineSeconds`<br>`replicas`<br>`revisionHistoryLimit`<br>`strategy` |
 | `job` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](/hull/files/doc/API/hull_objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**jobspec-v1-batch**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#jobspec-v1-batch)<br>`activeDeadlineSeconds`<br>`backoffLimit`<br>`completionMode`<br>`completions`<br>`manualSelector`<br>`parallelism`<br>`selector`<br>`suspend`<br>`ttlSecondsAfterFinished` |
 | `daemonset` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.PodTemplate.v1**](/hull/files/doc/API/hull_objects_pod.md)<br>`templateAnnotations`<br>`templateLabels`<br>`pod` | [**daemonsetspec-v1-apps**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#daemonsetspec-v1-apps)<br>`minReadySeconds`<br>`ordinals`<br>`revisionHistoryLimit`<br>`updateStrategy` |
@@ -157,7 +157,7 @@ Here is an overview of which top level properties are available for which object
 ### **[Service APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#-strong-service-apis-strong-)**
 
 | HULL<br> Object Type | HULL <br>Properties | Kubernetes/External<br> Properties |
-| ------------------------------ | ------------------- | ---------------------------------- |
+| -------------------- | ------------------- | ---------------------------------- |
 | `endpoints`<br>(deprecated<br>since<br>K8S 1.33) | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**endpoints-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#endpoints-v1-core)<br>`subsets` |
 | `endpointslice` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**endpointslice-v1-discovery-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#endpointslice-v1-discovery-k8s-io)<br>`addressType`<br>`endpoints`<br>`ports` |
 | `service` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Service.v1**](/hull/files/doc/API/hull_objects_service.md)<br>`ports` | [**servicespec-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#servicespec-v1-core)<br>`allocateLoadBalancerNodePorts`<br>`clusterIP`<br>`clusterIPs`<br>`externalIPs`<br>`externalName`<br>`externalTrafficPolicy`<br>`healthCheckNodePort`<br>`internalTrafficPolicy`<br>`ipFamilies`<br>`ipFamilyPolicy`<br>`loadBalancerClass`<br>`loadBalancerIP`<br>`loadBalancerSourceRanges`<br>`publishNotReadyAddresses`<br>`selector`<br>`sessionAffinity`<br>`sessionAffinityConfig`<br>`topologyKeys`<br>`type` |
@@ -167,7 +167,7 @@ Here is an overview of which top level properties are available for which object
 ### **[Config and Storage APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#-strong-config-and-storage-apis-strong-)**
 
 | HULL<br> Object Type | HULL <br>Properties | Kubernetes/External<br> Properties |
-| ------------------------------ | ------------------- | ---------------------------------- |
+| -------------------- | ------------------- | ---------------------------------- |
 | `configmap` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.VirtualFolder.v1**](/hull/files/doc/API/hull_objects_configmaps_secrets.md)<br>`data` | [**configmap-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#configmap-v1-core)<br>`binaryData`<br>`immutable` |
 | `secret` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.VirtualFolder.v1**](/hull/files/doc/API/hull_objects_configmaps_secrets.md)<br>`data` | [**secret-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#secret-v1-core)<br>`immutable`<br>`stringData`<br>`type` |
 | `registry` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Registry.v1**](/hull/files/doc/API/hull_objects_registry.md)<br>`server`<br>`username`<br>`password` | |
@@ -177,7 +177,7 @@ Here is an overview of which top level properties are available for which object
 ### **[Metadata APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#-strong-metadata-apis-strong-)**
 
 | HULL<br> Object Type | HULL <br>Properties | Kubernetes/External<br> Properties |
-| ------------------------------ | ------------------- | ---------------------------------- |
+| -------------------- | ------------------- | ---------------------------------- |
 | `customresource` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.CustomResource.v1**](/hull/files/doc/API/hull_objects_customresource.md)<br>`apiVersion`<br>`kind`<br>`spec` | |
 | `limitrange` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**limitrange-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#limitrange-v1-core)<br>`limits` |
 | `horizontalpodautoscaler` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.HorizontalPodAutoscaler.v1**](/hull/files/doc/API/hull_objects_horizontalpodautoscaler.md)<br>`scaleTargetRef` | [**horizontalpodautoscalerspec-v2-autoscaling**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#horizontalpodautoscalerspec-v2-autoscaling)<br>`behavior`<br>`maxReplicas`<br>`metrics`<br>`minReplicas` |
@@ -189,7 +189,7 @@ Here is an overview of which top level properties are available for which object
 ### **[Cluster APIs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#-strong-cluster-apis-strong-)**
 
 | HULL<br> Object Type | HULL <br>Properties | Kubernetes/External<br> Properties |
-| ------------------------------ | ------------------- | ---------------------------------- |
+| -------------------- | ------------------- | ---------------------------------- |
 | `clusterrole` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.Rule.v1**](/hull/files/doc/API/hull_objects_role.md)<br>`rules` | [**clusterrole-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#clusterrole-v1-rbac-authorization-k8s-io)<br>`aggregationRule` |
 | `clusterrolebinding` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**clusterrolebinding-v1-rbac-authorization-k8s-io**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#clusterrolebinding-v1-rbac-authorization-k8s-io)<br>`roleRef`<br>`subjects` |
 | `namespace` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**namespace-v1-core**](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#namespace-v1-core)<br>`spec`<br>`status` |
@@ -203,7 +203,7 @@ Here is an overview of which top level properties are available for which object
 ### **[Gateway APIs](https://gateway-api.sigs.k8s.io/reference/spec/#api-specification)**
 
 | HULL<br> Object Type | HULL <br>Properties | Kubernetes/External<br> Properties |
-| ------------------------------ | ------------------- | ---------------------------------- |
+| -------------------- | ------------------- | ---------------------------------- |
 | `backendlbpolicy` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.BackendLBPolicy.v1alpha2**](/hull/files/doc/API/hull_objects_gateway_api.md)<br>`targetRefs` | [**backendlbpolicyspec-v1alpha2-gateway-networking-k8s-io**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha2.BackendLBPolicySpec)<br>`sessionPersistence` |
 | `backendtlspolicy` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName`<br><br>[**hull.BackendTLSPolicy.v1alpha3**](/hull/files/doc/API/hull_objects_gateway_api.md)<br>`targetRefs` | [**backendtlspolicyspec-v1alpha3-gateway-networking-k8s-io**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha3.BackendTLSPolicySpec)<br>`options`<br>`validation` |
 | `gatewayclass` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**gatewayclassspec-v1-gateway-networking-k8s-io**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.GatewayClassSpec)<br>`controllerName`<br>`description`<br>`parametersRef` |
@@ -218,5 +218,5 @@ Here is an overview of which top level properties are available for which object
 ### **Other APIs**
 
 | HULL<br> Object Type | HULL <br>Properties | Kubernetes/External<br> Properties |
-| ------------------------------ | ------------------- | ---------------------------------- |
+| -------------------- | ------------------- | ---------------------------------- |
 | `servicemonitor` | [**hull.ObjectBase.v1**](/hull/files/doc/API/hull_objects_base.md)<br>`enabled`<br>`annotations`<br>`labels`<br>`staticName` | [**ServiceMonitor CRD**](https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/crds/crd-servicemonitors.yaml)<br>`spec` |
