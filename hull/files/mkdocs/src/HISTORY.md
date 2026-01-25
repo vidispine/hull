@@ -1,5 +1,12 @@
 # History
 
+## [1.35.0]
+
+CHANGES:
+
+- initial K8S 1.35 release
+- deprecating 1.32 release
+
 ## [1.34.2]
 
 FIXES:
@@ -41,7 +48,7 @@ CHANGES:
 
 FIXES:
 
-- fix CronJob schema missing allowed property `timeZone` as reported [here](https://github.com/vidispine/hull/issues/360). Thanks for reporting [seniorquico](https://github.com/seniorquico)!
+- fix CronJob schema missing allowed property `timeZone` as reported [here in this issue](https://github.com/vidispine/hull/issues/360). Thanks for reporting [seniorquico](https://github.com/seniorquico)!
 
 ## [1.32.2]
 
@@ -50,13 +57,13 @@ FIXES:
 - added schema validation of Gateway API objects created in tests so they are validated properly
 - corrected version of created ReferenceGrant objects from `v1` to `v1alpha2`
 - fixed Gateway API incorrect schema in field `hostnames` by changing it to an array
-- fixed usage of HULL transformations in all fields of Gateway API schema objects in `values.schema.json`. Additional JSON schema properties targeting regular, non-HULL transformation inputs (`pattern`, `default`, `enum`, `minLength` and `maxLength` for strings, `format`, `minimum` and `maximum` for integers) were also applied to the `_HT` inputs which broke usage of them. Solved by strictly separating inputs between `_HT` HULL transformation strings and regular inputs using the `anyOf` property. Thanks to [ievgenii-shepeliuk](https://github.com/ievgenii-shepeliuk) for raising the issue [here](https://github.com/vidispine/hull/issues/354)
+- fixed usage of HULL transformations in all fields of Gateway API schema objects in `values.schema.json`. Additional JSON schema properties targeting regular, non-HULL transformation inputs (`pattern`, `default`, `enum`, `minLength` and `maxLength` for strings, `format`, `minimum` and `maximum` for integers) were also applied to the `_HT` inputs which broke usage of them. Solved by strictly separating inputs between `_HT` HULL transformation strings and regular inputs using the `anyOf` property. Thanks to [ievgenii-shepeliuk](https://github.com/ievgenii-shepeliuk) for raising the issue [here in the issues](https://github.com/vidispine/hull/issues/354)
 
 ## [1.32.1]
 
 CHANGES:
 
-- added Gateway API objects in version 1.2.0-experimental as main object types to HULL: `backendlbpolicy`, `backendtlspolicy`, `gatewayclass`, `gateway`, `grpcroute`, `httproute`, `referencegrant`, `tcproute`, `tlsroute` and `udproute`. This should make it more comfortable to use them opposed to specifying them using the generic `customresource` object type. Thanks to suggestion from [ievgenii-shepeliuk](https://github.com/ievgenii-shepeliuk) made [here](https://github.com/vidispine/hull/issues/345)
+- added Gateway API objects in version 1.2.0-experimental as main object types to HULL: `backendlbpolicy`, `backendtlspolicy`, `gatewayclass`, `gateway`, `grpcroute`, `httproute`, `referencegrant`, `tcproute`, `tlsroute` and `udproute`. This should make it more comfortable to use them opposed to specifying them using the generic `customresource` object type. Thanks to suggestion from [ievgenii-shepeliuk](https://github.com/ievgenii-shepeliuk) made [in the comments](https://github.com/vidispine/hull/issues/345)
 - introducing `sources` feature for pods (`pod` level in the workload specifications) and containers (`initContainers` and `containers` levels in the workload specifications). Using `sources` enables global defaulting of pod and container properties and flexible sharing plus stacking of sets of properties for both pods and containers. Potential usages range from globally enforcing workload security settings, specifying shared minimum or special resource requirements or harmonization of all pods and containers in a chart. See the [chart design guide](/hull/files/doc/chart_design.md) for details. This also closes issues [Add sharedContainers feature](https://github.com/vidispine/hull/issues/305) and [Default security settings](https://github.com/vidispine/hull/issues/310).
 - added configurable multi-pass rendering of HULL transformations. This enables forward referencing of values in the YAML tree which was previously not possible. For example, using only a single HULL transformation rendering pass, a field `.Values.hull.config.specific.field_a: _HT*hull.config.specific.field_b`, where `_HT*hull.config.specific.field_b: _HT*hull.config.specific.field_c`, will resolve `field_a` to literal string `_HT*hull.config.specific.field_c`. This is the case because at the time when `field_a` is resolved the value of `field_b` is not yet resolved due to the alphanumeric order of HULL transformation processing. With the new multi-pass default of `hull.config.general.render: 3`, the `field_a: _HT*hull.config.specific.field_c` value is fully resolved to the referenced value of `_HT*hull.config.specific.field_c` in the second pass.
 
@@ -69,7 +76,7 @@ FIXES:
 
 CHANGES:
 
-- using `tpl` transformations with `_HT!` now allows in-place serialization of the result using `toJson`, `toPrettyJson`, `toRawJson`, `toYaml` or `toString`. This adds another serialization possibility besides the existing `_HT/` include and `_HT*` get transformation result serialization capabilities. Thanks [ievgenii-shepeliuk](https://github.com/ievgenii-shepeliuk) for the feature request [here](https://github.com/vidispine/hull/issues/339).
+- using `tpl` transformations with `_HT!` now allows in-place serialization of the result using `toJson`, `toPrettyJson`, `toRawJson`, `toYaml` or `toString`. This adds another serialization possibility besides the existing `_HT/` include and `_HT*` get transformation result serialization capabilities. Thanks [ievgenii-shepeliuk](https://github.com/ievgenii-shepeliuk) for the [feature request](https://github.com/vidispine/hull/issues/339).
 - made previously required dictionary wrapping of array contents for include/`_HT/` transformations obsolete by correctly making use of to `fromYamlArray` Helm function. If an array was to be returned by a `_HT/` transformation, previously it was needed to wrap it in a dictionary and grab the result from the chosen dictionary key. For example, an transformation like `_HT/result/hull.transformation.do.something` would essentially return an array if the include produces a dictionary with a key `result` that has an array value. Starting with this version, it is possible to call `_HT/hull.transformation.do.something` and the resulting include can directly produce the array.
 - restructured documentation on transformations in the `hull/doc/transformation.md` file and removed references to obsolete legacy syntax for transformations.
 
