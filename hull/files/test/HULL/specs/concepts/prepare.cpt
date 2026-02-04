@@ -2,18 +2,27 @@
 
 * Fill data store with kind <kind> and case <kind>
 
-# Prepare test case <case> for kind <kind> with test chart <chart> and values file <values_file> including suites <suites>
+# Prepare test case <case> for kind <kind> with test chart <chart> and values file <values_file> including suites <suites> and chartmods <chartmods>
 
-* Fill data store with kind <kind>, case <case>, chart <chart> and suites <suites>
+* Fill data store with kind <kind>, case <case>, chart <chart> and suites <suites> and chartmods <chartmods>
 * Clean the test execution folder
 * Copy folders to test execution folder
+
+# Prepare test case <case> for kind <kind> with test chart <chart> and values file <values_file> including suites <suites> 
+
+* Prepare test case <case> for kind <kind> with test chart <chart> and values file <values_file> including suites <suites> and chartmods ""
 
 # Prepare default test case for this kind with test chart <chart> and values file <values_file> including suites <suites>
 
-* Fill data store with chart <chart> and suites <suites>
+* Fill data store with chart <chart> and suites <suites> and chartmods ""
 * Clean the test execution folder
 * Copy folders to test execution folder
 
+# Prepare default test case for this kind with test chart <chart> and values file <values_file> including suites <suites> and chartmods <chartmods>
+
+* Fill data store with chart <chart> and suites <suites> and chartmods <chartmods>
+* Clean the test execution folder
+* Copy folders to test execution folder
 # Prepare test case <case> for kind <kind> with test chart <chart> and values file <values_file>
 
 * Prepare test case <case> for kind <kind> with test chart <chart> and values file <values_file> including suites ""
@@ -21,6 +30,10 @@
 # Prepare test case <case> for kind <kind> and values file <values_file>
 
 * Prepare test case <case> for kind <kind> with test chart "hull-test" and values file <values_file> including suites ""
+
+# Prepare test case <case> for kind <kind> and values file <values_file> with chartmods <chartmods>
+
+* Prepare test case <case> for kind <kind> with test chart "hull-test" and values file "values_file" including suites "" and chartmods <chartmods>
 
 # Prepare test case <case> for kind <kind> and values file <values_file> including suites <suites>
 
@@ -53,12 +66,22 @@
 # Lint and Render to namespace <namespace>
 * Lint and Render values file "values.hull.yaml" to namespace <namespace>
 
+# Render to namespace <namespace>
+* Render values file "values.hull.yaml" to namespace <namespace>
+
 
 # Lint and Render
 * Lint and Render to namespace "default"
 
+# Render
+* Render to namespace "default"
+
 # Lint and Render values file <values_file>
 * Lint the templates for values file <values_file> to namespace "default"
+* Render the templates for values file <values_file> to test execution folder and namespace "default"
+* Fill data store with rendered objects
+
+# Render values file <values_file>
 * Render the templates for values file <values_file> to test execution folder and namespace "default"
 * Fill data store with rendered objects
 
@@ -66,4 +89,9 @@
 * Lint the templates for values file <values_file> to namespace <namespace>
 * Render the templates for values file <values_file> to test execution folder and namespace <namespace>
 * Fill data store with rendered objects
+
+# Render values file <values_file> to namespace <namespace>
+* Render the templates for values file <values_file> to test execution folder and namespace <namespace>
+* Fill data store with rendered objects
+
 
