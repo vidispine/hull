@@ -18,7 +18,7 @@
 {{- $shortForms = set $shortForms "_HT^" (list "hull.util.transformation.makefullname" "COMPONENT") -}}
 {{- $shortForms = set $shortForms "_HT&" (list "hull.util.transformation.selector" "COMPONENT") -}}
 {{- $shortForms = set $shortForms "_HT/" (list "hull.util.transformation.include" "CONTENT") -}}
-{{- if (or (typeIs "map[string]interface {}" $source) (typeIs "chartutil.Values" $source)) -}}
+{{- if (or (typeIs "map[string]interface {}" $source) (typeIs "chartutil.Values" $source) (typeIs "common.Values" $source)) -}}
     {{- range $key,$value := $source -}}
         {{- $sourcePathKey := append $sourcePath $key }}
         {{- if typeIs "map[string]interface {}" $value -}}
