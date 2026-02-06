@@ -658,6 +658,17 @@ def begin_tests_for_helm_version(helm_version):
     SKIPPING_TESTS = not response.strip("'").startswith(f"v{helm_version}")
     print('STDOUT:\n', response)
 
+@step("Begin Tests for Helm versions regex <regex>")
+def begin_tests_for_helm_versions_regex(regex):
+    global SKIPPING_TESTS
+    args = (HELM_BINARY, "version", "--template='{{.Version}}'")
+    popen = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    response = popen.stdout.decode("utf-8").replace("\n",os.linesep)
+    compiled = re.compile(regex)    
+    SKIPPING_TESTS = not compiled.match(response.strip("'")[1:])
+    print(f'STDOUT:\nHelm Version {response} was checked against regex {regex}, skipping tests: {SKIPPING_TESTS}')    
+    
+
 @step("End Tests for specific Helm version")
 def end_tests_for_helm_version():
     global SKIPPING_TESTS
@@ -750,7 +761,7 @@ def render_chart(case, chart, values_files, namespace):
     for values_file in values_files:
         values_files_command += ("-f",  os.path.join(chart_path, values_file))
         
-    args = (HELM_BINARY, "template", chart_path, "--kube-version", data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION], "--name-template", "release-name", "--debug", "--output-dir", render_path, "--namespace", namespace) + values_files_command + suites
+    args = (HELM_BINARY, "template", chart_path, "--kube-version", data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION], "--name-template", "release-name", "--output-dir", render_path, "--namespace", namespace) + values_files_command + suites
     
     popen = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     print('STDOUT:\n', popen.stdout.decode("utf-8").replace("\n",os.linesep))
