@@ -4,7 +4,7 @@ The tasks of creating and configuring a HULL based helm chart can be considered 
 
 So all that is needed to create a helm chart based on HULL is a standard scaffolded helm chart directory structure. Add the HULL library chart as a sub-chart, copy the `hull.yaml` from the HULL library chart to your parent Helm charts `/templates` folder. Then just configure the default objects to deploy via the `values.yaml` and you are done. There is no limit as to how many objects of which type you create for your deployment package.
 
-But besides allowing to define more complex applications with HULL you could also use it to wrap simple Kubernetes Objects you would otherwise either deploy via kubectl (being out-of-line from the management perspective with helm releases) or have to write a significant amount of Helm boilerplate templates to achieve this. 
+But besides allowing to define more complex applications with HULL you could also use it to wrap simple Kubernetes Objects you would otherwise either deploy via kubectl (being out-of-line from the management perspective with helm releases) or have to write a significant amount of Helm boilerplate templates to achieve this.
 
 The base structure of the `values.yaml` understood by HULL is given here in the next section. This essentially forms the single interface for producing and consuming HULL based charts. Any object is only created in case it is defined and enabled in the `values.yaml`, this means you might want to pre-configure objects for consumers that would just need to enable them if they want to use them.
 
@@ -13,7 +13,7 @@ An additional third top level key named `version` is allowed as well, when this 
 
 So the start defining your charts configuration and objects, create the following structure in the parent chart:
 
-```
+```yaml
 hull:
   config: # Chart configuration and shared resources go here
     ...

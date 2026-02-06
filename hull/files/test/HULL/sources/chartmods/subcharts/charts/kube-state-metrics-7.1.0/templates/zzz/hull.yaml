@@ -1,0 +1,1 @@
+{{- include "hull.objects.prepare.all" (dict "HULL_ROOT_KEY" "hull" "ROOT_CONTEXT" $) }}

@@ -93,7 +93,6 @@ metadata:
 {{- $allObjects = merge $allObjects (dict "ClusterRoleBinding" (dict "HULL_TEMPLATE" $template "API_VERSION" "rbac.authorization.k8s.io/v1" "PARENT_TEMPLATE" "this.emptynamespace")) }}
 {{- $allObjects = merge $allObjects (dict "Role" (dict "HULL_TEMPLATE" $template "API_VERSION" "rbac.authorization.k8s.io/v1" "DYNAMIC_FIELDS" (dict "rules" "hull.object.base.role.rules"))) }}
 {{- $allObjects = merge $allObjects (dict "ClusterRole" (dict "HULL_TEMPLATE" $template "API_VERSION" "rbac.authorization.k8s.io/v1" "PARENT_TEMPLATE" "this.emptynamespace" "DYNAMIC_FIELDS" (dict "rules" "hull.object.base.role.rules"))) }}
-{{- /*
 
 {{- /*
 ### Load custom objects
@@ -117,12 +116,24 @@ metadata:
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $rootContext := (index . "ROOT_CONTEXT") -}}
 {{- $allObjects := (index . "HULL_OBJECTS") -}}
-{{- $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $rootContext.Values.hull "HULL_ROOT_KEY" $hullRootKey "SOURCE_PATH" (list "hull")) | fromYaml }}
-{{- if gt ((index $rootContext.Values $hullRootKey).config.general.render.passes | int) 1 -}}
-{{- range $i, $e := untilStep 1 ((index $rootContext.Values $hullRootKey).config.general.render.passes | int) 1 -}}
-{{- $rendered = include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $rootContext.Values.hull "HULL_ROOT_KEY" $hullRootKey "SOURCE_PATH" (list "hull")) | fromYaml }}
+{{- $renderPasses := dig "config" "general" "render" "passes" 3 (default dict (index $rootContext.Values $hullRootKey)) -}}
+{{- $transformationScope := $rootContext.Values -}}
+{{- $transformationScopeKey := "Values" -}}
+{{- $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $transformationScope "HULL_ROOT_KEY" $hullRootKey "SOURCE_PATH" (list $transformationScopeKey)) | fromYaml }}
+{{- if gt ($renderPasses | int) 1 -}}
+{{- range $i, $e := untilStep 1 ($renderPasses | int) 1 -}}
+{{- $rendered = include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $transformationScope "HULL_ROOT_KEY" $hullRootKey "SOURCE_PATH" (list $transformationScopeKey)) | fromYaml }}
 {{- end -}}
 {{- end -}}
+
+{{- /*
+### Set to true to render debug info
+*/ -}}
+{{- if false }} 
+type: {{ typeOf $transformationScope }}
+scopeKey: {{ $transformationScopeKey }}
+{{ $rootContext | toYaml }}
+{{- else -}}
 {{- $errorMessages := "" }}
 {{- range $objectType, $objectTypeSpec := $allObjects }}
 {{- $lowerObjectType := $objectType | lower }}
@@ -134,6 +145,11 @@ metadata:
 {{- if (hasKey $objectTypeSpec "API_VERSION") }}
 {{- $apiVersion = $objectTypeSpec.API_VERSION }}
 {{- end }}
+
+{{- /*
+### If we dont have any hull root key we skip the rest. hull.yaml may just be used to render transformations
+*/ -}}
+{{- if (hasKey $rootContext.Values $hullRootKey) }}
 {{- $enabledDefault := (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType)._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- $hullTemplate := "" }}
 {{- if (hasKey $objectTypeSpec "HULL_TEMPLATE") }}
@@ -233,5 +249,7 @@ metadata:
 {{- end -}}
 {{- if (ne $errorMessages "") -}}
 {{- fail $errorMessages -}}
+{{- end -}}
+{{- end -}}
 {{- end -}}
 {{- end -}}

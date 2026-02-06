@@ -2,7 +2,7 @@
 
 HULL supports error checking for several cases where the rendered result would not produce valid Kubernetes YAML. The error check settings are found here in the default YAML:
 
-```
+```yaml
 hull:
   config:
     general:
@@ -13,6 +13,7 @@ hull:
         virtualFolderDataPathExists: true
         virtualFolderDataInlineValid: false
 ```
+
 You can disable the implemented error checks which are by default set to `true` individually if needed even though this is not recommended. Settings which default to `false` may be enabled to enforce stricter input checking. In some cases there exists a relation to the older `hull.config.general.debug` settings which will be highlighted.
 
 The following list is an overview of the currently implemented error checks:
@@ -31,7 +32,7 @@ The following list is an overview of the currently implemented error checks:
 
 - `virtualFolderDataInlineValid`: For `inline` values in a ConfigMap or Secret it is validated that the `inline` content is actually set to a value and not `null`. This can happen due to loose chart design and is not considered as an error by default but can be raised as an error by setting `virtualFolderDataInlineValid: true`.
 
-  >  Note: if `hull.config.debug.renderNilWhenInlineIsNil` is set to `true`, the legacy behavior where `<nil>` is written to the `inline` entries field if the source is not a value or `null`. This is not recommended, instead you should either leave an empty value by letting `hull.config.debug.virtualFolderDataInlineValid: false` or raise an error by `virtualFolderDataInlineValid: true`!
+  > Note: if `hull.config.debug.renderNilWhenInlineIsNil` is set to `true`, the legacy behavior where `<nil>` is written to the `inline` entries field if the source is not a value or `null`. This is not recommended, instead you should either leave an empty value by letting `hull.config.debug.virtualFolderDataInlineValid: false` or raise an error by `virtualFolderDataInlineValid: true`!
 
 ---
 Back to [README.md](/README.md)
