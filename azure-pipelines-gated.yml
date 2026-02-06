@@ -21,10 +21,10 @@ jobs:
   strategy: 
     maxParallel: 5
     matrix:      
-      Helm_3_19_2_single: 
+      Helm_3_19_5_single: 
         HelmVersion: "3.19.5"
         TestType: single
-      Helm_3_19_2_multi: 
+      Helm_3_19_5_multi: 
         HelmVersion: "3.19.5"
         TestType: multi
       Helm_3_20_0_single: 
