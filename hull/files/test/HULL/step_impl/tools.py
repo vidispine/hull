@@ -32,16 +32,20 @@ def fill_data_store_with_kind_and_case(kind, case):
     data_store.scenario.kind = kind
     data_store.scenario.case = case.lower()
 
-@step("Fill data store with chart <chart> and suites <suites>")
-def fill_data_store_with_chart_and_suites(chart, suites):
+@step("Fill data store with chart <chart> and suites <suites> and chartmods <chartmods>")
+def fill_data_store_with_chart_and_suites_and_chartmods(chart, suites, chartmods):
     if SKIPPING_TESTS:
         return    
     data_store.scenario.chart = chart
-    s = list()
+    suites_list = list()
     if not suites == "":
-        s = suites.split(',')
-    s.append("basic")
-    data_store.scenario.suites = s
+        suites_list = suites.split(',')
+    suites_list.append("basic")
+    data_store.scenario.suites = suites_list
+    chartmods_list = list()
+    if not chartmods == "":
+        chartmods_list = chartmods.split(',')
+    data_store.scenario.chartmods = chartmods_list
 
 def fill_data_store_with_environment_info():
     if SKIPPING_TESTS:
@@ -59,12 +63,12 @@ def fill_data_store_with_environment_info():
         data_store.scenario.environment[BASIC_OBJECTS_COUNT] = int(yaml.safe_load(file)['basic'])
 
 
-@step("Fill data store with kind <kind>, case <case>, chart <chart> and suites <suites>")
-def fill_data_store(kind, case, chart, suites):
+@step("Fill data store with kind <kind>, case <case>, chart <chart> and suites <suites> and chartmods <chartmods>")
+def fill_data_store(kind, case, chart, suites, chartmods):
     if SKIPPING_TESTS:
         return
     fill_data_store_with_kind_and_case(kind, case)
-    fill_data_store_with_chart_and_suites(chart, suites)
+    fill_data_store_with_chart_and_suites_and_chartmods(chart, suites, chartmods)
     fill_data_store_with_environment_info()
     
 @step("Copy folders to test execution folder")
@@ -73,17 +77,17 @@ def copy_folders_to_TEST_EXECUTION_FOLDER():
         return
     copy_the_test_suites_source_folders_to_TEST_EXECUTION_FOLDER()
     copy_the_test_source_folder_to_TEST_EXECUTION_FOLDER()
-    copy_the_test_chart_folders_to(data_store.scenario.case, data_store.scenario.chart)
+    copy_the_test_chart_folders_to(data_store.scenario.case, data_store.scenario.chart, data_store.scenario.chartmods)
     copy_the_hull_chart_files_to_test_execution_folder()
 
 @step("Copy the test source folder to test execution folder")
 def copy_the_test_source_folder_to_TEST_EXECUTION_FOLDER():
     if SKIPPING_TESTS:
         return
-    copy_the_test_chart_folders_to(data_store.scenario.case, data_store.scenario.chart)
+    copy_the_test_chart_folders_to(data_store.scenario.case, data_store.scenario.chart, data_store.scenario.chartmods)
 
 @step("Copy the test source folder for case <case> and chart <chart> to test execution folder")
-def copy_the_test_chart_folders_to(case, chart):
+def copy_the_test_chart_folders_to(case, chart, chartmods):
     if SKIPPING_TESTS:
         return
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -93,6 +97,9 @@ def copy_the_test_chart_folders_to(case, chart):
     try:
         copytree(src_path_case, dst_path)
         copytree(src_path_chart, dst_path)
+        for chartmod in chartmods:
+            src_path_chartmod = os.path.join(dir_path,'./../sources/chartmods/', chartmod)
+            copytree(src_path_chartmod, dst_path, overwrite=True)
     except Exception as e:
         print(f"Failed to copy {src_path_case} and {src_path_chart} to {dst_path}", e.__str__, "occurred.")
         assert False
@@ -142,7 +149,6 @@ def copy_the_suite_source_folder_for_case_and_chart_and_suite_to_TEST_EXECUTION_
         print("Oops!", e.__str__, "occurred.")
         assert False
     assert True
-
 
 @step("Clean the test execution folder")
 def delete_the_TEST_EXECUTION_FOLDER():
@@ -744,23 +750,23 @@ def render_chart(case, chart, values_files, namespace):
     for values_file in values_files:
         values_files_command += ("-f",  os.path.join(chart_path, values_file))
         
-    args = (HELM_BINARY, "template", chart_path, "--kube-version", data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION], "--name-template", "release-name", "--output-dir", render_path, "--namespace", namespace) + values_files_command + suites
+    args = (HELM_BINARY, "template", chart_path, "--kube-version", data_store.scenario.environment[PLACEHOLDER_K8S_MAJOR_VERSION], "--name-template", "release-name", "--debug", "--output-dir", render_path, "--namespace", namespace) + values_files_command + suites
     
     popen = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     print('STDOUT:\n', popen.stdout.decode("utf-8").replace("\n",os.linesep))
     print('STDERR:\n', popen.stderr.decode("utf-8").replace("\n",os.linesep) if popen.stderr is not None else "")
     return popen
 
-def copytree(src, dst, symlinks=False, ignore=None):
+def copytree(src, dst, overwrite=False, symlinks=False, ignore=None):
     if not os.path.exists(dst):
         os.makedirs(dst)
     for item in os.listdir(src):
         s = os.path.join(src, item)
         d = os.path.join(dst, item)
         if os.path.isdir(s):
-            copytree(s, d, symlinks, ignore)
+            copytree(s, d, overwrite, symlinks, ignore)
         else:
-            if not os.path.exists(d) or os.stat(s).st_mtime - os.stat(d).st_mtime > 1:
+            if not os.path.exists(d) or overwrite or os.stat(s).st_mtime - os.stat(d).st_mtime > 1:
                 copyfile(os.path.dirname(s), os.path.basename(s), os.path.dirname(d))
 
 def copy_yaml(src_dir, src_filename, dst_path):
@@ -789,10 +795,23 @@ def copyfile(src_dir, src_filename, dst_dir):
 def get_objects(case, chart):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     rendered_files_folder = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered', chart, 'templates')
-    rendered_file_path = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered', chart, 'templates',  'hull.yaml')
+    rendered_files = []
+    for entry in os.listdir(rendered_files_folder):
+        if os.path.isfile(os.path.join(rendered_files_folder, entry)):
+            rendered_files.append(entry)
+        if os.path.isdir(os.path.join(rendered_files_folder, entry)):
+            for subentry in os.listdir(os.path.join(rendered_files_folder, entry)):
+                rendered_files.append(os.path.join(rendered_files_folder, entry, subentry))
 
+    if os.path.exists(os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered', chart, 'charts')):
+        additional_folders = os.path.join(dir_path, TEST_EXECUTION_FOLDER, 'case', case, 'rendered', chart, 'charts')
+        for folder in os.listdir(additional_folders):
+            if os.path.isdir(os.path.join(additional_folders, folder, 'templates')):
+                for additional_rendered_file in os.listdir(os.path.join(additional_folders, folder, 'templates')):
+                    rendered_files.append(os.path.join(additional_folders, folder, 'templates', additional_rendered_file))
+          
     items = []
-    for file in os.listdir(rendered_files_folder):
+    for file in rendered_files:
         with open(os.path.join(rendered_files_folder, file), encoding='utf-8', newline='\n') as file_in:
             
             item = None
