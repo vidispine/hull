@@ -1,0 +1,5 @@
+hull:
+  config:
+    specific:
+      the_version_source: 1.2.3.4.5
+      the_value_target: _HT*hull.config.specific.the_version_source

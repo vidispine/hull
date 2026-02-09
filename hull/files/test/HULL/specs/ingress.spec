@@ -48,6 +48,40 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-stream"
 * Test Object has key "metadata§annotations§ingress.kubernetes.io/rewrite-target" with value "/dash"
 
+## External templates
+* Prepare default test case for this kind with test chart "hull-test" and values file "values" including suites "" and chartmods "externaltemplates"
+* Lint and Render values file "values_external_templates.hull.yaml"
+
+* Set test object to "referencegrants.gateway.networking.k8s.io" of kind "CustomResourceDefinition"
+* Test Object has key "spec§versions§0§schema§openAPIV3Schema§properties§apiVersion§default" with value "1.2.3.4.5"
+
+## Subchart shared global variables
+* Prepare default test case for this kind with test chart "hull-test" and values file "values_subcharts" including suites "" and chartmods "subcharts"
+* Lint and Render values file "values_subcharts.hull.yaml"
+
+* Set test object to "release-name-hull-test-test-global"
+* Test Object has key "spec§rules§0§http§paths§0§backend§service§port§number" with integer value "111"
+
+* Set test object to "release-name-kube-state-metrics" of kind "Service"
+* Test Object has key "spec§ports§0§port" with integer value "333"
+* Test Object has key "spec§type" with value "NodePort"
+* Test Object has key "metadata§annotations§annotation_1" with value "Global Annotation 1"
+* Test Object has key "metadata§annotations§annotation_2" with value "Global Annotation 2"
+* Test Object has key "spec§clusterIP" with value "123.345.431.543"
+* Test Object has key "spec§ipFamilies§0" with value "IPv6"
+* Test Object has key "spec§ipFamilies§1" with value "IPv4"
+* Test Object has key "spec§ipFamilyPolicy" with value "PreferDualStack"
+
+* Set test object to "release-name-prometheus-postgres-exporter" of kind "Service"
+* Test Object has key "spec§ports§0§port" with integer value "333"
+* Test Object has key "spec§type" with value "LoadBalancer"
+* Test Object has key "metadata§annotations§annotation_1" with value "Global Annotation 1"
+* Test Object has key "metadata§annotations§annotation_2" with value "Global Annotation 2"
+* Test Object has key "metadata§annotations§annotation_3" with value "Local Annotation 1"
+* Test Object has key "metadata§annotations§annotation_4" with value "Local Annotation 2"
+* Test Object has key "spec§ports§0§targetPort" with integer value "333"
+
+
 ___
 
 * Clean the test execution folder
