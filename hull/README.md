@@ -30,19 +30,18 @@ However, note that minor (however potentially chart-breaking) differences were i
   field_string: "some_text" # string text
   field_int: 123 # number
   field_bool: true # boolean
-  field_unset: 
-  field_dict: 
+  field_unset:
+  field_dict:
     key_1: value_1
   ```
 
-  The behavior of Helm 3, when accessing such a field's property value, was to treat it as an empty string value from observation. This means, the key value pair exists in the `.Values` object tree and it's value is empty and of string type. With Helm 4 on the other hand, the field is absent from the object tree and accessing it will lead to an error.
+    The behavior of Helm 3, when accessing such a field's property value, was to treat it as an empty string value from observation. This means, the key value pair exists in the `.Values` object tree and it's value is empty and of string type. With Helm 4 on the other hand, the field is absent from the object tree and accessing it will lead to an error.
 
 Both aspects should typically be less relevant for HULL based charts, however it shall be documented here to avoid confusion. More detailed information can be found in the [related Helm issue](https://github.com/helm/helm/issues/31344).
 
 **Your feedback on this project is valued, hence please comment or start a discussion in the `Issues` section or create feature wishes and bug reports. Thank you!**
 
-The HULL library chart idea is partly inspired by the [common](
-https://github.com/helm/charts/tree/master/incubator/common) Helm chart concept and for testing
+The HULL library chart idea is partly inspired by the [common](https://github.com/helm/charts/tree/master/incubator/common) Helm chart concept and for testing
 
 [![Gauge Badge](https://gauge.org/Gauge_Badge.svg)](https://gauge.org).
 
@@ -155,7 +154,7 @@ hull: # HULL is configured via subchart key 'hull'
 
 This is the example constituting as `hull-demo`'s `values.yaml`, if you download the latest `hull-demo` release and execute:
 
-```bash
+```yaml
 helm template hull-demo-<version>.tgz
 ```
 
@@ -195,7 +194,7 @@ Concentrate on what is needed to specify Kubernetes objects without having to ad
 
 For all Kubernetes object types supported by HULL, **full configurational access to the Kubernetes object types properties is directly available**. This relieves chart maintainers from having to add missing configuration options one by one and the Helm chart users from forking the Helm chart to add just the properties they need for their configuration. Only updating the HULL chart to a newer version with matching Kubernetes API version is required to enable configuration of properties added to Kubernetes objects meanwhile in newer API versions. The HULL charts are versioned to reflect the minimal Kubernetes API versions supported by them.
 
-   For more details refer to the documentation on [Architecture Overview](/hull/files/doc/architecture.md).
+  For more details refer to the documentation on [Architecture Overview](/hull/files/doc/architecture.md).
 
 ### Unified interface for defining and configuring Helm charts backed by JSON schema
 
@@ -207,14 +206,16 @@ The single interface of the HULL library is used to both create and configure ob
 
 **Uniform and rich metadata is automatically attached to all objects created by the HULL library.**
 
-- Kubernetes standard labels as defined for [Kubernetes](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/) and [Helm](https://helm.sh/docs/chart_best_practices/labels/#standard-labels) are added to all objects metadata automatically.
-- Additional custom labels and annotations metadata can be set hierarchically for:
-  - all created Kubernetes objects or
-  - all created Kubernetes objects of a given type or
-  - a group of objects of different object types or
-  - any individual Kubernetes object.
+Kubernetes standard labels as defined for [Kubernetes](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/) and [Helm](https://helm.sh/docs/chart_best_practices/labels/#standard-labels) are added to all objects metadata automatically.
 
-  For more details on metadata overwriting refer to the advanced example below.
+Additional custom labels and annotations metadata can be set hierarchically for:
+
+- all created Kubernetes objects or
+- all created Kubernetes objects of a given type or
+- a group of objects of different object types or
+- any individual Kubernetes object.
+
+For more details on metadata overwriting refer to the advanced example below.
 
 ### Flexible and comfortable integration of ConfigMaps and Secrets into your Helm chart
 
@@ -280,7 +281,7 @@ Installing or upgrading a chart using HULL follows the standard procedures for e
 
 ## First Examples
 
-Using the nginx deployment example from the [Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment) as something we want to create with our HULL based Helm chart:
+Using the nginx deployment example from the Kubernetes documentation [for nginx](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment) as something we want to create with our HULL based Helm chart:
 
 ```yaml
 apiVersion: apps/v1

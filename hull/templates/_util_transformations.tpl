@@ -18,7 +18,7 @@
 {{- $shortForms = set $shortForms "_HT^" (list "hull.util.transformation.makefullname" "COMPONENT") -}}
 {{- $shortForms = set $shortForms "_HT&" (list "hull.util.transformation.selector" "COMPONENT") -}}
 {{- $shortForms = set $shortForms "_HT/" (list "hull.util.transformation.include" "CONTENT") -}}
-{{- if typeIs "map[string]interface {}" $source -}}
+{{- if (or (typeIs "map[string]interface {}" $source) (typeIs "chartutil.Values" $source) (typeIs "common.Values" $source)) -}}
     {{- range $key,$value := $source -}}
         {{- $sourcePathKey := append $sourcePath $key }}
         {{- if typeIs "map[string]interface {}" $value -}}
@@ -205,6 +205,35 @@
 {{- /*
 | Purpose:  
 |   
+|   Get object instance key and object type values
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   REFERENCE: The key in dot-notation for which the value should be retrieved
+|
+*/ -}}
+{{- define "hull.util.transformation.getobjectvalues" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $sourcePath := default list (index . "SOURCE_PATH") -}}
+{{- $result := dict "OBJECT_TYPE" "" "OBJECT_INSTANCE_KEY" "" -}}
+{{- if (gt (len $sourcePath) 4) -}}
+{{- if (eq (index $sourcePath 1) $hullRootKey) -}}
+{{- if (eq (index $sourcePath 2) "objects") -}}
+{{- $_ := set $result "OBJECT_TYPE" (index $sourcePath 3) -}}
+{{- $_ := set $result "OBJECT_INSTANCE_KEY" (index $sourcePath 4) -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- toYaml $result -}}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:  
+|   
 |   Gets the value from a key in values.yaml given dot-notation.
 |
 | Interface:
@@ -222,15 +251,11 @@
 {{- $key := (index . "KEY") -}}
 {{- $reference := (index . "REFERENCE") -}}
 {{- $sourcePath := default list (index . "SOURCE_PATH") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $returnTemplateString := default false (index . "RETURN_TEMPLATE_STRING") -}}
-{{- $objectType := "" -}}
-{{- $objectInstanceKey := "" -}}
-{{- if (gt (len $sourcePath) 3) -}}
-{{  if (eq (index $sourcePath 1) "objects") -}}
-{{- $objectType = index $sourcePath 2 -}}
-{{- $objectInstanceKey = index $sourcePath 3 -}}
-{{- end -}}
-{{- end -}}
+{{- $objectValues := (include "hull.util.transformation.getobjectvalues" .) | fromYaml -}}
+{{- $objectType := index $objectValues "OBJECT_TYPE" -}}
+{{- $objectInstanceKey := index $objectValues "OBJECT_INSTANCE_KEY" -}}
 {{- $templateString := "(index . \"$\").Values"  }}
 {{- $current := $parent.Values -}}
 {{- if hasPrefix "*" $reference -}}
@@ -310,10 +335,10 @@
 {{- if $returnTemplateString -}}
 {{- include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details) -}}
 {{- else -}}
-{{- if $parent.Values.hull.config.general.debug.renderBrokenHullGetTransformationReferences -}}
+{{- if dig "config" "general" "debug" "renderBrokenHullGetTransformationReferences" true (default dict (index $parent.Values $hullRootKey)) -}}
 {{ $key }}: BROKEN-HULL-GET-TRANSFORMATION-REFERENCE:Element {{ $brokenPart }} in path {{ $reference }} was not found
 {{- else }}
-{{- if $parent.Values.hull.config.general.errorChecks.hullGetTransformationReferenceValid -}}
+{{- if dig "config" "general" "errorChecks" "hullGetTransformationReferenceValid" true (default dict (index $parent.Values $hullRootKey)) -}}
 {{- $key }}: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details) -}}
 {{- else -}}
 {{- $key }}: ""
@@ -486,15 +511,11 @@
 {{- $key := (index . "KEY") -}}
 {{- $content := (index . "CONTENT") -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $sourcePath := default list (index . "SOURCE_PATH") -}}
-{{- $objectType := "" -}}
-{{- $objectInstanceKey := "" -}}
-{{- if (gt (len $sourcePath) 3) -}}
-{{  if (eq (index $sourcePath 1) "objects") -}}
-{{- $objectType = index $sourcePath 2 -}}
-{{- $objectInstanceKey = index $sourcePath 3 -}}
-{{- end -}}
-{{- end -}}
+{{- $objectValues := (include "hull.util.transformation.getobjectvalues" .) | fromYaml -}}
+{{- $objectType := index $objectValues "OBJECT_TYPE" -}}
+{{- $objectInstanceKey := index $objectValues "OBJECT_INSTANCE_KEY" -}}
 {{- $serializer := "" }}
 {{- $getValue := include "hull.util.transformation.serialize.get" (dict "VALUE" $content) | fromYaml -}}
 {{- $serializer := "" -}}
@@ -613,17 +634,13 @@
 {{- $key := (index . "KEY") -}}
 {{- $content := (index . "CONTENT") -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $sourcePath := default list (index . "SOURCE_PATH") -}}
 {{- $returnTemplateString := default false (index . "RETURN_TEMPLATE_STRING") -}}
 {{- $serializer := "" -}}
-{{- $objectType := "" -}}
-{{- $objectInstanceKey := "" -}}
-{{- if (gt (len $sourcePath) 3) -}}
-{{  if (eq (index $sourcePath 1) "objects") -}}
-{{- $objectType = index $sourcePath 2 -}}
-{{- $objectInstanceKey = index $sourcePath 3 -}}
-{{- end -}}
-{{- end -}}
+{{- $objectValues := (include "hull.util.transformation.getobjectvalues" .) | fromYaml -}}
+{{- $objectType := index $objectValues "OBJECT_TYPE" -}}
+{{- $objectInstanceKey := index $objectValues "OBJECT_INSTANCE_KEY" -}}
 {{- $parts := regexSplit ":" ($content | trim) -1 -}}
 {{- $parentContextSubmitted := false -}}
 {{- $resultKey := "" -}}

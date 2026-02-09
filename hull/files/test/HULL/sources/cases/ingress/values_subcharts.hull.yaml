@@ -1,0 +1,92 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+global:
+  service_type: NodePort
+  number_111: 111
+  number_222: 222
+  number_333: 333
+  ref_number: _HT*global.another_number
+  another_number: 333
+  boolean_true: true
+  an_ip: 123.345.431.543
+  test_annotations:
+    annotation_1: Global Annotation 1
+    annotation_2: Global Annotation 2
+
+kube-state-metrics:
+  test_number: 999
+  ip_number: _HT*global.an_ip
+  local_type: LoadBalancer
+  service:
+    annotations: _HT*global.test_annotations
+    type: _HT*global.service_type
+    port: _HT*global.ref_number
+    clusterIP: _HT*ip_number
+    ipDualStack: 
+      enabled: _HT*global.boolean_true
+
+
+prometheus-postgres-exporter:
+  local_type: LoadBalancer
+  local_annotations:
+    annotation_3: Local Annotation 1
+    annotation_4: Local Annotation 2
+  service: 
+    annotations: |-
+      _HT!
+        {
+          {{ $annot := _HT*global.test_annotations | merge _HT*local_annotations }}
+          {{ range $key, $value := $annot }}
+          {{ $key }}: {{ $value }},
+          {{ end }} 
+        }
+    type: _HT*local_type
+    port: _HT*global.ref_number
+    targetPort: _HT*global.number_333
+
+hull:
+  config:
+#    general:  
+#      data: {} 
+#      metadata:
+#        labels:         
+#          custom: 
+#            general_custom_label_1: General Custom Label 1
+#            general_custom_label_2: General Custom Label 2
+#            general_custom_label_3: General Custom Label 3
+#        annotations: 
+#          custom:
+#            general_custom_annotation_1: General Custom Annotation 1
+#            general_custom_annotation_2: General Custom Annotation 2
+#            general_custom_annotation_3: General Custom Annotation 3
+    specific:
+      boolean_true: _HT*global.boolean_true
+      new_port: _HT*global.number_111
+      fixed_number: 12345
+  ###################################################
+          
+  ###################################################
+  ### OBJECTS
+  objects:
+    
+  # INGRESS
+    ingress:
+      
+      test-global:
+        rules:
+          first_host:
+            host: host.one.com
+            http:              
+              paths:                  
+                standard:
+                  path: /standard
+                  pathType: ImplementationSpecific
+                  backend:
+                    service:
+                      name: service1_standard
+                      port: 
+                        number: _HT*hull.config.specific.new_port
