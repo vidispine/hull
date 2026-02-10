@@ -1,0 +1,23 @@
+apiVersion: v2
+appVersion: v0.17.1
+description: A Helm chart for prometheus postgres-exporter
+home: https://github.com/prometheus-community/postgres_exporter
+keywords:
+- postgresql
+- prometheus
+- exporter
+maintainers:
+- email: gianrubio@gmail.com
+  name: gianrubio
+  url: https://github.com/gianrubio
+- email: zanhsieh@gmail.com
+  name: zanhsieh
+  url: https://github.com/zanhsieh
+- email: rootsandtrees@posteo.de
+  name: zeritti
+  url: https://github.com/zeritti
+name: prometheus-postgres-exporter
+sources:
+- https://github.com/prometheus-community/postgres_exporter
+type: application
+version: 7.0.0
