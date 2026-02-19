@@ -1,5 +1,21 @@
 # Check basic metadata functionality
 
+Conditionals
+* Prepare default test case for this kind including suites "globalmetadata,objecttypemetadata"
+* Lint and Render
+* Set test object to "release-name-hull-test-conditionals"
+
+* Test Object has key "metadata§annotations§test-annotation-1a-true" with value "1atrue"
+* Test Object has key "metadata§annotations§test-annotation-1b-true" with value "1btrue"
+* Test Object has key "metadata§annotations§test-annotation-2a-true" with value "2atrue"
+* Test Object has key "metadata§annotations§test-annotation-2b-true" with value "2btrue"
+* Test Object does not have key "metadata§annotations§test-annotation-1a-false"
+* Test Object does not have key "metadata§annotations§test-annotation-1b-false"
+* Test Object does not have key "metadata§annotations§test-annotation-2a-false"
+* Test Object does not have key "metadata§annotations§test-annotation-2b-false"
+* Test Object does not have key "metadata§annotations§test-annotation-3.dots.dot"
+
+
 * Prepare default test case for this kind including suites "namespaceoverride,globalmetadata,objecttypemetadata"
 * Lint and Render
 
@@ -98,8 +114,6 @@ General label section must be populated
 * All test objects have key "metadata§labels§app.kubernetes.io/name" with value of key "chart" from scenario data_store
 * All test objects have key "metadata§labels§app.kubernetes.io/part-of" with value "undefined"
 * All test objects have key "metadata§labels§app.kubernetes.io/version" with value "<K8S_MAJOR_VERSION>.0"
-
-Run metadataNameOverride tests
 
 Check explicit name override
 

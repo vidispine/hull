@@ -1,7 +1,369 @@
 # Chart Design Guide
 
 HULL offers multiple means to reduce the effort and repetition often associated with writing Helm charts.
-Within a single Helm charts you often want to define a particular value once and reference it in several places. There are multiple ways to achieve this and which one to select depends on the specific scenario. This page aims at giving an introduction on the methods that are at your disposal and helping you to choose the best one for each scenario.
+Within a single Helm chart, you often want to render object properties based on certain conditions or define a particular value once and reference it in several places. There are multiple ways to achieve these aspects within HULL and which one to select depends on the specific scenario. This page aims at giving an introduction on the methods that are at your disposal and helping you to choose the best one for each scenario.
+
+## Conditionally rendering properties
+
+HULL offers two methods to conditionally select properties for rendering or not. The first method is the `enabled` property which is available in many places to in- or exclude data in your rendered YAML files. The second methods is the more complex to configure `conditionals` method which may be applied in places where `enabled` are not available.
+
+### The `enabled` property
+
+Most importantly, the `enabled` property is available for each object instance you define in HULL. So, any object instance can simply be enabled or disabled by setting `enabled` to `true` or `false`. Often though, it may be useful to bind `enabled` to a condition that is expressed by a HULL transformation.
+
+These are examples of applying `enabled` at the object instance level:
+
+```yaml
+hull:
+  config:
+    specific:
+      ingressClassName: ""
+  objects:
+    ingress:
+      main:
+        enabled: true
+        ...
+      secondary:
+        enabled: false
+        ...
+    ingressclass:
+      default:
+        enabled: _HT?eq _HT*hull.config.specific.ingressClassName ""
+        ...
+
+```
+
+Here, you may have a `main` Ingress which should always be deployed by default and an optional secondary Ingress that is preconfigured and ready for use. Whether the `default` IngressClass should be deployed or not is dependent on the setting of `hull.config.specific.ingressClassName` and therefore the presence of an already existing IngressClass in the cluster.
+
+Furthermore, you can utilize the `enabled` property in more places where there is a dictionary of (sub)objects that HULL manages instead of arrays. The advantage of representing these structures as dictionaries is that addressing entries by keys allows targeted manipulation of entries.
+
+Here is the full overview of the additional `enabled` property fields that may be used for rendering control:
+
+```yaml
+hull:
+  objects:
+    role:
+      <OBJECT_INSTANCE_KEY>:  
+        rules:  
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false         
+    clusterrole:
+      <OBJECT_INSTANCE_KEY>:  
+        rules:  
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false         
+    deployment|statefulset|job|daemonset: # general workloads
+      <OBJECT_INSTANCE_KEY>:
+        pod:
+          initContainers:
+            <OBJECT_INSTANCE_KEY>:
+              enabled: true|false
+              env:
+                <OBJECT_INSTANCE_KEY>:
+                  enabled: true|false
+              envFrom:
+                <OBJECT_INSTANCE_KEY>:
+                  enabled: true|false
+              volumeMounts:
+                <OBJECT_INSTANCE_KEY>:
+                  enabled: true|false
+          containers:
+            <OBJECT_INSTANCE_KEY>:
+              enabled: true|false
+              env:
+                <OBJECT_INSTANCE_KEY>:
+                  enabled: true|false
+              envFrom:
+                <OBJECT_INSTANCE_KEY>:
+                  enabled: true|false
+              volumeMounts:
+                <OBJECT_INSTANCE_KEY>:
+                  enabled: true|false
+          volumes:
+            <OBJECT_INSTANCE_KEY>:
+              enabled: true|false
+    cronjob: # cronjob has embedded job   
+      <OBJECT_INSTANCE_KEY>:
+        job:
+          pod:
+            initContainers:
+              <OBJECT_INSTANCE_KEY>:
+                enabled: true|false
+                env:
+                  <OBJECT_INSTANCE_KEY>:
+                    enabled: true|false
+                envFrom:
+                  <OBJECT_INSTANCE_KEY>:
+                    enabled: true|false
+                volumeMounts:
+                  <OBJECT_INSTANCE_KEY>:
+                    enabled: true|false
+            containers:
+              <OBJECT_INSTANCE_KEY>:
+                enabled: true|false
+                env:
+                  <OBJECT_INSTANCE_KEY>:
+                    enabled: true|false
+                envFrom:
+                  <OBJECT_INSTANCE_KEY>:
+                    enabled: true|false
+                volumeMounts:
+                  <OBJECT_INSTANCE_KEY>:
+                    enabled: true|false
+            volumes:
+              <OBJECT_INSTANCE_KEY>:
+                enabled: true|false
+    service:
+      <OBJECT_INSTANCE_KEY>:  
+        ports:  
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false       
+    ingress:
+      <OBJECT_INSTANCE_KEY>:  
+        tls:  
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false       
+        rules:
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false
+            http:
+              paths:
+                <OBJECT_INSTANCE_KEY>:
+                  enabled: true|false
+    mutatingwebhookconfiguration:
+      <OBJECT_INSTANCE_KEY>:  
+        webhooks:  
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false       
+    validatingwebhookconfiguration:
+      <OBJECT_INSTANCE_KEY>:  
+        webhooks:  
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false       
+    backendlbpolicy:
+      <OBJECT_INSTANCE_KEY>:  
+        targetRefs:  
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false  
+    backendtlspolicy:
+      <OBJECT_INSTANCE_KEY>:  
+        targetRefs:  
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false  
+    gateway:
+      <OBJECT_INSTANCE_KEY>:
+        addresses: 
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false
+        listeners:
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false
+            tls:
+              certificateRefs:
+                <OBJECT_INSTANCE_KEY>:
+                  enabled: true|false
+              frontendValidation:
+                caCertificateRefs:
+                  <OBJECT_INSTANCE_KEY>:
+                    enabled: true|false
+            allowedRoutes:
+              kinds:
+                <OBJECT_INSTANCE_KEY>:
+                  enabled: true|false
+    grpcroute:
+      <OBJECT_INSTANCE_KEY>:
+        parentRefs: 
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false
+        rules:
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false
+            matches:
+              <OBJECT_INSTANCE_KEY>:
+                enabled: true|false
+            filters:
+              <OBJECT_INSTANCE_KEY>:
+                enabled: true|false
+            backendRefs:
+              <OBJECT_INSTANCE_KEY>:
+                enabled: true|false
+                filters:
+                  <OBJECT_INSTANCE_KEY>:
+                    enabled: true|false
+    referencegrant:
+      <OBJECT_INSTANCE_KEY>:
+        from: 
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false
+        to: 
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false
+    tcproute|tlsroute|udproute:
+      <OBJECT_INSTANCE_KEY>:
+        parentRefs: 
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false
+        rules: 
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false
+            backendRefs: 
+              <OBJECT_INSTANCE_KEY>:
+                enabled: true|false
+    httproute:
+      <OBJECT_INSTANCE_KEY>:
+        parentRefs: 
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false
+        rules: 
+          <OBJECT_INSTANCE_KEY>:
+            enabled: true|false
+            matches: 
+              <OBJECT_INSTANCE_KEY>:
+                enabled: true|false
+            filters: 
+              <OBJECT_INSTANCE_KEY>:
+                enabled: true|false                
+            backendRefs: 
+              <OBJECT_INSTANCE_KEY>:
+                enabled: true|false
+```
+
+### The `conditional` feature
+
+While the `enabled` properties cover many usecases where it may be needed to enable or disable objects or subobjects from rendering, more control may be needed over rendering of specific properties. For example, the definition of `customresource` specifications may require additional control over properties in the `spec` since, due to the 'custom' nature of CustomResources, the `enabled` mechanism targetting well-known properties is not available here.
+
+Consider a regular Helm template for a CustomResource which contains the following conditional rendering template expression:
+
+```yaml
+hull:
+  objects:
+    customresource:
+      gateway:
+        apiVersion: gateway.networking.k8s.io/v1
+        kind: HTTPRoute
+        spec:
+          {{- if .Values.gatewayApi.gatewayRef.name }}
+          parentRefs:
+          - name: {{ .Values.gatewayApi.gatewayRef.name }}
+            {{- if .Values.gatewayApi.gatewayRef.namespace }}
+            namespace: {{ .Values.gatewayApi.gatewayRef.namespace }}
+            {{- end }}
+          {{- end }}
+```
+
+```yaml
+{{- if .Values.gatewayApi.enabled -}}
+{{- $serviceName := include "oauth2-proxy.fullname" . -}}
+{{- $servicePort := .Values.service.portNumber -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  labels:
+    app: {{ template "oauth2-proxy.name" . }}
+    {{- include "oauth2-proxy.labels" . | indent 4 }}
+{{- if .Values.gatewayApi.labels }}
+{{ toYaml .Values.gatewayApi.labels | indent 4 }}
+{{- end }}
+  name: {{ template "oauth2-proxy.fullname" . }}
+  namespace: {{ template "oauth2-proxy.namespace" $ }}
+{{- with .Values.gatewayApi.annotations }}
+  annotations:
+{{ tpl ( toYaml . ) $ | indent 4 }}
+{{- end }}
+spec:
+  {{- if .Values.gatewayApi.gatewayRef.name }}
+  parentRefs:
+  - name: {{ .Values.gatewayApi.gatewayRef.name }}
+    {{- if .Values.gatewayApi.gatewayRef.namespace }}
+    namespace: {{ .Values.gatewayApi.gatewayRef.namespace }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.gatewayApi.hostnames }}
+  hostnames:
+  {{- range .Values.gatewayApi.hostnames }}
+  - {{ tpl . $ | quote }}
+  {{- end }}
+  {{- end }}
+  rules:
+  {{- if .Values.gatewayApi.rules }}
+  {{- range .Values.gatewayApi.rules }}
+  - matches:
+    {{- if .matches }}
+    {{- toYaml .matches | nindent 4 }}
+    {{- else }}
+    - path:
+        type: PathPrefix
+        value: /
+    {{- end }}
+    backendRefs:
+    {{- if .backendRefs }}
+    {{- toYaml .backendRefs | nindent 4 }}
+    {{- else }}
+    - name: {{ $serviceName }}
+      port: {{ $servicePort }}
+    {{- end }}
+    {{- if .filters }}
+    filters:
+    {{- toYaml .filters | nindent 4 }}
+    {{- end }}
+  {{- end }}
+  {{- else }}
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: {{ $serviceName }}
+      port: {{ $servicePort }}
+  {{- end }}
+{{- end -}}
+```
+```yaml
+{{- if and (.Capabilities.APIVersions.Has "autoscaling.k8s.io/v1") (.Values.verticalPodAutoscaler.enabled) }}
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ template "kube-state-metrics.fullname" . }}
+  namespace: {{ template "kube-state-metrics.namespace" . }}
+  labels:
+    {{- include "kube-state-metrics.labels" . | indent 4 }}
+spec:
+  {{- with .Values.verticalPodAutoscaler.recommenders }}
+  recommenders:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  resourcePolicy:
+    containerPolicies:
+    - containerName: {{ template "kube-state-metrics.name" . }}
+      {{- with .Values.verticalPodAutoscaler.controlledResources }}
+      controlledResources:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.verticalPodAutoscaler.controlledValues }}
+      controlledValues: {{ .Values.verticalPodAutoscaler.controlledValues }}
+      {{- end }}
+      {{- if .Values.verticalPodAutoscaler.maxAllowed }}
+      maxAllowed:
+        {{ toYaml .Values.verticalPodAutoscaler.maxAllowed | nindent 8 }}
+      {{- end }}
+      {{- if .Values.verticalPodAutoscaler.minAllowed }}
+      minAllowed:
+        {{ toYaml .Values.verticalPodAutoscaler.minAllowed | nindent 8 }}
+      {{- end }}
+  targetRef:
+    apiVersion: apps/v1
+    {{- if .Values.autosharding.enabled }}
+    kind: StatefulSet
+    {{- else }}
+    kind: Deployment
+    {{- end }}
+    name:  {{ template "kube-state-metrics.fullname" . }}
+  {{- with .Values.verticalPodAutoscaler.updatePolicy }}
+  updatePolicy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+```
 
 ## Referencing source values via transformations
 
