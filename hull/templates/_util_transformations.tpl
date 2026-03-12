@@ -61,7 +61,7 @@
         {{- $sourcePathKey := append $sourcePath $key }}
         
         {{- /*
-        ### Check removals
+        ### Check conditionals
         */ -}}
         {{- if (gt (len (keys $conditionals)) 0) }} 
             {{- $sourcePathKeyList := list -}}
@@ -83,8 +83,7 @@
                                 {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" "dummy" "SOURCE_PATH" $sourcePathKey "HULL_ROOT_KEY" $hullRootKey) $params -}}
                                 {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
                                 {{- $keep = index $valDict "dummy" -}}  
-                            {{- end -}}
-                            
+                            {{- end -}}                            
                             {{- if not $keep -}}
                                 {{- $_ := unset $source $key -}}                                
                             {{- end -}}
@@ -395,13 +394,13 @@
 {{- $details = printf "Element %s in path %s was not found" $brokenPart $reference -}}
 {{- end -}}
 {{- if $returnTemplateString -}}
-{{- include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details) -}}
+{{- include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey) -}}
 {{- else -}}
 {{- if dig "config" "general" "debug" "renderBrokenHullGetTransformationReferences" true (default dict (index $parent.Values $hullRootKey)) -}}
 {{ $key }}: BROKEN-HULL-GET-TRANSFORMATION-REFERENCE:Element {{ $brokenPart }} in path {{ $reference }} was not found
 {{- else }}
 {{- if dig "config" "general" "errorChecks" "hullGetTransformationReferenceValid" true (default dict (index $parent.Values $hullRootKey)) -}}
-{{- $key }}: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details) -}}
+{{- $key }}: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey) -}}
 {{- else -}}
 {{- $key }}: ""
 {{- end -}}

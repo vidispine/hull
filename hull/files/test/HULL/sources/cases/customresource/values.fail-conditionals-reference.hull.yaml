@@ -1,0 +1,42 @@
+################################ 
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+  config:
+    specific:
+      kustomization:
+        encryption: true
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # CONFIGMAPS
+    customresource:
+      
+      conditionals-fail-reference:
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        conditionals:
+          decryption:
+            condition: _HT*hull.config.specific.kustomization.encryption_not_exists
+            references:
+            - spec.decryption  
+          broken:
+            condition: _HT*hull.config.specific.kustomization.broken
+            references:
+            - spec.prune        
+        spec:
+          interval: "1m0s"
+          path: "./flux"
+          prune: true
+          sourceRef:
+            kind: GitRepository
+            name: flux-system
+          decryption:
+            provider: sops
+            serviceAccountName: sops-identity
+            secretRef:
+              name: sops-keys-and-credentials

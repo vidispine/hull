@@ -144,5 +144,6 @@ hull:
           name: name1
           namespace: namespace1
 
-
+      conditionals:
+        controllerName: "example.net/gateway-controller"
 ###################################################
