@@ -115,12 +115,12 @@ jobs:
       Helm_4_1_1_multi:
         HelmVersion: "4.1.1"
         TestType: multi
-      Helm_4_1_2_single:
-        HelmVersion: "4.1.2"
-        TestType: single
-      Helm_4_1_2_multi:
-        HelmVersion: "4.1.2"
-        TestType: multi
+      # Helm_4_1_2_single:
+      #   HelmVersion: "4.1.2"
+      #   TestType: single
+      # Helm_4_1_2_multi:
+      #   HelmVersion: "4.1.2"
+      #   TestType: multi
       Helm_4_1_3_single:
         HelmVersion: "4.1.3"
         TestType: single

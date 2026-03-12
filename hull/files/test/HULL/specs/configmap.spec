@@ -72,14 +72,14 @@ Test creation of objects and features.
 * Test Object has key "data§key_with_dots_in_it" with value "hello dots!"
 
 ## Undefined Handling
-* Begin Tests for Helm versions regex "^(?!3\\.19\\.5$)(?!3\\.20\\.[0-9]$)(3)\\.\\d+\\.\\d+$"
+* Begin Tests for Helm versions regex "^(?!3\\.19\\.5$)(?!3\\.20\\.0$)(?!4\\.1\\.0$)(?!4\\.1\\.1$)(?!4\\.1\\.2$)(?!4\\.0\\.\\d+$)(3|4)\\.\\d+\\.\\d+$"
 * Lint and Render values file "values_undefined.hull.yaml"
 * Set test object to "release-name-hull-test-test-get-undefined-variants"
 * Test Object has key "data§bool_undefined" with value ""
 * Test Object has key "data§string_undefined" with value ""
 * Test Object has key "data§number_undefined" with value ""
 * End Tests for specific Helm version
-* Begin Tests for Helm versions regex "^(3\\.19\\.5|3\\.20\\.\\d+|4\\.\\d+\\.\\d+)$"
+* Begin Tests for Helm versions regex "^(3\\.19\\.5|3\\.20\\.0|4\\.0\\.\\d+|4\\.1\\.0|4\\.1\\.1|4\\.1\\.2)$"
 * Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element bool_undefined in path hull.config.specific.bool_undefined was not found"
 * Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element number_undefined in path hull.config.specific.number_undefined was not found"
 * Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element string_undefined in path hull.config.specific.string_undefined was not found"
