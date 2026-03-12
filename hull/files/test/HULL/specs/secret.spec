@@ -80,9 +80,9 @@ Test creation of objects and features.
 * Test Object has key "data§number_undefined" with Base64 encoded value of ""
 * End Tests for specific Helm version
 * Begin Tests for Helm versions regex "^(3\\.19\\.5|3\\.20\\.\\d+|4\\.\\d+\\.\\d+)$"
-* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element bool_undefined in path hull.config.specific.bool_undefined was not found]"
-* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element number_undefined in path hull.config.specific.number_undefined was not found]"
-* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element string_undefined in path hull.config.specific.string_undefined was not found]"
+* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element bool_undefined in path hull.config.specific.bool_undefined was not found"
+* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element number_undefined in path hull.config.specific.number_undefined was not found"
+* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element string_undefined in path hull.config.specific.string_undefined was not found"
 * End Tests for specific Helm version
 
 
