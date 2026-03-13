@@ -382,7 +382,7 @@ hull:
 
 While the `enabled` properties cover many usecases where it may be needed to enable or disable complex objects or subobjects from rendering which typically are used and well defined in the schema of HULL. Yet more control may be needed over rendering of specific properties that are not dictionary entries that can be `enabled`. Most prominently, the definition of `customresource` specifications may require additional control over properties in the `spec` since - due to the 'custom' nature of CustomResources - the `enabled` mechanism targetting well-known properties is not available here.
 
-Consider a regular Helm template for a CustomResource which contains the following conditional rendering template expression:
+Consider a HULL definition for a CustomResource which contains typical data fields in its spec:
 
 ```yaml
 hull:
@@ -403,11 +403,11 @@ hull:
           sourceRef:
             kind: GitRepository
             name: flux-system
-        decryption:
-          provider: sops
-          serviceAccountName: sops-identity
-          secretRef:
-            name: sops-keys-and-credentials
+          decryption:
+            provider: sops
+            serviceAccountName: sops-identity
+            secretRef:
+              name: sops-keys-and-credentials
           
 ```
 
