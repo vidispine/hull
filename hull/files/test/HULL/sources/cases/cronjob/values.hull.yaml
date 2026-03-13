@@ -290,7 +290,17 @@ hull:
                 image:
                   repository: my/image/repo
                   tag: "99.9"
-      
+
+      conditionals:
+        schedule: "* * 2"
+        job:
+          pod:
+            containers:
+              main:
+                image:
+                  repository: my/image/repo
+                  tag: "99.9"
+
       issue-360-timezone:
         schedule: "* * 5"
         concurrencyPolicy: Replace

@@ -1,0 +1,7 @@
+/* Fix for ASCII diagram distortion */
+pre code {
+    font-family: "Courier New", Courier, monospace !important;
+    line-height: 1.2 !important; /* Adjust this if lines have gaps */
+    letter-spacing: 0px !important;
+    white-space: pre !important;
+}

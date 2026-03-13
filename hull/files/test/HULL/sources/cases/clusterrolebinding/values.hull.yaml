@@ -189,4 +189,10 @@ hull:
           apiGroup: rbac.authorization.k8s.io
           kind: Role
           name: example_role
+          
+      conditionals:
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: example_role
 ###################################################

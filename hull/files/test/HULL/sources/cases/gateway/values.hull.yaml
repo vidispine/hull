@@ -432,4 +432,10 @@ hull:
                   group: networking.k8s.io
                   kind: Service
 
+      conditionals:
+        gatewayClassName: "the-gateway-class"
+        listeners: 
+          name:
+            port: 123
+            protocol: protocol
 ###################################################

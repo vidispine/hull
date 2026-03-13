@@ -16,3 +16,5 @@ plugins:
   - include_dir_to_nav
 markdown_extensions:
   - pymdownx.superfences
+extra_css:
+  - stylesheets/extra.css

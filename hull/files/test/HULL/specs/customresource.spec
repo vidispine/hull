@@ -9,6 +9,8 @@ Test creation of objects and features.
 * Expected number of "17" objects of kind "Dummy" were rendered
 * Expected number of "1" objects of kind "MailSender" were rendered
 * Expected number of "1" objects of kind "MailReceiver" were rendered
+* Expected number of "2" objects of kind "Integration" were rendered
+* Expected number of "2" objects of kind "Kustomization" were rendered
 
 
 ## Metadata
@@ -61,6 +63,27 @@ Maybe TODO: Check basic metadata functionality
 * Test Object has key "spec§forProvider§inlinePolicy§2§policy" with value of key "interpreted-and-serialized-flow-style-yaml" from expected.yaml
 * Test Object has key "spec§forProvider§inlinePolicy§3§name" with value "interpreted-and-serialized-block-style-yaml"
 * Test Object has key "spec§forProvider§inlinePolicy§3§policy" with value of key "interpreted-and-serialized-block-style-yaml" from expected.yaml
+
+## Conditionals
+
+* Lint and Render
+
+* Set test object to "release-name-hull-test-conditionals-true" of kind "Kustomization"
+* Test Object has key "spec§decryption§provider" with value "sops"
+* Test Object has key "spec§sourceRef§kind" with value "GitRepository"
+* Test Object has key "spec§sourceRef§name" with value "flux-system"
+* Test Object has key "spec§path.with.dots§prop_a" with value "hello"
+* Test Object has key "spec§path.with.dots§prop_b" with value "goodbye"
+
+* Set test object to "release-name-hull-test-conditionals-false" of kind "Kustomization"
+* Test Object does not have key "spec§decryption"
+* Test Object does not have key "spec§sourceRef"
+* Test Object does not have key "spec§path.with.dots"
+
+## Fail
+* Fail to render the templates for values file "values.fail-conditionals-reference.hull.yaml" to test execution folder because error contains "Element broken in path hull.config.specific.kustomization.broken was not found"
+* Fail to render the templates for values file "values.fail-conditionals-reference.hull.yaml" to test execution folder because error contains "Element encryption_not_exists in path hull.config.specific.kustomization.encryption_not_exists was not found"
+
 
 ___
 

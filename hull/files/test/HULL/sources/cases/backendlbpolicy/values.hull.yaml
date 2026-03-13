@@ -316,5 +316,11 @@ hull:
           type: Cookie
           cookieConfig:
             lifetimeType: Permanent
-              
+
+      conditionals:
+        targetRefs: 
+          ref:
+            group: group
+            kind: kind
+            name: name         
 ###################################################
