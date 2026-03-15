@@ -86,7 +86,7 @@
 */ -}}
 {{- define "hull.util.include.k8s" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
-{{- $hullObjectBaseKeys := (index . "HULL_BASE_KEYS") | default (list "enabled" "labels" "annotations" "staticName" "metadataNameOverride" "namespaceOverride" "sources") -}}
+{{- $hullObjectBaseKeys := (index . "HULL_BASE_KEYS") | default (list "enabled" "labels" "annotations" "staticName" "metadataNameOverride" "namespaceOverride" "sources" "conditionals") -}}
 {{- $hullObjectKeys := (index . "HULL_OBJECT_KEYS") | default (list) -}}
 {{- $spec := (index . "SPEC") | default nil -}}
 {{- $k8sSpec := (dict) -}}
@@ -263,7 +263,16 @@ selector:
 {{- define "hull.util.error.message" -}}
 {{- $errorType := default "" (index . "ERROR_TYPE") -}}
 {{- $errorMessage := default "" (index . "ERROR_MESSAGE") -}}
-{{- printf "~%s:%s:%s" "_HULL_ERROR_" $errorType $errorMessage -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $storeMessage := printf "%s %s: %s" "HULL failed with error" $errorType $errorMessage -}}
+{{- $fullMessage := printf "~%s:%s:%s" "_HULL_ERROR_" $errorType $errorMessage -}}
+{{- if (not (hasKey (index (index $parent.Values $hullRootKey)) "_HULL_ERROR_")) -}}
+{{- $_ := set (index (index $parent.Values $hullRootKey)) "_HULL_ERROR_" list -}}
+{{- end -}}
+{{- $addedError := append (index (index $parent.Values $hullRootKey))._HULL_ERROR_ $storeMessage -}}
+{{- $_ := set (index (index $parent.Values $hullRootKey)) "_HULL_ERROR_" $addedError -}}
+{{ $fullMessage }}
 {{- end -}}
 
 

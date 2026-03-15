@@ -5,7 +5,12 @@
 ###################################################
 ### CONFIG
 hull:
-  
+  config:
+    specific:
+      kustomization:
+        encryption: true
+        'i.have.dots.in.my.name': true
+        dotref: true
   ###################################################
   ### OBJECTS
   objects:
@@ -199,3 +204,67 @@ hull:
                   - Effect: "{{ printf "%s" "Allow" }}"
                     Resource: "*"
                     Action: "ssm:GetParameter*"
+      
+      conditionals-true:
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        conditionals:
+          decryption:
+            condition: _HT*hull.config.specific.kustomization.encryption
+            references:
+            - spec.decryption    
+          sourceref:
+            condition: _HT*hull.config.specific.kustomization.i§have§dots§in§my§name
+            references:
+            - spec.sourceRef
+          dotref:
+            condition: _HT*hull.config.specific.kustomization.dotref
+            references:
+            - spec.path§with§dots
+        spec:
+          interval: "1m0s"
+          path: "./flux"
+          prune: true
+          sourceRef:
+            kind: GitRepository
+            name: flux-system
+          decryption:
+            provider: sops
+            serviceAccountName: sops-identity
+            secretRef:
+              name: sops-keys-and-credentials
+          path.with.dots:
+            prop_a: hello
+            prop_b: goodbye
+
+      conditionals-false:
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        conditionals:
+          decryption:
+            condition: _HT?not _HT*hull.config.specific.kustomization.encryption
+            references:
+            - spec.decryption
+          sourceref:
+            condition: _HT?not _HT*hull.config.specific.kustomization.i§have§dots§in§my§name
+            references:
+            - spec.sourceRef
+          dotref:
+            condition: _HT?not _HT*hull.config.specific.kustomization.dotref
+            references:
+            - spec.path§with§dots
+        spec:
+          interval: "1m0s"
+          path: "./flux"
+          prune: true
+          sourceRef:
+            kind: GitRepository
+            name: flux-system
+          decryption:
+            provider: sops
+            serviceAccountName: sops-identity
+            secretRef:
+              name: sops-keys-and-credentials
+          path.with.dots:
+            prop_a: hello
+            prop_b: goodbye

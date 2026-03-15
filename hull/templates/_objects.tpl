@@ -107,8 +107,6 @@ metadata:
 {{- include "hull.objects.render" . }}
 {{- end -}}
 
-
-
 {{- /*
 ################################################# RENDER #####################################################
 */ -}}
@@ -119,10 +117,10 @@ metadata:
 {{- $renderPasses := dig "config" "general" "render" "passes" 3 (default dict (index $rootContext.Values $hullRootKey)) -}}
 {{- $transformationScope := $rootContext.Values -}}
 {{- $transformationScopeKey := "Values" -}}
-{{- $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $transformationScope "HULL_ROOT_KEY" $hullRootKey "SOURCE_PATH" (list $transformationScopeKey)) | fromYaml }}
+{{- $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $transformationScope "HULL_ROOT_KEY" $hullRootKey "LAST_PASS" (eq ($renderPasses | int) 1) "SOURCE_PATH" (list $transformationScopeKey)) | fromYaml }}
 {{- if gt ($renderPasses | int) 1 -}}
 {{- range $i, $e := untilStep 1 ($renderPasses | int) 1 -}}
-{{- $rendered = include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $transformationScope "HULL_ROOT_KEY" $hullRootKey "SOURCE_PATH" (list $transformationScopeKey)) | fromYaml }}
+{{- $rendered = include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $transformationScope "HULL_ROOT_KEY" $hullRootKey "LAST_PASS" (eq (sub ($renderPasses | int) 1) $i) "SOURCE_PATH" (list $transformationScopeKey)) | fromYaml }}
 {{- end -}}
 {{- end -}}
 
@@ -195,7 +193,7 @@ scopeKey: {{ $transformationScopeKey }}
 {{- if true -}}
 {{- $objectSpec = include "hull.util.merge" (merge (dict "PARENT_CONTEXT" $rootContext "PARENT_TEMPLATE" $parentTemplate "API_VERSION" (default $apiVersion $spec.apiVersion) "API_KIND" (default $apiKind $spec.apiKind) "COMPONENT" $namingElement "SPEC" $spec "DEFAULT_COMPONENT" $defaultSpec "HULL_ROOT_KEY" $hullRootKey "NO_SELECTOR" $noSelector "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectKey "DYNAMIC_FIELDS" $dynamicFields) (dict "LOCAL_TEMPLATE" (printf "%s" $hullTemplate))) | fromYaml }}
 {{- if (gt (len (keys (default dict $objectSpec))) 0) -}}
-{{- $errorMessage := include "hull.util.error.check" (dict "OBJECT" $objectSpec "OBJECT_TYPE" $lowerObjectType) -}}
+{{- $errorMessage := "" -}}
 {{- if (and (hasKey $objectSpec "Error") (eq (len (keys ($objectSpec))) 1)) -}}
 {{- if (index $rootContext.Values $hullRootKey).config.general.errorChecks.objectYamlValid -}}
 {{- $errorMessage = printf "%s [%s %s: %s for %s %s due to YAML error '%s']" $errorMessage "HULL failed with error" "BROKEN-OBJECT-YAML" "A broken object YAML was encountered" $lowerObjectType $objectKey (index $objectSpec "Error") -}}
@@ -246,6 +244,11 @@ scopeKey: {{ $transformationScopeKey }}
 {{- end -}}
 {{- end -}}
 
+{{- end -}}
+{{- if (hasKey (index $rootContext.Values $hullRootKey) "_HULL_ERROR_") -}}
+{{- range $error := (index $rootContext.Values $hullRootKey)._HULL_ERROR_ -}}
+{{- $errorMessages = printf "%s\n%s" $errorMessages $error -}}
+{{- end -}}
 {{- end -}}
 {{- if (ne $errorMessages "") -}}
 {{- fail $errorMessages -}}

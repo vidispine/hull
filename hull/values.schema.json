@@ -34501,7 +34501,8 @@
         "staticName",
         "metadataNameOverride",
         "namespaceOverride",
-        "sources"
+        "sources",
+        "conditionals"
       ]
     },
     "hull.ObjectBase.v1": {
@@ -34596,7 +34597,54 @@
           ],
           "required": [],
           "properties": {}
-        }
+        },
+        "conditionals": {
+          "$id": "#/definitions/root/config/general/postrender/conditionals",
+          "title": "conditionals",
+          "description": "Replace source strings with target strings after rendering",
+          "type": "object",
+          "patternProperties": {
+            "^[^_].*$": {
+              "type": [
+                "object"
+              ],
+              "properties": {
+                "condition": {
+                  "$id": "#/definitions/root/config/general/general/postrender/globalReplacements/string",
+                  "description": "Source string value which shall be replaced.",
+                  "title": "string",
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/hull.Transformation.Pattern"
+                    },
+                    {
+                      "examples": [
+                        true,
+                        false
+                      ],
+                      "default": false,
+                      "type": "boolean"
+                    }
+                  ]
+                },
+                "references": {
+                  "$id": "#/definitions/root/config/general/general/postrender/globalReplacements/replacements",
+                  "title": "references",
+                  "items": {
+                    "description": "Reference.",
+                    "title": "Reference",
+                    "type": "string"
+                  },  
+                  "anyOf": [
+                    {
+                      "type": "array"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }                    
       },
       "required": []
     },

@@ -99,4 +99,7 @@ hull:
 
       namespace-override:
         value: 100
+
+      conditionals:
+        value: 100
 ###################################################
