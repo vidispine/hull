@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "25" objects were rendered on top of basic objects count
+* Expected number of "26" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -300,6 +300,9 @@ Test creation of objects and features.
 
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_null_inline.hull.yaml" including suites "virtualfolderdata"
 * Fail to render the templates for values file "values_error_handling_null_inline.hull.yaml" to test execution folder because error contains "HULL failed with error VIRTUAL-FOLDER-DATA-INLINE-INVALID: Secret/virtual-folder-inline-null/inline/nothing"
+
+* Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_disabled.hull.yaml" including suites "virtualfolderdata"
+* Lint and Render values file "values_error_handling_disabled.hull.yaml"
 
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_disabled.hull.yaml" including suites "virtualfolderdata"
 * Lint and Render values file "values_error_handling_disabled.hull.yaml"

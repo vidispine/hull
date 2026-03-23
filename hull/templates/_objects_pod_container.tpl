@@ -57,10 +57,10 @@
 {{- if (index $parent.Values $hullRootKey).config.general.errorChecks.containerImageValid -}}
 {{- $details := printf "%s/%s/%s/%s" (index . "OBJECT_TYPE") (index . "OBJECT_INSTANCE_KEY") (index . "CONTAINER_TYPE") (index . "COMPONENT") }}
 {{- if not $spec -}}
-{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-IMAGE-SPEC" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey) -}}
+{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-IMAGE-SPEC" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "OBJECT_TYPE" (index . "OBJECT_TYPE") "OBJECT_INSTANCE_KEY" (index . "OBJECT_INSTANCE_KEY") "HULL_ROOT_KEY" $hullRootKey) -}}
 {{- else -}}
 {{- if (not (hasKey $spec "repository")) -}}
-{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-IMAGE-REPOSITORY" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey) -}}
+{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-IMAGE-REPOSITORY" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "OBJECT_TYPE" (index . "OBJECT_TYPE") "OBJECT_INSTANCE_KEY" (index . "OBJECT_INSTANCE_KEY") "HULL_ROOT_KEY" $hullRootKey) -}}
 {{- else -}}
 {{- $baseName = $spec.repository }}
 {{- end -}}

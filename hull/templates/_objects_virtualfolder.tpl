@@ -69,7 +69,7 @@
         {{- else -}}
           {{- if $parent.Values.hull.config.general.errorChecks.virtualFolderDataInlineValid -}}
             {{- $details := printf "%s/%s/inline/%s" $objectType $objectInstanceKey $innerKey }}
-            {{- $value = include "hull.util.error.message" (dict "ERROR_TYPE" "VIRTUAL-FOLDER-DATA-INLINE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey) -}}
+            {{- $value = include "hull.util.error.message" (dict "ERROR_TYPE" "VIRTUAL-FOLDER-DATA-INLINE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "OBJECT_TYPE" (index . "OBJECT_TYPE") "OBJECT_INSTANCE_KEY" (index . "OBJECT_INSTANCE_KEY") "HULL_ROOT_KEY" $hullRootKey) -}}
           {{- else -}}
             {{- $value = "" -}}
           {{- end -}}
@@ -86,7 +86,7 @@
         {{- else -}}
           {{- if $parent.Values.hull.config.general.errorChecks.virtualFolderDataPathExists -}}
             {{- $details := printf "%s/%s/path/%s(%s)" $objectType $objectInstanceKey $innerKey $innerValue.path }}
-            {{- $value = include "hull.util.error.message" (dict "ERROR_TYPE" "VIRTUAL-FOLDER-DATA-PATH-NOT-EXISTING" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey) -}}
+            {{- $value = include "hull.util.error.message" (dict "ERROR_TYPE" "VIRTUAL-FOLDER-DATA-PATH-NOT-EXISTING" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "OBJECT_TYPE" (index . "OBJECT_TYPE") "OBJECT_INSTANCE_KEY" (index . "OBJECT_INSTANCE_KEY") "HULL_ROOT_KEY" $hullRootKey) -}}
           {{- else -}}
             {{- $value = "" -}}
           {{- end -}}

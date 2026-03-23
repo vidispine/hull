@@ -886,5 +886,12 @@ hull:
                   { inline: {{ printf "%s" ($certvalue | quote) }} },
                 {{ end }}
               }
-      
+
+      issue-401-error-handling:
+        data:
+          myKey:
+            enabled: _HT? hasKey _HT*hull.config.specific "myKey"
+            inline: _HT*hull.config.specific.myKey
+
+
 ###################################################

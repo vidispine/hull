@@ -123,7 +123,8 @@ metadata:
 {{- $rendered = include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $transformationScope "HULL_ROOT_KEY" $hullRootKey "LAST_PASS" (eq (sub ($renderPasses | int) 1) $i) "SOURCE_PATH" (list $transformationScopeKey)) | fromYaml }}
 {{- end -}}
 {{- end -}}
-
+{{- $errorMessages := "" }}
+{{- $renderedObjects := list -}}
 {{- /*
 ### Set to true to render debug info
 */ -}}
@@ -132,7 +133,7 @@ type: {{ typeOf $transformationScope }}
 scopeKey: {{ $transformationScopeKey }}
 {{ $rootContext | toYaml }}
 {{- else -}}
-{{- $errorMessages := "" }}
+
 {{- range $objectType, $objectTypeSpec := $allObjects }}
 {{- $lowerObjectType := $objectType | lower }}
 {{- $apiKind := $objectType }}
@@ -193,7 +194,7 @@ scopeKey: {{ $transformationScopeKey }}
 {{- if true -}}
 {{- $objectSpec = include "hull.util.merge" (merge (dict "PARENT_CONTEXT" $rootContext "PARENT_TEMPLATE" $parentTemplate "API_VERSION" (default $apiVersion $spec.apiVersion) "API_KIND" (default $apiKind $spec.apiKind) "COMPONENT" $namingElement "SPEC" $spec "DEFAULT_COMPONENT" $defaultSpec "HULL_ROOT_KEY" $hullRootKey "NO_SELECTOR" $noSelector "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectKey "DYNAMIC_FIELDS" $dynamicFields) (dict "LOCAL_TEMPLATE" (printf "%s" $hullTemplate))) | fromYaml }}
 {{- if (gt (len (keys (default dict $objectSpec))) 0) -}}
-{{- $errorMessage := "" -}}
+{{- $errorMessage := include "hull.util.error.check" (dict "OBJECT" $objectSpec "OBJECT_TYPE" $lowerObjectType) -}}
 {{- if (and (hasKey $objectSpec "Error") (eq (len (keys ($objectSpec))) 1)) -}}
 {{- if (index $rootContext.Values $hullRootKey).config.general.errorChecks.objectYamlValid -}}
 {{- $errorMessage = printf "%s [%s %s: %s for %s %s due to YAML error '%s']" $errorMessage "HULL failed with error" "BROKEN-OBJECT-YAML" "A broken object YAML was encountered" $lowerObjectType $objectKey (index $objectSpec "Error") -}}
@@ -228,7 +229,8 @@ scopeKey: {{ $transformationScopeKey }}
 
 
 ---
-{{ end -}}
+{{ $renderedObjects = append $renderedObjects (printf "%s/%s" $lowerObjectType $objectKey) -}}
+{{- end -}}
 {{- end -}}
 {{- else -}}
 {{- /* 
@@ -245,14 +247,20 @@ scopeKey: {{ $transformationScopeKey }}
 {{- end -}}
 
 {{- end -}}
+{{- end -}}
+{{- end -}}
 {{- if (hasKey (index $rootContext.Values $hullRootKey) "_HULL_ERROR_") -}}
+{{- range $renderedObject := $renderedObjects -}}
 {{- range $error := (index $rootContext.Values $hullRootKey)._HULL_ERROR_ -}}
-{{- $errorMessages = printf "%s\n%s" $errorMessages $error -}}
+{{- if (eq $renderedObject (printf "%s/%s" $error.OBJECT_TYPE $error.OBJECT_INSTANCE_KEY)) -}}
+{{- $errorMessages = printf "%s\n%s" $errorMessages $error.ERROR_MESSAGE -}}
+{{- end -}}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- if (ne $errorMessages "") -}}
 {{- fail $errorMessages -}}
 {{- end -}}
-{{- end -}}
-{{- end -}}
+
+
 {{- end -}}

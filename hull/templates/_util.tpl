@@ -257,22 +257,54 @@ selector:
 {{- /*
 | Purpose:  
 |   
+|   Add an error to error list
+|
+*/ -}}
+{{- define "hull.util.add.error" -}}
+{{- $errorType := default "" (index . "ERROR_TYPE") -}}
+{{- $errorMessage := default "" (index . "ERROR_MESSAGE") -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $objectType := index . "OBJECT_TYPE" -}}
+{{- $objectInstanceKey := index . "OBJECT_INSTANCE_KEY" -}}
+{{- $existingErrorString := default "" (index . "EXISTING_ERROR_STRING") -}}
+{{- if (not (hasKey (index (index $parent.Values $hullRootKey)) "_HULL_ERROR_")) -}}
+{{- $_ := set (index (index $parent.Values $hullRootKey)) "_HULL_ERROR_" list -}}
+{{- end -}}
+{{- $composedErrorMessage := "" -}}
+{{- if (ne $existingErrorString "") -}}
+{{- $composedErrorMessage = $existingErrorString -}}
+{{- else -}}
+{{- $composedErrorMessage = include "hull.util.error.message" . -}}
+{{- end -}}
+{{- $found := false -}}
+{{- $target := $composedErrorMessage -}}
+{{- range $item := (index (index $parent.Values $hullRootKey) "_HULL_ERROR_") -}}
+  {{- if (and (eq (print $item.ERROR_MESSAGE) (print $target))
+              (eq (print $item.OBJECT_TYPE) (print $objectType))
+              (eq (print $item.OBJECT_INSTANCE_KEY) (print $objectInstanceKey))) -}}
+    {{- $found = true -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $found -}}
+{{- $addedError := append (index (index $parent.Values $hullRootKey))._HULL_ERROR_ 
+      (dict "ERROR_MESSAGE" $composedErrorMessage "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey) -}}
+{{- $_ := set (index (index $parent.Values $hullRootKey)) "_HULL_ERROR_" $addedError -}}
+{{- end -}}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:  
+|   
 |   Create an error with message
 |
 */ -}}
 {{- define "hull.util.error.message" -}}
 {{- $errorType := default "" (index . "ERROR_TYPE") -}}
 {{- $errorMessage := default "" (index . "ERROR_MESSAGE") -}}
-{{- $parent := (index . "PARENT_CONTEXT") -}}
-{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
-{{- $storeMessage := printf "%s %s: %s" "HULL failed with error" $errorType $errorMessage -}}
-{{- $fullMessage := printf "~%s:%s:%s" "_HULL_ERROR_" $errorType $errorMessage -}}
-{{- if (not (hasKey (index (index $parent.Values $hullRootKey)) "_HULL_ERROR_")) -}}
-{{- $_ := set (index (index $parent.Values $hullRootKey)) "_HULL_ERROR_" list -}}
-{{- end -}}
-{{- $addedError := append (index (index $parent.Values $hullRootKey))._HULL_ERROR_ $storeMessage -}}
-{{- $_ := set (index (index $parent.Values $hullRootKey)) "_HULL_ERROR_" $addedError -}}
-{{ $fullMessage }}
+{{- printf "~%s:%s:%s" "_HULL_ERROR_" $errorType $errorMessage -}}
 {{- end -}}
 
 
