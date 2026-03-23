@@ -15,7 +15,7 @@ hull:
 
   # CONFIGMAPS
     customresource:
-      
+
       conditionals-fail-reference:
         apiVersion: kustomize.toolkit.fluxcd.io/v1
         kind: Kustomization
@@ -23,11 +23,11 @@ hull:
           decryption:
             condition: _HT*hull.config.specific.kustomization.encryption_not_exists
             references:
-            - spec.decryption  
+            - spec.decryption
           broken:
             condition: _HT*hull.config.specific.kustomization.broken
             references:
-            - spec.prune        
+            - spec.prune
         spec:
           interval: "1m0s"
           path: "./flux"

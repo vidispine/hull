@@ -7,6 +7,7 @@
 hull:
   config:
     specific:
+      this_is_false: false
       kustomization:
         encryption: true
         'i.have.dots.in.my.name': true
@@ -268,3 +269,29 @@ hull:
           path.with.dots:
             prop_a: hello
             prop_b: goodbye
+
+      conditionals-hidden-disabled:
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        enabled: _HT*hull.config.specific.this_is_false
+        conditionals:
+          decryption:
+            condition: _HT*hull.config.specific.kustomization.encryption_not_exists
+            references:
+            - spec.decryption
+          broken:
+            condition: _HT*hull.config.specific.kustomization.broken
+            references:
+            - spec.prune
+        spec:
+          interval: "1m0s"
+          path: "./flux"
+          prune: true
+          sourceRef:
+            kind: GitRepository
+            name: flux-system
+          decryption:
+            provider: sops
+            serviceAccountName: sops-identity
+            secretRef:
+              name: sops-keys-and-credentials

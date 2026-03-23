@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "25" objects were rendered on top of basic objects count
+* Expected number of "26" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -103,7 +103,7 @@ Test creation of objects and features.
 * Test Object has key "metadata§annotations§app.kubernetes.io/component" with value "overwritten_component"
 
 ## Debug options
-* Fail to render the templates for values file "values_broken_get_references.hull.yaml" to test execution folder because error contains "HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element value_to_resolve_3 in path hull.config.specific.value_to_resolve_3 was not found"
+* Fail to render the templates for values file "values_broken_get_references.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.secret.broken-leaf-reference.labels.test) Element value_to_resolve_3 in path hull.config.specific.value_to_resolve_3 was not found"
 
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_broken_get_references.hull.yaml" including suites "renderbrokenhullgettransformationreferences,virtualfolderdata"
 * Lint and Render values file "values_broken_get_references.hull.yaml"
@@ -293,13 +293,16 @@ Test creation of objects and features.
 
 ## Error Checking
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_missing_path.hull.yaml" including suites "virtualfolderdata"
-* Fail to render the templates for values file "values_error_handling_missing_path.hull.yaml" to test execution folder because error contains "HULL failed with error VIRTUAL-FOLDER-DATA-PATH-NOT-EXISTING: Secret/virtual-folder-path-invalid/path/invalid(files/nothing-here)"
+* Fail to render the templates for values file "values_error_handling_missing_path.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.secret.virtual-folder-path-invalid.data.invalid.path) Path files/nothing-here does not exist"
 
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_invalid_inline.hull.yaml" including suites "virtualfolderdata"
-* Fail to render the templates for values file "values_error_handling_invalid_inline.hull.yaml" to test execution folder because error contains "HULL failed with error VIRTUAL-FOLDER-DATA-INLINE-INVALID: Secret/virtual-folder-inline-invalid/inline/invalid"
+* Fail to render the templates for values file "values_error_handling_invalid_inline.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.secret.virtual-folder-inline-invalid.data.invalid.inline) Inline data is invalid"
 
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_null_inline.hull.yaml" including suites "virtualfolderdata"
-* Fail to render the templates for values file "values_error_handling_null_inline.hull.yaml" to test execution folder because error contains "HULL failed with error VIRTUAL-FOLDER-DATA-INLINE-INVALID: Secret/virtual-folder-inline-null/inline/nothing"
+* Fail to render the templates for values file "values_error_handling_null_inline.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.secret.virtual-folder-inline-null.data.nothing.inline) Inline data is invalid"
+
+* Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_disabled.hull.yaml" including suites "virtualfolderdata"
+* Lint and Render values file "values_error_handling_disabled.hull.yaml"
 
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_disabled.hull.yaml" including suites "virtualfolderdata"
 * Lint and Render values file "values_error_handling_disabled.hull.yaml"
