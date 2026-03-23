@@ -334,7 +334,7 @@ selector:
         {{- $errors := regexSplit "~_HULL_ERROR_" (trimPrefix "~_HULL_ERROR_" $value) -1 -}}
         {{- range $error := $errors -}}
           {{- $errorParts := regexSplit ":" (trimAll "~" $error) -1 -}}
-          {{- $errorMessage = printf "%s\n[%s %s: %s]" $errorMessage "HULL failed with error" (index $errorParts 1) (index $errorParts 2) -}}
+          {{- $errorMessage = printf "%s\n%s %s" $errorMessage "HULL failed with error" (index $errorParts 2) -}}
         {{- end -}}
       {{- end -}}
     {{- end -}}
@@ -350,7 +350,7 @@ selector:
     {{- $errors := regexSplit "~_HULL_ERROR_" (trimPrefix "~_HULL_ERROR_" $object) -1 -}}
     {{- range $error := $errors -}}
       {{- $errorParts := regexSplit ":" (trimAll "~" $error) -1 -}}
-      {{- $errorMessage = printf "%s\n[%s %s: %s]" $errorMessage "HULL failed with error" (index $errorParts 1) (index $errorParts 2) -}}
+      {{- $errorMessage = printf "%s\n%s %s" $errorMessage "HULL failed with error" (index $errorParts 2) -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

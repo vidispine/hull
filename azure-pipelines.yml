@@ -87,7 +87,7 @@ jobs:
         TestType: single
       Helm_4_1_3_multi:
         HelmVersion: "4.1.3"
-        TestType: multi                
+        TestType: multi
   steps:
   - template: azure-pipelines-test.yml  # Template reference
     parameters:

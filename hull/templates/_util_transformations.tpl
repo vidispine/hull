@@ -371,7 +371,7 @@
   {{- else -}}
     {{- $skipBroken = true -}}
     {{- $brokenPart = $pathElement -}}
-    {{- $details = printf "OBJECT_TYPE not set in current calling context, cannot get path %s" $reference }}
+    {{- $details = printf "(@%s) OBJECT_TYPE not set in current calling context, cannot get path %s" (join "." $sourcePath) $reference }}
   {{- end -}}
 {{- else -}}
   {{- if eq $pathElement "§OBJECT_INSTANCE_KEY§" -}}
@@ -380,7 +380,7 @@
     {{- else -}}
       {{- $skipBroken = true -}}
       {{- $brokenPart = $pathElement -}}
-      {{- $details = printf "OBJECT_INSTANCE_KEY not set in current calling context, cannot get path %s" $reference }}
+      {{- $details = printf "(@%s) OBJECT_INSTANCE_KEY not set in current calling context, cannot get path %s" (join "." $sourcePath) $reference }}
     {{- end -}}
   {{- else -}}
     {{- $pathElement = regexReplaceAll "§" $pathElement "." }}
@@ -403,16 +403,16 @@
 {{- end -}}
 {{- if $skipBroken -}}
 {{- if eq $details "" -}}
-{{- $details = printf "Element %s in path %s was not found" $brokenPart $reference -}}
+{{- $details = printf "(@%s) Element %s in path %s was not found" (join "." $sourcePath) $brokenPart $reference -}}
 {{- end -}}
 {{- if $returnTemplateString -}}
-{{- include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
+{{- include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "OBJECT_TYPE" ($objectType | lower) "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
 {{- else -}}
 {{- if dig "config" "general" "debug" "renderBrokenHullGetTransformationReferences" true (default dict (index $parent.Values $hullRootKey)) -}}
 {{ $key }}: BROKEN-HULL-GET-TRANSFORMATION-REFERENCE:Element {{ $brokenPart }} in path {{ $reference }} was not found
 {{- else }}
 {{- if dig "config" "general" "errorChecks" "hullGetTransformationReferenceValid" true (default dict (index $parent.Values $hullRootKey)) -}}
-{{- $key }}: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
+{{- $key }}: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "OBJECT_TYPE" ($objectType | lower) "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
 {{- else -}}
 {{- $key }}: ""
 {{- end -}}

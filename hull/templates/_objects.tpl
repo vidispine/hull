@@ -197,7 +197,7 @@ scopeKey: {{ $transformationScopeKey }}
 {{- $errorMessage := include "hull.util.error.check" (dict "OBJECT" $objectSpec "OBJECT_TYPE" $lowerObjectType) -}}
 {{- if (and (hasKey $objectSpec "Error") (eq (len (keys ($objectSpec))) 1)) -}}
 {{- if (index $rootContext.Values $hullRootKey).config.general.errorChecks.objectYamlValid -}}
-{{- $errorMessage = printf "%s [%s %s: %s for %s %s due to YAML error '%s']" $errorMessage "HULL failed with error" "BROKEN-OBJECT-YAML" "A broken object YAML was encountered" $lowerObjectType $objectKey (index $objectSpec "Error") -}}
+{{- $errorMessage = printf "%s\n(@Values.hull.objects.%s.%s) Rendering failed with YAML error '%s'" $errorMessage "HULL failed with error" "A broken object YAML was encountered" $lowerObjectType $objectKey (index $objectSpec "Error") -}}
 {{- end -}}
 {{- end -}}
 {{- if (ne $errorMessage "") -}}
