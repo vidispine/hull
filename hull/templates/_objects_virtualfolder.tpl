@@ -68,8 +68,8 @@
           {{- $value = "<nil>" -}}
         {{- else -}}
           {{- if $parent.Values.hull.config.general.errorChecks.virtualFolderDataInlineValid -}}
-            {{- $details := printf "%s/%s/inline/%s" $objectType $objectInstanceKey $innerKey }}
-            {{- $value = include "hull.util.error.message" (dict "ERROR_TYPE" "VIRTUAL-FOLDER-DATA-INLINE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey) -}}
+            {{- $details := printf "(@Values.hull.objects.%s.%s.data.%s.inline) Inline data is invalid" ($objectType | lower) $objectInstanceKey $innerKey }}
+            {{- $value = include "hull.util.error.message" (dict "ERROR_TYPE" "VIRTUAL-FOLDER-DATA-INLINE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "OBJECT_TYPE" ($objectType | lower) "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
           {{- else -}}
             {{- $value = "" -}}
           {{- end -}}
@@ -85,8 +85,8 @@
           {{- $value = printf "<path missing: %s>" $innerValue.path -}}
         {{- else -}}
           {{- if $parent.Values.hull.config.general.errorChecks.virtualFolderDataPathExists -}}
-            {{- $details := printf "%s/%s/path/%s(%s)" $objectType $objectInstanceKey $innerKey $innerValue.path }}
-            {{- $value = include "hull.util.error.message" (dict "ERROR_TYPE" "VIRTUAL-FOLDER-DATA-PATH-NOT-EXISTING" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey) -}}
+            {{- $details := printf "(@Values.hull.objects.%s.%s.data.%s.path) Path %s does not exist" ($objectType | lower) $objectInstanceKey $innerKey $innerValue.path }}
+            {{- $value = include "hull.util.error.message" (dict "ERROR_TYPE" "VIRTUAL-FOLDER-DATA-PATH-NOT-EXISTING" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "OBJECT_TYPE" ($objectType | lower) "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
           {{- else -}}
             {{- $value = "" -}}
           {{- end -}}

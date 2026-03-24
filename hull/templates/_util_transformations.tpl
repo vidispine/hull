@@ -49,6 +49,7 @@
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $conditionals := default dict (index . "CONDITIONALS") -}}
 {{- $lastPass := default true (index . "LAST_PASS") -}}
+{{- $passedContext := . -}}
 {{- $shortForms := dict -}}
 {{- $shortForms = set $shortForms "_HT?" (list "hull.util.transformation.bool" "CONDITION") -}}
 {{- $shortForms = set $shortForms "_HT*" (list "hull.util.transformation.get" "REFERENCE") -}}
@@ -63,14 +64,14 @@
         {{- /*
         ### Check conditionals
         */ -}}
-        {{- if (gt (len (keys $conditionals)) 0) }} 
+        {{- if (gt (len (keys $conditionals)) 0) }}
             {{- $sourcePathKeyList := list -}}
             {{- range $sourcePathKey }}
                 {{- $replaced := . | replace "." "§" -}}
                 {{- $sourcePathKeyList = append $sourcePathKeyList $replaced -}}
             {{- end -}}
             {{- range $conditionalKey, $conditionalValue := $conditionals -}}
-                {{- range $reference := dig "references" list $conditionalValue -}}                    
+                {{- range $reference := dig "references" list $conditionalValue -}}
                     {{- if (eq $reference (slice $sourcePathKeyList 5 | join ".")) -}}
                         {{- if typeIs "bool" $conditionalValue.condition -}}
                             {{- if not $conditionalValue.condition -}}
@@ -81,11 +82,22 @@
                             {{- $params := include "hull.util.transformation.params" (dict "PARENT_CONTEXT" $parent "VALUE" $conditionalValue.condition) | fromYaml -}}
                             {{- if $params }}
                                 {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" "dummy" "SOURCE_PATH" $sourcePathKey "HULL_ROOT_KEY" $hullRootKey) $params -}}
-                                {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
-                                {{- $keep = index $valDict "dummy" -}}  
-                            {{- end -}}                            
-                            {{- if not $keep -}}
-                                {{- $_ := unset $source $key -}}                                
+                                {{- $valDict := fromYaml (include ($params.NAME) $pass) -}}
+                                {{- $keep = index $valDict "dummy" -}}
+                            {{- else -}}
+                                {{- if hasPrefix "~_HULL_ERROR_" $conditionalValue.condition -}}
+                                    {{- $keep = $conditionalValue.condition -}}
+                                {{- end -}}
+                            {{- end -}}
+                            {{- if typeIs "bool" $keep -}}
+                                {{- if not $keep -}}
+                                    {{- $_ := unset $source $key -}}
+                                {{- end -}}
+                            {{- else -}}
+                                {{- if hasPrefix "~_HULL_ERROR_" $keep -}}
+                                    {{- $objectValues := (include "hull.util.transformation.getobjectvalues" $passedContext) | fromYaml -}}
+                                    {{- include "hull.util.add.error" (dict "EXISTING_ERROR_STRING" $keep "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectValues.OBJECT_TYPE "OBJECT_INSTANCE_KEY" $objectValues.OBJECT_INSTANCE_KEY) -}}
+                                {{- end -}}
                             {{- end -}}
                         {{- end -}}
                     {{- end -}}
@@ -359,7 +371,7 @@
   {{- else -}}
     {{- $skipBroken = true -}}
     {{- $brokenPart = $pathElement -}}
-    {{- $details = printf "OBJECT_TYPE not set in current calling context, cannot get path %s" $reference }}
+    {{- $details = printf "(@%s) OBJECT_TYPE not set in current calling context, cannot get path %s" (join "." $sourcePath) $reference }}
   {{- end -}}
 {{- else -}}
   {{- if eq $pathElement "§OBJECT_INSTANCE_KEY§" -}}
@@ -368,7 +380,7 @@
     {{- else -}}
       {{- $skipBroken = true -}}
       {{- $brokenPart = $pathElement -}}
-      {{- $details = printf "OBJECT_INSTANCE_KEY not set in current calling context, cannot get path %s" $reference }}
+      {{- $details = printf "(@%s) OBJECT_INSTANCE_KEY not set in current calling context, cannot get path %s" (join "." $sourcePath) $reference }}
     {{- end -}}
   {{- else -}}
     {{- $pathElement = regexReplaceAll "§" $pathElement "." }}
@@ -391,16 +403,16 @@
 {{- end -}}
 {{- if $skipBroken -}}
 {{- if eq $details "" -}}
-{{- $details = printf "Element %s in path %s was not found" $brokenPart $reference -}}
+{{- $details = printf "(@%s) Element %s in path %s was not found" (join "." $sourcePath) $brokenPart $reference -}}
 {{- end -}}
 {{- if $returnTemplateString -}}
-{{- include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey) -}}
+{{- include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "OBJECT_TYPE" ($objectType | lower) "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
 {{- else -}}
 {{- if dig "config" "general" "debug" "renderBrokenHullGetTransformationReferences" true (default dict (index $parent.Values $hullRootKey)) -}}
 {{ $key }}: BROKEN-HULL-GET-TRANSFORMATION-REFERENCE:Element {{ $brokenPart }} in path {{ $reference }} was not found
 {{- else }}
 {{- if dig "config" "general" "errorChecks" "hullGetTransformationReferenceValid" true (default dict (index $parent.Values $hullRootKey)) -}}
-{{- $key }}: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey) -}}
+{{- $key }}: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "OBJECT_TYPE" ($objectType | lower) "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
 {{- else -}}
 {{- $key }}: ""
 {{- end -}}
