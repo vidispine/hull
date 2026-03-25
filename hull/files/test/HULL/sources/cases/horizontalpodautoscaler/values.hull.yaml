@@ -219,4 +219,11 @@ hull:
           name: metadata-overwrite
           kind: "Deployment"
         maxReplicas: 3
+
+      conditionals:
+        scaleTargetRef:
+          name: metadata-overwrite
+          kind: "Deployment"
+        maxReplicas: 3
+
 ###################################################

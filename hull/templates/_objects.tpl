@@ -93,7 +93,6 @@ metadata:
 {{- $allObjects = merge $allObjects (dict "ClusterRoleBinding" (dict "HULL_TEMPLATE" $template "API_VERSION" "rbac.authorization.k8s.io/v1" "PARENT_TEMPLATE" "this.emptynamespace")) }}
 {{- $allObjects = merge $allObjects (dict "Role" (dict "HULL_TEMPLATE" $template "API_VERSION" "rbac.authorization.k8s.io/v1" "DYNAMIC_FIELDS" (dict "rules" "hull.object.base.role.rules"))) }}
 {{- $allObjects = merge $allObjects (dict "ClusterRole" (dict "HULL_TEMPLATE" $template "API_VERSION" "rbac.authorization.k8s.io/v1" "PARENT_TEMPLATE" "this.emptynamespace" "DYNAMIC_FIELDS" (dict "rules" "hull.object.base.role.rules"))) }}
-{{- /*
 
 {{- /*
 ### Load custom objects
@@ -108,8 +107,6 @@ metadata:
 {{- include "hull.objects.render" . }}
 {{- end -}}
 
-
-
 {{- /*
 ################################################# RENDER #####################################################
 */ -}}
@@ -117,13 +114,26 @@ metadata:
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $rootContext := (index . "ROOT_CONTEXT") -}}
 {{- $allObjects := (index . "HULL_OBJECTS") -}}
-{{- $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $rootContext.Values.hull "HULL_ROOT_KEY" $hullRootKey "SOURCE_PATH" (list "hull")) | fromYaml }}
-{{- if gt ((index $rootContext.Values $hullRootKey).config.general.render.passes | int) 1 -}}
-{{- range $i, $e := untilStep 1 ((index $rootContext.Values $hullRootKey).config.general.render.passes | int) 1 -}}
-{{- $rendered = include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $rootContext.Values.hull "HULL_ROOT_KEY" $hullRootKey "SOURCE_PATH" (list "hull")) | fromYaml }}
+{{- $renderPasses := dig "config" "general" "render" "passes" 3 (default dict (index $rootContext.Values $hullRootKey)) -}}
+{{- $transformationScope := $rootContext.Values -}}
+{{- $transformationScopeKey := "Values" -}}
+{{- $rendered := include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $transformationScope "HULL_ROOT_KEY" $hullRootKey "LAST_PASS" (eq ($renderPasses | int) 1) "SOURCE_PATH" (list $transformationScopeKey)) | fromYaml }}
+{{- if gt ($renderPasses | int) 1 -}}
+{{- range $i, $e := untilStep 1 ($renderPasses | int) 1 -}}
+{{- $rendered = include "hull.util.transformation" (dict "PARENT_CONTEXT" $rootContext "SOURCE" $transformationScope "HULL_ROOT_KEY" $hullRootKey "LAST_PASS" (eq (sub ($renderPasses | int) 1) $i) "SOURCE_PATH" (list $transformationScopeKey)) | fromYaml }}
 {{- end -}}
 {{- end -}}
 {{- $errorMessages := "" }}
+{{- $renderedObjects := list -}}
+{{- /*
+### Set to true to render debug info
+*/ -}}
+{{- if false }} 
+type: {{ typeOf $transformationScope }}
+scopeKey: {{ $transformationScopeKey }}
+{{ $rootContext | toYaml }}
+{{- else -}}
+
 {{- range $objectType, $objectTypeSpec := $allObjects }}
 {{- $lowerObjectType := $objectType | lower }}
 {{- $apiKind := $objectType }}
@@ -134,6 +144,11 @@ metadata:
 {{- if (hasKey $objectTypeSpec "API_VERSION") }}
 {{- $apiVersion = $objectTypeSpec.API_VERSION }}
 {{- end }}
+
+{{- /*
+### If we dont have any hull root key we skip the rest. hull.yaml may just be used to render transformations
+*/ -}}
+{{- if (hasKey $rootContext.Values $hullRootKey) }}
 {{- $enabledDefault := (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType)._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
 {{- $hullTemplate := "" }}
 {{- if (hasKey $objectTypeSpec "HULL_TEMPLATE") }}
@@ -182,7 +197,7 @@ metadata:
 {{- $errorMessage := include "hull.util.error.check" (dict "OBJECT" $objectSpec "OBJECT_TYPE" $lowerObjectType) -}}
 {{- if (and (hasKey $objectSpec "Error") (eq (len (keys ($objectSpec))) 1)) -}}
 {{- if (index $rootContext.Values $hullRootKey).config.general.errorChecks.objectYamlValid -}}
-{{- $errorMessage = printf "%s [%s %s: %s for %s %s due to YAML error '%s']" $errorMessage "HULL failed with error" "BROKEN-OBJECT-YAML" "A broken object YAML was encountered" $lowerObjectType $objectKey (index $objectSpec "Error") -}}
+{{- $errorMessage = printf "%s\n(@Values.hull.objects.%s.%s) Rendering failed with YAML error '%s'" $errorMessage "HULL failed with error" "A broken object YAML was encountered" $lowerObjectType $objectKey (index $objectSpec "Error") -}}
 {{- end -}}
 {{- end -}}
 {{- if (ne $errorMessage "") -}}
@@ -214,7 +229,8 @@ metadata:
 
 
 ---
-{{ end -}}
+{{ $renderedObjects = append $renderedObjects (printf "%s/%s" $lowerObjectType $objectKey) -}}
+{{- end -}}
 {{- end -}}
 {{- else -}}
 {{- /* 
@@ -231,7 +247,20 @@ metadata:
 {{- end -}}
 
 {{- end -}}
+{{- end -}}
+{{- end -}}
+{{- if (hasKey (index $rootContext.Values $hullRootKey) "_HULL_ERROR_") -}}
+{{- range $renderedObject := $renderedObjects -}}
+{{- range $error := (index $rootContext.Values $hullRootKey)._HULL_ERROR_ -}}
+{{- if (eq $renderedObject (printf "%s/%s" $error.OBJECT_TYPE $error.OBJECT_INSTANCE_KEY)) -}}
+{{- $errorMessages = printf "%s\n%s" $errorMessages $error.ERROR_MESSAGE -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
 {{- if (ne $errorMessages "") -}}
 {{- fail $errorMessages -}}
 {{- end -}}
+
+
 {{- end -}}
