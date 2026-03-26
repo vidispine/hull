@@ -97,4 +97,7 @@ hull:
 
       namespace-override:
         provisioner: "local-volume"
+
+      conditionals:
+        provisioner: "local-volume"
 ###################################################

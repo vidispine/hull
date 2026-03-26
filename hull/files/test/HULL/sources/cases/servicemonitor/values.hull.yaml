@@ -89,5 +89,8 @@ hull:
       namespace-override:
         selector: {}
         endpoints: []
-      
+
+      conditionals:
+        selector: {}
+        endpoints: []
 ###################################################

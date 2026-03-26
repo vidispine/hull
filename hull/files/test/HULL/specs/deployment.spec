@@ -226,10 +226,10 @@ Test creation of objects and features.
 
 ## Error Checking
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
-* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error MISSING-IMAGE-SPEC: Deployment/invalid-container-images/containers/no-image"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.deployment.invalid-container-images.containers.no-image.image) Field image is missing"
 
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
-* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error MISSING-IMAGE-REPOSITORY: Deployment/invalid-container-images/containers/no-repository"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.deployment.invalid-container-images.containers.no-repository.image.repository) Field repository is missing"
 
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid_disabled.hull.yaml"
 * Lint and Render values file "values_error_handling_image_invalid_disabled.hull.yaml"
