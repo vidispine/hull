@@ -366,4 +366,12 @@ hull:
         options:
           bli: blu
           bla: blo
+      
+      conditionals:
+        targetRefs: 
+        - group: group
+          kind: kind
+          name: name
+        validation: 
+          hostname: "myhost"
 ###################################################

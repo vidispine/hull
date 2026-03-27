@@ -179,4 +179,8 @@ hull:
         addressType: FQDN
         endpoints: []
 
+      conditionals:
+        addressType: FQDN
+        endpoints: []
+
 ###################################################

@@ -1,6 +1,42 @@
 {{- /*
 | Purpose:  
 |   
+|   Define params
+|
+*/ -}}
+{{- define "hull.util.transformation.params" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $value := (index . "VALUE") -}}
+{{- $shortForms := dict -}}
+{{- $shortForms = set $shortForms "_HT?" (list "hull.util.transformation.bool" "CONDITION") -}}
+{{- $shortForms = set $shortForms "_HT*" (list "hull.util.transformation.get" "REFERENCE") -}}
+{{- $shortForms = set $shortForms "_HT!" (list "hull.util.transformation.tpl" "CONTENT") -}}
+{{- $shortForms = set $shortForms "_HT^" (list "hull.util.transformation.makefullname" "COMPONENT") -}}
+{{- $shortForms = set $shortForms "_HT&" (list "hull.util.transformation.selector" "COMPONENT") -}}
+{{- $shortForms = set $shortForms "_HT/" (list "hull.util.transformation.include" "CONTENT") -}}
+{{- $params := default nil nil -}}
+{{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $value) (hasPrefix "_HT?" $value) (hasPrefix "_HT*" $value) (hasPrefix "_HT!" $value) (hasPrefix "_HT^" $value) (hasPrefix "_HT&" $value) (hasPrefix "_HT/" $value)) -}}
+    {{- range $sfKey, $sfValue := $shortForms -}}
+        {{- if (hasPrefix $sfKey $value) -}}
+            {{- $params = dict "NAME" (first $sfValue) (last $sfValue) (trimPrefix $sfKey $value) -}}
+        {{- end -}} 
+    {{- end -}} 
+    {{- if (hasPrefix "_HULL_TRANSFORMATION_" $value) -}}
+        {{- $paramsString := trimPrefix "_HULL_TRANSFORMATION_" $value -}}
+        {{- $paramsSplitted := regexFindAll "(<<<[A-Z]+=.+?>>>)" $paramsString -1 -}}
+        {{- $params = dict -}}
+        {{- range $p := $paramsSplitted -}}
+            {{- $params = set $params (trimPrefix "<<<" (first (regexSplit "=" $p -1))) (trimSuffix ">>>" (trimPrefix (printf "%s=" (first (regexSplit "=" $p -1))) $p)) -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- $params | toYaml -}}
+{{- end -}}
+
+
+{{- /*
+| Purpose:  
+|   
 |   Iterates over a dictionary and sub dictionaries to apply transformations.
 |
 */ -}}
@@ -11,6 +47,9 @@
 {{- $caller := default nil (index . "CALLER") -}}
 {{- $callerKey := default nil (index . "CALLER_KEY") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $conditionals := default dict (index . "CONDITIONALS") -}}
+{{- $lastPass := default true (index . "LAST_PASS") -}}
+{{- $passedContext := . -}}
 {{- $shortForms := dict -}}
 {{- $shortForms = set $shortForms "_HT?" (list "hull.util.transformation.bool" "CONDITION") -}}
 {{- $shortForms = set $shortForms "_HT*" (list "hull.util.transformation.get" "REFERENCE") -}}
@@ -21,6 +60,55 @@
 {{- if (or (typeIs "map[string]interface {}" $source) (typeIs "chartutil.Values" $source) (typeIs "common.Values" $source)) -}}
     {{- range $key,$value := $source -}}
         {{- $sourcePathKey := append $sourcePath $key }}
+        
+        {{- /*
+        ### Check conditionals
+        */ -}}
+        {{- if (gt (len (keys $conditionals)) 0) }}
+            {{- $sourcePathKeyList := list -}}
+            {{- range $sourcePathKey }}
+                {{- $replaced := . | replace "." "§" -}}
+                {{- $sourcePathKeyList = append $sourcePathKeyList $replaced -}}
+            {{- end -}}
+            {{- range $conditionalKey, $conditionalValue := $conditionals -}}
+                {{- range $reference := dig "references" list $conditionalValue -}}
+                    {{- if (eq $reference (slice $sourcePathKeyList 5 | join ".")) -}}
+                        {{- if typeIs "bool" $conditionalValue.condition -}}
+                            {{- if not $conditionalValue.condition -}}
+                                {{- $_ := unset $source $key -}}
+                            {{- end -}}
+                        {{- else -}}
+                            {{- $keep := true -}}
+                            {{- $params := include "hull.util.transformation.params" (dict "PARENT_CONTEXT" $parent "VALUE" $conditionalValue.condition) | fromYaml -}}
+                            {{- if $params }}
+                                {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" "dummy" "SOURCE_PATH" $sourcePathKey "HULL_ROOT_KEY" $hullRootKey) $params -}}
+                                {{- $valDict := fromYaml (include ($params.NAME) $pass) -}}
+                                {{- $keep = index $valDict "dummy" -}}
+                            {{- else -}}
+                                {{- if hasPrefix "~_HULL_ERROR_" $conditionalValue.condition -}}
+                                    {{- $keep = $conditionalValue.condition -}}
+                                {{- end -}}
+                            {{- end -}}
+                            {{- if typeIs "bool" $keep -}}
+                                {{- if not $keep -}}
+                                    {{- $_ := unset $source $key -}}
+                                {{- end -}}
+                            {{- else -}}
+                                {{- if hasPrefix "~_HULL_ERROR_" $keep -}}
+                                    {{- $objectValues := (include "hull.util.transformation.getobjectvalues" $passedContext) | fromYaml -}}
+                                    {{- include "hull.util.add.error" (dict "EXISTING_ERROR_STRING" $keep "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectValues.OBJECT_TYPE "OBJECT_INSTANCE_KEY" $objectValues.OBJECT_INSTANCE_KEY) -}}
+                                {{- end -}}
+                            {{- end -}}
+                        {{- end -}}
+                    {{- end -}}
+                {{- end -}}
+            {{- end -}}
+        {{- else -}}
+            {{- if (and $lastPass (eq (len $sourcePath) 5) (hasKey $source "conditionals")) -}}
+                {{- $conditionals = (index $source "conditionals") -}}
+            {{- end -}}
+        {{- end -}}
+        
         {{- if typeIs "map[string]interface {}" $value -}}
             {{- $params := default nil $value._HULL_TRANSFORMATION_ -}}
             {{- range $sfKey, $sfValue := $shortForms -}}
@@ -34,35 +122,20 @@
                 {{- $valDict := fromYaml (include $params.NAME $pass) -}}
                 {{- $combined := $valDict }}
                 {{- if (and (typeIs "map[string]interface {}" (index $valDict $key)) (gt (len (keys $others)) 0)) -}}
-                  {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $others "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey) -}}
+                  {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $others "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "LAST_PASS" $lastPass "CONDITIONALS" $conditionals "HULL_ROOT_KEY" $hullRootKey) -}}
                   {{- $combined = dict $key (merge $others (index $valDict $key)) }}
                 {{- end -}}
                 {{- $source := unset $source $key -}}
                 {{- $source := merge $source $combined -}}
             {{- else -}}
-                {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey) -}}
+                {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "LAST_PASS" $lastPass "CONDITIONALS" $conditionals "HULL_ROOT_KEY" $hullRootKey) -}}
             {{- end -}}
         {{- end -}}
         {{- if typeIs "[]interface {}" $value -}}
-            {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "HULL_ROOT_KEY" $hullRootKey) -}}
+            {{- include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $value "SOURCE_PATH" $sourcePathKey "CALLER" $source "CALLER_KEY" $key "LAST_PASS" $lastPass "CONDITIONALS" $conditionals "HULL_ROOT_KEY" $hullRootKey) -}}
         {{- end -}}
         {{- if typeIs "string" $value -}}
-            {{- $params := default nil nil -}}
-            {{- if (or (hasPrefix "_HULL_TRANSFORMATION_" $value) (hasPrefix "_HT?" $value) (hasPrefix "_HT*" $value) (hasPrefix "_HT!" $value) (hasPrefix "_HT^" $value) (hasPrefix "_HT&" $value) (hasPrefix "_HT/" $value)) -}}
-                {{- range $sfKey, $sfValue := $shortForms -}}
-                    {{- if (hasPrefix $sfKey $value) -}}
-                        {{- $params = dict "NAME" (first $sfValue) (last $sfValue) (trimPrefix $sfKey $value) -}}
-                    {{- end -}} 
-                {{- end -}} 
-                {{- if (hasPrefix "_HULL_TRANSFORMATION_" $value) -}}
-                    {{- $paramsString := trimPrefix "_HULL_TRANSFORMATION_" $value -}}
-                    {{- $paramsSplitted := regexFindAll "(<<<[A-Z]+=.+?>>>)" $paramsString -1 -}}
-                    {{- $params = dict -}}
-                    {{- range $p := $paramsSplitted -}}
-                        {{- $params = set $params (trimPrefix "<<<" (first (regexSplit "=" $p -1))) (trimSuffix ">>>" (trimPrefix (printf "%s=" (first (regexSplit "=" $p -1))) $p)) -}}
-                    {{- end -}}
-                {{- end -}}
-            {{- end -}}             
+            {{- $params := (include "hull.util.transformation.params" (dict "PARENT_CONTEXT" $parent "KEY" $key "VALUE" $value)) | fromYaml -}}
             {{- if $params }}
                 {{- $pass := merge (dict "PARENT_CONTEXT" $parent "KEY" $key "SOURCE_PATH" $sourcePathKey "HULL_ROOT_KEY" $hullRootKey) $params -}}
                 {{- $valDict := fromYaml (include ($params.NAME) $pass) -}} 
@@ -97,13 +170,13 @@
             {{- $t2 := set $caller $callerKey (index $valDict "key") -}}
         {{- else -}}
             {{- range $listentry := $source -}}
-                {{- $newlistentry := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $listentry "CALLER" nil "CALLER_KEY" nil "SOURCE_PATH" $sourcePath "HULL_ROOT_KEY" $hullRootKey) -}}
+                {{- $newlistentry := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $listentry "CALLER" nil "CALLER_KEY" nil "SOURCE_PATH" $sourcePath "LAST_PASS" $lastPass "CONDITIONALS" $conditionals "HULL_ROOT_KEY" $hullRootKey) -}}
             {{- end -}}
             {{- $t2 := set $caller $callerKey $source -}}
         {{- end -}}
     {{- else -}}
         {{- range $listentry := $source -}}
-            {{- $newlistentry := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $listentry "CALLER" nil "CALLER_KEY" nil "SOURCE_PATH" $sourcePath "HULL_ROOT_KEY" $hullRootKey) -}}
+            {{- $newlistentry := include "hull.util.transformation" (dict "PARENT_CONTEXT" $parent "SOURCE" $listentry "CALLER" nil "CALLER_KEY" nil "SOURCE_PATH" $sourcePath "LAST_PASS" $lastPass "CONDITIONALS" $conditionals "HULL_ROOT_KEY" $hullRootKey) -}}
         {{- end -}}
         {{- $t2 := set $caller $callerKey $source -}}
     {{- end -}}
@@ -298,7 +371,7 @@
   {{- else -}}
     {{- $skipBroken = true -}}
     {{- $brokenPart = $pathElement -}}
-    {{- $details = printf "OBJECT_TYPE not set in current calling context, cannot get path %s" $reference }}
+    {{- $details = printf "(@%s) OBJECT_TYPE not set in current calling context, cannot get path %s" (join "." $sourcePath) $reference }}
   {{- end -}}
 {{- else -}}
   {{- if eq $pathElement "§OBJECT_INSTANCE_KEY§" -}}
@@ -307,7 +380,7 @@
     {{- else -}}
       {{- $skipBroken = true -}}
       {{- $brokenPart = $pathElement -}}
-      {{- $details = printf "OBJECT_INSTANCE_KEY not set in current calling context, cannot get path %s" $reference }}
+      {{- $details = printf "(@%s) OBJECT_INSTANCE_KEY not set in current calling context, cannot get path %s" (join "." $sourcePath) $reference }}
     {{- end -}}
   {{- else -}}
     {{- $pathElement = regexReplaceAll "§" $pathElement "." }}
@@ -330,16 +403,16 @@
 {{- end -}}
 {{- if $skipBroken -}}
 {{- if eq $details "" -}}
-{{- $details = printf "Element %s in path %s was not found" $brokenPart $reference -}}
+{{- $details = printf "(@%s) Element %s in path %s was not found" (join "." $sourcePath) $brokenPart $reference -}}
 {{- end -}}
 {{- if $returnTemplateString -}}
-{{- include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details) -}}
+{{- include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "OBJECT_TYPE" ($objectType | lower) "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
 {{- else -}}
 {{- if dig "config" "general" "debug" "renderBrokenHullGetTransformationReferences" true (default dict (index $parent.Values $hullRootKey)) -}}
 {{ $key }}: BROKEN-HULL-GET-TRANSFORMATION-REFERENCE:Element {{ $brokenPart }} in path {{ $reference }} was not found
 {{- else }}
 {{- if dig "config" "general" "errorChecks" "hullGetTransformationReferenceValid" true (default dict (index $parent.Values $hullRootKey)) -}}
-{{- $key }}: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details) -}}
+{{- $key }}: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "HULL-GET-TRANSFORMATION-REFERENCE-INVALID" "ERROR_MESSAGE" $details "PARENT_CONTEXT" $parent "OBJECT_TYPE" ($objectType | lower) "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
 {{- else -}}
 {{- $key }}: ""
 {{- end -}}

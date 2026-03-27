@@ -576,4 +576,17 @@ hull:
                   type: PathPrefix
                   value: "/"
                 method: _HT*hull.config.specific.method
+
+      conditionals:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
 ###################################################

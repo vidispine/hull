@@ -23,6 +23,7 @@
 * Fill data store with chart <chart> and suites <suites> and chartmods <chartmods>
 * Clean the test execution folder
 * Copy folders to test execution folder
+
 # Prepare test case <case> for kind <kind> with test chart <chart> and values file <values_file>
 
 * Prepare test case <case> for kind <kind> with test chart <chart> and values file <values_file> including suites ""

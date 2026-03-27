@@ -7,7 +7,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "25" objects were rendered on top of basic objects count
+* Expected number of "26" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -72,17 +72,17 @@ Test creation of objects and features.
 * Test Object has key "data§key_with_dots_in_it" with Base64 encoded value of "hello dots!"
 
 ## Undefined Handling
-* Begin Tests for Helm versions regex "^(?!3\\.19\\.5$)(?!3\\.20\\.[0-9]$)(3)\\.\\d+\\.\\d+$"
+* Begin Tests for Helm versions regex "^(?!3\\.19\\.5$)(?!3\\.20\\.0$)(?!4\\.1\\.0$)(?!4\\.1\\.1$)(?!4\\.1\\.2$)(?!4\\.0\\.\\d+$)(3|4)\\.\\d+\\.\\d+$"
 * Lint and Render values file "values_undefined.hull.yaml"
 * Set test object to "release-name-hull-test-test-get-undefined-variants"
 * Test Object has key "data§bool_undefined" with Base64 encoded value of ""
 * Test Object has key "data§string_undefined" with Base64 encoded value of ""
 * Test Object has key "data§number_undefined" with Base64 encoded value of ""
 * End Tests for specific Helm version
-* Begin Tests for Helm versions regex "^(3\\.19\\.5|3\\.20\\.\\d+|4\\.\\d+\\.\\d+)$"
-* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element bool_undefined in path hull.config.specific.bool_undefined was not found]"
-* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element number_undefined in path hull.config.specific.number_undefined was not found]"
-* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element string_undefined in path hull.config.specific.string_undefined was not found]"
+* Begin Tests for Helm versions regex "^(3\\.19\\.5|3\\.20\\.0|4\\.0\\.\\d+|4\\.1\\.0|4\\.1\\.1|4\\.1\\.2)$"
+* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.secret.test-get-undefined-variants.data.bool_undefined.inline) Element bool_undefined in path hull.config.specific.bool_undefined was not found"
+* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.secret.test-get-undefined-variants.data.number_undefined.inline) Element number_undefined in path hull.config.specific.number_undefined was not found"
+* Fail to render the templates for additional values file "values_undefined.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.secret.test-get-undefined-variants.data.string_undefined.inline) Element string_undefined in path hull.config.specific.string_undefined was not found"
 * End Tests for specific Helm version
 
 
@@ -103,7 +103,7 @@ Test creation of objects and features.
 * Test Object has key "metadata§annotations§app.kubernetes.io/component" with value "overwritten_component"
 
 ## Debug options
-* Fail to render the templates for values file "values_broken_get_references.hull.yaml" to test execution folder because error contains "HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element value_to_resolve_3 in path hull.config.specific.value_to_resolve_3 was not found"
+* Fail to render the templates for values file "values_broken_get_references.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.secret.broken-leaf-reference.labels.test) Element value_to_resolve_3 in path hull.config.specific.value_to_resolve_3 was not found"
 
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_broken_get_references.hull.yaml" including suites "renderbrokenhullgettransformationreferences,virtualfolderdata"
 * Lint and Render values file "values_broken_get_references.hull.yaml"
@@ -293,13 +293,16 @@ Test creation of objects and features.
 
 ## Error Checking
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_missing_path.hull.yaml" including suites "virtualfolderdata"
-* Fail to render the templates for values file "values_error_handling_missing_path.hull.yaml" to test execution folder because error contains "HULL failed with error VIRTUAL-FOLDER-DATA-PATH-NOT-EXISTING: Secret/virtual-folder-path-invalid/path/invalid(files/nothing-here)"
+* Fail to render the templates for values file "values_error_handling_missing_path.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.secret.virtual-folder-path-invalid.data.invalid.path) Path files/nothing-here does not exist"
 
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_invalid_inline.hull.yaml" including suites "virtualfolderdata"
-* Fail to render the templates for values file "values_error_handling_invalid_inline.hull.yaml" to test execution folder because error contains "HULL failed with error VIRTUAL-FOLDER-DATA-INLINE-INVALID: Secret/virtual-folder-inline-invalid/inline/invalid"
+* Fail to render the templates for values file "values_error_handling_invalid_inline.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.secret.virtual-folder-inline-invalid.data.invalid.inline) Inline data is invalid"
 
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_null_inline.hull.yaml" including suites "virtualfolderdata"
-* Fail to render the templates for values file "values_error_handling_null_inline.hull.yaml" to test execution folder because error contains "HULL failed with error VIRTUAL-FOLDER-DATA-INLINE-INVALID: Secret/virtual-folder-inline-null/inline/nothing"
+* Fail to render the templates for values file "values_error_handling_null_inline.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.secret.virtual-folder-inline-null.data.nothing.inline) Inline data is invalid"
+
+* Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_disabled.hull.yaml" including suites "virtualfolderdata"
+* Lint and Render values file "values_error_handling_disabled.hull.yaml"
 
 * Prepare test case "secret" for kind "Secret" with test chart "hull-test" and values file "values_error_handling_disabled.hull.yaml" including suites "virtualfolderdata"
 * Lint and Render values file "values_error_handling_disabled.hull.yaml"
