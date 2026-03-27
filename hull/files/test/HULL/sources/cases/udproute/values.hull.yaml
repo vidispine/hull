@@ -388,4 +388,17 @@ hull:
                 name: 2name1
                 port: 21
                 weight: 2965
+
+      conditionals:
+        gatewayClassName: "the-gateway-class"
+        rules:
+          one:
+            backendRefs:
+              brref1: 
+                group: group1
+                kind: kind1
+                namespace: namespace1
+                name: name1
+                port: 1
+                weight: 965
 ###################################################

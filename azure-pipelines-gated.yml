@@ -24,32 +24,20 @@ jobs:
       Helm_3_18_6_single: 
         HelmVersion: "3.18.6"
         TestType: single
-      Helm_3_18_6_multi: 
-        HelmVersion: "3.18.6"
-        TestType: multi
       Helm_3_19_5_single: 
         HelmVersion: "3.19.5"
         TestType: single
-      Helm_3_19_5_multi: 
-        HelmVersion: "3.19.5"
-        TestType: multi
-      Helm_3_20_0_single: 
-        HelmVersion: "3.20.0"
+      Helm_3_20_1_single: 
+        HelmVersion: "3.20.1"
         TestType: single
-      Helm_3_20_0_multi: 
-        HelmVersion: "3.20.0"
-        TestType: multi
       Helm_4_0_5_single: 
         HelmVersion: "4.0.5"
         TestType: single
-      Helm_4_0_5_multi: 
-        HelmVersion: "4.0.5"
-        TestType: multi
-      Helm_4_1_0_single: 
-        HelmVersion: "4.1.0"
+      Helm_4_1_3_single: 
+        HelmVersion: "4.1.3"
         TestType: single
-      Helm_4_1_0_multi: 
-        HelmVersion: "4.1.0"
+      Helm_4_1_3_multi: 
+        HelmVersion: "4.1.3"
         TestType: multi
       
   steps:

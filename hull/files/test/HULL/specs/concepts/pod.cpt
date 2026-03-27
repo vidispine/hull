@@ -654,8 +654,8 @@ Disabled secret must be ignored
 * Test Object has key "spec§template§spec§containers§9§ports§1§name" with value "second"
 * Test Object has key "spec§template§spec§containers§9§ports§1§containerPort" with integer value "2"
 
-* Fail to render the templates for values file "values_tpl_get_broken_references.values.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element not_existing in path hull.config.specific.not_existing was not found]"
-* Fail to render the templates for values file "values_tpl_get_broken_references.values.hull.yaml" to test execution folder because error contains "[HULL failed with error HULL-GET-TRANSFORMATION-REFERENCE-INVALID: Element also_not_existing in path hull.config.specific.also_not_existing was not found]"
+* Fail to render the templates for values file "values_tpl_get_broken_references.values.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.<OBJECT_TYPE>.transformation-doc-examples.pod.containers.tpl_variants.env.tpl_get_transformation_errors.value) Element not_existing in path hull.config.specific.not_existing was not found"
+* Fail to render the templates for values file "values_tpl_get_broken_references.values.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.<OBJECT_TYPE>.transformation-doc-examples.pod.containers.tpl_variants.env.tpl_get_transformation_errors.value) Element also_not_existing in path hull.config.specific.also_not_existing was not found"
 
 * Set test object to "release-name-hull-test-complex-gets"
 

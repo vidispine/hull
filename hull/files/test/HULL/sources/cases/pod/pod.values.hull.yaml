@@ -1504,7 +1504,7 @@ hull:
                     _HT!
                       {{- $noarg := _HT/hull.metadata.chartref/TH_ -}}
                       {{- $onearg := _HT/hull.metadata.name:COMPONENT:"one-arg-include"/TH_ -}}
-                      {{- $twoarg := _HT/hull.util.error.message:ERROR_TYPE:"dummy_error_type":"ERROR_MESSAGE":"dummy_error_message"/TH_ -}}
+                      {{- $twoarg := _HT/hull.metadata.fullname/TH_ -}}
                       {{ printf "%s !! %s !!! %s !!!!" $noarg $onearg $twoarg }}
                 tpl_include_in_tpl_transformation_mixed_with_get:
                   value: |-
@@ -1514,7 +1514,7 @@ hull:
                       {{- _HT*hull.config.specific.hundred.its-33 -}}
                       {{- _HT/hull.metadata.name:COMPONENT:"one-arg-include"/TH_ -}}
                       {{- _HT*hull.config.specific.hundred.its-66 -}}
-                      {{- _HT/hull.util.error.message:ERROR_TYPE:"dummy_error_type":"ERROR_MESSAGE":"dummy_error_message"/TH_ -}}
+                      {{- _HT/hull.metadata.fullname/TH_ -}}
                       {{- _HT*hull.config.specific.hundred.its-99 -}}
                       -split-
                       {{- printf "%s is the chart reference value" _HT/hull.metadata.chartref/TH_ }}
@@ -2637,3 +2637,11 @@ hull:
             my-pod:
               image:
                 repository: hello-world
+
+      conditionals:
+        pod:
+          containers:
+            my-pod:
+              image:
+                repository: my/image/repo
+                tag: "99.9"

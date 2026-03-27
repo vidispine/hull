@@ -186,6 +186,10 @@ hull:
       - just
       - some
       - args
+      list-with-three-elements:
+      - first
+      - second
+      - third
       liveness_probe:
         initialDelaySeconds: 111
         periodSeconds: 222
@@ -899,3 +903,39 @@ hull:
           some: annotation
         namespaceOverride: "different-namespace"
       
+      conditionals:
+        annotations:
+          test-annotation-1a-true: "1atrue"
+          test-annotation-1b-true: "1btrue"
+          test-annotation-1a-false: "1afalse"
+          test-annotation-1b-false: "1bfalse"
+          test-annotation-2a-true: "2atrue"
+          test-annotation-2b-true: "2btrue"
+          test-annotation-2a-false: "2afalse"
+          test-annotation-2b-false: "2bfalse"
+          test-annotation-3.dots.dot: "3dots"
+        conditionals:
+          boolean-true:
+            condition: _HT*hull.config.specific.bool_defined_true
+            references:
+            - annotations.test-annotation-1a-true
+            - annotations.test-annotation-1b-true
+          boolean-false:
+            condition: _HT*hull.config.specific.bool_defined_false
+            references:
+            - annotations.test-annotation-1a-false
+            - annotations.test-annotation-1b-false
+          reference-true:
+            condition: _HT?eq 3 3
+            references:
+            - annotations.test-annotation-2a-true
+            - annotations.test-annotation-2b-true
+          reference-false:
+            condition: _HT?eq "a" "b"
+            references:
+            - annotations.test-annotation-2a-false
+            - annotations.test-annotation-2b-false
+          reference-dots:
+            condition: _HT*hull.config.specific.bool_defined_false
+            references:
+            - annotations.test-annotation-3§dots§dot
