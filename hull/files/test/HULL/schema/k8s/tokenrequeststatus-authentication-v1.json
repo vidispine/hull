@@ -10,17 +10,13 @@
       ]
     },
     "token": {
-      "description": "Token is the opaque bearer token.",
+      "description": "token is the opaque bearer token.",
       "type": [
         "string",
         "null"
       ]
     }
   },
-  "required": [
-    "token",
-    "expirationTimestamp"
-  ],
   "type": "object",
   "additionalProperties": false,
   "$schema": "http://json-schema.org/schema#"

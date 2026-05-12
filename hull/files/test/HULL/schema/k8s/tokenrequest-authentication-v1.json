@@ -278,42 +278,45 @@
       "description": "TokenRequestSpec contains client provided parameters of a token request.",
       "properties": {
         "audiences": {
-          "description": "Audiences are the intendend audiences of the token. A recipient of a token must identify themself with an identifier in the list of audiences of the token, and otherwise should reject the token. A token issued for multiple audiences may be used to authenticate against any of the audiences listed but implies a high degree of trust between the target audiences.",
+          "description": "audiences are the intendend audiences of the token. A recipient of a token must identify themself with an identifier in the list of audiences of the token, and otherwise should reject the token. A token issued for multiple audiences may be used to authenticate against any of the audiences listed but implies a high degree of trust between the target audiences.",
           "items": {
             "type": [
               "string",
               "null"
             ]
           },
-          "type": "array",
+          "type": [
+            "array",
+            "null"
+          ],
           "x-kubernetes-list-type": "atomic"
         },
         "boundObjectRef": {
           "description": "BoundObjectReference is a reference to an object that a token is bound to.",
           "properties": {
             "apiVersion": {
-              "description": "API version of the referent.",
+              "description": "apiVersion is API version of the referent.",
               "type": [
                 "string",
                 "null"
               ]
             },
             "kind": {
-              "description": "Kind of the referent. Valid kinds are 'Pod' and 'Secret'.",
+              "description": "kind of the referent. Valid kinds are 'Pod' and 'Secret'.",
               "type": [
                 "string",
                 "null"
               ]
             },
             "name": {
-              "description": "Name of the referent.",
+              "description": "name of the referent.",
               "type": [
                 "string",
                 "null"
               ]
             },
             "uid": {
-              "description": "UID of the referent.",
+              "description": "uid of the referent.",
               "type": [
                 "string",
                 "null"
@@ -327,7 +330,7 @@
           "additionalProperties": false
         },
         "expirationSeconds": {
-          "description": "ExpirationSeconds is the requested duration of validity of the request. The token issuer may return a token with a different validity duration so a client needs to check the 'expiration' field in a response.",
+          "description": "expirationSeconds is the requested duration of validity of the request. The token issuer may return a token with a different validity duration so a client needs to check the 'expiration' field in a response.",
           "format": "int64",
           "type": [
             "integer",
@@ -335,9 +338,6 @@
           ]
         }
       },
-      "required": [
-        "audiences"
-      ],
       "type": [
         "object",
         "null"
@@ -350,17 +350,19 @@
         "expirationTimestamp": {
           "description": "Time is a wrapper around time.Time which supports correct marshaling to YAML and JSON.  Wrappers are provided for many of the factory methods that the time package offers.",
           "format": "date-time",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "token": {
-          "description": "Token is the opaque bearer token.",
-          "type": "string"
+          "description": "token is the opaque bearer token.",
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
-      "required": [
-        "token",
-        "expirationTimestamp"
-      ],
       "type": [
         "object",
         "null"
@@ -368,9 +370,6 @@
       "additionalProperties": false
     }
   },
-  "required": [
-    "spec"
-  ],
   "type": "object",
   "x-kubernetes-group-version-kind": [
     {

@@ -1877,7 +1877,7 @@
                 "description": "VolumeError captures an error encountered during a volume operation.",
                 "properties": {
                   "errorCode": {
-                    "description": "errorCode is a numeric gRPC code representing the error encountered during Attach or Detach operations.\n\nThis is an optional, beta field that requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.",
+                    "description": "errorCode is a numeric gRPC code representing the error encountered during Attach or Detach operations.\n\nThis field requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.",
                     "format": "int32",
                     "type": [
                       "integer",
@@ -1927,7 +1927,7 @@
                 "description": "VolumeError captures an error encountered during a volume operation.",
                 "properties": {
                   "errorCode": {
-                    "description": "errorCode is a numeric gRPC code representing the error encountered during Attach or Detach operations.\n\nThis is an optional, beta field that requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.",
+                    "description": "errorCode is a numeric gRPC code representing the error encountered during Attach or Detach operations.\n\nThis field requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.",
                     "format": "int32",
                     "type": [
                       "integer",
@@ -2029,6 +2029,23 @@
             "string",
             "null"
           ]
+        },
+        "shardInfo": {
+          "description": "ShardInfo describes the shard selector that was applied to produce a list response. Its presence on a list response indicates the list is a filtered subset.",
+          "properties": {
+            "selector": {
+              "description": "selector is the shard selector string from the request, echoed back so clients can verify which shard they received and merge responses from multiple shards.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "selector"
+          ],
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false
         }
       },
       "type": [

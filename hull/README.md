@@ -10,7 +10,7 @@ The primary feature of the HULL library is the ability to remove customized YAML
 
 ### Versioning
 
-HULL release versions are closely tied to Kubernetes release versions due to the incorporation of the release specific Kubernetes API schemas. Each HULL release branch therefore matches a Kubernetes release branch (such as `1.35`). Kubernetes patch releases provide non-breaking updates to a Kubernetes release while maintaining API stability and therefore play no role in the HULL versioning process. HULL's patch releases contain fixes and changes to HULL alone while maintaining compatibility to the Kubernetes releases API schema.
+HULL release versions are closely tied to Kubernetes release versions due to the incorporation of the release specific Kubernetes API schemas. Each HULL release branch therefore matches a Kubernetes release branch (such as `1.36`). Kubernetes patch releases provide non-breaking updates to a Kubernetes release while maintaining API stability and therefore play no role in the HULL versioning process. HULL's patch releases contain fixes and changes to HULL alone while maintaining compatibility to the Kubernetes releases API schema.
 
 HULLs compatibility with Helm matches the respective Kubernetes versions compatibility with Helm, see [Helm Version Support Policy for Helm 4](https://helm.sh/docs/topics/version_skew) and [Helm Version Support Policy for Helm 3](https://helm.sh/docs/v3/topics/version_skew) for the matching version ranges.
 
@@ -253,7 +253,7 @@ Some important things to mention first before looking at the library in more det
 
 ⚠️ **At this time HULL releases are tested against all existing non-beta and non-alpha Helm 3 CLI versions. Note that Helm CLI versions `3.0.x` are not compatible with HULL, all other currently existing non-beta and non-alpha versions are compatible.** ⚠️
 
-⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases. At this time Kubernetes versions `1.33` and `1.34` and `1.35` have a matching and maintained HULL release.** ⚠️
+⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases. At this time Kubernetes versions `1.34` and `1.36` and `1.36` have a matching and maintained HULL release.** ⚠️
 
 ## NEW! The HULL Tutorials
 
@@ -364,8 +364,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.35.0
-    helm.sh/chart: hull-test-1.35.0
+    app.kubernetes.io/version: 1.36.0
+    helm.sh/chart: hull-test-1.36.0
   name: nginx # default name would be 'release-name-hull-test-nginx' 
               # but with staticName: true in the HULL spec it is just the key name
 spec:
@@ -385,8 +385,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.35.0
-        helm.sh/chart: hull-test-1.35.0
+        app.kubernetes.io/version: 1.36.0
+        helm.sh/chart: hull-test-1.36.0
     spec:
       containers:
       - env: []
@@ -539,11 +539,11 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.35.0
+    app.kubernetes.io/version: 1.36.0
     general_custom_label_1: General Custom Label 1 # All objects share the general_custom_labels
     general_custom_label_2: General Custom Label 2 # if they are not overwritten for the object type's
     general_custom_label_3: General Custom Label 3 # default or specific instance
-    helm.sh/chart: hull-test-1.35.0
+    helm.sh/chart: hull-test-1.36.0
   name: release-name-hull-test-default # This is the default ServiceAccount created for this chart.
                                        # As all object instances by default it will be assigned a 
                                        # dynamically created unique name in context of this object type.
@@ -564,11 +564,11 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.35.0
+    app.kubernetes.io/version: 1.36.0
     general_custom_label_1: General Custom Label 1
     general_custom_label_2: General Custom Label 2
     general_custom_label_3: General Custom Label 3
-    helm.sh/chart: hull-test-1.35.0
+    helm.sh/chart: hull-test-1.36.0
   name: release-name-hull-test-default # A default Role for RBAC. 
 rules: []
 ---
@@ -586,11 +586,11 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.35.0
+    app.kubernetes.io/version: 1.36.0
     general_custom_label_1: General Custom Label 1
     general_custom_label_2: General Custom Label 2
     general_custom_label_3: General Custom Label 3
-    helm.sh/chart: hull-test-1.35.0
+    helm.sh/chart: hull-test-1.36.0
   name: release-name-hull-test-default
 roleRef:
   apiGroup: rbac.authorization.k8s.io/v1
@@ -622,14 +622,14 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.35.0
+    app.kubernetes.io/version: 1.36.0
     default_label_1: Default Label 1 # non-overwritten default_label
     default_label_2: Specific Object Label 2 # overwritten default_label by instance
     general_custom_label_1: General Custom Label 1 # non-overwritten general_custom_label
     general_custom_label_2: Default Label 2 # overwritten general_custom_label by default_label
     general_custom_label_3: Specific Object Label 3 # overwritten general_custom_label 
                                                     # by specific_label
-    helm.sh/chart: hull-test-1.35.0
+    helm.sh/chart: hull-test-1.36.0
     specific_label_1: Specific Object Label 1 # added label for instance metadata only
   name: release-name-hull-test-nginx
 spec:
@@ -656,13 +656,13 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.35.0
+        app.kubernetes.io/version: 1.36.0
         default_label_1: Default Label 1
         default_label_2: Specific Object Label 2
         general_custom_label_1: General Custom Label 1
         general_custom_label_2: Default Label 2
         general_custom_label_3: Specific Object Label 3
-        helm.sh/chart: hull-test-1.35.0
+        helm.sh/chart: hull-test-1.36.0
         specific_label_1: Specific Object Label 1
         specific_label_2: Specific Template Label 2 # this label was added only 
                                                     # for the pod template's metadata
@@ -698,11 +698,11 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.35.0
+    app.kubernetes.io/version: 1.36.0
     general_custom_label_1: General Custom Label 1 # All objects share the general_custom_labels
     general_custom_label_2: General Custom Label 2 # if they are not overwritten for the object type's
     general_custom_label_3: General Custom Label 3 # default or specific instance
-    helm.sh/chart: hull-test-1.35.0
+    helm.sh/chart: hull-test-1.36.0
   name: release-name-hull-test-nginx_configmap
 ```
 

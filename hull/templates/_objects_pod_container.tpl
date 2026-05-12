@@ -51,16 +51,19 @@
 {{- define "hull.object.container.image" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
-{{- $component := default "" (index . "COMPONENT") -}}
+{{- $component := default "<UNSPECIFIED>" (index . "COMPONENT") -}}
+{{- $objectType := default "<UNSPECIFIED>" (index . "OBJECT_TYPE") -}}
+{{- $objectInstanceKey := default "<UNSPECIFIED>" (index . "OBJECT_INSTANCE_KEY") -}}
+{{- $containerType := default "<UNSPECIFIED>" (index . "CONTAINER_TYPE") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $baseName := "" }}
 {{- if (index $parent.Values $hullRootKey).config.general.errorChecks.containerImageValid -}}
-{{- $details := printf "(@Values.hull.objects.%s.%s.%s.%s.image" (index . "OBJECT_TYPE" | lower) (index . "OBJECT_INSTANCE_KEY") (index . "CONTAINER_TYPE") (index . "COMPONENT") }}
+{{- $details := printf "(@Values.hull.objects.%s.%s.%s.%s.image" ($objectType | lower) $objectInstanceKey $containerType $component }}
 {{- if not $spec -}}
-{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-IMAGE-SPEC" "ERROR_MESSAGE" (printf "%s) Field image is missing" $details) "PARENT_CONTEXT" $parent "OBJECT_TYPE" (index . "OBJECT_TYPE" | lower) "OBJECT_INSTANCE_KEY" (index . "OBJECT_INSTANCE_KEY") "HULL_ROOT_KEY" $hullRootKey) -}}
+{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-IMAGE-SPEC" "ERROR_MESSAGE" (printf "%s) Field image is missing" $details) "PARENT_CONTEXT" $parent "OBJECT_TYPE" ($objectType | lower) "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
 {{- else -}}
 {{- if (not (hasKey $spec "repository")) -}}
-{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-IMAGE-REPOSITORY" "ERROR_MESSAGE" (printf "%s%s) Field repository is missing" $details ".repository") "PARENT_CONTEXT" $parent "OBJECT_TYPE" (index . "OBJECT_TYPE" | lower) "OBJECT_INSTANCE_KEY" (index . "OBJECT_INSTANCE_KEY") "HULL_ROOT_KEY" $hullRootKey) -}}
+{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-IMAGE-REPOSITORY" "ERROR_MESSAGE" (printf "%s%s) Field repository is missing" $details ".repository") "PARENT_CONTEXT" $parent "OBJECT_TYPE" ($objectType | lower) "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
 {{- else -}}
 {{- $baseName = $spec.repository }}
 {{- end -}}

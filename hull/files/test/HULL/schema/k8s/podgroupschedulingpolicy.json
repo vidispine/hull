@@ -1,5 +1,5 @@
 {
-  "description": "PodGroupPolicy defines the scheduling configuration for a PodGroup.",
+  "description": "PodGroupSchedulingPolicy defines the scheduling configuration for a PodGroup. Exactly one policy must be set.",
   "properties": {
     "basic": {
       "description": "BasicSchedulingPolicy indicates that standard Kubernetes scheduling behavior should be used.",
@@ -28,6 +28,14 @@
     }
   },
   "type": "object",
+  "x-kubernetes-unions": [
+    {
+      "fields-to-discriminateBy": {
+        "basic": "Basic",
+        "gang": "Gang"
+      }
+    }
+  ],
   "additionalProperties": false,
   "$schema": "http://json-schema.org/schema#"
 }

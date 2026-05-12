@@ -1,0 +1,136 @@
+################################
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # VALIDATINGADMISSIONPOLICYBINDING
+    validatingadmissionpolicybinding:
+
+      metadata-merge:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      metadata-overwrite:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      metadata-no-template:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      metadata-default-template-as-source:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      metadata-custom-template-merge:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      metadata-custom-template-overwrite:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      metadata-custom-template-multi-merge:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      metadata-custom-template-multi-overwrite:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      metadata-default-custom-overwrite:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      enabled-transform:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      enabled-transform-tpl-if:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      enabled-transform-dict:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      static-name:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      metadata-name-override:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      metadata-name-override-static:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      metadata-object-info:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      metadata-stringify:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      test-serializing:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      test-get-transformation-on-root:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      test-get-transformations-array:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      no-annotations:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      namespace-override:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      conditionals:
+        policyName: placeholder-policy
+        validationActions:
+          - Deny
+
+      standard:
+        policyName: my-validating-policy
+        validationActions:
+          - Warn
+
+###################################################

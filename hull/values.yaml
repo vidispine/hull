@@ -200,8 +200,16 @@ objects:
 #      labels: {}
 ###################################################
 
-# CUSTOMRESOURCES 
+# CUSTOMRESOURCES
   customresource:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+###################################################
+
+# GENERICS
+  generic:
     _HULL_OBJECT_TYPE_DEFAULT_:
       enabled: true
       annotations: {}
@@ -648,4 +656,36 @@ objects:
             _HULL_OBJECT_TYPE_DEFAULT_:
               filters:
                 _HULL_OBJECT_TYPE_DEFAULT_: {}
+##################################################
+
+# MUTATINGADMISSIONPOLICY
+  mutatingadmissionpolicy:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+##################################################
+
+# MUTATINGADMISSIONPOLICYBINDING
+  mutatingadmissionpolicybinding:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+##################################################
+
+# VALIDATINGADMISSIONPOLICY
+  validatingadmissionpolicy:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+##################################################
+
+# VALIDATINGADMISSIONPOLICYBINDING
+  validatingadmissionpolicybinding:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
 ##################################################

@@ -1153,10 +1153,7 @@
               "scaleTargetRef",
               "maxReplicas"
             ],
-            "type": [
-              "object",
-              "null"
-            ],
+            "type": "object",
             "additionalProperties": false
           },
           "status": {
@@ -1875,6 +1872,9 @@
             "additionalProperties": false
           }
         },
+        "required": [
+          "spec"
+        ],
         "type": [
           "object",
           "null"
@@ -1934,6 +1934,23 @@
             "string",
             "null"
           ]
+        },
+        "shardInfo": {
+          "description": "ShardInfo describes the shard selector that was applied to produce a list response. Its presence on a list response indicates the list is a filtered subset.",
+          "properties": {
+            "selector": {
+              "description": "selector is the shard selector string from the request, echoed back so clients can verify which shard they received and merge responses from multiple shards.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "selector"
+          ],
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false
         }
       },
       "type": [

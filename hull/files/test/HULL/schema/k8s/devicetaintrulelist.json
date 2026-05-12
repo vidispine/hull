@@ -439,7 +439,7 @@
           {
             "group": "resource.k8s.io",
             "kind": "DeviceTaintRule",
-            "version": "v1alpha3"
+            "version": "v1beta2"
           }
         ],
         "additionalProperties": false
@@ -490,6 +490,23 @@
             "string",
             "null"
           ]
+        },
+        "shardInfo": {
+          "description": "ShardInfo describes the shard selector that was applied to produce a list response. Its presence on a list response indicates the list is a filtered subset.",
+          "properties": {
+            "selector": {
+              "description": "selector is the shard selector string from the request, echoed back so clients can verify which shard they received and merge responses from multiple shards.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "selector"
+          ],
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false
         }
       },
       "type": [
@@ -507,7 +524,7 @@
     {
       "group": "resource.k8s.io",
       "kind": "DeviceTaintRuleList",
-      "version": "v1alpha3"
+      "version": "v1beta2"
     }
   ],
   "additionalProperties": false,

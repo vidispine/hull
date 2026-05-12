@@ -1,8 +1,14 @@
 # Changelog
 
-## [1.35.3]
+## [1.36.0]
+
+CHANGES:
+
+- initial K8S 1.36 release
+- deprecating 1.33 release
+- added new Kubernetes API objects that graduated to stable: `mutatingadmissionpolicy`, `mutatingadmissionpolicybinding`, `validatingadmissionpolicy` and `validatingadmissionpolicybinding`.
+- added a new `generic` API object that allows to define generic objects of any sort. While `customresource` objects by definition need to have a `spec` field, this is not the case for `generic` objects, they only need a `kind` and an `apiVersion`. The idea is to offer an escape hatch for creating arbitrary and more exotic objects within the scope of HULL.
 
 FIXES:
 
-- fixed error handling changes because it caused installation failures with [errors in disabled content](https://github.com/vidispine/hull/issues/401) and [sub chart rendering](https://github.com/vidispine/hull/issues/393). Instead of the changed approach (raising every error that occurs during processing) and the original approach (raise only errors in rendered objects), a combined approach is used now. The old error handling practice is restored (raise all visible errors in templates) but extended with raising errors from `conditionals` references, however this is limited to the cases where the associated object is actually rendered. If errors in `conditional` references are recorded for objects that don't get rendered in the end, the errors are dropped.
-- improved error messages for better understanding and added object tree paths for direct identification of error source
+- fixed error when using function `hull.object.container.image` outside the scope of an object specification. In this case, missing logging parameters that are autopopulated in the scope of an object definition caused an error. The parameters are now populated with default values to prevent crashes.

@@ -1,0 +1,18 @@
+################################
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # MUTATINGADMISSIONPOLICYBINDING
+    mutatingadmissionpolicybinding:
+      standard:
+        policyName: my-mutating-policy
+
+###################################################
