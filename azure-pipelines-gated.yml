@@ -24,17 +24,17 @@ jobs:
       Helm_3_19_5_single: 
         HelmVersion: "3.19.5"
         TestType: single
-      Helm_3_20_1_single: 
-        HelmVersion: "3.20.1"
+      Helm_3_20_2_single: 
+        HelmVersion: "3.20.2"
         TestType: single
       Helm_4_0_5_single: 
         HelmVersion: "4.0.5"
         TestType: single
-      Helm_4_1_3_single: 
-        HelmVersion: "4.1.3"
+      Helm_4_1_4_single: 
+        HelmVersion: "4.1.4"
         TestType: single
-      Helm_4_1_3_multi: 
-        HelmVersion: "4.1.3"
+      Helm_4_1_4_multi: 
+        HelmVersion: "4.1.4"
         TestType: multi
       
   steps:

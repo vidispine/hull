@@ -117,6 +117,7 @@ The end to end process using HULL contains the following phases:
           - `customresource`
           - `priorityclass`
           - `endpoints`
+          - `generic`
         - objects with a simple structure depending on RBAC enablement:
           - `rolebinding`
           - `clusterrolebinding`
@@ -131,6 +132,10 @@ The end to end process using HULL contains the following phases:
           - `resourcequota`
           - `networkpolicy`
           - `ingressclass`
+          - `mutatingadmissionpolicy`
+          - `mutatingadmissionpolicybinding`
+          - `validatingadmissionpolicy`
+          - `validatingadmissionpolicybinding`
         - objects which are based on pod definitions
           - `deployment`
           - `job`

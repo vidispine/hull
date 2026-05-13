@@ -51,6 +51,7 @@ metadata:
 {{- $allObjects = merge $allObjects (dict "EndpointSlice" (dict "HULL_TEMPLATE" $template "API_VERSION" "discovery.k8s.io/v1")) }}
 {{- $allObjects = merge $allObjects (dict "MutatingWebhookConfiguration" (dict "HULL_TEMPLATE" $template "API_VERSION" "admissionregistration.k8s.io/v1" "DYNAMIC_FIELDS" (dict "webhooks" "hull.object.base.webhook.webhooks"))) }}
 {{- $allObjects = merge $allObjects (dict "ValidatingWebhookConfiguration" (dict "HULL_TEMPLATE" $template "API_VERSION" "admissionregistration.k8s.io/v1" "DYNAMIC_FIELDS" (dict "webhooks" "hull.object.base.webhook.webhooks"))) }}
+{{- $allObjects = merge $allObjects (dict "Generic" (dict "HULL_TEMPLATE" $template)) }}
 
 {{- /*
 ### Load pod based objects
@@ -84,6 +85,10 @@ metadata:
 {{- $allObjects = merge $allObjects (dict "TLSRoute" (dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1alpha2" "DYNAMIC_FIELDS" (dict "parentRefs" "hull.object.base.dynamic.simple.array" "rules" "hull.object.base.gateway.api.simple.route.rules"))) }}
 {{- $allObjects = merge $allObjects (dict "UDPRoute" (dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1alpha2" "DYNAMIC_FIELDS" (dict "parentRefs" "hull.object.base.dynamic.simple.array" "rules" "hull.object.base.gateway.api.simple.route.rules"))) }}
 {{- $allObjects = merge $allObjects (dict "HTTPRoute" (dict "HULL_TEMPLATE" $template "API_VERSION" "gateway.networking.k8s.io/v1" "DYNAMIC_FIELDS" (dict "parentRefs" "hull.object.base.dynamic.simple.array" "rules" "hull.object.base.gateway.api.extended.route.rules"))) }}
+{{- $allObjects = merge $allObjects (dict "MutatingAdmissionPolicy" (dict "HULL_TEMPLATE" $template "API_VERSION" "admissionregistration.k8s.io/v1")) }}
+{{- $allObjects = merge $allObjects (dict "MutatingAdmissionPolicyBinding" (dict "HULL_TEMPLATE" $template "API_VERSION" "admissionregistration.k8s.io/v1")) }}
+{{- $allObjects = merge $allObjects (dict "ValidatingAdmissionPolicy" (dict "HULL_TEMPLATE" $template "API_VERSION" "admissionregistration.k8s.io/v1")) }}
+{{- $allObjects = merge $allObjects (dict "ValidatingAdmissionPolicyBinding" (dict "HULL_TEMPLATE" $template "API_VERSION" "admissionregistration.k8s.io/v1")) }}
 
 {{- /*
 ### Load rbac'ed objects

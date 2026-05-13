@@ -1,0 +1,21 @@
+################################
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # VALIDATINGADMISSIONPOLICY
+    validatingadmissionpolicy:
+      standard:
+        failurePolicy: Fail
+        validations:
+        - expression: "object.spec.replicas <= 5"
+          message: "too many replicas"
+
+###################################################

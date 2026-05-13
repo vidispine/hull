@@ -365,8 +365,8 @@ After `helm template`'ing the Helm chart the following files are part of the ren
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.35.0
-        helm.sh/chart: hull-test-1.35.0
+        app.kubernetes.io/version: 1.36.0
+        helm.sh/chart: hull-test-1.36.0
       name: release-name-hull-test-test-global
       namespace: default
     spec:

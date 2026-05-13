@@ -1,0 +1,21 @@
+################################
+### Example values.yaml with all features applied
+################################
+
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+  # MUTATINGADMISSIONPOLICY
+    mutatingadmissionpolicy:
+      standard:
+        failurePolicy: Fail
+        reinvocationPolicy: Never
+        mutations:
+        - patchType: JSONPatch
+
+###################################################
