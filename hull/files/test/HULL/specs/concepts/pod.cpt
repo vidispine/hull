@@ -288,6 +288,98 @@ Disabled secret must be ignored
 
 
 
+* Prepare default test case for this kind including suites "pod,imagepullsecretswithdisabledregistry"
+* Lint and Render
+
+* Set test object to "release-name-hull-test-imagepullsecrets-add-all"
+* Test Object has key "spec§template§spec§imagePullSecrets" with array value that has "1" items
+* Test Object has key "spec§template§spec§imagePullSecrets§0§name" with value "release-name-hull-test-example-registry"
+
+
+
+* Prepare default test case for this kind including suites "pod,imagepullsecretswithallregistriesdisabled"
+* Lint and Render
+
+* Set test object to "release-name-hull-test-imagepullsecrets-add-all"
+* Test Object does not have key "spec§template§spec§imagePullSecrets"
+
+
+
+* Prepare default test case for this kind including suites "pod,createserviceaccounts-none"
+* Lint and Render
+
+* Set test object to "release-name-hull-test-imagepullsecrets-add-all"
+* Test Object does not have key "spec§template§spec§serviceAccountName"
+
+* Set test object to "release-name-hull-test-service-account"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "another_account"
+
+* Test object "release-name-hull-test-default" of kind "ServiceAccount" does not exist
+* Test object "release-name-hull-test-default" of kind "Role" does not exist
+* Test object "release-name-hull-test-default" of kind "RoleBinding" does not exist
+
+
+
+* Prepare default test case for this kind including suites "pod,createserviceaccounts-pod"
+* Lint and Render
+
+* Set test object to "release-name-hull-test-imagepullsecrets-add-all"
+* Test Object has key "spec§template§spec§serviceAccountName" with value matching regex "^release-name-hull-test-.*-imagepullsecrets-add-all$"
+
+* Set test object to "release-name-hull-test-service-account"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "another_account"
+
+* Test object "release-name-hull-test-default" of kind "ServiceAccount" does not exist
+* Test object "release-name-hull-test-default" of kind "Role" does not exist
+* Test object "release-name-hull-test-default" of kind "RoleBinding" does not exist
+
+
+
+* Prepare default test case for this kind including suites "pod,createserviceaccounts-pod-staticname"
+* Lint and Render
+
+* Set test object to "imagepullsecrets-add-all"
+* Test Object has key "spec§template§spec§serviceAccountName" with value matching regex "^[a-z]+-imagepullsecrets-add-all$"
+
+* Set test object to "release-name-hull-test-service-account"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "another_account"
+
+* Test object "release-name-hull-test-default" of kind "ServiceAccount" does not exist
+* Test object "release-name-hull-test-default" of kind "Role" does not exist
+* Test object "release-name-hull-test-default" of kind "RoleBinding" does not exist
+
+
+
+* Prepare default test case for this kind including suites "pod,createserviceaccounts-pod-fullnameoverride"
+* Lint and Render
+
+* Set test object to "a-slightly-longer-name-imagepullsecrets-add-all"
+* Test Object has key "spec§template§spec§serviceAccountName" with value matching regex "^a-slightly-longer-name-[a-z]+-imagepullsecrets-add-all$"
+
+* Set test object to "a-slightly-longer-name-service-account"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "another_account"
+
+* Test object "release-name-hull-test-default" of kind "ServiceAccount" does not exist
+* Test object "release-name-hull-test-default" of kind "Role" does not exist
+* Test object "release-name-hull-test-default" of kind "RoleBinding" does not exist
+
+
+
+* Prepare default test case for this kind including suites "pod,createserviceaccounts-pod-noobjectnameprefixes"
+* Lint and Render
+
+* Set test object to "imagepullsecrets-add-all"
+* Test Object has key "spec§template§spec§serviceAccountName" with value matching regex "^[a-z]+-imagepullsecrets-add-all$"
+
+* Set test object to "service-account"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "another_account"
+
+* Test object "default" of kind "ServiceAccount" does not exist
+* Test object "default" of kind "Role" does not exist
+* Test object "default" of kind "RoleBinding" does not exist
+
+
+
 * Prepare default test case for this kind including suites "pod,noobjectnameprefixes"
 * Lint and Render
 

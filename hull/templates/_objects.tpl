@@ -113,6 +113,46 @@ metadata:
 {{- end -}}
 
 {{- /*
+################################################# POST-RENDER STRING REPLACEMENTS #############################
+| Purpose:
+|   Apply globalStringReplacements to a serialized YAML object string.
+|
+| Interface:
+|   PARENT_CONTEXT: The parent chart context
+|   OBJECT_YAML:    The toYaml-serialized object string
+|   OBJECT_KEY:     The instance key (for OBJECT_INSTANCE_KEY replacement)
+|   NAMING_ELEMENT: The resolved naming element (for OBJECT_INSTANCE_KEY_RESOLVED replacement)
+|   OBJECT_NAME:    The full metadata.name (for OBJECT_INSTANCE_NAME replacement)
+|   HULL_ROOT_KEY:  The hull root key
+*/ -}}
+{{- define "hull.objects.render.apply.replacements" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $yaml := (index . "OBJECT_YAML") -}}
+{{- $objectKey := (index . "OBJECT_KEY") -}}
+{{- $namingElement := (index . "NAMING_ELEMENT") -}}
+{{- $objectName := (index . "OBJECT_NAME") -}}
+{{- range $replacementName, $replacementValue := (index $parent.Values $hullRootKey).config.general.postRender.globalStringReplacements -}}
+{{- if $replacementValue.enabled -}}
+{{- $targetValue := $replacementValue.replacement -}}
+{{- if eq $replacementValue.replacement "OBJECT_INSTANCE_KEY" -}}
+{{- $targetValue = $objectKey -}}
+{{- end -}}
+{{- if eq $replacementValue.replacement "OBJECT_INSTANCE_KEY_RESOLVED" -}}
+{{- $targetValue = $namingElement -}}
+{{- end -}}
+{{- if eq $replacementValue.replacement "OBJECT_INSTANCE_NAME" -}}
+{{- $targetValue = $objectName -}}
+{{- end -}}
+{{- $yaml = $yaml | replace $replacementValue.string $targetValue -}}
+{{- end -}}
+{{- end -}}
+{{- $yaml -}}
+{{- end -}}
+
+
+
+{{- /*
 ################################################# RENDER #####################################################
 */ -}}
 {{- define "hull.objects.render" -}}
@@ -139,6 +179,9 @@ scopeKey: {{ $transformationScopeKey }}
 {{ $rootContext | toYaml }}
 {{- else -}}
 
+{{- /*
+### L1: iterate object types
+*/ -}}
 {{- range $objectType, $objectTypeSpec := $allObjects }}
 {{- $lowerObjectType := $objectType | lower }}
 {{- $apiKind := $objectType }}
@@ -151,7 +194,7 @@ scopeKey: {{ $transformationScopeKey }}
 {{- end }}
 
 {{- /*
-### If we dont have any hull root key we skip the rest. hull.yaml may just be used to render transformations
+### L2: skip if hull root key is absent (hull.yaml used for transformations only)
 */ -}}
 {{- if (hasKey $rootContext.Values $hullRootKey) }}
 {{- $enabledDefault := (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType)._HULL_OBJECT_TYPE_DEFAULT_.enabled -}}
@@ -173,10 +216,10 @@ scopeKey: {{ $transformationScopeKey }}
 {{- end }}
 {{- $dynamicFields := default dict (index $objectTypeSpec "DYNAMIC_FIELDS") -}}
 
-{{- range $objectKey, $spec := (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType) }}
 {{- /*
-### Get the default spec with key _HULL_OBJECT_TYPE_DEFAULT_ for the object to be merged with all instances
+### L3: iterate instances, skip the type default key
 */ -}}
+{{- range $objectKey, $spec := (index (index $rootContext.Values $hullRootKey).objects $lowerObjectType) }}
 
 {{- if (or (ne $objectKey "_HULL_OBJECT_TYPE_DEFAULT_")) -}}
 {{- if (or (gt (len (keys (default dict $spec))) 0) (not (kindIs "invalid" $spec))) -}}
@@ -184,12 +227,12 @@ scopeKey: {{ $transformationScopeKey }}
 {{- $enabledDefault = dig "enabled" true $defaultSpec -}}
 {{- $specDisabled := and (hasKey $spec "enabled") (not $spec.enabled) }}
 
+{{- /*
+### L4: skip disabled instances
+*/ -}}
 {{- if (and (not $specDisabled) (or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault))) -}}
 {{ $spec = merge (omit $spec "sources") $defaultSpec }}
 
-{{- /*
-### Now render the result object instance
-*/ -}}
 {{- $objectSpec := dict }}
 {{- $namingElement := $objectKey -}}
 {{- if and $spec $spec.metadataNameOverride -}}
@@ -211,25 +254,7 @@ scopeKey: {{ $transformationScopeKey }}
 
 ---
 {{ else }}
-{{- $printedObject := toYaml $objectSpec -}}
-{{- range $replacementName, $replacementValue := (index $rootContext.Values $hullRootKey).config.general.postRender.globalStringReplacements -}}
-{{- if $replacementValue.enabled -}}
-{{- $targetValue := $replacementValue.replacement -}}
-{{- $replacementStaticKeys := list "OBJECT_INSTANCE_KEY" "OBJECT_INSTANCE_KEY_RESOLVED" "OBJECT_INSTANCE_NAME" -}}
-{{- if has $replacementValue.replacement $replacementStaticKeys  -}}
-{{- if eq $replacementValue.replacement "OBJECT_INSTANCE_KEY" -}}
-{{- $targetValue = $objectKey -}}
-{{- end -}}
-{{- if eq $replacementValue.replacement "OBJECT_INSTANCE_KEY_RESOLVED" -}}
-{{- $targetValue = $namingElement -}}
-{{- end -}}
-{{- if eq $replacementValue.replacement "OBJECT_INSTANCE_NAME" -}}
-{{- $targetValue = printf "%s" $objectSpec.metadata.name -}}
-{{- end -}}
-{{- end -}}
-{{- $printedObject = $printedObject | replace $replacementValue.string $targetValue -}}
-{{- end -}}
-{{- end -}}
+{{- $printedObject := include "hull.objects.render.apply.replacements" (dict "PARENT_CONTEXT" $rootContext "OBJECT_YAML" (toYaml $objectSpec) "OBJECT_KEY" $objectKey "NAMING_ELEMENT" $namingElement "OBJECT_NAME" $objectSpec.metadata.name "HULL_ROOT_KEY" $hullRootKey) -}}
 {{ $printedObject }}
 
 
@@ -251,6 +276,26 @@ scopeKey: {{ $transformationScopeKey }}
 {{- end -}}
 {{- end -}}
 
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- if eq (default "default" (index $rootContext.Values $hullRootKey).config.general.createServiceAccounts) "pod" -}}
+{{- $podOwningTypes := list "deployment" "daemonset" "statefulset" "job" "cronjob" -}}
+{{- range $renderedEntry := $renderedObjects -}}
+{{- $parts := splitList "/" $renderedEntry -}}
+{{- $entryType := index $parts 0 -}}
+{{- $entryKey := index $parts 1 -}}
+{{- if has $entryType $podOwningTypes -}}
+{{- $entrySpec := index (index (index $rootContext.Values $hullRootKey).objects $entryType) $entryKey -}}
+{{- $saSpec := dict -}}
+{{- if and $entrySpec $entrySpec.staticName -}}{{- $saSpec = dict "staticName" $entrySpec.staticName -}}{{- end -}}
+{{- $saComponent := printf "%s-%s" $entryType $entryKey -}}
+{{- $saCtx := dict "PARENT_CONTEXT" $rootContext "SPEC" $saSpec "COMPONENT" $saComponent "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" "ServiceAccount" "OBJECT_INSTANCE_KEY" $saComponent }}
+apiVersion: v1
+kind: ServiceAccount
+{{ include "hull.metadata" $saCtx }}
+
+---
 {{- end -}}
 {{- end -}}
 {{- end -}}

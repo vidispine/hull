@@ -319,4 +319,48 @@ ___
 * Test Object has key "spec§template§spec§containers§0§env§0§value" with value "Found me!" when env var "style" equals "single_file" else pass
 * Test Object has key "spec§template§spec§containers§0§env§0§value" with value "Found me!" when env var "style" equals "multi_file" else pass
 
+## ServiceAccount Creation Pod Mode
+* Prepare default test case for kind "Deployment" including suites "pod,createserviceaccounts-pod"
+* Lint and Render
+
+* Set test object to "release-name-hull-test-imagepullsecrets-add-all"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "release-name-hull-test-deployment-imagepullsecrets-add-all"
+* Set test object to "release-name-hull-test-deployment-imagepullsecrets-add-all" of kind "ServiceAccount"
+* Test object "release-name-hull-test-default" of kind "ServiceAccount" does not exist
+* Test object "release-name-hull-test-default" of kind "Role" does not exist
+* Test object "release-name-hull-test-default" of kind "RoleBinding" does not exist
+
+## ServiceAccount Creation Pod Mode - StaticName
+* Prepare default test case for kind "Deployment" including suites "pod,createserviceaccounts-pod-staticname"
+* Lint and Render
+
+* Set test object to "imagepullsecrets-add-all"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "deployment-imagepullsecrets-add-all"
+* Set test object to "deployment-imagepullsecrets-add-all" of kind "ServiceAccount"
+* Test object "release-name-hull-test-default" of kind "ServiceAccount" does not exist
+* Test object "release-name-hull-test-default" of kind "Role" does not exist
+* Test object "release-name-hull-test-default" of kind "RoleBinding" does not exist
+
+## ServiceAccount Creation Pod Mode - FullnameOverride
+* Prepare default test case for kind "Deployment" including suites "pod,createserviceaccounts-pod-fullnameoverride"
+* Lint and Render
+
+* Set test object to "a-slightly-longer-name-imagepullsecrets-add-all"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "a-slightly-longer-name-deployment-imagepullsecrets-add-all"
+* Set test object to "a-slightly-longer-name-deployment-imagepullsecrets-add-all" of kind "ServiceAccount"
+* Test object "release-name-hull-test-default" of kind "ServiceAccount" does not exist
+* Test object "release-name-hull-test-default" of kind "Role" does not exist
+* Test object "release-name-hull-test-default" of kind "RoleBinding" does not exist
+
+## ServiceAccount Creation Pod Mode - NoObjectNamePrefixes
+* Prepare default test case for kind "Deployment" including suites "pod,createserviceaccounts-pod-noobjectnameprefixes"
+* Lint and Render
+
+* Set test object to "imagepullsecrets-add-all"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "deployment-imagepullsecrets-add-all"
+* Set test object to "deployment-imagepullsecrets-add-all" of kind "ServiceAccount"
+* Test object "default" of kind "ServiceAccount" does not exist
+* Test object "default" of kind "Role" does not exist
+* Test object "default" of kind "RoleBinding" does not exist
+
 * Clean the test execution folder

@@ -47218,6 +47218,22 @@
                   ],
                   "title": "globalImageRegistryToFirstRegistrySecretServer"
                 },
+                "createServiceAccounts": {
+                  "$id": "#/definitions/root/config/general/createServiceAccounts",
+                  "description": "Controls service account creation behavior. 'default' creates a default service account, 'none' skips creation, 'pod' creates one per pod.",
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/hull.Transformation.Pattern"
+                    },
+                    {
+                      "type": "string",
+                      "enum": ["default", "none", "pod"],
+                      "default": "default",
+                      "title": "createServiceAccounts"
+                    }
+                  ],
+                  "title": "createServiceAccounts"
+                },
                 "debug": {
                   "$id": "#/definitions/root/config/general/debug",
                   "description": "Debug Settings",
@@ -47629,8 +47645,8 @@
                 },
                 "nameOverride": {
                   "$id": "#/definitions/root/config/general/nameOverride",
-                  "description": "Global value to use as the name of the app, overriding the dynamically created name.",
-                  "title": "FullnameOverride",
+                  "description": "Global value to use as the name of the app, overriding the chart name portion of the dynamically created name.",
+                  "title": "NameOverride",
                   "type": "string"
                 },
                 "namespaceOverride": {
@@ -47941,6 +47957,8 @@
       ]
     },
     "hull.Transformation.Pattern": {
+      "title": "Hull Transformation",
+      "description": "A Hull transformation expression. Prefix with _HT* (get), _HT? (bool), _HT^ (fullname), _HT! (set), _HT& (include), _HT/ (include result), or _HULL_TRANSFORMATION_<<< for the long form.",
       "pattern": "^\\s*(_HT[\\*|\\?|\\^|!|&|/]|_HULL_TRANSFORMATION_<<<).*",
       "type": "string"
     }

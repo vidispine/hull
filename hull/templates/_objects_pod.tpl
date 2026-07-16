@@ -85,10 +85,16 @@ imagePullSecrets: []
 {{- end }}
 {{- else -}}
 {{ if (index $parent.Values $hullRootKey).config.general.createImagePullSecretsFromRegistries }}
-{{ if (gt (len (keys (default dict (index $parent.Values $hullRootKey).objects.registry))) 1) }}
-imagePullSecrets: 
+{{- $hasEnabledRegistry := false -}}
+{{- range $name, $specRegistry := (index $parent.Values $hullRootKey).objects.registry -}}
+{{- if and (ne $name "_HULL_OBJECT_TYPE_DEFAULT_") (ne $specRegistry.enabled false) -}}
+{{- $hasEnabledRegistry = true -}}
+{{- end -}}
+{{- end -}}
+{{ if and (gt (len (keys (default dict (index $parent.Values $hullRootKey).objects.registry))) 1) $hasEnabledRegistry }}
+imagePullSecrets:
 {{- range $name, $specRegistry := (index $parent.Values $hullRootKey).objects.registry }}
-{{- if (ne $name "_HULL_OBJECT_TYPE_DEFAULT_") }}
+{{- if and (ne $name "_HULL_OBJECT_TYPE_DEFAULT_") (ne $specRegistry.enabled false) }}
 - name: {{ template "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "SPEC" (index (index $parent.Values $hullRootKey).objects.registry $name) "COMPONENT" $name "HULL_ROOT_KEY" $hullRootKey) }}
 {{- end }}
 {{- end }}
@@ -104,25 +110,65 @@ imagePullSecrets: []
 
 
 {{- /*
-| Purpose:  
-|   
+| Purpose:
+|
+|   Computes the ServiceAccount name for a pod-mode per-workload service account.
+|   Uses the workload spec for staticName resolution, objectType and instanceKey for uniqueness.
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   SPEC: The pod-owning object's spec (for staticName)
+|   OBJECT_TYPE: The object type (e.g. Deployment)
+|   OBJECT_INSTANCE_KEY: The object instance key
+|   HULL_ROOT_KEY: The hull root key
+|
+*/ -}}
+{{- define "hull.object.pod.serviceaccount.podmode.name" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $objectType := (index . "OBJECT_TYPE") -}}
+{{- $instanceKey := (index . "OBJECT_INSTANCE_KEY") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $spec := default nil (index . "SPEC") -}}
+{{- include "hull.metadata.fullname" (dict
+    "PARENT_CONTEXT" $parent
+    "SPEC" $spec
+    "COMPONENT" (printf "%s-%s" ($objectType | lower) $instanceKey)
+    "HULL_ROOT_KEY" $hullRootKey) -}}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:
+|
 |   Creates serviceAccountName for the pod.
-|   If not explicitly specified, the default serviceaccount is used
+|   Behaviour depends on config.general.createServiceAccounts:
+|   - default: uses the default serviceaccount if enabled
+|   - none:    no serviceAccountName is set
+|   - pod:     sets a per-workload serviceaccount name
+|   An explicit pod.serviceAccountName always takes precedence.
 |
 | Interface:
 |
 |   PARENT_CONTEXT: The Parent charts context
 |   SPEC: The dictionary to work with
-|   DEFAULT_POD_BASE_PATH: Path to the pods default specification.
+|   OBJECT_TYPE: The object type
+|   OBJECT_INSTANCE_KEY: The object instance key
 |
 */ -}}
 {{- define "hull.object.pod.serviceAccountName" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $objectType := (index . "OBJECT_TYPE") -}}
+{{- $objectInstanceKey := (index . "OBJECT_INSTANCE_KEY") -}}
+{{- $createServiceAccounts := default "default" (index $parent.Values $hullRootKey).config.general.createServiceAccounts -}}
 {{ if hasKey $spec.pod "serviceAccountName" }}
 serviceAccountName: {{ $spec.pod.serviceAccountName }}
-{{ else }}
+{{ else if eq $createServiceAccounts "pod" }}
+serviceAccountName: {{ include "hull.object.pod.serviceaccount.podmode.name" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) }}
+{{ else if eq $createServiceAccounts "default" }}
 {{ if (index $parent.Values $hullRootKey).objects.serviceaccount.default.enabled }}
 serviceAccountName: {{ include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "COMPONENT" "default" "HULL_ROOT_KEY" $hullRootKey) }}
 {{ end }}

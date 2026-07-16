@@ -9,7 +9,7 @@
 ###################################################
 ### CONFIG
 config:
-  general:  
+  general:
     rbac: true
     fullnameOverride: ""
     nameOverride: ""
@@ -18,6 +18,7 @@ config:
     createImagePullSecretsFromRegistries: true
     globalImageRegistryServer: ""
     globalImageRegistryToFirstRegistrySecretServer: false
+    createServiceAccounts: default
     serialization:
       configmap:
         enabled: true
@@ -138,7 +139,7 @@ objects:
       annotations: {}
       labels: {}
     default:
-      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) ""
+      enabled: _HT?and (eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) "") (eq (default "default" _HT*hull.config.general.createServiceAccounts) "default")
       annotations: {}
       labels: {}
 ###################################################
@@ -152,7 +153,7 @@ objects:
       rules:
         _HULL_OBJECT_TYPE_DEFAULT_: {}
     default:
-      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) ""
+      enabled: _HT?and (eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) "") (eq (default "default" _HT*hull.config.general.createServiceAccounts) "default")
       rules: {}
 ###################################################
 
@@ -163,7 +164,7 @@ objects:
       annotations: {}
       labels: {}
     default:
-      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) ""
+      enabled: _HT?and (eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) "") (eq (default "default" _HT*hull.config.general.createServiceAccounts) "default")
       roleRef:
         apiGroup: "rbac.authorization.k8s.io"
         kind: "Role"
