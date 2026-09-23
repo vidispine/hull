@@ -18,7 +18,27 @@ steps:
 - script: |
       set -euo pipefail
       echo installing gauge
-      sudo curl -SsL "https://downloads.gauge.org/stable" | sh
+      # The installer sudo's itself where needed, so do not run it as root here.
+      # Without -f curl exits 0 on an HTTP error and sh silently installs nothing,
+      # which only surfaces much later as 'gauge: command not found'.
+      installer="$(mktemp)"
+      installed=false
+      for attempt in 1 2 3; do
+        if curl -SsfL "https://downloads.gauge.org/stable" -o "${installer}" \
+           && [ -s "${installer}" ] \
+           && sh "${installer}" \
+           && command -v gauge > /dev/null; then
+          installed=true
+          break
+        fi
+        echo "attempt ${attempt}/3 to install gauge failed"
+        if [ "${attempt}" -lt 3 ]; then sleep 15; fi
+      done
+      if [ "${installed}" != true ]; then
+        echo "##vso[task.logissue type=error]gauge could not be installed after 3 attempts"
+        exit 1
+      fi
+      rm -f "${installer}"
       cd hull/files/test/HULL
       sudo pip install -r requirements.txt
       gauge
@@ -43,8 +63,8 @@ steps:
     ls
     cd hull/files/test/HULL
     ls
-    echo no_lint: $(NoLint)
-    export no_lint=$(NoLint)
+    export no_lint=$(echo '${{ parameters.NoLint }}' | tr '[:upper:]' '[:lower:]')
+    echo "no_lint: ${no_lint}"
     gauge run --env $(TestType)_file -p -l debug specs
   displayName: 'gauge test against helm v$(HelmVersion)'
   condition: and(ne(variables['HelmVersion'],''),eq('${{ parameters.RunTests }}','True'))
@@ -69,8 +89,8 @@ steps:
       ls
       cd hull/files/test/HULL
       ls
-      echo no_lint: $(NoLint)
-      export no_lint=$(NoLint)
+      export no_lint=$(echo '${{ parameters.NoLint }}' | tr '[:upper:]' '[:lower:]')
+      echo "no_lint: ${no_lint}"
       gauge run --env $(TestType)_file -p -l debug specs
     displayName: 'gauge test against helm v${{ version.version }}'
     condition: and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','True'))
