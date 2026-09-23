@@ -20,6 +20,10 @@
   {{ $annotations = merge $annotations (index $parent.Values $hullRootKey).config.general.metadata.annotations.custom }}
 {{ end }}
 {{ if default false (index . "MERGE_TEMPLATE_METADATA") }}
+  {{ $podSpec := default dict (dig "pod" dict $spec) }}
+  {{ if kindIs "map" $podSpec }}
+  {{ $annotations = merge $annotations ((include "hull.metadata.annotations.custom" (dict "PARENT_CONTEXT" $parent "SPEC" $podSpec "ANNOTATIONS_METADATA" "annotations") | fromYaml)) }}
+  {{ end }}
   {{ $annotations = merge $annotations ((include "hull.metadata.annotations.custom" (merge (dict "ANNOTATIONS_METADATA" "templateAnnotations") . ) | fromYaml)) }}
   {{ $annotations = merge $annotations (include "hull.metadata.annotations.hash" . | fromYaml) }}
 {{ end }}
@@ -77,11 +81,12 @@ annotations: {}
 {{ $secrets := dict }}
 {{ $annotations := dict }}
 {{ if (not (kindIs "invalid" $pod)) }}
-{{ $containers := default list (dig "spec" "containers" list $pod) }}
-{{ $initContainers := default list (dig "spec" "initContainers" list $pod) }}
+{{ $podSpec := default dict (dig "spec" dict $pod) }}
+{{ $containers := default list (dig "containers" list $podSpec) }}
+{{ $initContainers := default list (dig "initContainers" list $podSpec) }}
 {{ range $container := concat $containers $initContainers }}
   {{ range $mount := dig "volumeMounts" list $container }}
-    {{ range $volume := dig "spec" "volumes" list $pod }}
+    {{ range $volume := default list (dig "volumes" list $podSpec) }}
       {{ if (or (hasKey $volume "secret") (hasKey $volume "configMap")) }}
         {{ if (and (eq $volume.name $mount.name) (dig "hashsumAnnotation" false $mount)) }}
           {{ if hasKey $mount "subPath" }}

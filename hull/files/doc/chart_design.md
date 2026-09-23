@@ -119,7 +119,7 @@ The `sources` feature is similar to the `_HULL_OBJECT_TYPE_DEFAULT_` feature but
 
 Each object instance has properties `labels` and `annotations` where object level metadata can be set.
 
-It is important to notice, that for workload objects the `labels` and `annotations` metadata is automatically also set on the pod metadata level. Pod level metadata is often important for other tools that reflect on them to inject sidecar containers or trigger pod restarts on change. To overwrite or add only pod level metadata, the keys `templateLabels` and `templateAnnotations` are provided.
+It is important to notice, that for workload objects the `labels` and `annotations` metadata is automatically also set on the pod metadata level. Pod level metadata is often important for other tools that reflect on them to inject sidecar containers or trigger pod restarts on change. To overwrite or add only pod level metadata, use the `pod.labels` and `pod.annotations` keys - since this metadata ends up on the pod, that is where it naturally belongs. The `templateLabels` and `templateAnnotations` keys on the object instance level are an equivalent alternative and remain fully supported.
 
 In summary, the following fields are available for adjustment:
 
@@ -130,9 +130,14 @@ hull:
       <OBJECT_INSTANCE_KEY>:
         labels: {}
         annotations: {}
-        templateLabels: {}
-        templateAnnotations: {}
+        pod:
+          labels: {}            # pod level metadata
+          annotations: {}       # pod level metadata
+        templateLabels: {}      # alternative to pod.labels
+        templateAnnotations: {} # alternative to pod.annotations
 ```
+
+The resulting precedence for pod level metadata, highest first, is: the object instances own `labels`/`annotations`, then the chart wide `hull.config.general.metadata` custom entries, then `pod.labels`/`pod.annotations`, then `templateLabels`/`templateAnnotations`.
 
 ## Conditionally rendering properties
 
@@ -955,8 +960,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.36.0
-    helm.sh/chart: hull-test-1.36.0
+    app.kubernetes.io/version: 1.37.0
+    helm.sh/chart: hull-test-1.37.0
   name: release-name-hull-test-my-graphic-app
   namespace: default
 spec:
@@ -973,8 +978,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.36.0
-        helm.sh/chart: hull-test-1.36.0
+        app.kubernetes.io/version: 1.37.0
+        helm.sh/chart: hull-test-1.37.0
       namespace: default
     spec:
       affinity:

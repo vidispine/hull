@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "3" objects were rendered on top of basic objects count
+* Expected number of "2" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -25,13 +25,25 @@ Test creation of objects and features.
 * Test Object has key "subjects§0§namespace" with value "default"
 
 ## Defaulting
+* Prepare default test case for this kind including suites "defaultrbacobjects"
 * Lint and Render values file "values_disable_default.hull.yaml"
 * Expected number of "2" objects were rendered on top of basic objects count
 * Validate
 
 ## Test enable disabled and disable default
+* Prepare default test case for this kind including suites "defaultrbacobjects"
 * Lint and Render values file "values_disable_default_enable_disabled.hull.yaml"
 * Expected number of "2" objects were rendered on top of basic objects count
+* Validate
+
+## Opt in to default RBAC objects
+* Prepare default test case for this kind including suites "defaultrbacobjects"
+* Lint and Render
+* Expected number of "3" objects were rendered on top of basic objects count
+* Set test object to "release-name-hull-test-default"
+* Test Object has key "roleRef§name" with value "release-name-hull-test-default"
+* Test Object has key "subjects§0§name" with value "release-name-hull-test-default"
+* Test Object has key "subjects§0§kind" with value "ServiceAccount"
 * Validate
 ___
 

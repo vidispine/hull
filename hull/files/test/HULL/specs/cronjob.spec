@@ -6,7 +6,7 @@ Test creation of objects and features.
 
 ## Render and Validate
 * Lint and Render
-* Expected number of "1" objects were rendered on top of basic objects count
+* Expected number of "2" objects were rendered on top of basic objects count
 * Validate
 
 ## Metadata
@@ -150,6 +150,31 @@ Test creation of objects and features.
 * Test Object has key "spec§jobTemplate§spec§template§spec§containers§0§resources§requests§cpu" with value "99m"
 * Test Object has key "spec§jobTemplate§spec§template§spec§containers§0§resources§requests§memory" with value "99Mi"
 
+
+## Pod template metadata
+* Lint and Render
+
+* Set test object to "release-name-hull-test-pod-template-metadata"
+
+* Test Object has key "spec§jobTemplate§spec§template§metadata§annotations§shared_annotation" with value "from_pod_annotations"
+* Test Object has key "spec§jobTemplate§spec§template§metadata§annotations§pod_only_annotation" with value "pod"
+* Test Object has key "spec§jobTemplate§spec§template§metadata§annotations§template_only_annotation" with value "template"
+* Test Object has key "spec§jobTemplate§spec§template§metadata§annotations§object_only_annotation" with value "object"
+
+* Test Object has key "spec§jobTemplate§spec§template§metadata§labels§shared_label" with value "from_pod_labels"
+* Test Object has key "spec§jobTemplate§spec§template§metadata§labels§pod_only_label" with value "pod"
+* Test Object has key "spec§jobTemplate§spec§template§metadata§labels§template_only_label" with value "template"
+* Test Object has key "spec§jobTemplate§spec§template§metadata§labels§object_only_label" with value "object"
+
+* Test Object does not have key "spec§jobTemplate§spec§template§spec§annotations"
+* Test Object does not have key "spec§jobTemplate§spec§template§spec§labels"
+
+* Test Object has key "metadata§annotations§cronjob_only_annotation" with value "cronjob"
+* Test Object has key "metadata§labels§cronjob_only_label" with value "cronjob"
+* Test Object does not have key "metadata§annotations§pod_only_annotation"
+* Test Object does not have key "metadata§annotations§object_only_annotation"
+* Test Object does not have key "metadata§labels§pod_only_label"
+* Test Object does not have key "metadata§labels§object_only_label"
 
 ___
 
