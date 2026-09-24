@@ -6,7 +6,9 @@ Below sections detail the properties for creating pods via HULL.
 
 ### The `hull.PodTemplate.v1` properties
 
-For pod-based objects there is no need to create a `spec` property. The `spec.selector` property is automatically created under the hood to match the objects automatically created metadata. Any `spec.template.metadata` metadata is specified at top-level via `templateAnnotations` and `templateLabels` keys.
+For pod-based objects there is no need to create a `spec` property. The `spec.selector` property is automatically created under the hood to match the objects automatically created metadata. Any `spec.template.metadata` metadata is specified within the `pod` specification via its `annotations` and `labels` keys - since this metadata ends up on the pod, that is where it naturally belongs.
+
+As an alternative the top-level `templateAnnotations` and `templateLabels` keys are available and remain fully supported. They have exactly the same effect, are merged with their `pod` level counterparts and lose against them where the same key is defined in both.
 
 ⚠️The `selector` property of pod-based objects will be automatically populated to match the exact combination of the auto-generated `hull.config.general.metadata.labels.common` fields `app.kubernetes.io/name`, `app.kubernetes.io/instance` and `app.kubernetes.io/component`. An exception is made for the objects of type `job` where no `selector` field is set because Kubernetes jobs deal with the `selector` implicitly. If need be it is possible to set `selector` manually for the particular `job` however.⚠️
 
@@ -14,18 +16,20 @@ So for all HULL based objects, the pod specific information is wrapped like this
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `templateAnnotations` | Dictionary with annotations to add to the Kubernetes objects `spec.template.metadata.annotations` section. | `{}` | `appImportance:`&#160;`"low"` |
-| `templateLabels` | Dictionary with labels to add to the Kubernetes objects `spec.template.metadata.labels` section. | `{}` | `appStatus:`&#160;`"bad"` |
-| `pod` | Specification of the inner pod in the form of **`hull.Pod.v1`**. See below for reference. | | |
+| `pod` | Specification of the inner pod in the form of **`hull.Pod.v1`**. See below for reference. This is also where the pod template metadata belongs, via its `annotations` and `labels` keys. | | |
+| `templateAnnotations` | Alternative to the preferred `pod.annotations`. Dictionary with annotations to add to the Kubernetes objects `spec.template.metadata.annotations` section. <br><br>Both are merged and where the same key is defined in both the `pod.annotations` value wins. | `{}` | `appImportance:`&#160;`"low"` |
+| `templateLabels` | Alternative to the preferred `pod.labels`. Dictionary with labels to add to the Kubernetes objects `spec.template.metadata.labels` section. <br><br>Both are merged and where the same key is defined in both the `pod.labels` value wins. | `{}` | `appStatus:`&#160;`"bad"` |
 
 ### The `hull.Pod.v1` properties
 
-Properties can be set as they are defined in the [Kubernetes API's pod spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.36/#podspec-v1-core).
+Properties can be set as they are defined in the [Kubernetes API's pod spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.37/#podspec-v1-core).
 
 However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
+| `annotations` | The preferred way to add annotations to the Kubernetes objects `spec.template.metadata.annotations` section. <br><br>Note that the annotations are rendered to the pod templates metadata, they are not added to the pods `spec`. The object level `templateAnnotations` key is an equivalent alternative, see **`hull.PodTemplate.v1`** above. | `{}` | `appImportance:`&#160;`"low"` |
+| `labels` | The preferred way to add labels to the Kubernetes objects `spec.template.metadata.labels` section. <br><br>Note that the labels are rendered to the pod templates metadata, they are not added to the pods `spec`. The object level `templateLabels` key is an equivalent alternative, see **`hull.PodTemplate.v1`** above. | `{}` | `appStatus:`&#160;`"bad"` |
 | `initContainers` | Dictionary with init containers to add to the pods `spec.initContainers` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.Container.v1`** properties. See below for reference.<br><br>⚠️ **Due to the conversion between dictionary and array the order of elements is changed so that all keys are alphanumerically sorted ascending before the key-value pairs are converted to array elements. Unfortunately this cannot be avoided. In the case of initContainers - where order of items is important for order of execution - this means that the initContainer keys need to be chosen so that their alphanumeric order matches the desired order of execution. This can be simply achieved by eg. adding prefixes `01_`, `02_`, ... to the initContainer key names.** ⚠️ | `{}` | |
 | `containers` | Dictionary with containers to add to the pods `spec.containers` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.Container.v1`** properties. See below for reference. | `{}` | |
 | `volumes` | Dictionary with volumes to add to the pods `spec.volumes` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.Volume.v1`** properties. See below for reference. | `{}` | |
@@ -35,7 +39,7 @@ However the properties listed below are overwritten or added by HULL:
 > The key-value pairs of value type `hull.Container.v1` are converted to an array on rendering
 > The `name` property of the container is derived from the key.
 
-Properties can be set as they are defined in the [Kubernetes API's container spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.36/#container-v1-core).
+Properties can be set as they are defined in the [Kubernetes API's container spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.37/#container-v1-core).
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -62,7 +66,7 @@ Definition of container images is split into multiple parts to allow better supp
 > The key-value pairs of value type `hull.Env.v1` are converted to an array on rendering
 > The `name` property of the environment variable is derived from the key.
 
-Properties can be set as they are defined in the [Kubernetes API's envvar spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.36/#envvar-v1-core).
+Properties can be set as they are defined in the [Kubernetes API's envvar spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.37/#envvar-v1-core).
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -79,7 +83,7 @@ However the properties listed below are overwritten or added by HULL:
 
 > The key-value pairs of value type `hull.EnvFrom.v1` are converted to an array on rendering
 
-Properties can be set as they are defined in the [Kubernetes API's envfromsource spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.36/#envfromsource-v1-core).
+Properties can be set as they are defined in the [Kubernetes API's envfromsource spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.37/#envfromsource-v1-core).
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -96,7 +100,7 @@ However the properties listed below are overwritten or added by HULL:
 > The key-value pairs of value type `hull.ContainerPort.v1` are converted to an array on rendering
 > The `name` property of the container's port is derived from the key.
 
-Properties can be set as they are defined in the [Kubernetes API's containerport spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.36/#containerport-v1-core).
+Properties can be set as they are defined in the [Kubernetes API's containerport spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.37/#containerport-v1-core).
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -108,7 +112,7 @@ However the properties listed below are overwritten or added by HULL:
 
 > The key-value pairs of value type `hull.VolumeMount.v1` are converted to an array on rendering
 
-Properties can be set as they are defined in the [Kubernetes API's volumemount spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.36/#volumemount-v1-core).
+Properties can be set as they are defined in the [Kubernetes API's volumemount spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.37/#volumemount-v1-core).
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -122,7 +126,7 @@ However the properties listed below are overwritten or added by HULL:
 > The key-value pairs of value type `hull.Volume.v1` are converted to an array on rendering
 > The `name` property of the volume is derived from the key.
 
-Properties can be set as they are defined in the [Kubernetes API's volume spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.36/#volume-v1-core).
+Properties can be set as they are defined in the [Kubernetes API's volume spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.37/#volume-v1-core).
 
 However the properties listed below are overwritten or added by HULL:
 

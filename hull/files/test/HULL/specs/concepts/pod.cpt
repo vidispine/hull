@@ -990,10 +990,6 @@ Test serialization functions
 
 * All test objects have key "spec§template§spec§serviceAccountName" with value "sa-always-to-use" except objects "release-name-hull-test-full-example-deployment,release-name-hull-test-service-account,release-name-hull-test-test-pod-template-single,release-name-hull-test-test-pod-template-single-overwrite,release-name-hull-test-source-enabled-disabled"
 
-* Test object "release-name-hull-test-default" of kind "ServiceAccount" does not exist
-* Test object "release-name-hull-test-default" of kind "Role" does not exist
-* Test object "release-name-hull-test-default" of kind "RoleBinding" does not exist
-
 * Set test object to "release-name-hull-test-full-example-deployment"
 * Test Object has key "spec§template§spec§serviceAccountName" with value "full_example_serviceaccount"
 
@@ -1013,6 +1009,31 @@ Test serialization functions
 * Test Object has key "spec§template§spec§serviceAccountName" with value "test-2"
 * Test Object has key "spec§template§spec§securityContext§runAsNonRoot" set to false
 * Test Object has key "spec§template§spec§securityContext§runAsUser" with integer value "1000"
+
+* Prepare default test case for this kind including suites "pod"
+* Lint and Render
+
+* Test object "release-name-hull-test-default" of kind "ServiceAccount" does not exist
+* Test object "release-name-hull-test-default" of kind "Role" does not exist
+* Test object "release-name-hull-test-default" of kind "RoleBinding" does not exist
+
+* Set test object to "release-name-hull-test-image-pull-policy"
+* Test Object does not have key "spec§template§spec§serviceAccountName"
+
+* Prepare default test case for this kind including suites "pod,defaultrbacobjects"
+* Lint and Render
+
+* Set test object to "release-name-hull-test-default" of kind "ServiceAccount"
+* Test Object has key "metadata§name" with value "release-name-hull-test-default"
+
+* Set test object to "release-name-hull-test-default" of kind "Role"
+* Test Object has key "metadata§name" with value "release-name-hull-test-default"
+
+* Set test object to "release-name-hull-test-default" of kind "RoleBinding"
+* Test Object has key "metadata§name" with value "release-name-hull-test-default"
+
+* Set test object to "release-name-hull-test-image-pull-policy"
+* Test Object has key "spec§template§spec§serviceAccountName" with value "release-name-hull-test-default"
 
 * Prepare default test case for this kind including suites "pod/podhashsumdefaulting"
 * Lint and Render
@@ -1046,3 +1067,28 @@ Test serialization functions
 
 * Test Object has key "spec§template§metadata§annotations§hashsum.configmap.release-name-hull-test-enabled-configmap/a-value" with value "2cc0755df4ffc8daf249de2c1875c04dc13e8fc5a27d9ba5de6c1ff9a5d0c51a"
 * Test Object has key "spec§template§metadata§annotations§hashsum.secret.release-name-hull-test-enabled-secret/a-value" with value "2cc0755df4ffc8daf249de2c1875c04dc13e8fc5a27d9ba5de6c1ff9a5d0c51a"
+
+* Prepare default test case for this kind including suites "pod"
+* Lint and Render
+
+* Set test object to "release-name-hull-test-pod-template-metadata"
+
+* Test Object has key "spec§template§metadata§annotations§shared_annotation" with value "from_pod_annotations"
+* Test Object has key "spec§template§metadata§annotations§pod_only_annotation" with value "pod"
+* Test Object has key "spec§template§metadata§annotations§template_only_annotation" with value "template"
+* Test Object has key "spec§template§metadata§annotations§object_only_annotation" with value "object"
+
+* Test Object has key "spec§template§metadata§labels§shared_label" with value "from_pod_labels"
+* Test Object has key "spec§template§metadata§labels§pod_only_label" with value "pod"
+* Test Object has key "spec§template§metadata§labels§template_only_label" with value "template"
+* Test Object has key "spec§template§metadata§labels§object_only_label" with value "object"
+
+* Test Object does not have key "spec§template§spec§annotations"
+* Test Object does not have key "spec§template§spec§labels"
+
+* Test Object has key "metadata§annotations§object_only_annotation" with value "object"
+* Test Object has key "metadata§labels§object_only_label" with value "object"
+* Test Object does not have key "metadata§annotations§pod_only_annotation"
+* Test Object does not have key "metadata§annotations§template_only_annotation"
+* Test Object does not have key "metadata§labels§pod_only_label"
+* Test Object does not have key "metadata§labels§template_only_label"

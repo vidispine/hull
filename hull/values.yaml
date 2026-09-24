@@ -15,6 +15,7 @@ config:
     nameOverride: ""
     namespaceOverride: ""
     noObjectNamePrefixes: false
+    createDefaultRbacTriplet: false
     createImagePullSecretsFromRegistries: true
     globalImageRegistryServer: ""
     globalImageRegistryToFirstRegistrySecretServer: false
@@ -138,7 +139,7 @@ objects:
       annotations: {}
       labels: {}
     default:
-      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) ""
+      enabled: _HT?_HT*hull.config.general.createDefaultRbacTriplet
       annotations: {}
       labels: {}
 ###################################################
@@ -152,7 +153,7 @@ objects:
       rules:
         _HULL_OBJECT_TYPE_DEFAULT_: {}
     default:
-      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) ""
+      enabled: _HT?_HT*hull.config.general.createDefaultRbacTriplet
       rules: {}
 ###################################################
 
@@ -163,7 +164,7 @@ objects:
       annotations: {}
       labels: {}
     default:
-      enabled: _HT?eq (dig "serviceAccountName" "" _HT*hull.config.templates.pod.global) ""
+      enabled: _HT?_HT*hull.config.general.createDefaultRbacTriplet
       roleRef:
         apiGroup: "rbac.authorization.k8s.io"
         kind: "Role"
@@ -285,6 +286,8 @@ objects:
       templateAnnotations: {}
       templateLabels: {}
       pod:        
+        annotations: {}
+        labels: {}
         initContainers: 
           _HULL_OBJECT_TYPE_DEFAULT_:
             env: 
@@ -314,6 +317,8 @@ objects:
       templateAnnotations: {}
       templateLabels: {}
       pod:
+        annotations: {}
+        labels: {}
         initContainers: 
           _HULL_OBJECT_TYPE_DEFAULT_:
             env: 
@@ -344,6 +349,8 @@ objects:
         templateAnnotations: {}
         templateLabels: {}
         pod:
+          annotations: {}
+          labels: {}
           initContainers: 
             _HULL_OBJECT_TYPE_DEFAULT_:
               env: 
@@ -373,6 +380,8 @@ objects:
       templateAnnotations: {}
       templateLabels: {}
       pod:
+        annotations: {}
+        labels: {}
         initContainers: 
           _HULL_OBJECT_TYPE_DEFAULT_:
             env: 
@@ -402,6 +411,8 @@ objects:
       templateAnnotations: {}
       templateLabels: {}
       pod:
+        annotations: {}
+        labels: {}
         initContainers: 
           _HULL_OBJECT_TYPE_DEFAULT_:
             env: 

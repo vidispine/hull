@@ -2645,3 +2645,27 @@ hull:
               image:
                 repository: my/image/repo
                 tag: "99.9"
+
+      pod-template-metadata:
+        annotations:
+          object_only_annotation: object
+        labels:
+          object_only_label: object
+        templateAnnotations:
+          shared_annotation: from_template_annotations
+          template_only_annotation: template
+        templateLabels:
+          shared_label: from_template_labels
+          template_only_label: template
+        pod:
+          annotations:
+            shared_annotation: from_pod_annotations
+            pod_only_annotation: pod
+          labels:
+            shared_label: from_pod_labels
+            pod_only_label: pod
+          containers:
+            single:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
