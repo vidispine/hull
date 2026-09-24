@@ -17,16 +17,19 @@ parameters:
 steps:
 - script: |
       set -euo pipefail
-      echo installing gauge
-      # The installer sudo's itself where needed, so do not run it as root here.
-      # Without -f curl exits 0 on an HTTP error and sh silently installs nothing,
-      # which only surfaces much later as 'gauge: command not found'.
-      installer="$(mktemp)"
+      echo installing gauge v${GAUGE_VERSION}
+      # Download a pinned release asset directly instead of using the
+      # downloads.gauge.org installer: that script resolves the zip URL through
+      # the unauthenticated GitHub API (60 requests/hour per IP, shared across
+      # hosted agents), and when rate limited it gets an empty URL and runs a
+      # bare 'curl -L -o gauge.zip'. Release asset downloads are not API calls.
+      url="https://github.com/getgauge/gauge/releases/download/v${GAUGE_VERSION}/gauge-${GAUGE_VERSION}-linux.x86_64.zip"
+      tmp="$(mktemp -d)"
       installed=false
       for attempt in 1 2 3; do
-        if curl -SsfL "https://downloads.gauge.org/stable" -o "${installer}" \
-           && [ -s "${installer}" ] \
-           && sh "${installer}" \
+        if curl -SsfL --retry 3 "${url}" -o "${tmp}/gauge.zip" \
+           && unzip -oq "${tmp}/gauge.zip" -d "${tmp}" \
+           && sudo install -m 0755 "${tmp}/gauge" /usr/local/bin/gauge \
            && command -v gauge > /dev/null; then
           installed=true
           break
@@ -35,14 +38,17 @@ steps:
         if [ "${attempt}" -lt 3 ]; then sleep 15; fi
       done
       if [ "${installed}" != true ]; then
-        echo "##vso[task.logissue type=error]gauge could not be installed after 3 attempts"
+        echo "##vso[task.logissue type=error]gauge v${GAUGE_VERSION} could not be installed from ${url} after 3 attempts"
         exit 1
       fi
-      rm -f "${installer}"
+      rm -rf "${tmp}"
+      gauge version
       cd hull/files/test/HULL
       sudo pip install -r requirements.txt
       gauge
   displayName: 'install gauge'
+  env:
+    GAUGE_VERSION: 1.6.38
   condition: or(and(gt(length('${{join(' ',parameters.HelmVersions) }}'),0),eq('${{ parameters.RunTests }}','True')),and(ne(variables['HelmVersion'],''),eq('${{ parameters.RunTests }}','True')))
 
 - script: |
