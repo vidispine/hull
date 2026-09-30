@@ -469,6 +469,7 @@
     "io.k8s.api.admissionregistration.v1.MutatingWebhook.Names": {
       "enum": [
         "enabled",
+        "order",
         "admissionReviewVersions",
         "clientConfig",
         "failurePolicy",
@@ -588,6 +589,18 @@
             },
             {
               "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -1423,6 +1436,7 @@
     "io.k8s.api.admissionregistration.v1.ValidatingWebhook.Names": {
       "enum": [
         "enabled",
+        "order",
         "admissionReviewVersions",
         "clientConfig",
         "failurePolicy",
@@ -1537,6 +1551,18 @@
             },
             {
               "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -10948,6 +10974,7 @@
     "io.k8s.api.core.v1.ContainerPort.Names": {
       "enum": [
         "enabled",
+        "order",
         "containerPort",
         "hostIP",
         "hostPort",
@@ -11001,6 +11028,18 @@
             },
             {
               "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -11804,6 +11843,7 @@
     "io.k8s.api.core.v1.EnvFromSource.Names": {
       "enum": [
         "enabled",
+        "order",
         "configMapRef",
         "prefix",
         "secretRef"
@@ -11834,6 +11874,18 @@
             }
           ],
           "title": "Enabled"
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         }
       },
       "anyOf": [
@@ -11848,6 +11900,7 @@
     "io.k8s.api.core.v1.EnvVar.Names": {
       "enum": [
         "enabled",
+        "order",
         "value",
         "valueFrom"
       ]
@@ -11884,6 +11937,18 @@
             },
             {
               "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -19516,7 +19581,8 @@
         "port",
         "protocol",
         "targetPort",
-        "enabled"
+        "enabled",
+        "order"
       ]
     },
     "io.k8s.api.core.v1.ServicePort": {
@@ -19570,6 +19636,18 @@
             },
             {
               "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -20256,6 +20334,7 @@
     "io.k8s.api.core.v1.Volume.Names": {
       "enum": [
         "enabled",
+        "order",
         "active",
         "awsElasticBlockStore",
         "azureDisk",
@@ -20423,6 +20502,18 @@
             }
           ]
         },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
         "active": {
           "title": "Active",
           "type": "string"
@@ -20533,6 +20624,7 @@
     "io.k8s.api.core.v1.VolumeMount.Names": {
       "enum": [
         "enabled",
+        "order",
         "bindMountOptions",
         "mountPath",
         "mountPropagation",
@@ -20605,6 +20697,18 @@
             },
             {
               "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         },
@@ -22944,6 +23048,7 @@
     "io.k8s.api.networking.v1.HTTPIngressPath.Names": {
       "enum": [
         "enabled",
+        "order",
         "path",
         "pathType",
         "backend"
@@ -22972,6 +23077,18 @@
             },
             {
               "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -23629,7 +23746,8 @@
         "hosts",
         "secretName",
         "staticName",
-        "enabled"
+        "enabled",
+        "order"
       ]
     },
     "io.k8s.api.networking.v1.IngressTLS": {
@@ -23673,6 +23791,18 @@
             },
             {
               "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -24932,7 +25062,8 @@
         "resourceNames",
         "resources",
         "verbs",
-        "enabled"
+        "enabled",
+        "order"
       ]
     },
     "io.k8s.api.rbac.v1.PolicyRule": {
@@ -25020,6 +25151,18 @@
             },
             {
               "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -40167,6 +40310,7 @@
     "hull.Container.v1.Names": {
       "enum": [
         "enabled",
+        "order",
         "image",
         "ports",
         "env",
@@ -40186,6 +40330,18 @@
             },
             {
               "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "HullContainerOrder",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         },
@@ -40854,6 +41010,7 @@
     "hull.Ingress.Rule.v1.Names": {
       "enum": [
         "enabled",
+        "order",
         "http"
       ]
     },
@@ -40875,6 +41032,18 @@
             },
             {
               "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "HullIngressRuleOrder",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         },
@@ -41785,7 +41954,9 @@
       "enum": [
         "group",
         "kind",
-        "name"
+        "name",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1alpha2.LocalPolicyTargetReference": {
@@ -41828,6 +41999,29 @@
               "maxLength": 253,
               "minLength": 1,
               "type": "string"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -42072,7 +42266,9 @@
         "group",
         "kind",
         "name",
-        "sectionName"
+        "sectionName",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1alpha3.LocalPolicyTargetReferenceWithSectionName": {
@@ -42120,6 +42316,29 @@
         },
         "sectionName": {
           "$ref": "#/definitions/gateway.networking.k8s.io.v1.SectionName"
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         }
       },
       "required": [
@@ -42605,7 +42824,9 @@
     "gateway.networking.k8s.io.v1.GatewayAddress.Names": {
       "enum": [
         "type",
-        "value"
+        "value",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.GatewayAddress": {
@@ -42636,6 +42857,29 @@
               "maxLength": 253,
               "minLength": 1,
               "type": "string"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -42737,7 +42981,9 @@
     "gateway.networking.k8s.io.v1.RouteGroupKind.Names": {
       "enum": [
         "kind",
-        "group"
+        "group",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.RouteGroupKind": {
@@ -42768,6 +43014,29 @@
               "minLength": 1,
               "pattern": "^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$",
               "type": "string"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -42865,7 +43134,9 @@
         "group",
         "kind",
         "name",
-        "namespace"
+        "namespace",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.SecretObjectReference": {
@@ -42924,6 +43195,29 @@
               "minLength": 1,
               "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
               "type": "string"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -43021,7 +43315,9 @@
         "group",
         "kind",
         "name",
-        "namespace"
+        "namespace",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.ObjectReference": {
@@ -43078,6 +43374,29 @@
               "minLength": 1,
               "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
               "type": "string"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -43179,7 +43498,9 @@
         "name",
         "port",
         "protocol",
-        "tls"
+        "tls",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.Listener": {
@@ -43443,6 +43764,29 @@
             {
               "message": "certificateRefs or options must be specified when mode is Terminate",
               "rule": "self.mode == 'Terminate' ? size(self.certificateRefs) > 0 || size(self.options) > 0 : true"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -43881,7 +44225,9 @@
         "name",
         "namespace",
         "port",
-        "weight"
+        "weight",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.BackendRef": {
@@ -43903,6 +44249,29 @@
               "format": "int32",
               "maximum": 1000000,
               "minimum": 0,
+              "type": "integer"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
               "type": "integer"
             }
           ]
@@ -44211,7 +44580,9 @@
         "requestHeaderModifier",
         "responseHeaderModifier",
         "requestMirror",
-        "type"
+        "type",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.GRPCRouteFilter": {
@@ -44245,13 +44616,38 @@
               "type": "string"
             }
           ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         }
       }
     },
     "hull.GRPCRouteMatch.v1.Names": {
       "enum": [
         "method",
-        "headers"
+        "headers",
+        "enabled",
+        "order"
       ]
     },
     "hull.GRPCRouteMatch.v1": {
@@ -44334,6 +44730,29 @@
               ]
             }
           }
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         }
       }
     },
@@ -44528,7 +44947,9 @@
       "enum": [
         "backendRefs",
         "filters",
-        "matches"
+        "matches",
+        "enabled",
+        "order"
       ]
     },
     "hull.GRPCRouteRule.v1": {
@@ -44755,6 +45176,29 @@
               ]
             }
           }
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         }
       },
       "required": []
@@ -44766,7 +45210,9 @@
         "name",
         "namespace",
         "port",
-        "sectionName"
+        "sectionName",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.ParentReference": {
@@ -44844,6 +45290,29 @@
         },
         "sectionName": {
           "$ref": "#/definitions/gateway.networking.k8s.io.v1.SectionName"
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         }
       }
     },
@@ -45098,7 +45567,9 @@
       "enum": [
         "group",
         "kind",
-        "namespace"
+        "namespace",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1beta1.ReferenceGrantFrom": {
@@ -45144,6 +45615,29 @@
               "type": "string"
             }
           ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         }
       },
       "required": [
@@ -45157,7 +45651,9 @@
       "enum": [
         "group",
         "kind",
-        "name"
+        "name",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1beta1.ReferenceGrantTo": {
@@ -45200,6 +45696,29 @@
               "maxLength": 253,
               "minLength": 1,
               "type": "string"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
             }
           ]
         }
@@ -45356,7 +45875,9 @@
     "hull.TCPRouteRule.v1alpha2.Names": {
       "enum": [
         "backendRefs",
-        "name"
+        "name",
+        "enabled",
+        "order"
       ]
     },
     "hull.TCPRouteRule.v1alpha2": {
@@ -45440,6 +45961,29 @@
         },
         "name": {
           "$ref": "#/definitions/gateway.networking.k8s.io.v1.SectionName"
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         }
       },
       "required": []
@@ -45653,7 +46197,9 @@
     },
     "hull.TLSRouteRule.v1alpha2.Names": {
       "enum": [
-        "backendRefs"
+        "backendRefs",
+        "enabled",
+        "order"
       ]
     },
     "hull.TLSRouteRule.v1alpha2": {
@@ -45734,6 +46280,29 @@
               ]
             }
           }
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         }
       },
       "required": []
@@ -45955,7 +46524,9 @@
     "hull.UDPRouteRule.v1alpha2.Names": {
       "enum": [
         "backendRefs",
-        "name"
+        "name",
+        "enabled",
+        "order"
       ]
     },
     "hull.UDPRouteRule.v1alpha2": {
@@ -46039,6 +46610,29 @@
         },
         "name": {
           "$ref": "#/definitions/gateway.networking.k8s.io.v1.SectionName"
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         }
       },
       "required": []
@@ -46231,7 +46825,9 @@
         "headers",
         "method",
         "path",
-        "queryParams"
+        "queryParams",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.HTTPRouteMatch": {
@@ -46503,6 +47099,29 @@
             "name"
           ],
           "x-kubernetes-list-type": "map"
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         }
       },
       "anyOf": [
@@ -46522,7 +47141,9 @@
         "requestRedirect",
         "responseHeaderModifier",
         "type",
-        "urlRewrite"
+        "urlRewrite",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.HTTPRouteFilter": {
@@ -46789,6 +47410,29 @@
               "type": "object"
             }
           ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         }
       }
     },
@@ -46857,7 +47501,9 @@
       "enum": [
         "backendRefs",
         "filters",
-        "matches"
+        "matches",
+        "enabled",
+        "order"
       ]
     },
     "hull.HTTPRouteRule.v1": {
@@ -47078,6 +47724,29 @@
               ]
             }
           }
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "order": {
+          "title": "Order",
+          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         }
       },
       "required": []

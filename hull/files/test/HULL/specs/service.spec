@@ -69,6 +69,17 @@ Test creation of objects and features.
 * Set test object to "release-name-hull-test-no-ports"
 * Test Object has key "spec§ports" with array value that has "0" items
 
+## Order
+* Prepare test case "service" for kind "Service" and values file "values_order.hull.yaml"
+* Lint and Render values file "values_order.hull.yaml"
+* Validate
+* Set test object to "release-name-hull-test-port-order"
+* Test Object has key "spec§ports" with array value that has "3" items
+* Test Object has key "spec§ports§0§name" with value "admin"
+* Test Object has key "spec§ports§1§name" with value "metrics"
+* Test Object has key "spec§ports§2§name" with value "http"
+* Test Object does not have key "spec§ports§0§order"
+
 ___
 
 * Clean the test execution folder

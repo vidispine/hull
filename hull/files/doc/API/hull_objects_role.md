@@ -37,6 +37,7 @@ However the properties listed below are overwritten or added by HULL:
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
 | `enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` | |
+| `order` | Integer (or transformation resolving to an integer) that determines the position of the element when the dictionary is rendered as an array. Elements are sorted ascending by `order`, elements with equal `order` alphanumerically by key. See [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements) for details. | `0` | `2` |
 
 ---
 Back to [README.md](/README.md)

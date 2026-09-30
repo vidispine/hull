@@ -21,10 +21,12 @@
 {{- $keepHashsumAnnotations := (index . "KEEP_HASHSUM_ANNOTATIONS") -}}
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (not (hasKey $spec "enabled")) -}}
 - {{ dict "name" $component | toYaml }}
-{{ if (gt (len (keys (default dict $spec.tls))) 1) }}
+{{ if (gt (len (keys (default dict $spec.tls))) 0) }}
 {{ include "hull.object.base.gateway.api.gateway.listener.tls" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "tls" dict (default dict $defaultSpec)) "COMPONENT" $component "SPEC" $spec.tls "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 }}
 {{ end }}
-{{ if (gt (len (keys (default dict $spec.allowedRoutes))) 1) }}
+{{ $allowedRoutes := default dict $spec.allowedRoutes }}
+{{ $kinds := default dict $allowedRoutes.kinds }}
+{{ if (or (gt (len (keys (omit $allowedRoutes "kinds"))) 0) (and (kindIs "map" $kinds) (gt (len (keys (omit $kinds "_HULL_OBJECT_TYPE_DEFAULT_"))) 0)) (and (kindIs "slice" $kinds) (gt (len $kinds) 0))) }}
 {{ include "hull.object.base.gateway.api.gateway.listener.allowedroutes" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "allowedRoutes" dict (default dict $defaultSpec)) "COMPONENT" $component "SPEC" $spec.allowedRoutes "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 }}
 {{ end }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "tls" "allowedRoutes")) | indent 2 }}
@@ -67,11 +69,14 @@ allowedRoutes: []
 {{- if or (and (hasKey $spec "enabled") $spec.enabled) (not (hasKey $spec "enabled")) -}}
 {{- $tls := dict }}
 {{ if hasKey $spec "frontendValidation" }}
-{{ $tls = merge $tls ((include "hull.object.base.gateway.api.gateway.listener.frontendvalidation" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "frontendValidation" dict (default dict $defaultSpec)) "COMPONENT" $component "SPEC" $spec.frontendValidation "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations)) | fromYaml) }}
+{{ $frontendValidation := (include "hull.object.base.gateway.api.gateway.listener.frontendvalidation" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "frontendValidation" dict (default dict $defaultSpec)) "COMPONENT" $component "SPEC" $spec.frontendValidation "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations)) | fromYaml }}
+{{ if $frontendValidation.frontendValidation }}
+{{ $tls = merge $tls $frontendValidation }}
+{{ end }}
 {{ end }}
 {{ $tls = merge $tls ((include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "certificateRefs" "_HULL_OBJECT_TYPE_DEFAULT_" dict (default dict $defaultSpec)) "SPEC" $spec "KEY" "certificateRefs" "OBJECT_TEMPLATE" "hull.object.base.dynamic.simple.array" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations)) | fromYaml) }}
 {{ $tls = merge $tls ((include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "frontendValidation" "certificateRefs"))) | fromYaml) }}
-{{ if (gt (len (keys (default dict $tls))) 1) }}
+{{ if (gt (len (keys (default dict $tls))) 0) }}
 tls:
 {{ $tls | toYaml | indent 2 }}
 {{- else -}}
@@ -107,10 +112,12 @@ frontendValidation:
 {{- $spec := default nil (index . "SPEC") -}}
 {{- $objectType := (index . "OBJECT_TYPE") -}}
 {{- $keepHashsumAnnotations := (index . "KEEP_HASHSUM_ANNOTATIONS") }}
+{{- if or (and (hasKey $spec "enabled") $spec.enabled) (not (hasKey $spec "enabled")) -}}
 - {{ if hasKey $spec "filters" }}
 {{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "filters" "_HULL_OBJECT_TYPE_DEFAULT_" dict (default dict $defaultSpec)) "SPEC" $spec "KEY" "filters" "OBJECT_TEMPLATE" "hull.object.base.dynamic.simple.array" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2}}
 {{ end }}
 {{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "filters")) | indent 2 }}
+{{ end }}
 {{ end }}
 
 
