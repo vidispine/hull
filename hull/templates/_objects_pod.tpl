@@ -119,7 +119,8 @@ imagePullSecrets: []
 | Purpose:  
 |   
 |   Creates serviceAccountName for the pod.
-|   If not explicitly specified, the default serviceaccount is used
+|   If not explicitly specified, the default serviceaccount is used when it is enabled
+|   and 'config.general.assignDefaultServiceAccountToPods' is true.
 |
 | Interface:
 |
@@ -135,7 +136,7 @@ imagePullSecrets: []
 {{ if hasKey $spec.pod "serviceAccountName" }}
 serviceAccountName: {{ $spec.pod.serviceAccountName }}
 {{ else }}
-{{ if (index $parent.Values $hullRootKey).objects.serviceaccount.default.enabled }}
+{{ if and (index $parent.Values $hullRootKey).objects.serviceaccount.default.enabled (dig "assignDefaultServiceAccountToPods" true (index $parent.Values $hullRootKey).config.general) }}
 serviceAccountName: {{ include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "COMPONENT" "default" "HULL_ROOT_KEY" $hullRootKey) }}
 {{ end }}
 {{ end }}

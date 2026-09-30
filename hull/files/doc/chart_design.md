@@ -1112,7 +1112,6 @@ spec:
           requests:
             cpu: "5.5"
             memory: 9.9Gi
-      serviceAccountName: release-name-hull-test-default
 ```
 
 This wraps up the introduction into efficient chart building with HULL.

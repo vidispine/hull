@@ -593,16 +593,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [],
@@ -1555,16 +1546,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [],
@@ -11032,16 +11014,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [],
@@ -11876,16 +11849,7 @@
           "title": "Enabled"
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "anyOf": [
@@ -11941,16 +11905,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [],
@@ -19640,16 +19595,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [],
@@ -20503,16 +20449,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         },
         "active": {
           "title": "Active",
@@ -20701,16 +20638,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         },
         "hashsumAnnotation": {
           "description": "If true and volume for this volumeMount is a ConfigMap or Secret, enables enabling adding hashsum annotation to the pods template annotations.",
@@ -23081,16 +23009,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [],
@@ -23795,16 +23714,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "anyOf": [
@@ -25155,16 +25065,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [],
@@ -40334,16 +40235,7 @@
           ]
         },
         "order": {
-          "title": "HullContainerOrder",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         },
         "image": {
           "description": "Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets.",
@@ -41036,16 +40928,7 @@
           ]
         },
         "order": {
-          "title": "HullIngressRuleOrder",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         },
         "http": {
           "$ref": "#/definitions/hull.Ingress.Rule.Path.v1"
@@ -42014,16 +41897,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [
@@ -42329,16 +42203,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [
@@ -42872,16 +42737,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [
@@ -43029,16 +42885,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [
@@ -43210,16 +43057,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [
@@ -43389,16 +43227,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [
@@ -43779,16 +43608,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [
@@ -44265,16 +44085,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       }
     },
@@ -44629,16 +44440,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       }
     },
@@ -44743,16 +44545,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       }
     },
@@ -45189,16 +44982,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": []
@@ -45303,16 +45087,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       }
     },
@@ -45628,16 +45403,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [
@@ -45711,16 +45477,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [
@@ -45974,16 +45731,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": []
@@ -46293,16 +46041,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": []
@@ -46623,16 +46362,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": []
@@ -47112,16 +46842,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "anyOf": [
@@ -47423,16 +47144,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       }
     },
@@ -47737,16 +47449,7 @@
           ]
         },
         "order": {
-          "title": "Order",
-          "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0.",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/hull.Transformation.Pattern"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": []
@@ -51921,7 +51624,7 @@
                 },
                 "createDefaultRbacTriplet": {
                   "$id": "#/definitions/root/config/general/createDefaultRbacTriplet",
-                  "description": "If true, a ServiveAccount, Role and RoleBinding named default are created and connected to each other.",
+                  "description": "If true, a ServiceAccount, Role and RoleBinding named default are created and connected to each other. If false (the default), none of them is created unless its 'enabled' property is set explicitly. Rendering fails if the chart customizes one of them (ServiceAccount 'annotations', Role 'rules', RoleBinding 'roleRef' or 'subjects') while it is not rendered because of this switch.",
                   "anyOf": [
                     {
                       "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -51933,6 +51636,22 @@
                   ],
                   "examples": [
                     true
+                  ]
+                },
+                "assignDefaultServiceAccountToPods": {
+                  "$id": "#/definitions/root/config/general/assignDefaultServiceAccountToPods",
+                  "description": "If true (the default) and the default ServiceAccount is rendered, pods that do not specify a 'serviceAccountName' are assigned the default ServiceAccount. If false, no 'serviceAccountName' is rendered for such pods and Kubernetes assigns the namespace's own 'default' ServiceAccount.",
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/hull.Transformation.Pattern"
+                    },
+                    {
+                      "default": true,
+                      "type": "boolean"
+                    }
+                  ],
+                  "examples": [
+                    false
                   ]
                 },
                 "metadata": {
@@ -52203,6 +51922,19 @@
     "hull.Transformation.Pattern": {
       "pattern": "^\\s*(_HT[\\*|\\?|\\^|!|&|/]|_HULL_TRANSFORMATION_<<<).*",
       "type": "string"
+    },
+    "hull.Order.v1": {
+      "title": "Order",
+      "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0. For 'env' elements, an element is additionally never rendered before the variables of the same container it references via $(VAR_NAME) in its 'value'.",
+      "format": "int32",
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "integer"
+        }
+      ]
     }
   },
   "$schema": "http://json-schema.org/draft-07/schema#",

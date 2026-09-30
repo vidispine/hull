@@ -1,0 +1,22 @@
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+    role:
+
+      default:
+        enabled: true
+        rules:
+          jobs:
+            apiGroups:
+            - batch
+            resources:
+            - jobs
+            verbs:
+            - create
+
+###################################################

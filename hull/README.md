@@ -18,8 +18,10 @@ hull:
 What happens when upgrading without setting the switch to `true`:
 
 - the `default` ServiceAccount, `default` Role and `default` RoleBinding are removed from the release on the next `helm upgrade`
-- pods that do not set a `serviceAccountName` no longer get one rendered, so Kubernetes assigns the namespaces own `default` ServiceAccount to them instead
-- if you added `rules` to the `default` Role or bound additional `subjects` to the `default` RoleBinding, set `createDefaultRbacTriplet: true` to keep those objects, or define the RBAC objects you need explicitly
+- pods that do not set a `serviceAccountName` no longer get one rendered, so Kubernetes assigns the namespace's own `default` ServiceAccount to them instead
+- if your chart customizes one of the three objects, rendering fails instead of silently dropping the configuration: this applies to `annotations` on the `default` ServiceAccount (for example an IRSA `eks.amazonaws.com/role-arn`), `rules` on the `default` Role and a changed `roleRef` or `subjects` on the `default` RoleBinding. Set `createDefaultRbacTriplet: true` to keep all three objects, or set `enabled` explicitly on each affected object to decide for it alone
+
+Each of the three objects can also be enabled on its own by setting its `enabled` property explicitly, which takes precedence over the switch. Note that they are only connected as a triplet when all three are rendered: enabling only `hull.objects.serviceaccount.default` renders the ServiceAccount without the `default` Role and RoleBinding. Whenever the `default` ServiceAccount is rendered, pods without an explicit `serviceAccountName` are assigned to it automatically, as before. Set the new `hull.config.general.assignDefaultServiceAccountToPods` switch to `false` to opt out of this assignment while still rendering the ServiceAccount.
 
 Note that the `hull.config.general.rbac` switch is unchanged, it still controls whether any Role, RoleBinding, ClusterRole and ClusterRoleBinding objects are rendered at all. With `createDefaultRbacTriplet: true` and `rbac: false` only the `default` ServiceAccount is created.
 

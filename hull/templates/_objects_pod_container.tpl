@@ -29,7 +29,7 @@
 {{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "envFrom" dict (default dict $defaultSpec)) "SPEC" $spec "KEY" "envFrom" "OBJECT_TEMPLATE" "hull.object.container.envFrom" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 }}
 {{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "ports" dict (default dict $defaultSpec)) "SPEC" $spec "KEY" "ports" "OBJECT_TEMPLATE" "hull.object.container.ports" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) | indent 2 }}
 {{ include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "volumeMounts" dict (default dict $defaultSpec)) "SPEC" $spec "KEY" "volumeMounts" "OBJECT_TEMPLATE" "hull.object.container.volumeMounts" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 }}
-{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "name" "image" "env" "envFrom" "ports" "volumeMounts" "order")) | indent 2 }}
+{{ include "hull.util.include.k8s" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_OBJECT_KEYS" (list "name" "image" "env" "envFrom" "ports" "volumeMounts")) | indent 2 }}
 {{ end }}
 {{ end }}
 

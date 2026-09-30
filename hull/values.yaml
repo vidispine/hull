@@ -16,6 +16,7 @@ config:
     namespaceOverride: ""
     noObjectNamePrefixes: false
     createDefaultRbacTriplet: false
+    assignDefaultServiceAccountToPods: true
     createImagePullSecretsFromRegistries: true
     globalImageRegistryServer: ""
     globalImageRegistryToFirstRegistrySecretServer: false

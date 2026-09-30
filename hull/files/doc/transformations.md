@@ -952,7 +952,6 @@ spec:
         - --and-this-because-other-is-not-defined
         image: my/image/repo:99.9
         name: main
-      serviceAccountName: release-name-hull-test-default
 ```
 
 ---

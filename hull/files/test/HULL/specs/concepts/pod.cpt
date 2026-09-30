@@ -1020,7 +1020,7 @@ Test serialization functions
 * Set test object to "release-name-hull-test-image-pull-policy"
 * Test Object does not have key "spec§template§spec§serviceAccountName"
 
-* Prepare default test case for this kind including suites "pod,defaultrbacobjects"
+* Prepare default test case for this kind including suites "pod,createdefaultrbactriplet"
 * Lint and Render
 
 * Set test object to "release-name-hull-test-default" of kind "ServiceAccount"
@@ -1034,6 +1034,15 @@ Test serialization functions
 
 * Set test object to "release-name-hull-test-image-pull-policy"
 * Test Object has key "spec§template§spec§serviceAccountName" with value "release-name-hull-test-default"
+
+* Prepare default test case for this kind including suites "pod,createdefaultrbactriplet,nodefaultserviceaccountassignment"
+* Lint and Render
+
+* Set test object to "release-name-hull-test-default" of kind "ServiceAccount"
+* Test Object has key "metadata§name" with value "release-name-hull-test-default"
+
+* Set test object to "release-name-hull-test-image-pull-policy"
+* Test Object does not have key "spec§template§spec§serviceAccountName"
 
 * Prepare default test case for this kind including suites "pod/podhashsumdefaulting"
 * Lint and Render

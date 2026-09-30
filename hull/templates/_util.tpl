@@ -462,3 +462,94 @@ selector:
 {{- end -}}
 {{ $errorMessage }}
 {{- end -}}
+
+
+{{- /*
+| Purpose:
+|
+|   Captures, before any transformation is resolved, whether the 'enabled' property of the
+|   'default' ServiceAccount, Role and RoleBinding is still the HULL default that couples
+|   them to 'hull.config.general.createDefaultRbacTriplet', and whether the RoleBinding's
+|   'roleRef' and 'subjects' are still the HULL defaults.
+|   Consumed by "hull.util.check.default.rbac.triplet" after transformations are resolved.
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   HULL_ROOT_KEY: The root key of the HULL configuration
+|
+*/ -}}
+{{- define "hull.util.check.default.rbac.triplet.raw" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $objects := dig "objects" dict (default dict (index $parent.Values $hullRootKey)) -}}
+{{- $defaultEnabled := "_HT?_HT*hull.config.general.createDefaultRbacTriplet" -}}
+{{- $defaultRoleRef := dict "apiGroup" "rbac.authorization.k8s.io" "kind" "Role" "name" "_HT^default" -}}
+{{- $defaultSubjects := list (dict "kind" "ServiceAccount" "name" "_HT^default" "namespace" "_HT**Release.Namespace") -}}
+{{- $result := dict -}}
+{{- range $objectType := list "serviceaccount" "role" "rolebinding" -}}
+{{- $spec := default dict (dig $objectType "default" dict $objects) -}}
+{{- $_ := set $result $objectType (dict "COUPLED" (and (kindIs "map" $spec) (eq (toString (index $spec "enabled")) $defaultEnabled))) -}}
+{{- end -}}
+{{- $roleBinding := default dict (dig "rolebinding" "default" dict $objects) -}}
+{{- if kindIs "map" $roleBinding -}}
+{{- $_ := set $result.rolebinding "CUSTOMIZED" (or (ne (toJson (index $roleBinding "roleRef")) (toJson $defaultRoleRef)) (ne (toJson (index $roleBinding "subjects")) (toJson $defaultSubjects))) -}}
+{{- end -}}
+{{ $result | toYaml }}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:
+|
+|   Fails loudly instead of silently dropping configuration: when the 'default' ServiceAccount,
+|   Role or RoleBinding is not rendered only because 'hull.config.general.createDefaultRbacTriplet'
+|   is false, but the chart customized it (ServiceAccount 'annotations', Role 'rules',
+|   RoleBinding 'roleRef' or 'subjects'), an error message is returned for each such object.
+|   Setting 'enabled' explicitly on the object (true or false) is treated as a deliberate
+|   decision and suppresses the error.
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   HULL_ROOT_KEY: The root key of the HULL configuration
+|   RAW: The result of "hull.util.check.default.rbac.triplet.raw"
+|
+*/ -}}
+{{- define "hull.util.check.default.rbac.triplet" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $raw := default dict (index . "RAW") -}}
+{{- $hull := default dict (index $parent.Values $hullRootKey) -}}
+{{- $general := dig "config" "general" dict $hull -}}
+{{- $objects := dig "objects" dict $hull -}}
+{{- $errorMessage := "" -}}
+{{- if not (dig "createDefaultRbacTriplet" false $general) -}}
+{{- $customized := dict -}}
+{{- $serviceAccount := default dict (dig "serviceaccount" "default" dict $objects) -}}
+{{- if and (kindIs "map" $serviceAccount) (gt (len (default dict (index $serviceAccount "annotations"))) 0) -}}
+{{- $_ := set $customized "serviceaccount" (list "annotations" "ServiceAccount" "has annotations") -}}
+{{- end -}}
+{{- if (dig "rbac" true $general) -}}
+{{- $role := default dict (dig "role" "default" dict $objects) -}}
+{{- if kindIs "map" $role -}}
+{{- range $ruleKey, $rule := default dict (index $role "rules") -}}
+{{- if and (ne $ruleKey "_HULL_OBJECT_TYPE_DEFAULT_") $rule -}}
+{{- $_ := set $customized "role" (list "rules" "Role" "has rules") -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- if dig "rolebinding" "CUSTOMIZED" false $raw -}}
+{{- $_ := set $customized "rolebinding" (list "subjects" "RoleBinding" "has a customized roleRef or subjects") -}}
+{{- end -}}
+{{- end -}}
+{{- range $objectType := list "serviceaccount" "role" "rolebinding" -}}
+{{- if and (hasKey $customized $objectType) (dig $objectType "COUPLED" false $raw) -}}
+{{- $details := index $customized $objectType -}}
+{{- $errorMessage = printf "%s\nHULL failed with error (@Values.%s.objects.%s.default.%s) The 'default' %s %s but is not rendered because '%s.config.general.createDefaultRbacTriplet' is false. Set 'createDefaultRbacTriplet: true' to render the default ServiceAccount, Role and RoleBinding, or set 'enabled' explicitly on '%s.objects.%s.default' to decide for this object alone." $errorMessage $hullRootKey $objectType (index $details 0) (index $details 1) (index $details 2) $hullRootKey $hullRootKey $objectType -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{ $errorMessage }}
+{{- end -}}
