@@ -50,6 +50,20 @@ Test creation of objects and features.
 * Test Object has key "spec§to§1§name" with value "toname2"
 * Test Object has key "spec§to§1§group" with value "togroup2"
 * Test Object has key "spec§to§1§kind" with value "tokind2"
+## Enabled and Order
+* Prepare default test case for this kind including suites "referencegrant/enabledorder"
+* Lint and Render
+* Validate with additional schemas in subfolder "gateway-api"
+* Set test object to "release-name-hull-test-enabled-order"
+* Test Object has key "spec§from" with array value that has "2" items
+* Test Object has key "spec§from§0§namespace" with value "namespace-z"
+* Test Object has key "spec§from§1§namespace" with value "namespace-a"
+* Test Object does not have key "spec§from§0§order"
+* Test Object has key "spec§to" with array value that has "2" items
+* Test Object has key "spec§to§0§name" with value "service-z"
+* Test Object has key "spec§to§1§name" with value "service-a"
+* Test Object does not have key "spec§to§0§order"
+
 ___
 
 * Clean the test execution folder

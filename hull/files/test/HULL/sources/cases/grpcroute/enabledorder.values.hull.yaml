@@ -1,0 +1,92 @@
+hull:
+  objects:
+    grpcroute:
+      enabled-order:
+        parentRefs:
+          z-gateway:
+            order: -1
+            name: gateway-z
+          a-gateway:
+            name: gateway-a
+          disabled-gateway:
+            enabled: false
+            name: gateway-disabled
+        rules:
+          disabled-rule:
+            enabled: false
+            backendRefs:
+              backend:
+                name: service-disabled
+                port: 80
+          b-rule:
+            order: 1
+            matches:
+              z-match:
+                order: -1
+                method:
+                  service: z.Service
+              a-match:
+                method:
+                  service: a.Service
+              disabled-match:
+                enabled: false
+                method:
+                  service: disabled.Service
+            filters:
+              z-filter:
+                order: -1
+                type: RequestHeaderModifier
+                requestHeaderModifier:
+                  add:
+                  - name: X-Z
+                    value: z
+              a-filter:
+                type: RequestHeaderModifier
+                requestHeaderModifier:
+                  add:
+                  - name: X-A
+                    value: a
+              disabled-filter:
+                enabled: false
+                type: RequestHeaderModifier
+                requestHeaderModifier:
+                  remove:
+                  - X-Disabled
+            backendRefs:
+              z-backend:
+                order: -1
+                name: service-z
+                port: 80
+                filters:
+                  z-filter:
+                    order: -1
+                    type: RequestHeaderModifier
+                    requestHeaderModifier:
+                      add:
+                      - name: X-Backend-Z
+                        value: z
+                  a-filter:
+                    type: RequestHeaderModifier
+                    requestHeaderModifier:
+                      add:
+                      - name: X-Backend-A
+                        value: a
+                  disabled-filter:
+                    enabled: false
+                    type: RequestHeaderModifier
+                    requestHeaderModifier:
+                      remove:
+                      - X-Disabled
+              a-backend:
+                name: service-a
+                port: 80
+              disabled-backend:
+                enabled: false
+                name: service-disabled
+                port: 80
+          a-rule:
+            order: 2
+            backendRefs:
+              backend:
+                name: service-last
+                port: 80

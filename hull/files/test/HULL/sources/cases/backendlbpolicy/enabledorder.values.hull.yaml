@@ -1,0 +1,19 @@
+hull:
+  objects:
+    backendlbpolicy:
+      enabled-order:
+        targetRefs:
+          z-target:
+            order: -1
+            group: ""
+            kind: Service
+            name: service-z
+          a-target:
+            group: ""
+            kind: Service
+            name: service-a
+          disabled-target:
+            enabled: false
+            group: ""
+            kind: Service
+            name: service-disabled
