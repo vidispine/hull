@@ -12,7 +12,7 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `targetRefs` | Dictionary with TargetRefs to add to the BackendLBPolicy's `targetRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1alpha2.LocalPolicyTargetReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha2.LocalPolicyTargetReference) properties. | `{}` | |
+| `targetRefs` | Dictionary with TargetRefs to add to the BackendLBPolicy's `targetRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1alpha2.LocalPolicyTargetReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha2.LocalPolicyTargetReference) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.BackendTLSPolicy.v1alpha2` properties
 
@@ -22,7 +22,7 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `targetRefs` | Dictionary with TargetRefs to add to the BackendTLSPolicy's `targetRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1alpha3.LocalPolicyTargetReferenceWithSectionName`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha2.LocalPolicyTargetReferenceWithSectionName) properties. | `{}` | |
+| `targetRefs` | Dictionary with TargetRefs to add to the BackendTLSPolicy's `targetRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1alpha3.LocalPolicyTargetReferenceWithSectionName`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha2.LocalPolicyTargetReferenceWithSectionName) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.Gateway.v1` properties
 
@@ -35,8 +35,8 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `addresses` | Dictionary with GatewayAddresses to add to the Gateway's `addresses` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.GatewayAddress`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.GatewayAddress) properties. | `{}` | |
-| `listeners` | Dictionary with Listeners to add to the Gateway's `listeners` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.Listener`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.Listener) properties except<br> `allowedRoutes.kinds` property of type **`hull.RouteGroupKind.v1`** and <br>`tls.certificateRefs` property of type **`hull.SecretObjectReference.v1`** and <br>`tls.frontendValidation.caCertificateRefs` property of type **`hull.ObjectReference.v1`**.<br>See below for additional types. | `{}` | |
+| `addresses` | Dictionary with GatewayAddresses to add to the Gateway's `addresses` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.GatewayAddress`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.GatewayAddress) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
+| `listeners` | Dictionary with Listeners to add to the Gateway's `listeners` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.Listener`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.Listener) properties except<br> `allowedRoutes.kinds` property of type **`hull.RouteGroupKind.v1`** and <br>`tls.certificateRefs` property of type **`hull.SecretObjectReference.v1`** and <br>`tls.frontendValidation.caCertificateRefs` property of type **`hull.ObjectReference.v1`**.<br>See below for additional types. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.RouteGroupKind.v1` properties under `gateway.networking.k8s.io/v1.AllowedRoutes`
 
@@ -48,7 +48,7 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `kinds` | Dictionary with Kinds to add to the AllowedRoutes's `kinds` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.RouteGroupKind`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.RouteGroupKind) properties. | `{}` | |
+| `kinds` | Dictionary with Kinds to add to the AllowedRoutes's `kinds` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.RouteGroupKind`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.RouteGroupKind) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.SecretObjectReference.v1` properties under `gateway.networking.k8s.io/v1.GatewayTLSConfig`
 
@@ -60,7 +60,7 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `certificateRefs` | Dictionary with CertificateRefs to add to the GatewayTLSConfig's `certificateRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io/v1.SecretObjectReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.SecretObjectReference) properties. | `{}` | |
+| `certificateRefs` | Dictionary with CertificateRefs to add to the GatewayTLSConfig's `certificateRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io/v1.SecretObjectReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.SecretObjectReference) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.ObjectReference.v11` properties under `gateway.networking.k8s.io/v1.FrontendTLSValidation`
 
@@ -72,7 +72,7 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `caCertificateRefs` | Dictionary with CaCertificateRefs to add to the FrontendTLSValidation's `caCertificateRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.ObjectReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ObjectReference) properties. | `{}` | |
+| `caCertificateRefs` | Dictionary with CaCertificateRefs to add to the FrontendTLSValidation's `caCertificateRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.ObjectReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ObjectReference) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.ReferenceGrant.v1beta1` properties
 
@@ -85,8 +85,8 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `from` | Dictionary with ReferenceGrantFroms to add to the ReferenceGrant's `from` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io/v1beta1.ReferenceGrantFrom`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1beta1.ReferenceGrantFrom) properties. | `{}` | |
-| `to` | Dictionary with ReferenceGrantTos to add to the ReferenceGrant's `to` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io/v1beta1.ReferenceGrantTo`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1beta1.ReferenceGrantTo) properties. | `{}` | |
+| `from` | Dictionary with ReferenceGrantFroms to add to the ReferenceGrant's `from` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io/v1beta1.ReferenceGrantFrom`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1beta1.ReferenceGrantFrom) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
+| `to` | Dictionary with ReferenceGrantTos to add to the ReferenceGrant's `to` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io/v1beta1.ReferenceGrantTo`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1beta1.ReferenceGrantTo) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.GRPCRoute.v1` properties
 
@@ -99,8 +99,8 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `parentRefs` | Dictionary with ParentReferences to add to the GRPCRoute's `parentRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.ParentReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ParentReference) properties. | `{}` | |
-| `rules` | Dictionary with Rules to add to the GRPCRoute's `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.GRPCRouteRule`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ParentReference) properties and  **`hull.GRPCRouteRule.v1`** properties (see below). | `{}` | |
+| `parentRefs` | Dictionary with ParentReferences to add to the GRPCRoute's `parentRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.ParentReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ParentReference) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
+| `rules` | Dictionary with Rules to add to the GRPCRoute's `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.GRPCRouteRule`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ParentReference) properties and  **`hull.GRPCRouteRule.v1`** properties (see below). Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.GRPCRouteRule.v1` properties
 
@@ -114,9 +114,9 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `filters` | Dictionary with GRPCRouteFilter to add to the GRPCRoute's `filters` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.GRPCRouteFilter`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.GRPCRouteFilter) properties. | `{}` | |
-| `matches` | Dictionary with GRPCRouteMatch to add to the GRPCRoute's `matches` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.GRPCRouteMatch`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.GRPCRouteMatch) properties. | `{}` | |
-| `backendRefs` | Dictionary with GRPCBackendRefs to add to the GRPCRoute's `backendRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.GRPCBackendRef`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.GRPCBackendRef) properties and  **`hull.GRPCBackendRef.v1`** properties (see below). | `{}` | |
+| `filters` | Dictionary with GRPCRouteFilter to add to the GRPCRoute's `filters` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.GRPCRouteFilter`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.GRPCRouteFilter) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
+| `matches` | Dictionary with GRPCRouteMatch to add to the GRPCRoute's `matches` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.GRPCRouteMatch`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.GRPCRouteMatch) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
+| `backendRefs` | Dictionary with GRPCBackendRefs to add to the GRPCRoute's `backendRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.GRPCBackendRef`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.GRPCBackendRef) properties and  **`hull.GRPCBackendRef.v1`** properties (see below). Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.GRPCBackendRef.v1` properties
 
@@ -128,7 +128,7 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `filters` | Dictionary with GRPCRouteFilter to add to the GRPCBackendRef's `filters` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.GRPCRouteFilter`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.GRPCRouteFilter) properties. | `{}` | |
+| `filters` | Dictionary with GRPCRouteFilter to add to the GRPCBackendRef's `filters` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.GRPCRouteFilter`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.GRPCRouteFilter) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.TCPRoute.v1alpha2` properties
 
@@ -141,8 +141,8 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `parentRefs` | Dictionary with ParentReferences to add to the TCPRoute's `parentRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.ParentReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ParentReference) properties. | `{}` | |
-| `rules` | Dictionary with Rules to add to the TCPRoute's `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1alpha2.TCPRouteRule`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha2.TCPRouteRule) properties and  **`hull.TCPRouteRule.v1alpha2`** properties (see below). | `{}` | |
+| `parentRefs` | Dictionary with ParentReferences to add to the TCPRoute's `parentRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.ParentReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ParentReference) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
+| `rules` | Dictionary with Rules to add to the TCPRoute's `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1alpha2.TCPRouteRule`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha2.TCPRouteRule) properties and  **`hull.TCPRouteRule.v1alpha2`** properties (see below). Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.TCPRouteRule.v1alpha2` properties
 
@@ -154,7 +154,7 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `backendRefs` | Dictionary with BackendRefs to add to the TCPRoute's `backendRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.BackendRef`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.BackendRef) properties. | `{}` | |
+| `backendRefs` | Dictionary with BackendRefs to add to the TCPRoute's `backendRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.BackendRef`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.BackendRef) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.TLSRoute.v1alpha2` properties
 
@@ -167,8 +167,8 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `parentRefs` | Dictionary with ParentReferences to add to the TLSRoute's `parentRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.ParentReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ParentReference) properties. | `{}` | |
-| `rules` | Dictionary with Rules to add to the TLSRoute's `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1alpha2.TLSRouteRule`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha2.TCPRouteRule) properties and  **`hull.TLSRouteRule.v1alpha2`** properties (see below). | `{}` | |
+| `parentRefs` | Dictionary with ParentReferences to add to the TLSRoute's `parentRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.ParentReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ParentReference) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
+| `rules` | Dictionary with Rules to add to the TLSRoute's `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1alpha2.TLSRouteRule`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha2.TCPRouteRule) properties and  **`hull.TLSRouteRule.v1alpha2`** properties (see below). Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.TLSRouteRule.v1alpha2` properties
 
@@ -180,7 +180,7 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `backendRefs` | Dictionary with BackendRefs to add to the TCPRoute's `backendRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.BackendRef`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.BackendRef) properties. | `{}` | |
+| `backendRefs` | Dictionary with BackendRefs to add to the TCPRoute's `backendRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.BackendRef`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.BackendRef) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.UDPRoute.v1alpha2` properties
 
@@ -193,8 +193,8 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `parentRefs` | Dictionary with ParentReferences to add to the UDPRoute's `parentRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.ParentReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ParentReference) properties. | `{}` | |
-| `rules` | Dictionary with Rules to add to the UDPRoute's `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1alpha2.UDPRouteRule`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha2.TCPRouteRule) properties and  **`hull.UDPRouteRule.v1alpha2`** properties (see below). | `{}` | |
+| `parentRefs` | Dictionary with ParentReferences to add to the UDPRoute's `parentRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.ParentReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ParentReference) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
+| `rules` | Dictionary with Rules to add to the UDPRoute's `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1alpha2.UDPRouteRule`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha2.TCPRouteRule) properties and  **`hull.UDPRouteRule.v1alpha2`** properties (see below). Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.UDPRouteRule.v1alpha2` properties
 
@@ -206,7 +206,7 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `backendRefs` | Dictionary with BackendRefs to add to the UDPRoute's `backendRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.BackendRef`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.BackendRef) properties. | `{}` | |
+| `backendRefs` | Dictionary with BackendRefs to add to the UDPRoute's `backendRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.BackendRef`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.BackendRef) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.HTTPRoute.v1` properties
 
@@ -219,8 +219,8 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `parentRefs` | Dictionary with ParentReferences to add to the HTTPRoute's `parentRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.ParentReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ParentReference) properties. | `{}` | |
-| `rules` | Dictionary with Rules to add to the HTTPRoute's `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.HTTPRouteRule`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ParentReference) properties and  **`hull.HTTPRouteRule.v1`** properties (see below). | `{}` | |
+| `parentRefs` | Dictionary with ParentReferences to add to the HTTPRoute's `parentRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.ParentReference`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ParentReference) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
+| `rules` | Dictionary with Rules to add to the HTTPRoute's `rules` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.HTTPRouteRule`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.ParentReference) properties and  **`hull.HTTPRouteRule.v1`** properties (see below). Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.HTTPRouteRule.v1` properties
 
@@ -234,9 +234,9 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `filters` | Dictionary with HTTPRouteFilter to add to the HTTPRoute's `filters` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.HTTPRouteFilter`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.HTTPRouteFilter) properties. | `{}` | |
-| `matches` | Dictionary with HTTPRouteMatch to add to the HTTPRoute's `matches` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.HTTPRouteMatch`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.HTTPRouteMatch) properties. | `{}` | |
-| `backendRefs` | Dictionary with HTTPBackendRefs to add to the HTTPRoute's `backendRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.HTTPBackendRef`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.HTTPBackendRef) properties and  **`hull.HTTPBackendRef.v1`** properties (see below). | `{}` | |
+| `filters` | Dictionary with HTTPRouteFilter to add to the HTTPRoute's `filters` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.HTTPRouteFilter`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.HTTPRouteFilter) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
+| `matches` | Dictionary with HTTPRouteMatch to add to the HTTPRoute's `matches` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.HTTPRouteMatch`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.HTTPRouteMatch) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
+| `backendRefs` | Dictionary with HTTPBackendRefs to add to the HTTPRoute's `backendRefs` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.HTTPBackendRef`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.HTTPBackendRef) properties and  **`hull.HTTPBackendRef.v1`** properties (see below). Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ### The `hull.HTTPBackendRef.v1` properties
 
@@ -248,7 +248,7 @@ However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
-| `filters` | Dictionary with HTTPRouteFilter to add to the HTTPBackendRef's `filters` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.HTTPRouteFilter`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.HTTPRouteFilter) properties. | `{}` | |
+| `filters` | Dictionary with HTTPRouteFilter to add to the HTTPBackendRef's `filters` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The [**`gateway.networking.k8s.io.v1.HTTPRouteFilter`**](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.HTTPRouteFilter) properties. Additionally, the HULL properties `enabled` and `order` are supported for each element, see [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements). | `{}` | |
 
 ## Overview of HULL based properties
 

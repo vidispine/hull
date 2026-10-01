@@ -222,10 +222,14 @@ def fail_to_render_the_templates_to_namespace_namespace_for_test_case_and_chart_
         return
     result = render_chart(case, chart, values_files, namespace)
     expected_error = expected_error.replace(PLACEHOLDER_OBJECT_TYPE, case)
-    if result.returncode != 0 and expected_error in str(result.stdout):
+    # Match against the decoded output, not str() of the bytes: the bytes repr escapes
+    # quotes depending on the output's content (Helm 4 prefixes a 'level=WARN msg="..."'
+    # line), so expected errors containing ' would only match on some Helm versions.
+    stdout = result.stdout.decode("utf-8", errors="replace") if isinstance(result.stdout, bytes) else str(result.stdout)
+    if result.returncode != 0 and expected_error in stdout:
         assert True
     else:
-        assert False, "With ExitCode " + str(result.returncode) + ", expected error " + expected_error + " not found in STDOUT: " + str(result.stdout)
+        assert False, "With ExitCode " + str(result.returncode) + ", expected error " + expected_error + " not found in STDOUT: " + stdout
 
 @step("Lint the templates for values file <values_file> to namespace <namespace>")
 def lint_the_templates_for_values_file_to_TEST_EXECUTION_FOLDER(values_file, namespace):
