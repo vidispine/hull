@@ -1,0 +1,72 @@
+hull:
+  config:
+    templates:
+      pod:
+        sources-order-pod:
+          containers:
+            z-from-pod-source:
+              order: -10
+              image:
+                repository: busybox
+                tag: latest
+      container:
+        sources-order-early:
+          order: -5
+          env:
+            FROM_EARLY:
+              value: early
+        sources-order-disabled:
+          enabled: false
+  objects:
+    <OBJECT_TYPE>:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        pod:
+          initContainers:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              sources:
+              - sources-order-early
+
+      sources-order:
+        pod:
+          sources:
+          - sources-order-pod
+          initContainers:
+            b-init:
+              image:
+                repository: busybox
+                tag: latest
+            a-init:
+              image:
+                repository: busybox
+                tag: latest
+          containers:
+            a-plain:
+              image:
+                repository: busybox
+                tag: latest
+            m-early:
+              sources:
+              - sources-order-early
+              image:
+                repository: busybox
+                tag: latest
+            n-source-disabled:
+              sources:
+              - sources-order-disabled
+              image:
+                repository: busybox
+                tag: latest
+            o-self-disabled:
+              sources:
+              - sources-order-early
+              enabled: false
+              image:
+                repository: busybox
+                tag: latest
+            p-early-overridden:
+              sources:
+              - sources-order-early
+              order: 3
+              image:
+                repository: busybox
+                tag: latest

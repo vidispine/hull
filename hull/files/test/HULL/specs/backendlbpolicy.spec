@@ -45,6 +45,16 @@ Test creation of objects and features.
 * Test Object has key "spec§sessionPersistence§type" with value "Cookie"
 * Test Object has key "spec§sessionPersistence§cookieConfig§lifetimeType" with value "Permanent"
 
+## Enabled and Order
+* Prepare default test case for this kind including suites "backendlbpolicy/enabledorder"
+* Lint and Render
+* Validate with additional schemas in subfolder "gateway-api"
+* Set test object to "release-name-hull-test-enabled-order"
+* Test Object has key "spec§targetRefs" with array value that has "2" items
+* Test Object has key "spec§targetRefs§0§name" with value "service-z"
+* Test Object has key "spec§targetRefs§1§name" with value "service-a"
+* Test Object does not have key "spec§targetRefs§0§order"
+
 ___
 
 * Clean the test execution folder

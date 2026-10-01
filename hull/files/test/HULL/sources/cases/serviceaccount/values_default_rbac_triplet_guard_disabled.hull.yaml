@@ -1,0 +1,16 @@
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+    serviceaccount:
+
+      default:
+        enabled: false
+        annotations:
+          eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/example
+
+###################################################

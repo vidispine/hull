@@ -1,0 +1,40 @@
+hull:
+  objects:
+    tcproute:
+      enabled-order:
+        parentRefs:
+          z-gateway:
+            order: -1
+            name: gateway-z
+          a-gateway:
+            name: gateway-a
+          disabled-gateway:
+            enabled: false
+            name: gateway-disabled
+        rules:
+          disabled-rule:
+            enabled: false
+            backendRefs:
+              backend:
+                name: service-disabled
+                port: 80
+          b-rule:
+            order: 1
+            backendRefs:
+              z-backend:
+                order: -1
+                name: service-z
+                port: 80
+              a-backend:
+                name: service-a
+                port: 80
+              disabled-backend:
+                enabled: false
+                name: service-disabled
+                port: 80
+          a-rule:
+            order: 2
+            backendRefs:
+              backend:
+                name: service-last
+                port: 80

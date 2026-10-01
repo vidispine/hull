@@ -42,6 +42,18 @@ template:
 {{- end }}
 {{- if $spec.pod -}}
 {{- $_ := set $spec "pod" (include "hull.config.sources" (merge (dict "SOURCE_TYPE" "pod" "SPEC_KEY" "pod") .) | fromYaml) -}}
+{{- range $containerType := list "containers" "initContainers" -}}
+{{- $containers := dig $containerType dict $spec.pod -}}
+{{- $defaultContainer := dig "pod" $containerType "_HULL_OBJECT_TYPE_DEFAULT_" dict $defaultPodBasePath -}}
+{{- range $containerKey, $container := $containers -}}
+{{- if and (ne $containerKey "_HULL_OBJECT_TYPE_DEFAULT_") (kindIs "map" $container) (gt (len $container) 0) -}}
+{{- $merged := merge $container $defaultContainer -}}
+{{- if or (not (hasKey $merged "enabled")) $merged.enabled -}}
+{{- $_ := set $containers $containerKey (include "hull.config.sources" (dict "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "COMPONENT" $containerKey "SOURCE_TYPE" "container" "SPEC" $merged) | fromYaml) -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
 spec:
 {{- include "hull.util.include.object" (dict "PARENT_CONTEXT" $parent "DEFAULT_SPEC" (dig "pod" "containers" "_HULL_OBJECT_TYPE_DEFAULT_" dict $defaultPodBasePath) "SPEC" $spec.pod "KEY" "containers" "OBJECT_TEMPLATE" "hull.object.container" "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "CONTAINER_TYPE" "containers" "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 2 -}}
 {{- include "hull.object.pod.imagePullSecrets" . | indent 2 -}}
@@ -107,7 +119,8 @@ imagePullSecrets: []
 | Purpose:  
 |   
 |   Creates serviceAccountName for the pod.
-|   If not explicitly specified, the default serviceaccount is used
+|   If not explicitly specified, the default serviceaccount is used when it is enabled
+|   and 'config.general.assignDefaultServiceAccountToPods' is true.
 |
 | Interface:
 |
@@ -123,7 +136,7 @@ imagePullSecrets: []
 {{ if hasKey $spec.pod "serviceAccountName" }}
 serviceAccountName: {{ $spec.pod.serviceAccountName }}
 {{ else }}
-{{ if (index $parent.Values $hullRootKey).objects.serviceaccount.default.enabled }}
+{{ if and (index $parent.Values $hullRootKey).objects.serviceaccount.default.enabled (dig "assignDefaultServiceAccountToPods" true (index $parent.Values $hullRootKey).config.general) }}
 serviceAccountName: {{ include "hull.metadata.fullname" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "COMPONENT" "default" "HULL_ROOT_KEY" $hullRootKey) }}
 {{ end }}
 {{ end }}

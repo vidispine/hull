@@ -8,7 +8,7 @@ The HULL Roles allow to have key value pair `rules` to define the rules.
 
 ### The `hull.Role.v1` properties
 
-Properties can be set as they are defined in the [Kubernetes API's roles spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.36/#role-v1-rbac-authorization-k8s-io).
+Properties can be set as they are defined in the [Kubernetes API's roles spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.37/#role-v1-rbac-authorization-k8s-io).
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -18,7 +18,7 @@ However the properties listed below are overwritten or added by HULL:
 
 ### The `hull.ClusterRole.v1` properties
 
-Properties can be set as they are defined in the [Kubernetes API's clusterroles spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.36/#clusterrole-v1-rbac-authorization-k8s-io).
+Properties can be set as they are defined in the [Kubernetes API's clusterroles spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.37/#clusterrole-v1-rbac-authorization-k8s-io).
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -30,13 +30,14 @@ However the properties listed below are overwritten or added by HULL:
 
 > The key-value pairs of value type `hull.PolicyRules.v1` are converted to an array on rendering
 
-Properties can be set as they are defined in the [Kubernetes API's policyrules spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.36/#policyrule-v1-rbac-authorization-k8s-io).
+Properties can be set as they are defined in the [Kubernetes API's policyrules spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.37/#policyrule-v1-rbac-authorization-k8s-io).
 
 However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
 | `enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` | |
+| `order` | Integer (or transformation resolving to an integer) that determines the position of the element when the dictionary is rendered as an array. Elements are sorted ascending by `order`, elements with equal `order` alphanumerically by key. See [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements) for details. | `0` | `2` |
 
 ---
 Back to [README.md](/README.md)
