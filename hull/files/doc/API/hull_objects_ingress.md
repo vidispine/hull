@@ -26,6 +26,7 @@ However the properties listed below are overwritten or added by HULL:
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
 | `enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` | `true`<br>`false`<br><br>`_HT?hull.config.specific.enable_addon` |
+| `order` | Integer (or transformation resolving to an integer) that determines the position of the element when the dictionary is rendered as an array. Elements are sorted ascending by `order`, elements with equal `order` alphanumerically by key. See [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements) for details. | `0` | `2` |
 | `http.paths` | Dictionary with **`hull.Ingress.Rule.Path.v1`** values to add to the `http.paths` section. <br><br>Key: <br>Unique related to parent element.<br><br>Value: <br>The **`hull.Ingress.Rule.Path.v1`** properties of the container. See below for reference. | `{}` | |
 
 ### The `hull.Ingress.Rule.Path.v1` properties
@@ -39,6 +40,7 @@ However the properties listed below are overwritten or added by HULL:
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
 | `enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` | |
+| `order` | Integer (or transformation resolving to an integer) that determines the position of the element when the dictionary is rendered as an array. Elements are sorted ascending by `order`, elements with equal `order` alphanumerically by key. See [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements) for details. | `0` | `2` |
 
 ### The `hull.Ingress.Tls.v1` properties
 
@@ -51,6 +53,7 @@ However the properties listed below are overwritten or added by HULL:
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
 | `enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` | |
+| `order` | Integer (or transformation resolving to an integer) that determines the position of the element when the dictionary is rendered as an array. Elements are sorted ascending by `order`, elements with equal `order` alphanumerically by key. See [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements) for details. | `0` | `2` |
 | `staticName` | Specifies whether the `secretName` key of this `tls` refers to a fixed name of a Secret in the cluster or not. <br>If the field does not exist or is set to `false`, the `name` field of this `secretName` references a key defined in this helm chart. | `false` | `true` |
 
 ---

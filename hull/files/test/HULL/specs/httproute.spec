@@ -174,6 +174,36 @@ Test creation of objects and features.
 * Test Object has key "spec§rules§0§matches§0§path§type" with value "PathPrefix"
 * Test Object has key "spec§rules§0§matches§0§path§value" with value "/"
 * Test Object has key "spec§rules§0§matches§0§method" with value "GET"
+## Enabled and Order
+* Prepare default test case for this kind including suites "httproute/enabledorder"
+* Lint and Render
+* Validate with additional schemas in subfolder "gateway-api"
+* Set test object to "release-name-hull-test-enabled-order"
+* Test Object has key "spec§parentRefs" with array value that has "2" items
+* Test Object has key "spec§parentRefs§0§name" with value "gateway-z"
+* Test Object has key "spec§parentRefs§1§name" with value "gateway-a"
+* Test Object does not have key "spec§parentRefs§0§order"
+* Test Object has key "spec§rules" with array value that has "2" items
+* Test Object has key "spec§rules§1§backendRefs§0§name" with value "service-last"
+* Test Object does not have key "spec§rules§0§order"
+* Test Object does not have key "spec§rules§0§enabled"
+* Test Object has key "spec§rules§0§matches" with array value that has "2" items
+* Test Object has key "spec§rules§0§matches§0§path§value" with value "/z"
+* Test Object has key "spec§rules§0§matches§1§path§value" with value "/a"
+* Test Object does not have key "spec§rules§0§matches§0§order"
+* Test Object has key "spec§rules§0§filters" with array value that has "2" items
+* Test Object has key "spec§rules§0§filters§0§requestHeaderModifier§add§0§name" with value "X-Z"
+* Test Object has key "spec§rules§0§filters§1§requestHeaderModifier§add§0§name" with value "X-A"
+* Test Object does not have key "spec§rules§0§filters§0§order"
+* Test Object has key "spec§rules§0§backendRefs" with array value that has "2" items
+* Test Object has key "spec§rules§0§backendRefs§0§name" with value "service-z"
+* Test Object has key "spec§rules§0§backendRefs§1§name" with value "service-a"
+* Test Object does not have key "spec§rules§0§backendRefs§0§order"
+* Test Object has key "spec§rules§0§backendRefs§0§filters" with array value that has "2" items
+* Test Object has key "spec§rules§0§backendRefs§0§filters§0§requestHeaderModifier§add§0§name" with value "X-Backend-Z"
+* Test Object has key "spec§rules§0§backendRefs§0§filters§1§requestHeaderModifier§add§0§name" with value "X-Backend-A"
+* Test Object does not have key "spec§rules§0§backendRefs§0§filters§0§order"
+
 ___
 
 * Clean the test execution folder
