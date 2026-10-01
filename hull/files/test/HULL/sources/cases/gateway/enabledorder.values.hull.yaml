@@ -1,0 +1,67 @@
+hull:
+  objects:
+    gateway:
+      enabled-order:
+        gatewayClassName: the-gateway-class
+        addresses:
+          z-address:
+            order: -1
+            type: IPAddress
+            value: 10.0.0.26
+          a-address:
+            type: IPAddress
+            value: 10.0.0.1
+          disabled-address:
+            enabled: false
+            type: IPAddress
+            value: 10.0.0.99
+        listeners:
+          https:
+            order: -1
+            port: 443
+            protocol: HTTPS
+            tls:
+              mode: Terminate
+              certificateRefs:
+                z-cert:
+                  order: -1
+                  name: cert-z
+                a-cert:
+                  name: cert-a
+                disabled-cert:
+                  enabled: false
+                  name: cert-disabled
+            allowedRoutes:
+              kinds:
+                z-kind:
+                  order: -1
+                  kind: HTTPRoute
+                a-kind:
+                  kind: GRPCRoute
+                disabled-kind:
+                  enabled: false
+                  kind: TLSRoute
+          frontend:
+            port: 8443
+            protocol: HTTPS
+            tls:
+              frontendValidation:
+                caCertificateRefs:
+                  z-ca:
+                    order: -1
+                    group: ""
+                    kind: ConfigMap
+                    name: ca-z
+                  a-ca:
+                    group: ""
+                    kind: ConfigMap
+                    name: ca-a
+                  disabled-ca:
+                    enabled: false
+                    group: ""
+                    kind: ConfigMap
+                    name: ca-disabled
+          disabled:
+            enabled: false
+            port: 8080
+            protocol: HTTP

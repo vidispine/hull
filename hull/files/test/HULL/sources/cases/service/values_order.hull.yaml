@@ -1,0 +1,21 @@
+hull:
+  objects:
+    service:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        ports:
+          _HULL_OBJECT_TYPE_DEFAULT_:
+            order: 3
+      port-order:
+        type: ClusterIP
+        ports:
+          metrics:
+            order: 2
+            port: 9090
+            targetPort: 9090
+          http:
+            port: 80
+            targetPort: 8080
+          admin:
+            order: -1
+            port: 8081
+            targetPort: 8081
