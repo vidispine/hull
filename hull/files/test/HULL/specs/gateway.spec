@@ -111,6 +111,34 @@ Test creation of objects and features.
 * Test Object has key "spec§listeners§1§tls§options§option-source" with value "optsource"
 
 
+## Enabled and Order
+* Prepare default test case for this kind including suites "gateway/enabledorder"
+* Lint and Render
+* Validate with additional schemas in subfolder "gateway-api"
+* Set test object to "release-name-hull-test-enabled-order"
+* Test Object has key "spec§addresses" with array value that has "2" items
+* Test Object has key "spec§addresses§0§value" with value "10.0.0.26"
+* Test Object has key "spec§addresses§1§value" with value "10.0.0.1"
+* Test Object does not have key "spec§addresses§0§order"
+* Test Object has key "spec§listeners§0§tls§certificateRefs" with array value that has "2" items
+* Test Object has key "spec§listeners§0§tls§certificateRefs§0§name" with value "cert-z"
+* Test Object has key "spec§listeners§0§tls§certificateRefs§1§name" with value "cert-a"
+* Test Object does not have key "spec§listeners§0§tls§certificateRefs§0§order"
+* Test Object has key "spec§listeners§0§allowedRoutes§kinds" with array value that has "2" items
+* Test Object has key "spec§listeners§0§allowedRoutes§kinds§0§kind" with value "HTTPRoute"
+* Test Object has key "spec§listeners§0§allowedRoutes§kinds§1§kind" with value "GRPCRoute"
+* Test Object does not have key "spec§listeners§0§allowedRoutes§kinds§0§order"
+* Test Object does not have key "spec§listeners§0§allowedRoutes§namespaces"
+* Test Object has key "spec§listeners" with array value that has "2" items
+* Test Object has key "spec§listeners§0§name" with value "https"
+* Test Object has key "spec§listeners§1§name" with value "frontend"
+* Test Object does not have key "spec§listeners§0§order"
+* Test Object does not have key "spec§listeners§1§tls§certificateRefs"
+* Test Object has key "spec§listeners§1§tls§frontendValidation§caCertificateRefs" with array value that has "2" items
+* Test Object has key "spec§listeners§1§tls§frontendValidation§caCertificateRefs§0§name" with value "ca-z"
+* Test Object has key "spec§listeners§1§tls§frontendValidation§caCertificateRefs§1§name" with value "ca-a"
+* Test Object does not have key "spec§listeners§1§tls§frontendValidation§caCertificateRefs§0§order"
+
 ___
 
 * Clean the test execution folder

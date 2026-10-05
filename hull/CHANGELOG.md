@@ -1,14 +1,15 @@
 # Changelog
 
-## [1.36.0]
+## [1.37.0]
 
 CHANGES:
 
-- initial K8S 1.36 release
-- deprecating 1.33 release
-- added new Kubernetes API objects that graduated to stable: `mutatingadmissionpolicy`, `mutatingadmissionpolicybinding`, `validatingadmissionpolicy` and `validatingadmissionpolicybinding`.
-- added a new `generic` API object that allows to define generic objects of any sort. While `customresource` objects by definition need to have a `spec` field, this is not the case for `generic` objects, they only need a `kind` and an `apiVersion`. The idea is to offer an escape hatch for creating arbitrary and more exotic objects within the scope of HULL.
-
-FIXES:
-
-- fixed error when using function `hull.object.container.image` outside the scope of an object specification. In this case, missing logging parameters that are autopopulated in the scope of an object definition caused an error. The parameters are now populated with default values to prevent crashes.
+- initial K8S 1.37 release
+- deprecating 1.34 release
+- BREAKING: the `default` ServiceAccount, `default` Role and `default` RoleBinding are not created automatically anymore. Previously they were rendered for every release unless a global pod `serviceAccountName` was configured under `hull.config.templates.pod.global`, and pods without an explicit `serviceAccountName` were wired to the `default` ServiceAccount. Creation is now opt-in via the new `hull.config.general.createDefaultRbacTriplet` switch which defaults to `false`, set it to `true` to restore the previous behavior. Each of the three objects can still be enabled on its own by setting its `enabled` property explicitly. To not silently drop configuration, rendering fails if one of them is customized (`annotations` on the ServiceAccount, `rules` on the Role, a changed `roleRef` or `subjects` on the RoleBinding) but not rendered only because the switch is `false`.
+- added `pod.annotations` and `pod.labels` as the preferred place to specify pod template metadata for workload objects, since this metadata ends up on the pod. The existing object instance level `templateAnnotations` and `templateLabels` keys are an equivalent alternative and remain fully supported. Both are merged and where the same key is defined in both, the `pod` level value wins.
+- added control over the order of array elements that HULL renders from dictionaries. Previously, array elements were always rendered in alphanumeric order of their dictionary keys which is problematic where Kubernetes attaches meaning to the order. The elements of `containers`, `initContainers`, `volumes`, `env`, `envFrom`, `ports`, `volumeMounts`, service `ports`, ingress `rules`, `paths` and `tls`, role `rules`, `webhooks` and all Gateway API dictionaries now support an integer `order` property (default `0`) by which they are sorted ascending before alphanumeric key order applies. Additionally, `env` variables are automatically rendered after the variables of the same container they reference via `$(VAR_NAME)` in their `value`, making [dependent environment variables](https://github.com/vidispine/hull/issues/414) work out of the box. Without `order` properties and forward references in `env` values the rendered order is unchanged. See the [chart design guide](/hull/files/doc/chart_design.md#ordering-of-array-elements) for details.
+- added the previously missing `enabled` property to the JSON schema of all Gateway API array elements that HULL renders from dictionaries. The `enabled` property of GRPCRoute and HTTPRoute `backendRefs` elements is now also evaluated on rendering.
+- added the `hull.config.general.assignDefaultServiceAccountToPods` switch (default `true`). Whenever the `default` ServiceAccount is rendered, pods without an explicit `serviceAccountName` are assigned to it as before; set the switch to `false` to opt out of this assignment.
+- container `sources` are now applied before `containers` and `initContainers` are ordered, so the `order` property can be provided via container `sources` too. Same as with object instance `sources`, the `enabled` property of pod and container `sources` is not inherited.
+- fixed Gateway `listeners` silently dropping `tls` and `allowedRoutes` whenever they had exactly one key, for example `tls` with only `certificateRefs` or `frontendValidation`, or `allowedRoutes` with only `namespaces` or `kinds`.

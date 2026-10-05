@@ -6,7 +6,7 @@ The HULL Service object is a thin wrapper around the Kubernetes Service providin
 
 ### The `hull.Service.v1` properties
 
-Properties can be set as they are defined in the [Kubernetes API's service spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.36/#service-v1-core).
+Properties can be set as they are defined in the [Kubernetes API's service spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.37/#service-v1-core).
 
 However the properties listed below are overwritten or added by HULL:
 
@@ -19,13 +19,14 @@ However the properties listed below are overwritten or added by HULL:
 > The key-value pairs of value type `hull.ServicePort.v1` are converted to an array on rendering
 > The `name` property of the service's port is derived from the key.
 
-Properties can be set as they are defined in the [Kubernetes API's serviceport spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.36/#serviceport-v1-core).
+Properties can be set as they are defined in the [Kubernetes API's serviceport spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.37/#serviceport-v1-core).
 
 However the properties listed below are overwritten or added by HULL:
 
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
 | `enabled` | Needs to resolve to a boolean switch, it can be a boolean input directly or a transformation that resolves to a boolean value. If resolved to true or missing, the key-value-pair will be rendered for deployment. If resolved to false, it will be omitted from rendering. This way you can predefine objects which are only enabled and created in the cluster in certain environments when needed. | `true` | |
+| `order` | Integer (or transformation resolving to an integer) that determines the position of the element when the dictionary is rendered as an array. Elements are sorted ascending by `order`, elements with equal `order` alphanumerically by key. See [ordering of array elements](/hull/files/doc/chart_design.md#ordering-of-array-elements) for details. | `0` | `2` |
 
 ---
 Back to [README.md](/README.md)
