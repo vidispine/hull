@@ -15,6 +15,7 @@ config:
     nameOverride: ""
     namespaceOverride: ""
     noObjectNamePrefixes: false
+    assignDefaultServiceAccountToPods: true
     createImagePullSecretsFromRegistries: true
     globalImageRegistryServer: ""
     globalImageRegistryToFirstRegistrySecretServer: false
@@ -285,6 +286,8 @@ objects:
       templateAnnotations: {}
       templateLabels: {}
       pod:        
+        annotations: {}
+        labels: {}
         initContainers: 
           _HULL_OBJECT_TYPE_DEFAULT_:
             env: 
@@ -314,6 +317,8 @@ objects:
       templateAnnotations: {}
       templateLabels: {}
       pod:
+        annotations: {}
+        labels: {}
         initContainers: 
           _HULL_OBJECT_TYPE_DEFAULT_:
             env: 
@@ -344,6 +349,8 @@ objects:
         templateAnnotations: {}
         templateLabels: {}
         pod:
+          annotations: {}
+          labels: {}
           initContainers: 
             _HULL_OBJECT_TYPE_DEFAULT_:
               env: 
@@ -373,6 +380,8 @@ objects:
       templateAnnotations: {}
       templateLabels: {}
       pod:
+        annotations: {}
+        labels: {}
         initContainers: 
           _HULL_OBJECT_TYPE_DEFAULT_:
             env: 
@@ -402,6 +411,8 @@ objects:
       templateAnnotations: {}
       templateLabels: {}
       pod:
+        annotations: {}
+        labels: {}
         initContainers: 
           _HULL_OBJECT_TYPE_DEFAULT_:
             env: 

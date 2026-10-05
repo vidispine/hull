@@ -119,7 +119,7 @@ The `sources` feature is similar to the `_HULL_OBJECT_TYPE_DEFAULT_` feature but
 
 Each object instance has properties `labels` and `annotations` where object level metadata can be set.
 
-It is important to notice, that for workload objects the `labels` and `annotations` metadata is automatically also set on the pod metadata level. Pod level metadata is often important for other tools that reflect on them to inject sidecar containers or trigger pod restarts on change. To overwrite or add only pod level metadata, the keys `templateLabels` and `templateAnnotations` are provided.
+It is important to notice, that for workload objects the `labels` and `annotations` metadata is automatically also set on the pod metadata level. Pod level metadata is often important for other tools that reflect on them to inject sidecar containers or trigger pod restarts on change. To overwrite or add only pod level metadata, use the `pod.labels` and `pod.annotations` keys - since this metadata ends up on the pod, that is where it naturally belongs. The `templateLabels` and `templateAnnotations` keys on the object instance level are an equivalent alternative and remain fully supported.
 
 In summary, the following fields are available for adjustment:
 
@@ -130,9 +130,14 @@ hull:
       <OBJECT_INSTANCE_KEY>:
         labels: {}
         annotations: {}
-        templateLabels: {}
-        templateAnnotations: {}
+        pod:
+          labels: {}            # pod level metadata
+          annotations: {}       # pod level metadata
+        templateLabels: {}      # alternative to pod.labels
+        templateAnnotations: {} # alternative to pod.annotations
 ```
+
+The resulting precedence for pod level metadata, highest first, is: the object instances own `labels`/`annotations`, then the chart wide `hull.config.general.metadata` custom entries, then `pod.labels`/`pod.annotations`, then `templateLabels`/`templateAnnotations`.
 
 ## Conditionally rendering properties
 
@@ -376,6 +381,9 @@ hull:
             backendRefs: 
               <OBJECT_INSTANCE_KEY>:
                 enabled: true|false
+                filters:
+                  <OBJECT_INSTANCE_KEY>:
+                    enabled: true|false
 ```
 
 ### The `conditional` feature
@@ -473,6 +481,91 @@ A few closing notes on the `conditionals` feature:
 - specifying `conditionals` may impact rendering performance since every key that is being processed needs to additionally be checked against `references` when `conditionals` are defined. Normally this should be unnoticeable but anyhow this shall be mentioned
 
 - if the `condition` resolves to an error, the rendering will fail. Non-existing `references` will produce no matches and will not be processed.
+
+## Ordering of array elements
+
+Wherever HULL represents a Kubernetes array as a dictionary - `containers`, `initContainers`, `env`, `volumes`, service `ports`, role `rules` and so on - the dictionary is converted back to an array when rendering. Helm parses all `values.yaml` input into unordered dictionaries, so the order in which keys are written in the `values.yaml` files is lost before HULL can process them. By default, array elements are therefore rendered in alphanumeric order of their keys.
+
+For most arrays the order is irrelevant, but there are exceptions where Kubernetes attaches meaning to it, for example:
+
+- `initContainers` are executed one after another in array order
+- `env` variables can reference previously defined variables using the `$(VAR_NAME)` syntax, see [Kubernetes documentation](https://kubernetes.io/docs/tasks/inject-data-application/define-interdependent-environment-variables/)
+
+### The `order` property
+
+The elements of these dictionaries support the `order` property which takes an integer value (or a transformation that resolves to an integer):
+
+- `rules` in `role` and `clusterrole` definitions
+- `ports` in `service` definitions
+- `tls`, `rules` and `rules.http.paths` in `ingress` definitions
+- `initContainers`, `containers` and `volumes` in `pod` definitions and `env`, `envFrom`, `ports` and `volumeMounts` in `containers` and `initContainers`
+- `webhooks` in `mutatingwebhookconfiguration` and `validatingwebhookconfiguration` definitions
+- `targetRefs` in `backendlbpolicy` and `backendtlspolicy` definitions
+- `addresses`, `listeners`, `listeners.tls.certificateRefs`, `listeners.tls.frontendValidation.caCertificateRefs` and `listeners.allowedRoutes.kinds` in `gateway` definitions
+- `from` and `to` in `referencegrant` definitions
+- `parentRefs`, `rules` and `rules.backendRefs` in `grpcroute`, `httproute`, `tcproute`, `tlsroute` and `udproute` definitions
+- `rules.matches`, `rules.filters` and `rules.backendRefs.filters` in `grpcroute` and `httproute` definitions
+
+Elements are rendered ascending by their `order` value, elements without `order` have an `order` of `0` and elements with the same `order` value are rendered in alphanumeric order of their keys. Negative values are allowed to move elements before all elements without an `order`.
+
+```yaml
+hull:
+  objects:
+    deployment:
+      myapp:
+        pod:
+          initContainers:
+            wait-for-database:
+              order: 1
+              image:
+                repository: busybox
+            migrate-schema:
+              order: 2
+              image:
+                repository: myapp/migration
+            create-admin:
+              order: 3
+              image:
+                repository: myapp/migration
+```
+
+renders the `initContainers` in the order `wait-for-database`, `migrate-schema` and `create-admin`. Like other properties, `order` can be defaulted for all elements of a dictionary using `_HULL_OBJECT_TYPE_DEFAULT_` at the object type level. For `containers` and `initContainers`, `order` can also be provided via pod or container `sources`. The `order` property itself is never rendered to the Kubernetes objects.
+
+### Automatic ordering of dependent `env` variables
+
+For `env` dictionaries HULL additionally analyzes the `value` of each environment variable for `$(VAR_NAME)` references to other environment variables of the same container. A referenced variable is always rendered before the variable referencing it, so dependent environment variables work without further configuration:
+
+```yaml
+hull:
+  objects:
+    statefulset:
+      kafka:
+        pod:
+          containers:
+            kafka:
+              env:
+                POD_NAME:
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                POD_NAMESPACE:
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+                KAFKA_ADVERTISED_LISTENERS:
+                  value: PLAINTEXT://$(POD_NAME).kafka.$(POD_NAMESPACE).svc.cluster.local:9092
+```
+
+renders `POD_NAME`, `POD_NAMESPACE` and then `KAFKA_ADVERTISED_LISTENERS` although `KAFKA_ADVERTISED_LISTENERS` comes first alphanumerically.
+
+The dependency analysis follows the Kubernetes rules for variable expansion:
+
+- escaped references (`$$(VAR_NAME)`) are not considered
+- references to variables which are not defined in the same `env` dictionary, are disabled or refer to the variable itself are ignored. This includes variables provided via `envFrom`, which Kubernetes defines before all `env` variables anyway
+- dependencies take precedence over the `order` property: among all variables whose referenced variables are already placed, the one with the lowest `order` and key is placed next
+- variables that reference each other in a cycle cannot be resolved by Kubernetes. HULL renders them in their `order` and key sequence once no other variable can be placed anymore
+
+If no `order` properties are set and no `env` variable references another variable that sorts after it alphanumerically, the rendered order is identical to the alphanumeric order of the keys.
 
 ## Referencing source values via transformations
 
@@ -872,6 +965,8 @@ Same as with the pod `sources`, you may freely define more templates for shared 
 #### Using pod and container defaults
 
 Similar to the object instance `sources`, to load particular sources use the `sources` property on the pod and container specification level. When not specifying `sources` on a pod or container, the respective `global` defaults are being applied. When specifying a list of `sources`, the listed `sources` will be merged in the given order and lastly the pod or container specification is merged on top. Any defaulted data that is being added via the object instance `sources` or `_HULL_OBJECT_TYPE_DEFAULT_` is merged prior to the step where `pod` and `container` templates are applied. Please note that when you specify `sources` on pods or containers, the `global` source needs to be explicitly added in the list, otherwise it is not being applied. This is mainly to stay congruent with how the `sources` feature works with the object instances.
+
+Pod and container `sources` are applied before HULL orders the containers and initContainers, so their position can be set via the `order` property in `sources` too, while values set on the container itself or via `_HULL_OBJECT_TYPE_DEFAULT_` take precedence over the `sources` values. Same as with object instance `sources`, the `enabled` property of a pod or container source is not inherited. Whether a container is rendered is determined by the `enabled` property of the container itself or `_HULL_OBJECT_TYPE_DEFAULT_` only.
 
 Here is a complex example combining pod and container `sources` usage. It sketches some fictional application that deals with graphic processing and has special requirements:
 
