@@ -56,11 +56,14 @@ However the properties listed below are overwritten or added by HULL:
 
 Definition of container images is split into multiple parts to allow better support of switching the registry endpoints throughout the whole chart.
 
+The rendered `image` is composed as `<registry>/<repository>:<tag>`, or as `<registry>/<repository>@<digest>` when a non-empty `digest` is set. A `digest` takes precedence over the `tag`: the `tag` is then left out of the rendered `image` entirely. This matches the Kubernetes behavior for an image reference that contains both, where [only the digest is used for pulling](https://kubernetes.io/docs/concepts/containers/images/#image-names). Leaving out the `tag` additionally keeps the server-side default of `imagePullPolicy` at `IfNotPresent`, whereas Kubernetes defaults it to `Always` for an image reference with the tag `latest` even if a digest is present.
+
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
 | `registry` | Optional endpoint of the repository. If set will produce a prefix and appended `/`. | ` ` | `myregistry.azure.cr` |
 | `repository` | Name/Repository of the container image | | `apps/videoeditor` |
-| `tag` | Tag of the container image. The value must be of string type on the Kubernetes side, but it is allowed to have integer or float type input on the HULL side. Any value will be automatically converted to string on rendering. | | `20.1.3-pre.321`<br>`"23.3"`<br>`23.3`<br>`"10"`<br>`10` |
+| `tag` | Tag of the container image. The value must be of string type on the Kubernetes side, but it is allowed to have integer or float type input on the HULL side. Any value will be automatically converted to string on rendering. <br><br>Ignored if a non-empty `digest` is set. | | `20.1.3-pre.321`<br>`"23.3"`<br>`23.3`<br>`"10"`<br>`10` |
+| `digest` | Digest of the container image, consisting of an algorithm and a lowercase hex encoded hash joined by a colon. If set and not empty, the image is referenced by digest as `<repository>@<digest>` and the `tag` is ignored. An empty string means no digest is set and the `tag` is used, so a chart can predefine `digest: ""` and have it overwritten for pinning. <br><br>The format is validated by the JSON schema and, for values resulting from a transformation, at render time when [`hull.config.general.errorChecks.containerImageValid`](/hull/files/doc/error_checking.md) is enabled. | `""` | `sha256:1ff6c18fbef2045af6b9c16bf034cc421a29027b800e4f9b68ae9b1cb3e9ae07` |
 
 ### The `hull.Env.v1` properties
 

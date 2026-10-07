@@ -40,7 +40,9 @@
 |   
 |   Create the image: of the container.
 |   Applies to containers: and initContainers: alike.
-|   Three components are: registry, repository and tag.
+|   Components are: registry, repository and either tag or digest.
+|   A non-empty digest takes precedence over the tag, the image is then
+|   referenced as <repository>@<digest> without the tag.
 |
 | Interface:
 |
@@ -67,6 +69,8 @@
 {{- $baseName = $spec.repository }}
 {{- end -}}
 {{- end -}}
+{{- else if (hasKey $spec "repository") -}}
+{{- $baseName = $spec.repository }}
 {{- end -}}
 {{ if (ne (default "" (index $parent.Values $hullRootKey).config.general.globalImageRegistryServer) "") }}
 {{- $baseName = printf "%s/%s" (index $parent.Values $hullRootKey).config.general.globalImageRegistryServer $baseName }}
@@ -86,7 +90,18 @@
 {{- $baseName = printf "%s/%s" $spec.registry $baseName }}{{- end }}
 {{- end }}
 {{- end }}
-{{ if (and (hasKey $spec "tag") (ne (printf "%s" $spec.tag) "")) }}
+{{- $digest := "" }}
+{{- if (and (hasKey $spec "digest") (not (kindIs "invalid" $spec.digest))) }}
+{{- $digest = $spec.digest | toString }}
+{{- end }}
+{{ if (ne $digest "") }}
+{{- if (and (index $parent.Values $hullRootKey).config.general.errorChecks.containerImageValid (not (regexMatch "^[a-z0-9]+([+._-][a-z0-9]+)*:[a-f0-9]{32,}$" $digest))) }}
+{{- $details := printf "(@Values.hull.objects.%s.%s.%s.%s.image.digest" ($objectType | lower) $objectInstanceKey $containerType $component }}
+{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "INVALID-IMAGE-DIGEST" "ERROR_MESSAGE" (printf "%s) Field digest is not a valid image digest, expected an algorithm and a lowercase hex encoded hash of at least 32 characters joined by a colon, for example sha256 and a 64 character hash" $details) "PARENT_CONTEXT" $parent "OBJECT_TYPE" ($objectType | lower) "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
+{{- else }}
+{{- $baseName = printf "%s@%s" $baseName $digest }}
+{{- end }}
+{{- else if (and (hasKey $spec "tag") (ne (printf "%s" $spec.tag) "")) }}
 {{- $baseName = printf "%s:%s" $baseName ($spec.tag | toString) }}
 {{ end }}
 image: {{ $baseName }}
