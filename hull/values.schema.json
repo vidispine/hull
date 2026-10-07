@@ -140,7 +140,8 @@
         "reinvocationPolicy",
         "rules",
         "sideEffects",
-        "timeoutSeconds"
+        "timeoutSeconds",
+        "order"
       ]
     },
     "io.k8s.api.admissionregistration.v1.MutatingWebhook": {
@@ -250,6 +251,9 @@
               "type": "boolean"
             }
           ]
+        },
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [],
@@ -1047,7 +1051,8 @@
         "objectSelector",
         "rules",
         "sideEffects",
-        "timeoutSeconds"
+        "timeoutSeconds",
+        "order"
       ]
     },
     "io.k8s.api.admissionregistration.v1.ValidatingWebhook": {
@@ -1153,6 +1158,9 @@
               "type": "boolean"
             }
           ]
+        },
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [],
@@ -10225,7 +10233,8 @@
         "containerPort",
         "hostIP",
         "hostPort",
-        "protocol"
+        "protocol",
+        "order"
       ]
     },
     "io.k8s.api.core.v1.ContainerPort": {
@@ -10277,6 +10286,9 @@
               "type": "boolean"
             }
           ]
+        },
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [],
@@ -11044,7 +11056,8 @@
         "enabled",
         "configMapRef",
         "prefix",
-        "secretRef"
+        "secretRef",
+        "order"
       ]
     },
     "io.k8s.api.core.v1.EnvFromSource": {
@@ -11072,6 +11085,9 @@
             }
           ],
           "title": "Enabled"
+        },
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "anyOf": [
@@ -11087,7 +11103,8 @@
       "enum": [
         "enabled",
         "value",
-        "valueFrom"
+        "valueFrom",
+        "order"
       ]
     },
     "io.k8s.api.core.v1.EnvVar": {
@@ -11124,6 +11141,9 @@
               "type": "boolean"
             }
           ]
+        },
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [],
@@ -18347,7 +18367,8 @@
         "port",
         "protocol",
         "targetPort",
-        "enabled"
+        "enabled",
+        "order"
       ]
     },
     "io.k8s.api.core.v1.ServicePort": {
@@ -18403,6 +18424,9 @@
               "type": "boolean"
             }
           ]
+        },
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [],
@@ -19117,7 +19141,8 @@
         "scaleIO",
         "secret",
         "storageos",
-        "vsphereVolume"
+        "vsphereVolume",
+        "order"
       ]
     },
     "io.k8s.api.core.v1.Volume": {
@@ -19254,6 +19279,9 @@
             }
           ]
         },
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "active": {
           "title": "Active",
           "type": "string"
@@ -19305,7 +19333,8 @@
         "recursiveReadOnly",
         "subPath",
         "subPathExpr",
-        "hashsumAnnotation"
+        "hashsumAnnotation",
+        "order"
       ]
     },
     "io.k8s.api.core.v1.VolumeMount": {
@@ -19356,6 +19385,9 @@
               "type": "boolean"
             }
           ]
+        },
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
         },
         "hashsumAnnotation": {
           "description": "If true and volume for this volumeMount is a ConfigMap or Secret, enables enabling adding hashsum annotation to the pods template annotations.",
@@ -21109,7 +21141,8 @@
         "enabled",
         "path",
         "pathType",
-        "backend"
+        "backend",
+        "order"
       ]
     },
     "io.k8s.api.networking.v1.HTTPIngressPath": {
@@ -21137,6 +21170,9 @@
               "type": "boolean"
             }
           ]
+        },
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [],
@@ -21791,7 +21827,8 @@
         "hosts",
         "secretName",
         "staticName",
-        "enabled"
+        "enabled",
+        "order"
       ]
     },
     "io.k8s.api.networking.v1.IngressTLS": {
@@ -21837,6 +21874,9 @@
               "type": "boolean"
             }
           ]
+        },
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "anyOf": [
@@ -23395,7 +23435,8 @@
         "resourceNames",
         "resources",
         "verbs",
-        "enabled"
+        "enabled",
+        "order"
       ]
     },
     "io.k8s.api.rbac.v1.PolicyRule": {
@@ -23485,6 +23526,9 @@
               "type": "boolean"
             }
           ]
+        },
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
         }
       },
       "required": [],
@@ -34851,7 +34895,8 @@
         "env",
         "envFrom",
         "volumeMounts",
-        "sources"
+        "sources",
+        "order"
       ]
     },
     "hull.Container.v1": {
@@ -34867,6 +34912,9 @@
               "type": "boolean"
             }
           ]
+        },
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
         },
         "image": {
           "description": "Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets.",
@@ -35085,7 +35133,9 @@
         "initContainers",
         "containers",
         "volumes",
-        "sources"
+        "sources",
+        "annotations",
+        "labels"
       ]
     },
     "hull.Pod.v1": {
@@ -35099,6 +35149,32 @@
         }
       ],
       "properties": {
+        "annotations": {
+          "title": "Annotations",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "required": [],
+          "properties": {}
+        },
+        "labels": {
+          "title": "Labels",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "required": [],
+          "properties": {}
+        },
         "initContainers": {
           "title": "HullInitContainers",
           "anyOf": [
@@ -35478,7 +35554,8 @@
     "hull.Ingress.Rule.v1.Names": {
       "enum": [
         "enabled",
-        "http"
+        "http",
+        "order"
       ]
     },
     "hull.Ingress.Rule.v1": {
@@ -35501,6 +35578,9 @@
               "type": "boolean"
             }
           ]
+        },
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
         },
         "http": {
           "$ref": "#/definitions/hull.Ingress.Rule.Path.v1"
@@ -36409,12 +36489,17 @@
       "enum": [
         "group",
         "kind",
-        "name"
+        "name",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1alpha2.LocalPolicyTargetReference": {
       "description": "LocalPolicyTargetReference identifies an API object to apply a direct or\ninherited policy to. This should be used as part of Policy resources\nthat can target Gateway API resources. For more information on how this\npolicy attachment model works, and a sample Policy resource, refer to\nthe policy attachment documentation for Gateway API.",
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "group": {
           "description": "Group is the group of the target resource.",
           "anyOf": [
@@ -36452,6 +36537,17 @@
               "maxLength": 253,
               "minLength": 1,
               "type": "string"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
             }
           ]
         }
@@ -36696,12 +36792,17 @@
         "group",
         "kind",
         "name",
-        "sectionName"
+        "sectionName",
+        "enabled",
+        "order"
       ]
     },  
     "gateway.networking.k8s.io.v1alpha3.LocalPolicyTargetReferenceWithSectionName": {
       "description": "LocalPolicyTargetReferenceWithSectionName identifies an API object to apply a\ndirect policy to. This should be used as part of Policy resources that can\ntarget single resources. For more information on how this policy attachment\nmode works, and a sample Policy resource, refer to the policy attachment\ndocumentation for Gateway API.\n\nNote: This should only be used for direct policy attachment when references\nto SectionName are actually needed. In all other cases,\nLocalPolicyTargetReference should be used.",
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "group": {
           "description": "Group is the group of the target resource.",
           "anyOf": [
@@ -36744,6 +36845,17 @@
         },
         "sectionName": {
           "$ref": "#/definitions/gateway.networking.k8s.io.v1.SectionName"
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "required": [
@@ -37229,12 +37341,17 @@
     "gateway.networking.k8s.io.v1.GatewayAddress.Names": {
       "enum": [
         "type",
-        "value"
+        "value",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.GatewayAddress": {
       "description": "GatewayAddress describes an address that can be bound to a Gateway.",
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "type": {
           "description": "Type of the address.",
           "anyOf": [
@@ -37260,6 +37377,17 @@
               "maxLength": 253,
               "minLength": 1,
               "type": "string"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
             }
           ]
         }
@@ -37361,12 +37489,17 @@
     "gateway.networking.k8s.io.v1.RouteGroupKind.Names": {
       "enum": [
         "kind",
-        "group"
+        "group",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.RouteGroupKind": {
       "description": "RouteGroupKind indicates the group and kind of a Route resource.",
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "group": {
           "description": "Group is the group of the Route.",
           "anyOf": [
@@ -37392,6 +37525,17 @@
               "minLength": 1,
               "pattern": "^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$",
               "type": "string"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
             }
           ]
         }
@@ -37489,12 +37633,17 @@
         "group",
         "kind",
         "name",
-        "namespace"
+        "namespace",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.SecretObjectReference": {
       "description": "SecretObjectReference identifies an API object including its namespace,\ndefaulting to Secret.\n\nThe API object must be valid in the cluster; the Group and Kind must\nbe registered in the cluster for this reference to be valid.\n\nReferences to objects with invalid Group and Kind are not valid, and must\nbe rejected by the implementation, with appropriate Conditions set\non the containing object.",
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "group": {
           "description": "Group is the group of the referent. For example, \"gateway.networking.k8s.io\".\nWhen unspecified or empty string, core API group is inferred.",
           "anyOf": [
@@ -37548,6 +37697,17 @@
               "minLength": 1,
               "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
               "type": "string"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
             }
           ]
         }
@@ -37645,12 +37805,17 @@
         "group",
         "kind",
         "name",
-        "namespace"
+        "namespace",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.ObjectReference": {
       "description": "ObjectReference identifies an API object including its namespace.\n\nThe API object must be valid in the cluster; the Group and Kind must\nbe registered in the cluster for this reference to be valid.\n\nReferences to objects with invalid Group and Kind are not valid, and must\nbe rejected by the implementation, with appropriate Conditions set\non the containing object.",
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "group": {
           "description": "Group is the group of the referent. For example, \"gateway.networking.k8s.io\".\nWhen unspecified or empty string, core API group is inferred.",
           "anyOf": [
@@ -37702,6 +37867,17 @@
               "minLength": 1,
               "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
               "type": "string"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
             }
           ]
         }
@@ -37803,12 +37979,17 @@
         "name",
         "port",
         "protocol",
-        "tls"
+        "tls",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.Listener": {
       "description": "Listener embodies the concept of a logical endpoint where a Gateway accepts\nnetwork connections.",
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "allowedRoutes": {
           "default": {
             "namespaces": {
@@ -38067,6 +38248,17 @@
             {
               "message": "certificateRefs or options must be specified when mode is Terminate",
               "rule": "self.mode == 'Terminate' ? size(self.certificateRefs) > 0 || size(self.options) > 0 : true"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
             }
           ]
         }
@@ -38506,7 +38698,9 @@
         "name",
         "namespace",
         "port",
-        "weight"
+        "weight",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.BackendRef": {
@@ -38517,6 +38711,9 @@
         }
       ],
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "weight": {
           "description": "Weight specifies the proportion of requests forwarded to the referenced\nbackend. This is computed as weight/(sum of all weights in this\nBackendRefs list). For non-zero values, there may be some epsilon from\nthe exact proportion defined here depending on the precision an\nimplementation supports. Weight is not a percentage and the sum of\nweights does not need to equal 100.\n\nIf only one backend is specified and it has a weight greater than 0, 100%\nof the traffic is forwarded to that backend. If weight is set to 0, no\ntraffic should be forwarded for this entry. If unspecified, weight\ndefaults to 1.\n\nSupport for this field varies based on the context where used.",
           "anyOf": [
@@ -38531,7 +38728,18 @@
               "type": "integer"
             }
           ]
-          }
+          },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        }
       }
     },
     "hull.GRPCBackendRef.v1.Names": {
@@ -38839,12 +39047,17 @@
         "requestHeaderModifier",
         "responseHeaderModifier",
         "requestMirror",
-        "type"
+        "type",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.GRPCRouteFilter": {
       "description": "GRPCRouteFilter defines processing steps that must be completed during the\nrequest or response lifecycle. GRPCRouteFilters are meant as an extension\npoint to express processing that may be done in Gateway implementations. Some\nexamples include request or response modification, implementing\nauthentication strategies, rate-limiting, and traffic shaping. API\nguarantee/conformance is defined based on the type of the filter.",
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "extensionRef": {
           "$ref": "#/definitions/gateway.networking.k8s.io.v1.LocalObjectReference"
         },
@@ -38873,13 +39086,26 @@
               "type": "string"
             }
           ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       }
     },
     "hull.GRPCRouteMatch.v1.Names": {
       "enum": [
         "method",
-        "headers"
+        "headers",
+        "enabled",
+        "order"
       ]
     },
     "hull.GRPCRouteMatch.v1": {
@@ -38892,6 +39118,9 @@
         }
       ],
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "caCertificateRefs": {
           "title": "HullObjectReference",
           "anyOf": [
@@ -38962,6 +39191,17 @@
               ]
             }
           }
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       }
     },
@@ -39156,7 +39396,9 @@
       "enum": [
         "backendRefs",
         "filters",
-        "matches"
+        "matches",
+        "enabled",
+        "order"
       ]
     },
     "hull.GRPCRouteRule.v1": {
@@ -39169,6 +39411,9 @@
         }
       ],
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "backendRefs": {
           "title": "HullGrpcRouteRule",
           "anyOf": [
@@ -39386,6 +39631,17 @@
               ]
             }
           }
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "required": [
@@ -39399,12 +39655,17 @@
         "name",
         "namespace",
         "port",
-        "sectionName"
+        "sectionName",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.ParentReference": {
       "description": "ParentReference identifies an API object (usually a Gateway) that can be considered\na parent of this resource (usually a route). There are two kinds of parent resources\nwith \"Core\" support:\n\n* Gateway (Gateway conformance profile)\n* Service (Mesh conformance profile, ClusterIP Services only)\n\nThis API may be extended in the future to support additional kinds of parent\nresources.\n\nThe API object must be valid in the cluster; the Group and Kind must\nbe registered in the cluster for this reference to be valid.",
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "group": {
           "description": "Group is the group of the referent.\nWhen unspecified, \"gateway.networking.k8s.io\" is inferred.\nTo set the core API group (such as for a \"Service\" kind referent),\nGroup must be explicitly set to \"\" (empty string).\n\nSupport: Core",
           "anyOf": [
@@ -39477,6 +39738,17 @@
         },
         "sectionName": {
           "$ref": "#/definitions/gateway.networking.k8s.io.v1.SectionName"
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       }
     },
@@ -39736,12 +40008,17 @@
       "enum": [
         "group",
         "kind",
-        "namespace"
+        "namespace",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1beta1.ReferenceGrantFrom": {
       "description": "ReferenceGrantFrom describes trusted namespaces and kinds.",
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "group": {
           "description": "Group is the group of the referent.\nWhen empty, the Kubernetes core API group is inferred.\n\nSupport: Core",
           "anyOf": [
@@ -39782,6 +40059,17 @@
               "type": "string"
             }
           ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "required": [
@@ -39795,12 +40083,17 @@
       "enum": [
         "group",
         "kind",
-        "name"
+        "name",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1beta1.ReferenceGrantTo": {
       "description": "ReferenceGrantTo describes what Kinds are allowed as targets of the\nreferences.",
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "group": {
           "description": "Group is the group of the referent.\nWhen empty, the Kubernetes core API group is inferred.\n\nSupport: Core",
           "anyOf": [
@@ -39838,6 +40131,17 @@
               "maxLength": 253,
               "minLength": 1,
               "type": "string"
+            }
+          ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
             }
           ]
         }
@@ -39996,7 +40300,9 @@
     "hull.TCPRouteRule.v1alpha2.Names": {
       "enum": [
         "backendRefs",
-        "name"
+        "name",
+        "enabled",
+        "order"
       ]
     },
     "hull.TCPRouteRule.v1alpha2": {
@@ -40009,6 +40315,9 @@
         }
       ],
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "backendRefs": {
           "title": "HullTcpRouteRule",
           "anyOf": [
@@ -40080,6 +40389,17 @@
         },
         "name": {
           "$ref": "#/definitions/gateway.networking.k8s.io.v1.SectionName"
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "required": [
@@ -40295,7 +40615,9 @@
     },
     "hull.TLSRouteRule.v1alpha2.Names": {
       "enum": [
-        "backendRefs"
+        "backendRefs",
+        "enabled",
+        "order"
       ]
     },
     "hull.TLSRouteRule.v1alpha2": {
@@ -40308,6 +40630,9 @@
         }
       ],
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "backendRefs": {
           "title": "HullTcpRouteRule",
           "anyOf": [
@@ -40376,6 +40701,17 @@
               ]
             }
           }
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "required": [
@@ -40599,7 +40935,9 @@
     "hull.UDPRouteRule.v1alpha2.Names": {
       "enum": [
         "backendRefs",
-        "name"
+        "name",
+        "enabled",
+        "order"
       ]
     },
     "hull.UDPRouteRule.v1alpha2": {
@@ -40612,6 +40950,9 @@
         }
       ],
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "backendRefs": {
           "title": "HullUdpRouteRule",
           "anyOf": [
@@ -40683,6 +41024,17 @@
         },
         "name": {
           "$ref": "#/definitions/gateway.networking.k8s.io.v1.SectionName"
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "required": [
@@ -40877,12 +41229,17 @@
         "headers",
         "method",
         "path",
-        "queryParams"
+        "queryParams",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.HTTPRouteMatch": {
       "description": "HTTPRouteMatch defines the predicate used to match requests to a given\naction. Multiple match types are ANDed together, i.e. the match will\nevaluate to true only if all conditions are satisfied.\n\nFor example, the match below will match a HTTP request only if its path\nstarts with `/foo` AND it contains the `version: v1` header:\n\n```\nmatch:\n\n\tpath:\n\t  value: \"/foo\"\n\theaders:\n\t- name: \"version\"\n\t  value \"v1\"\n\n```",
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "headers": {
           "description": "Headers specifies HTTP request header matchers. Multiple match values are\nANDed together, meaning, a request must match all the specified headers\nto select the route.",
           "items": {
@@ -41149,6 +41506,17 @@
             "name"
           ],
           "x-kubernetes-list-type": "map"
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "anyOf": [
@@ -41168,12 +41536,17 @@
         "requestRedirect",
         "responseHeaderModifier",
         "type",
-        "urlRewrite"
+        "urlRewrite",
+        "enabled",
+        "order"
       ]
     },
     "gateway.networking.k8s.io.v1.HTTPRouteFilter": {
       "description": "GRPCRouteFilter defines processing steps that must be completed during the\nrequest or response lifecycle. GRPCRouteFilters are meant as an extension\npoint to express processing that may be done in Gateway implementations. Some\nexamples include request or response modification, implementing\nauthentication strategies, rate-limiting, and traffic shaping. API\nguarantee/conformance is defined based on the type of the filter.",
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "extensionRef": {
           "$ref": "#/definitions/gateway.networking.k8s.io.v1.LocalObjectReference"
         },
@@ -41435,6 +41808,17 @@
               "type": "object"
             }
           ]
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       }
     },
@@ -41505,7 +41889,9 @@
       "enum": [
         "backendRefs",
         "filters",
-        "matches"
+        "matches",
+        "enabled",
+        "order"
       ]
     },
     "hull.HTTPRouteRule.v1": {
@@ -41518,6 +41904,9 @@
         }
       ],
       "properties": {
+        "order": {
+          "$ref": "#/definitions/hull.Order.v1"
+        },
         "backendRefs": {
           "title": "HullHttpRouteRuleBackendRefs",
           "anyOf": [
@@ -41728,6 +42117,17 @@
               ]
             }
           }
+        },
+        "enabled": {
+          "title": "Enabled",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/hull.Transformation.Pattern"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "required": [
@@ -45099,6 +45499,22 @@
               "type": "object",
               "required": [],
               "properties": {
+                "assignDefaultServiceAccountToPods": {
+                  "$id": "#/definitions/root/config/general/assignDefaultServiceAccountToPods",
+                  "description": "If true (the default) and the default ServiceAccount is rendered, pods that do not specify a 'serviceAccountName' are assigned the default ServiceAccount. If false, no 'serviceAccountName' is rendered for such pods and Kubernetes assigns the namespace's own 'default' ServiceAccount.",
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/hull.Transformation.Pattern"
+                    },
+                    {
+                      "default": true,
+                      "type": "boolean"
+                    }
+                  ],
+                  "examples": [
+                    false
+                  ]
+                },
                 "createImagePullSecretsFromRegistries": {
                   "$id": "#/definitions/root/config/general/createImagePullSecretsFromRegistries",
                   "description": "If true, image pull secrets are created from all defined registries and added to pods.",
@@ -45869,6 +46285,19 @@
     "hull.Transformation.Pattern": {
       "pattern": "^\\s*(_HT[\\*|\\?|\\^|!|&|/]|_HULL_TRANSFORMATION_<<<).*",
       "type": "string"
+    },
+    "hull.Order.v1": {
+      "title": "Order",
+      "description": "Position of the element when the dictionary is rendered as a Kubernetes array. Elements are sorted ascending by order, elements with equal order alphanumerically by key. Defaults to 0. For 'env' elements, an element is additionally never rendered before the variables of the same container it references via $(VAR_NAME) in its 'value'.",
+      "format": "int32",
+      "anyOf": [
+        {
+          "$ref": "#/definitions/hull.Transformation.Pattern"
+        },
+        {
+          "type": "integer"
+        }
+      ]
     }
   },
   "$schema": "http://json-schema.org/draft-07/schema#",

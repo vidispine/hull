@@ -1,0 +1,117 @@
+hull:
+  objects:
+    <OBJECT_TYPE>:
+      _HULL_OBJECT_TYPE_DEFAULT_:
+        pod:
+          volumes:
+            _HULL_OBJECT_TYPE_DEFAULT_:
+              order: 5
+
+      env-order-dependencies:
+        pod:
+          containers:
+            main:
+              image:
+                repository: kafka
+                tag: latest
+              env:
+                POD_NAME:
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                POD_NAMESPACE:
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+                KAFKA_ADVERTISED_LISTENERS:
+                  value: PLAINTEXT://$(POD_NAME).kafka.$(POD_NAMESPACE).svc.cluster.local:9092
+
+      env-order-edge-cases:
+        pod:
+          containers:
+            main:
+              image:
+                repository: busybox
+                tag: latest
+              env:
+                A_ESCAPED:
+                  value: $$(Z_BASE)
+                B_UNKNOWN:
+                  value: $(NOT_DEFINED)
+                C_CHAIN:
+                  value: $(D_MIDDLE)/c
+                D_MIDDLE:
+                  value: $(E_BASE)/d
+                E_BASE:
+                  value: e
+                F_DISABLED_REF:
+                  value: $(G_DISABLED)
+                G_DISABLED:
+                  enabled: false
+                  value: $(A_ESCAPED)
+                N_REMOVED: null
+                S_SELF:
+                  value: $(S_SELF)
+                X_CYCLE:
+                  value: $(Y_CYCLE)
+                Y_CYCLE:
+                  value: $(X_CYCLE)
+                Z_BASE:
+                  value: z
+
+      order-explicit:
+        pod:
+          initContainers:
+            a-wait:
+              order: 3
+              image:
+                repository: busybox
+                tag: latest
+            init-config:
+              order: 2
+              image:
+                repository: busybox
+                tag: latest
+            migrate:
+              order: 1
+              image:
+                repository: busybox
+                tag: latest
+          containers:
+            main:
+              image:
+                repository: busybox
+                tag: latest
+              ports:
+                z-first:
+                  order: -1
+                  containerPort: 8080
+                a-second:
+                  containerPort: 8081
+              env:
+                Z_FIRST:
+                  order: -1
+                  value: z
+                B_PLAIN:
+                  value: b
+                M_DEPENDS:
+                  value: $(A_LAST)
+                A_LAST:
+                  order: 10
+                  value: a
+              volumeMounts:
+                z-mount:
+                  order: 1
+                  name: z-vol
+                  mountPath: /z
+                a-mount:
+                  name: a-vol
+                  mountPath: /a
+          volumes:
+            z-vol:
+              order: 1
+              emptyDir: {}
+            a-vol:
+              emptyDir: {}
+            b-vol:
+              emptyDir: {}
