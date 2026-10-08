@@ -29,6 +29,7 @@ Test creation of objects and features.
 * Lint and Render values file "values_ok_integer.trans1.hull.yaml"
 * Set test object to "release-name-hull-test-ok"
 * Test Object has key "spec§minReadySeconds" with integer value "300"
+* Fail to render the templates for values file "values_fail_digest.hull.yaml" to test execution folder because error contains "not match pattern"
 
 ## Probe Port 
 * Lint and Render
@@ -231,8 +232,13 @@ Test creation of objects and features.
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
 * Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.deployment.invalid-container-images.containers.no-repository.image.repository) Field repository is missing"
 
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.deployment.invalid-container-images.containers.invalid-digest.image.digest) Field digest is not a valid image digest"
+
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid_disabled.hull.yaml"
 * Lint and Render values file "values_error_handling_image_invalid_disabled.hull.yaml"
+* Set test object to "release-name-hull-test-invalid-container-images"
+* Test Object has key "spec§template§spec§containers§0§image" with value "my/image/repo@1a2b3c4d5e6f"
 
 ## Post Render
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_postrender.hull.yaml"

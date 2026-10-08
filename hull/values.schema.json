@@ -40257,7 +40257,7 @@
               "type": "string"
             },
             "tag": {
-              "description": "The tag of the image",
+              "description": "The tag of the image. Ignored if a non-empty digest is set.",
               "anyOf": [
                 {
                   "type": "string"
@@ -40267,6 +40267,18 @@
                 },
                 {
                   "type": "number"
+                }
+              ]
+            },
+            "digest": {
+              "description": "The digest of the image, an algorithm and a lowercase hex encoded hash joined by a colon, for example sha256:<64 hex characters>. If set and not empty, the image is referenced by digest as <repository>@<digest> and the tag is ignored. Only the digest is used for pulling the image.",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^([a-z0-9]+([+._-][a-z0-9]+)*:[a-f0-9]{32,})?$"
                 }
               ]
             }
@@ -51275,7 +51287,7 @@
                     "containerImageValid": {
                       "$id": "#/definitions/root/config/general/debug/containerimagevalid",
                       "title": "containerImageValid",
-                      "description": "Checks if all containers have an image defined with at least an repository.",
+                      "description": "Checks if all containers have an image defined with at least a repository and, if a digest is set, that it is a well-formed image digest.",
                       "anyOf": [
                         {
                           "$ref": "#/definitions/hull.Transformation.Pattern"

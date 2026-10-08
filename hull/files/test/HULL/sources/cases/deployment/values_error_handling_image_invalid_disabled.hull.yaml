@@ -3,11 +3,17 @@ hull:
     general:
       errorChecks:
         containerImageValid: false
+    specific:
+      short_image_id: "1a2b3c4d5e6f"
   objects:
     deployment:
       invalid-container-images:
         pod:
           containers:
+            invalid-digest:
+              image:
+                repository: my/image/repo
+                digest: _HT*hull.config.specific.short_image_id
             no-image:
               env: {}
             no-repository:
