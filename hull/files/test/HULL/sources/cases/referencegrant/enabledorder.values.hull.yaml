@@ -1,0 +1,34 @@
+hull:
+  objects:
+    referencegrant:
+      enabled-order:
+        from:
+          z-from:
+            order: -1
+            group: gateway.networking.k8s.io
+            kind: HTTPRoute
+            namespace: namespace-z
+          a-from:
+            group: gateway.networking.k8s.io
+            kind: HTTPRoute
+            namespace: namespace-a
+          disabled-from:
+            enabled: false
+            group: gateway.networking.k8s.io
+            kind: HTTPRoute
+            namespace: namespace-disabled
+        to:
+          z-to:
+            order: -1
+            group: ""
+            kind: Service
+            name: service-z
+          a-to:
+            group: ""
+            kind: Service
+            name: service-a
+          disabled-to:
+            enabled: false
+            group: ""
+            kind: Service
+            name: service-disabled

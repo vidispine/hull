@@ -108,6 +108,7 @@
 |
 |   Helper for printing out an HULL based key value dictionary to an Kubernetes array
 |   Handles defaulting before rendering.
+|   Array elements are ordered as determined by "hull.util.include.object.keys".
 |
 */ -}}
 {{- define "hull.util.include.object" -}}
@@ -122,6 +123,7 @@
 {{- $objectInstanceKey := (index . "OBJECT_INSTANCE_KEY") -}}
 {{- $containerType := default "" (index . "CONTAINER_TYPE") -}}
 {{- $renderEmptyArray := default (index $parent.Values $hullRootKey).config.general.render.emptyHullObjects (index . "RENDER_EMPTY_ARRAY")}}
+{{- $sortByDependencies := default false (index . "SORT_BY_DEPENDENCIES") -}}
 {{- $isDefined := false }}
 {{- if hasKey $spec (printf "%s" $objectKey) }}
 {{- range $key, $value := (index $spec (printf "%s" $objectKey)) }}
@@ -132,13 +134,16 @@
 {{ end }}
 {{- if $isDefined -}}
 {{ $objectKey }}:
-{{- range $key, $value := (index $spec (printf "%s" $objectKey)) }}
-{{ if ne $key "_HULL_OBJECT_TYPE_DEFAULT_" }}
+{{- $objects := index $spec (printf "%s" $objectKey) }}
+{{- range $key := include "hull.util.include.object.keys" (dict "SPEC" $objects "DEFAULT_SPEC" $defaultObjectSpec "SORT_BY_DEPENDENCIES" $sortByDependencies) | fromJsonArray }}
+{{- $value := index $objects $key }}
 {{ if (gt (len (keys (default dict $value))) 0) }}
 {{ $merged := dict }}
 {{ $merged = merge $value $defaultObjectSpec }}
-{{ include (printf "%s" $objectTemplate) (dict "PARENT_CONTEXT" $parent "SPEC" $merged "ORIGIN_SPEC" $spec "COMPONENT" $key "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "CONTAINER_TYPE" $containerType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 0 }}
+{{ if hasKey $merged "order" }}
+{{ $merged = omit $merged "order" }}
 {{ end }}
+{{ include (printf "%s" $objectTemplate) (dict "PARENT_CONTEXT" $parent "SPEC" $merged "ORIGIN_SPEC" $spec "COMPONENT" $key "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "CONTAINER_TYPE" $containerType "KEEP_HASHSUM_ANNOTATIONS" $keepHashsumAnnotations) | indent 0 }}
 {{ end }}
 {{ end }}
 {{ else }}
@@ -147,6 +152,107 @@
 {{ end }}
 {{ end }}
 {{ end }}
+
+
+
+{{- /*
+| Purpose:
+|
+|   Returns the keys of a HULL key value dictionary as JSON array in the order in which
+|   they are rendered as Kubernetes array elements. Elements are sorted ascending by their
+|   'order' property (default 0) and alphanumerically by key for equal 'order' values.
+|   With SORT_BY_DEPENDENCIES, an element is never sorted before the enabled elements it
+|   references via $(KEY) in its 'value' property. Elements in reference cycles fall back
+|   to the plain sort order.
+|
+| Interface:
+|
+|   SPEC: The key value dictionary
+|   DEFAULT_SPEC: The default specification applied to each element
+|   SORT_BY_DEPENDENCIES: Whether to take $(KEY) references in 'value' properties into account
+|
+*/ -}}
+{{- define "hull.util.include.object.keys" -}}
+{{- $spec := default dict (index . "SPEC") -}}
+{{- $defaultSpec := default dict (index . "DEFAULT_SPEC") -}}
+{{- $sortByDependencies := default false (index . "SORT_BY_DEPENDENCIES") -}}
+{{- $keys := without (keys $spec | sortAlpha) "_HULL_OBJECT_TYPE_DEFAULT_" -}}
+{{- $orders := dict -}}
+{{- $dependencies := dict -}}
+{{- $isReordered := false -}}
+{{- $active := dict -}}
+{{- range $key := $keys -}}
+{{- $value := default dict (index $spec $key) -}}
+{{- $order := 0.0 -}}
+{{- if hasKey $value "order" -}}
+{{- $order = float64 $value.order -}}
+{{- else if hasKey $defaultSpec "order" -}}
+{{- $order = float64 $defaultSpec.order -}}
+{{- end -}}
+{{- $_ := set $orders $key $order -}}
+{{- if ne $order 0.0 -}}
+{{- $isReordered = true -}}
+{{- end -}}
+{{- $enabled := true -}}
+{{- if hasKey $value "enabled" -}}
+{{- $enabled = $value.enabled -}}
+{{- else if hasKey $defaultSpec "enabled" -}}
+{{- $enabled = $defaultSpec.enabled -}}
+{{- end -}}
+{{- if and $value $enabled -}}
+{{- $_ := set $active $key true -}}
+{{- end -}}
+{{- end -}}
+{{- if $sortByDependencies -}}
+{{- range $key := keys $active | sortAlpha -}}
+{{- $value := index $spec $key -}}
+{{- $reference := "" -}}
+{{- if hasKey $value "value" -}}
+{{- $reference = toString $value.value -}}
+{{- else if hasKey $defaultSpec "value" -}}
+{{- $reference = toString $defaultSpec.value -}}
+{{- end -}}
+{{- $refs := list -}}
+{{- range $match := regexFindAll `\$\([^)]*\)` (replace "$$" "" $reference) -1 -}}
+{{- $ref := trimSuffix ")" (trimPrefix "$(" $match) -}}
+{{- if and (hasKey $active $ref) (ne $ref $key) (not (has $ref $refs)) -}}
+{{- $refs = append $refs $ref -}}
+{{- end -}}
+{{- end -}}
+{{- if gt (len $refs) 0 -}}
+{{- $_ := set $dependencies $key $refs -}}
+{{- $isReordered = true -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- if not $isReordered -}}
+{{- $keys | toJson -}}
+{{- else -}}
+{{- $remaining := $keys -}}
+{{- $placed := dict -}}
+{{- $sorted := list -}}
+{{- range $keys -}}
+{{- $next := "" -}}
+{{- $nextReady := false -}}
+{{- range $key := $remaining -}}
+{{- $ready := true -}}
+{{- range $ref := index $dependencies $key | default list -}}
+{{- if not (hasKey $placed $ref) -}}
+{{- $ready = false -}}
+{{- end -}}
+{{- end -}}
+{{- if or (eq $next "") (and $ready (not $nextReady)) (and (eq $ready $nextReady) (lt (index $orders $key) (index $orders $next))) -}}
+{{- $next = $key -}}
+{{- $nextReady = $ready -}}
+{{- end -}}
+{{- end -}}
+{{- $sorted = append $sorted $next -}}
+{{- $_ := set $placed $next true -}}
+{{- $remaining = without $remaining $next -}}
+{{- end -}}
+{{- $sorted | toJson -}}
+{{- end -}}
+{{- end -}}
 
 
 
@@ -198,10 +304,10 @@ selector:
 {{- if not (hasKey (index (index $parent.Values $hullRootKey).config.templates $sourceType) $source) -}}
 {{- fail (printf "No source with key %s found in hull.config.templates.%s" $source $sourceType) }}
 {{- end -}}
-{{- $_ := (mergeOverwrite $defaultSpec ( deepCopy (index (index (index $parent.Values $hullRootKey).config.templates $sourceType) $source))) -}}
+{{- $_ := (mergeOverwrite $defaultSpec (omit (deepCopy (index (index (index $parent.Values $hullRootKey).config.templates $sourceType) $source)) "enabled")) -}}
 {{- end -}}
 {{- else -}}
-{{- $_ := (mergeOverwrite $defaultSpec ( deepCopy (index (index (index $parent.Values $hullRootKey).config.templates $sourceType) "global"))) -}}
+{{- $_ := (mergeOverwrite $defaultSpec (omit (deepCopy (index (index (index $parent.Values $hullRootKey).config.templates $sourceType) "global")) "enabled")) -}}
 {{- end -}}
 {{- $_ := unset $entry "sources" -}}
 {{- if (ne $specKey "") -}}
@@ -353,6 +459,97 @@ selector:
       {{- $errorMessage = printf "%s\n%s %s" $errorMessage "HULL failed with error" (index $errorParts 2) -}}
     {{- end -}}
   {{- end -}}
+{{- end -}}
+{{ $errorMessage }}
+{{- end -}}
+
+
+{{- /*
+| Purpose:
+|
+|   Captures, before any transformation is resolved, whether the 'enabled' property of the
+|   'default' ServiceAccount, Role and RoleBinding is still the HULL default that couples
+|   them to 'hull.config.general.createDefaultRbacTriplet', and whether the RoleBinding's
+|   'roleRef' and 'subjects' are still the HULL defaults.
+|   Consumed by "hull.util.check.default.rbac.triplet" after transformations are resolved.
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   HULL_ROOT_KEY: The root key of the HULL configuration
+|
+*/ -}}
+{{- define "hull.util.check.default.rbac.triplet.raw" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $objects := dig "objects" dict (default dict (index $parent.Values $hullRootKey)) -}}
+{{- $defaultEnabled := "_HT?_HT*hull.config.general.createDefaultRbacTriplet" -}}
+{{- $defaultRoleRef := dict "apiGroup" "rbac.authorization.k8s.io" "kind" "Role" "name" "_HT^default" -}}
+{{- $defaultSubjects := list (dict "kind" "ServiceAccount" "name" "_HT^default" "namespace" "_HT**Release.Namespace") -}}
+{{- $result := dict -}}
+{{- range $objectType := list "serviceaccount" "role" "rolebinding" -}}
+{{- $spec := default dict (dig $objectType "default" dict $objects) -}}
+{{- $_ := set $result $objectType (dict "COUPLED" (and (kindIs "map" $spec) (eq (toString (index $spec "enabled")) $defaultEnabled))) -}}
+{{- end -}}
+{{- $roleBinding := default dict (dig "rolebinding" "default" dict $objects) -}}
+{{- if kindIs "map" $roleBinding -}}
+{{- $_ := set $result.rolebinding "CUSTOMIZED" (or (ne (toJson (index $roleBinding "roleRef")) (toJson $defaultRoleRef)) (ne (toJson (index $roleBinding "subjects")) (toJson $defaultSubjects))) -}}
+{{- end -}}
+{{ $result | toYaml }}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:
+|
+|   Fails loudly instead of silently dropping configuration: when the 'default' ServiceAccount,
+|   Role or RoleBinding is not rendered only because 'hull.config.general.createDefaultRbacTriplet'
+|   is false, but the chart customized it (ServiceAccount 'annotations', Role 'rules',
+|   RoleBinding 'roleRef' or 'subjects'), an error message is returned for each such object.
+|   Setting 'enabled' explicitly on the object (true or false) is treated as a deliberate
+|   decision and suppresses the error.
+|
+| Interface:
+|
+|   PARENT_CONTEXT: The Parent charts context
+|   HULL_ROOT_KEY: The root key of the HULL configuration
+|   RAW: The result of "hull.util.check.default.rbac.triplet.raw"
+|
+*/ -}}
+{{- define "hull.util.check.default.rbac.triplet" -}}
+{{- $parent := (index . "PARENT_CONTEXT") -}}
+{{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
+{{- $raw := default dict (index . "RAW") -}}
+{{- $hull := default dict (index $parent.Values $hullRootKey) -}}
+{{- $general := dig "config" "general" dict $hull -}}
+{{- $objects := dig "objects" dict $hull -}}
+{{- $errorMessage := "" -}}
+{{- if not (dig "createDefaultRbacTriplet" false $general) -}}
+{{- $customized := dict -}}
+{{- $serviceAccount := default dict (dig "serviceaccount" "default" dict $objects) -}}
+{{- if and (kindIs "map" $serviceAccount) (gt (len (default dict (index $serviceAccount "annotations"))) 0) -}}
+{{- $_ := set $customized "serviceaccount" (list "annotations" "ServiceAccount" "has annotations") -}}
+{{- end -}}
+{{- if (dig "rbac" true $general) -}}
+{{- $role := default dict (dig "role" "default" dict $objects) -}}
+{{- if kindIs "map" $role -}}
+{{- range $ruleKey, $rule := default dict (index $role "rules") -}}
+{{- if and (ne $ruleKey "_HULL_OBJECT_TYPE_DEFAULT_") $rule -}}
+{{- $_ := set $customized "role" (list "rules" "Role" "has rules") -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- if dig "rolebinding" "CUSTOMIZED" false $raw -}}
+{{- $_ := set $customized "rolebinding" (list "subjects" "RoleBinding" "has a customized roleRef or subjects") -}}
+{{- end -}}
+{{- end -}}
+{{- range $objectType := list "serviceaccount" "role" "rolebinding" -}}
+{{- if and (hasKey $customized $objectType) (dig $objectType "COUPLED" false $raw) -}}
+{{- $details := index $customized $objectType -}}
+{{- $errorMessage = printf "%s\nHULL failed with error (@Values.%s.objects.%s.default.%s) The 'default' %s %s but is not rendered because '%s.config.general.createDefaultRbacTriplet' is false. Set 'createDefaultRbacTriplet: true' to render the default ServiceAccount, Role and RoleBinding, or set 'enabled' explicitly on '%s.objects.%s.default' to decide for this object alone." $errorMessage $hullRootKey $objectType (index $details 0) (index $details 1) (index $details 2) $hullRootKey $hullRootKey $objectType -}}
+{{- end -}}
+{{- end -}}
 {{- end -}}
 {{ $errorMessage }}
 {{- end -}}

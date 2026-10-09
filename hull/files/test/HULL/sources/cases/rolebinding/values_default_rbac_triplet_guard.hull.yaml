@@ -1,0 +1,17 @@
+###################################################
+### CONFIG
+hull:
+
+  ###################################################
+  ### OBJECTS
+  objects:
+
+    rolebinding:
+
+      default:
+        subjects:
+        - kind: ServiceAccount
+          name: another-service-account
+          namespace: default
+
+###################################################

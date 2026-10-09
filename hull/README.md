@@ -2,6 +2,29 @@
 
 > Abstractions need to be maintained - Kelsey Hightower
 
+## ⚠️ Breaking change in `1.37.0`: the `default` RBAC objects are opt-in
+
+Up to and including HULL `1.36.0`, every HULL based chart rendered a `default` ServiceAccount, a `default` Role and a `default` RoleBinding unless a global pod `serviceAccountName` was configured under `hull.config.templates.pod.global`. Pods that did not specify a `serviceAccountName` themselves were automatically wired to that `default` ServiceAccount.
+
+Starting with `1.37.0` these three objects are **not created anymore by default**. They are opt-in via the new `hull.config.general.createDefaultRbacTriplet` switch:
+
+```yaml
+hull:
+  config:
+    general:
+      createDefaultRbacTriplet: true # restores the pre-1.37.0 behavior
+```
+
+What happens when upgrading without setting the switch to `true`:
+
+- the `default` ServiceAccount, `default` Role and `default` RoleBinding are removed from the release on the next `helm upgrade`
+- pods that do not set a `serviceAccountName` no longer get one rendered, so Kubernetes assigns the namespace's own `default` ServiceAccount to them instead
+- if your chart customizes one of the three objects, rendering fails instead of silently dropping the configuration: this applies to `annotations` on the `default` ServiceAccount (for example an IRSA `eks.amazonaws.com/role-arn`), `rules` on the `default` Role and a changed `roleRef` or `subjects` on the `default` RoleBinding. Set `createDefaultRbacTriplet: true` to keep all three objects, or set `enabled` explicitly on each affected object to decide for it alone
+
+Each of the three objects can also be enabled on its own by setting its `enabled` property explicitly, which takes precedence over the switch. Note that they are only connected as a triplet when all three are rendered: enabling only `hull.objects.serviceaccount.default` renders the ServiceAccount without the `default` Role and RoleBinding. Whenever the `default` ServiceAccount is rendered, pods without an explicit `serviceAccountName` are assigned to it automatically, as before. Set the new `hull.config.general.assignDefaultServiceAccountToPods` switch to `false` to opt out of this assignment while still rendering the ServiceAccount.
+
+Note that the `hull.config.general.rbac` switch is unchanged, it still controls whether any Role, RoleBinding, ClusterRole and ClusterRoleBinding objects are rendered at all. With `createDefaultRbacTriplet: true` and `rbac: false` only the `default` ServiceAccount is created.
+
 ## Introduction
 
 One major design aspect of [Helm](https://helm.sh) is that it forces the user to create individual abstractions of the Kubernetes configuration of applications. For each individual Helm Chart that is realized in form of YAML templates in a [Helm charts](https://helm.sh/docs/topics/charts/) `/templates` folder. These template files, containing boilerplate Kubernetes YAML code blocks on the one hand and custom configuration mappings utilizing Go Templating expressions on the other hand, provide the glue between the configuration of the application via the central `values.yaml` configuration file and the desired Kubernetes YAML output. Arguably this approach of per-application abstraction is suited well to create tailormade configuration packages for even the most specialized applications but comes at a cost of having a large overhead for simpler, recurring and off-the-shelf application packaging use cases. Creating, maintaining and (often) understanding the abstractions introduced by Helm Charts - especially when facing a high number of individual Helm charts from various sources - can become tedious and challenging.
@@ -10,7 +33,7 @@ The primary feature of the HULL library is the ability to remove customized YAML
 
 ### Versioning
 
-HULL release versions are closely tied to Kubernetes release versions due to the incorporation of the release specific Kubernetes API schemas. Each HULL release branch therefore matches a Kubernetes release branch (such as `1.36`). Kubernetes patch releases provide non-breaking updates to a Kubernetes release while maintaining API stability and therefore play no role in the HULL versioning process. HULL's patch releases contain fixes and changes to HULL alone while maintaining compatibility to the Kubernetes releases API schema.
+HULL release versions are closely tied to Kubernetes release versions due to the incorporation of the release specific Kubernetes API schemas. Each HULL release branch therefore matches a Kubernetes release branch (such as `1.37`). Kubernetes patch releases provide non-breaking updates to a Kubernetes release while maintaining API stability and therefore play no role in the HULL versioning process. HULL's patch releases contain fixes and changes to HULL alone while maintaining compatibility to the Kubernetes releases API schema.
 
 HULLs compatibility with Helm matches the respective Kubernetes versions compatibility with Helm, see [Helm Version Support Policy for Helm 4](https://helm.sh/docs/topics/version_skew) and [Helm Version Support Policy for Helm 3](https://helm.sh/docs/v3/topics/version_skew) for the matching version ranges.
 
@@ -253,7 +276,7 @@ Some important things to mention first before looking at the library in more det
 
 ⚠️ **At this time HULL releases are tested against all existing non-beta and non-alpha Helm 3 CLI versions. Note that Helm CLI versions `3.0.x` are not compatible with HULL, all other currently existing non-beta and non-alpha versions are compatible.** ⚠️
 
-⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases. At this time Kubernetes versions `1.34` and `1.36` and `1.36` have a matching and maintained HULL release.** ⚠️
+⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases. At this time Kubernetes versions `1.35` and `1.36` and `1.37` have a matching and maintained HULL release.** ⚠️
 
 ## NEW! The HULL Tutorials
 
@@ -311,24 +334,11 @@ To render this analogously using the HULL library your chart needs to be [setup 
 
 ### Minimal Example
 
-A minimal example of creating the expected result from above would be to create a `values.yaml` like below in your parent chart (commented with some explanations). Note that some default features of HULL such as RBAC and dynamic naming are explicitly disabled here to obtain the output matching the above example closely:
+A minimal example of creating the expected result from above would be to create a `values.yaml` like below in your parent chart (commented with some explanations). Note that the dynamic naming feature of HULL is explicitly disabled here to obtain the output matching the above example closely:
 
 ```yaml
 hull:
-  config:
-    general:
-      rbac: false # Don't render RBAC objects. By default HULL would provide 
-                  # a 'default' Role and 'default' RoleBinding associated with 
-                  # a 'default' ServiceAccount to use for all pods.
-                  # You can modify this as needed. Here we turn it off to not 
-                  # render the default RBAC objects.
   objects:
-    serviceaccount:
-      default:
-        enabled: false # The release specific 'default' ServiceAccount created
-                       # for a release by default is disabled here. In this case 
-                       # it will not be rendered out and automatically used as 
-                       # 'serviceAccountName' in the pod templates. 
     deployment:
       nginx: # all object instances have a key used for naming the objects and 
              # allowing to overwrite properties in multiple values.yaml layers
@@ -364,8 +374,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.36.0
-    helm.sh/chart: hull-test-1.36.0
+    app.kubernetes.io/version: 1.37.0
+    helm.sh/chart: hull-test-1.37.0
   name: nginx # default name would be 'release-name-hull-test-nginx' 
               # but with staticName: true in the HULL spec it is just the key name
 spec:
@@ -385,8 +395,8 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.36.0
-        helm.sh/chart: hull-test-1.36.0
+        app.kubernetes.io/version: 1.37.0
+        helm.sh/chart: hull-test-1.37.0
     spec:
       containers:
       - env: []
@@ -410,7 +420,7 @@ Now to render the nginx deployment example showcasing extra features of the HULL
 This example highlights:
 
 - hierarchical metadata handling
-- default RBAC setup of objects
+- opt-in default RBAC setup of objects
 - dynamic naming mechanism
 - transformations
 - easy inclusion of ConfigMaps and/or Secrets
@@ -418,10 +428,11 @@ This example highlights:
 ```yaml
 hull:
   config:
-    general:  # This time we are not setting rbac: false 
-              # so RBAC default objects are created. 
+    general:  # This time we opt in to the default RBAC objects so a
+              # 'default' ServiceAccount, Role and RoleBinding are created.
               # If the default objects don't match the use-case
               # you can tweak all aspects individually if needed
+      createDefaultRbacTriplet: true
       metadata:
         labels:         
           custom: # Additional labels added to all K8S objects
@@ -539,16 +550,16 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.36.0
+    app.kubernetes.io/version: 1.37.0
     general_custom_label_1: General Custom Label 1 # All objects share the general_custom_labels
     general_custom_label_2: General Custom Label 2 # if they are not overwritten for the object type's
     general_custom_label_3: General Custom Label 3 # default or specific instance
-    helm.sh/chart: hull-test-1.36.0
+    helm.sh/chart: hull-test-1.37.0
   name: release-name-hull-test-default # This is the default ServiceAccount created for this chart.
                                        # As all object instances by default it will be assigned a 
                                        # dynamically created unique name in context of this object type.
-                                       # In the simple example we disabled this rendering by 
-                                       # setting enabled: false for this object's key.
+                                       # It is only rendered because createDefaultRbacTriplet: true 
+                                       # is set above, in the minimal example it is absent.
 ---
 # Source: hull-test/templates/hull.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -564,11 +575,11 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.36.0
+    app.kubernetes.io/version: 1.37.0
     general_custom_label_1: General Custom Label 1
     general_custom_label_2: General Custom Label 2
     general_custom_label_3: General Custom Label 3
-    helm.sh/chart: hull-test-1.36.0
+    helm.sh/chart: hull-test-1.37.0
   name: release-name-hull-test-default # A default Role for RBAC. 
 rules: []
 ---
@@ -586,11 +597,11 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.36.0
+    app.kubernetes.io/version: 1.37.0
     general_custom_label_1: General Custom Label 1
     general_custom_label_2: General Custom Label 2
     general_custom_label_3: General Custom Label 3
-    helm.sh/chart: hull-test-1.36.0
+    helm.sh/chart: hull-test-1.37.0
   name: release-name-hull-test-default
 roleRef:
   apiGroup: rbac.authorization.k8s.io/v1
@@ -601,7 +612,7 @@ subjects:
   kind: ServiceAccount
   name: release-name-hull-test-default # A default RoleBinding for RBAC. It connects the 
                                        # default ServiceAccount with the default Role.
-                                       # By default RBAC is enabled in charts.
+                                       # It is created because createDefaultRbacTriplet: true is set.
 ---
 # Source: hull-test/templates/hull.yaml
 apiVersion: apps/v1
@@ -622,14 +633,14 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.36.0
+    app.kubernetes.io/version: 1.37.0
     default_label_1: Default Label 1 # non-overwritten default_label
     default_label_2: Specific Object Label 2 # overwritten default_label by instance
     general_custom_label_1: General Custom Label 1 # non-overwritten general_custom_label
     general_custom_label_2: Default Label 2 # overwritten general_custom_label by default_label
     general_custom_label_3: Specific Object Label 3 # overwritten general_custom_label 
                                                     # by specific_label
-    helm.sh/chart: hull-test-1.36.0
+    helm.sh/chart: hull-test-1.37.0
     specific_label_1: Specific Object Label 1 # added label for instance metadata only
   name: release-name-hull-test-nginx
 spec:
@@ -656,13 +667,13 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: hull-test
         app.kubernetes.io/part-of: undefined
-        app.kubernetes.io/version: 1.36.0
+        app.kubernetes.io/version: 1.37.0
         default_label_1: Default Label 1
         default_label_2: Specific Object Label 2
         general_custom_label_1: General Custom Label 1
         general_custom_label_2: Default Label 2
         general_custom_label_3: Specific Object Label 3
-        helm.sh/chart: hull-test-1.36.0
+        helm.sh/chart: hull-test-1.37.0
         specific_label_1: Specific Object Label 1
         specific_label_2: Specific Template Label 2 # this label was added only 
                                                     # for the pod template's metadata
@@ -698,11 +709,11 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hull-test
     app.kubernetes.io/part-of: undefined
-    app.kubernetes.io/version: 1.36.0
+    app.kubernetes.io/version: 1.37.0
     general_custom_label_1: General Custom Label 1 # All objects share the general_custom_labels
     general_custom_label_2: General Custom Label 2 # if they are not overwritten for the object type's
     general_custom_label_3: General Custom Label 3 # default or specific instance
-    helm.sh/chart: hull-test-1.36.0
+    helm.sh/chart: hull-test-1.37.0
   name: release-name-hull-test-nginx_configmap
 ```
 

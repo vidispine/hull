@@ -52,7 +52,7 @@
                 "description": "Selects a key from a ConfigMap.",
                 "properties": {
                   "key": {
-                    "description": "The key to select.",
+                    "description": "The key to select from the ConfigMap's Data field. Keys in the BinaryData field are not currently propagated to container env vars.",
                     "type": "string"
                   },
                   "name": {
@@ -247,7 +247,7 @@
         "description": "EnvFromSource represents the source of a set of ConfigMaps or Secrets",
         "properties": {
           "configMapRef": {
-            "description": "ConfigMapEnvSource selects a ConfigMap to populate the environment variables with.\n\nThe contents of the target ConfigMap's Data field will represent the key-value pairs as environment variables.",
+            "description": "ConfigMapEnvSource selects a ConfigMap to populate the environment variables with.\n\nThe contents of the target ConfigMap's Data field will represent the key-value pairs as environment variables. Keys in the BinaryData field are not currently propagated to container env vars.",
             "properties": {
               "name": {
                 "description": "Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
@@ -421,6 +421,13 @@
                     }
                   ]
                 },
+                "protocol": {
+                  "description": "Protocol selects the wire protocol for the probe connection. Nil defaults to HTTP/1.1.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
                 "scheme": {
                   "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                   "type": [
@@ -589,6 +596,13 @@
                     }
                   ]
                 },
+                "protocol": {
+                  "description": "Protocol selects the wire protocol for the probe connection. Nil defaults to HTTP/1.1.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
                 "scheme": {
                   "description": "Scheme to use for connecting to the host. Defaults to HTTP.",
                   "type": [
@@ -719,6 +733,13 @@
         "grpc": {
           "description": "GRPCAction specifies an action involving a GRPC service.",
           "properties": {
+            "mode": {
+              "description": "mode specifies the connection mode for the gRPC health probe. Set to \"TLS\" to use TLS without certificate verification. Set to \"Plaintext\" to use a plaintext (insecure) connection explicitly. If not specified, the probe uses a plaintext (insecure) connection.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
             "port": {
               "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
               "format": "int32",
@@ -802,6 +823,13 @@
                     "null"
                   ]
                 }
+              ]
+            },
+            "protocol": {
+              "description": "Protocol selects the wire protocol for the probe connection. Nil defaults to HTTP/1.1.",
+              "type": [
+                "string",
+                "null"
               ]
             },
             "scheme": {
@@ -1010,6 +1038,13 @@
         "grpc": {
           "description": "GRPCAction specifies an action involving a GRPC service.",
           "properties": {
+            "mode": {
+              "description": "mode specifies the connection mode for the gRPC health probe. Set to \"TLS\" to use TLS without certificate verification. Set to \"Plaintext\" to use a plaintext (insecure) connection explicitly. If not specified, the probe uses a plaintext (insecure) connection.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
             "port": {
               "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
               "format": "int32",
@@ -1093,6 +1128,13 @@
                     "null"
                   ]
                 }
+              ]
+            },
+            "protocol": {
+              "description": "Protocol selects the wire protocol for the probe connection. Nil defaults to HTTP/1.1.",
+              "type": [
+                "string",
+                "null"
               ]
             },
             "scheme": {
@@ -1657,6 +1699,13 @@
         "grpc": {
           "description": "GRPCAction specifies an action involving a GRPC service.",
           "properties": {
+            "mode": {
+              "description": "mode specifies the connection mode for the gRPC health probe. Set to \"TLS\" to use TLS without certificate verification. Set to \"Plaintext\" to use a plaintext (insecure) connection explicitly. If not specified, the probe uses a plaintext (insecure) connection.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
             "port": {
               "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
               "format": "int32",
@@ -1740,6 +1789,13 @@
                     "null"
                   ]
                 }
+              ]
+            },
+            "protocol": {
+              "description": "Protocol selects the wire protocol for the probe connection. Nil defaults to HTTP/1.1.",
+              "type": [
+                "string",
+                "null"
               ]
             },
             "scheme": {
@@ -1924,8 +1980,22 @@
       "items": {
         "description": "VolumeMount describes a mounting of a Volume within a container.",
         "properties": {
+          "bindMountOptions": {
+            "description": "bindMountOptions is the list of additional bind mount options to apply when mounting this volume into the container. Allowed values are noexec, nodev, and nosuid. These are Linux mount options and have no effect on Windows nodes. This field is not supported with image volumes. This is an alpha field and requires enabling the VolumeBindMountOptions feature gate.",
+            "items": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "type": [
+              "array",
+              "null"
+            ],
+            "x-kubernetes-list-type": "set"
+          },
           "mountPath": {
-            "description": "Path within the container at which the volume should be mounted.  Must not contain ':'.",
+            "description": "Path within the container at which the volume should be mounted.",
             "type": "string"
           },
           "mountPropagation": {
