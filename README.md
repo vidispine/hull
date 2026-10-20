@@ -286,6 +286,16 @@ If you like a hands on approach you are invited to take a look at the [new HULL 
 
 To get started on configuring your HULL based chart please refer to the [API documentation](/hull/files/doc/API).
 
+## Working with AI agents and migrating existing charts
+
+HULL charts are data validated against a JSON schema instead of template code, which makes writing them a good task for AI coding agents and their tools. Three things support that:
+
+- The [guide for AI agents](/hull/files/doc/agents.md) states the rules of HULL on one page, with the workflow, the transformations and how Kubernetes kinds map to HULL object types.
+- Every rendering error has a code, the path of the faulty value and a hint how to fix it. All codes are explained in [error codes](/hull/files/doc/error_codes.md).
+- [`hull_import.py`](/hull/files/doc/import.md) converts the output of an existing chart into HULL values and verifies that the converted chart renders the same objects.
+
+The [`llms.txt`](/llms.txt) at the root of the repository lists this documentation for tools that read it.
+
 ## Testing and installing a HULL based chart
 
 To test or install a chart based on HULL the standard Helm v3 tooling is usable. See also the Helm documentation at the [Helm website](https://helm.sh).

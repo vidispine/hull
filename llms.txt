@@ -1,0 +1,25 @@
+# HULL
+
+> HULL (Helm Uniform Layer Library) is a Helm library chart. A HULL based chart defines all its Kubernetes objects as data in values.yaml under hull.objects.<type>.<key>, validated by a JSON schema, and needs no templates of its own. HULL derives names, labels and selectors, turns named arrays into dictionaries and offers transformations (_HT*, _HT!, ...) for computed values.
+
+Start with the guide for AI agents, it covers the rules, the workflow and the transformations on one page. The links point to the main branch, which holds the latest release; the documentation of each HULL release is on its release-1.<minor> branch.
+
+## Docs
+
+- [HULL for AI agents](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/agents.md): the rules that differ from Kubernetes YAML, the write-check-fix workflow, transformations, kind mapping and common mistakes
+- [Error codes](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/error_codes.md): every HULL rendering error code with its cause and fix
+- [Importing charts](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/import.md): hull_import.py converts helm template output into HULL values and verifies the result
+- [Transformations](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/transformations.md): _HT*, _HT!, _HT?, _HT^, _HT&, _HT/ in detail
+- [Chart design](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/chart_design.md): defaults, sources, conditionals and ordering of array elements
+- [Objects API](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/API/hull_objects_.md): the object types and their HULL properties
+- [Pods and containers](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/API/hull_objects_pod.md): pod templates, containers, images, env, volumes
+- [ConfigMaps and Secrets](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/API/hull_objects_configmaps_secrets.md): inline and file based data
+- [Global configuration](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/API/hull_config.md): hull.config.general settings
+
+## Optional
+
+- [README](https://raw.githubusercontent.com/vidispine/hull/main/README.md): introduction and examples
+- [Setup](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/setup.md): adding HULL to a chart
+- [Error checking](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/error_checking.md): switching error checks on and off
+- [JSON schema validation](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/json_schema_validation.md): schema validation in IDEs
+- [values.schema.json](https://raw.githubusercontent.com/vidispine/hull/main/hull/values.schema.json): the schema itself, large; query it with jq instead of reading it, see the agent guide
