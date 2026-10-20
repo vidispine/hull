@@ -1,6 +1,6 @@
 # HULL for AI agents
 
-This page is the compact reference for writing, converting and fixing HULL based Helm charts, aimed at AI coding agents and at people who want the rules on one page. It states the rules that differ from plain Kubernetes YAML and the workflow that catches mistakes. The other documents go into detail; this page links to them where needed.
+This page is the compact reference for writing, converting and fixing HULL based Helm charts, aimed at AI coding agents and at people who want the rules on one page. It states the rules that differ from plain Kubernetes YAML and the workflow that catches mistakes. The other documents go into detail; this page links to them where needed. For complete, tested examples of common tasks see the [cookbook](/hull/files/doc/cookbook.md).
 
 ## The mental model
 
@@ -88,7 +88,8 @@ Things to know:
 
 - Put shared values in `hull.config.specific`, which accepts any structure, and reference them with `_HT*`. This replaces the Helm pattern of templating values into templates.
 - Inside `_HT!`, `(index . "$")` is the chart's root context, so `(index . "$").Values` and `(index . "$").Release` are available. `(index . "OBJECT_INSTANCE_KEY")` and `(index . "OBJECT_TYPE")` refer to the current object. An `_HT*` reference can be embedded in an `_HT!` template.
-- Write lists and dictionaries returned by `_HT!` in YAML flow style, for example `_HT![ "a", "b" ]`. A literal comma in an unquoted flow style item starts a new item.
+- Write lists and dictionaries returned by `_HT!` in YAML flow style, for example `_HT![ "a", "b" ]`. A literal comma in an unquoted flow style item starts a new item. An `_HT*` reference embedded in `_HT!` belongs inside `{{ }}`: `_HT![ {{ _HT*hull.config.specific.host }} ]`.
+- Transformations are not applied to single elements of a list. If the first element of a list is a transformation, its result replaces the whole list; other elements stay as written. To build a list from values use `_HT![ ... ]`, to use a whole list from the values reference it with `_HT*`.
 - In an `_HT*` path, write a dot that belongs to a key as `§`: `_HT*hull.config.specific.example§com`. `§OBJECT_TYPE§` and `§OBJECT_INSTANCE_KEY§` are replaced by the current object's type and key.
 - A reference to a path that does not exist fails with `HULL-GET-TRANSFORMATION-REFERENCE-INVALID`.
 - Any string value that starts with one of the prefixes is treated as a transformation, also in imported content.
@@ -158,6 +159,8 @@ The HULL specific properties of each object type are described in the [API docum
 | Secret `data` values base64 encoded | encoded twice | plain text, or `preEncoded: true` |
 | content with `{{ }}` in ConfigMap data | Helm processes it as a template and fails or changes it | `noTemplating: true` |
 | `tag: 1.10` without quotes | the YAML number 1.1 renders as tag `1.1` | `tag: "1.10"` |
+| `hosts: [_HT*hull.config.specific.host]` | the list is replaced by the string, Kubernetes rejects it | `hosts: _HT![ {{ _HT*hull.config.specific.host }} ]` |
+| `args: [run, _HT*hull.config.specific.flag]` | the second element is not transformed | `args: _HT![ "run", {{ _HT*hull.config.specific.flag \| quote }} ]` |
 
 ---
 Back to [README.md](/README.md)

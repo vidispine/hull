@@ -11,13 +11,13 @@ A HULL chart has a single template, `templates/hull.yaml`, and defines every Kub
 
 Use the `hull` MCP tools when they are available:
 
-1. Before writing values, read the rules once: `hull_docs` with topic `guide`.
+1. Before writing values, read the rules once: `hull_docs` with topic `guide`. For common tasks start from a tested recipe: `hull_docs` with topic `cookbook`.
 2. Look up what is allowed instead of guessing: `hull_schema` with a values path such as `hull.objects.deployment.web.pod.containers.main`, an object type or a definition name.
 3. After every change run `hull_validate` on the chart and fix every reported problem. Each problem is one line: `HULL failed with error [CODE] (@Values.<path>) <message> Fix: <hint>`. For details about a code use `hull_docs` with the code as topic.
 4. Inspect the result with `hull_render`, using `kind` and `name` to select objects.
 5. To convert an existing chart, render it with `helm template <release> <chart> --namespace <ns>` and pass the output to `hull_import` with the same release name and namespace. It writes a HULL chart and verifies that it renders the same objects. Then refactor the verified values into idiomatic HULL in small steps and compare the rendering after each step.
 
-Without the MCP tools, the same is available as scripts in the HULL chart, in `files/scripts` of the dependency (unpack it with `tar -xzf charts/hull-*.tgz -C /tmp`): `python3 hull_validate.py <chart>`, `python3 hull_import.py --chart <dir> --verify <manifests>`, and the documentation in `files/doc`, starting with `agents.md`.
+Without the MCP tools, the same is available as scripts in the HULL chart, in `files/scripts` of the dependency (unpack it with `tar -xzf charts/hull-*.tgz -C /tmp`): `python3 hull_validate.py <chart>`, `python3 hull_import.py --chart <dir> --verify <manifests>`, and the documentation in `files/doc`, starting with `agents.md` and `cookbook.md`.
 
 ## Rules that differ from Kubernetes YAML
 
@@ -45,4 +45,4 @@ Strings starting with these prefixes are computed:
 | `_HT^<key>` | the full name of a chart object |
 | `_HT&<key>` | the generated selector labels of a key |
 
-Keep shared values in `hull.config.specific` and reference them with `_HT*`. Write lists and dictionaries returned by `_HT!` in flow style.
+Keep shared values in `hull.config.specific` and reference them with `_HT*`. Write lists and dictionaries returned by `_HT!` in flow style, with embedded references inside `{{ }}`: `_HT![ {{ _HT*hull.config.specific.host }} ]`. Transformations are not applied to single list elements: a transformation as first element replaces the whole list, later elements stay literal.

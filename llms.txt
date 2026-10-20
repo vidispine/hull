@@ -7,6 +7,7 @@ Start with the guide for AI agents, it covers the rules, the workflow and the tr
 ## Docs
 
 - [HULL for AI agents](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/agents.md): the rules that differ from Kubernetes YAML, the write-check-fix workflow, transformations, kind mapping and common mistakes
+- [Cookbook](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/cookbook.md): tested recipes for common tasks, from a web application to hooks, RBAC and storage
 - [Error codes](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/error_codes.md): every HULL rendering error code with its cause and fix
 - [Importing charts](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/import.md): hull_import.py converts helm template output into HULL values and verifies the result
 - [Tools for AI agents](https://raw.githubusercontent.com/vidispine/hull/main/hull/files/doc/agent_tools.md): the Claude Code plugin, the MCP server and hull_validate.py

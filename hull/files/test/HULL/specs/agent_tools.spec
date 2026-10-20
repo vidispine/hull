@@ -23,6 +23,7 @@ the Claude Code plugin around them.
 * Look up "hull.objects.deployment.web.pod.containerz" with the HULL MCP schema tool and the result contains "did you mean 'containers'?"
 * Look up "deployment" with the HULL MCP schema tool and the result contains "selector (object or transformation)"
 * Get the HULL documentation "guide" with the MCP server and the result contains "# HULL for AI agents"
+* Get the HULL documentation "cookbook" with the MCP server and the result contains "<!-- recipe: web-application -->"
 * Get the HULL documentation "SELECTOR-NOT-MATCHING-POD-LABELS" with the MCP server and the result contains "**Fix:**"
 
 ## The MCP server imports, validates and renders a chart

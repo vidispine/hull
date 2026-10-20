@@ -290,7 +290,7 @@ To get started on configuring your HULL based chart please refer to the [API doc
 
 HULL charts are data validated against a JSON schema instead of template code, which makes writing them a good task for AI coding agents and their tools. These things support that:
 
-- The [guide for AI agents](/hull/files/doc/agents.md) states the rules of HULL on one page, with the workflow, the transformations and how Kubernetes kinds map to HULL object types.
+- The [guide for AI agents](/hull/files/doc/agents.md) states the rules of HULL on one page, with the workflow, the transformations and how Kubernetes kinds map to HULL object types. The [cookbook](/hull/files/doc/cookbook.md) has tested recipes for common tasks.
 - Every rendering error has a code, the path of the faulty value and a hint how to fix it. All codes are explained in [error codes](/hull/files/doc/error_codes.md).
 - [`hull_import.py`](/hull/files/doc/import.md) converts the output of an existing chart into HULL values and verifies that the converted chart renders the same objects.
 - `hull_validate.py` checks a chart and reports schema problems in the same format, and the [Claude Code plugin and MCP server](/hull/files/doc/agent_tools.md) make all of this available to agents: `/plugin install hull --marketplace vidispine/hull`.

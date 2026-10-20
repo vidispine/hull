@@ -37,7 +37,7 @@ claude mcp add --scope user hull -- python3 /path/to/hull/files/scripts/hull_mcp
 
 | Tool | What it does |
 | ---- | ------------ |
-| `hull_docs` | Returns documentation as markdown: `guide` for the agent guide, the topics `errors`, `import`, `transformations`, `chart_design`, `schema`, `tools`, `pods`, `configmaps_secrets`, `config`, `objects`, or an error code such as `INVALID-IMAGE-DIGEST` for its explanation and fix. |
+| `hull_docs` | Returns documentation as markdown: `guide` for the agent guide, `cookbook` for tested recipes, the topics `errors`, `import`, `transformations`, `chart_design`, `schema`, `tools`, `pods`, `configmaps_secrets`, `config`, `objects`, or an error code such as `INVALID-IMAGE-DIGEST` for its explanation and fix. |
 | `hull_schema` | Returns what the schema allows at a values path such as `hull.objects.deployment.web.pod.containers.main.image`, for an object type such as `deployment` or for a definition such as `hull.Container.v1`: the properties with their types and descriptions. A wrong path is answered with the closest allowed property. |
 | `hull_validate` | Checks a chart like `hull_validate.py`: the values against the schema, then the rendering. Each problem is one line `HULL failed with error [CODE] (@Values.<path>) <message> Fix: <hint>`. |
 | `hull_render` | Renders a chart with `helm template` and returns the objects, selected by `kind` and `name` if given, or the errors. |

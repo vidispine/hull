@@ -131,7 +131,8 @@ def chart_version(hull_dir):
 # --------------------------------------------------------------------------------------
 
 DOC_TOPICS = {
-    "guide": "agents.md", "errors": "error_codes.md", "import": "import.md", "transformations": "transformations.md",
+    "guide": "agents.md", "cookbook": "cookbook.md", "errors": "error_codes.md", "import": "import.md",
+    "transformations": "transformations.md",
     "chart_design": "chart_design.md", "schema": "json_schema_validation.md", "tools": "agent_tools.md",
     "pods": "API/hull_objects_pod.md", "configmaps_secrets": "API/hull_objects_configmaps_secrets.md",
     "config": "API/hull_config.md", "objects": "API/hull_objects_.md",
@@ -360,11 +361,13 @@ TOOLS = [
     {
         "name": "hull_docs",
         "description": "Returns HULL documentation as markdown. Read topic 'guide' before writing HULL values: it has "
-                       "the rules that differ from Kubernetes YAML, the workflow and the transformations. Pass an "
-                       "error code such as 'SELECTOR-NOT-MATCHING-POD-LABELS' to get its explanation and fix.",
+                       "the rules that differ from Kubernetes YAML, the workflow and the transformations. Topic "
+                       "'cookbook' has tested recipes for common tasks. Pass an error code such as "
+                       "'SELECTOR-NOT-MATCHING-POD-LABELS' to get its explanation and fix.",
         "inputSchema": {"type": "object", "properties": {
-            "topic": {"type": "string", "description": "guide, errors, import, transformations, chart_design, schema, "
-                                                       "tools, pods, configmaps_secrets, config, objects, or an error code"},
+            "topic": {"type": "string", "description": "guide, cookbook, errors, import, transformations, chart_design, "
+                                                       "schema, tools, pods, configmaps_secrets, config, objects, or an "
+                                                       "error code"},
             "chart_dir": {"type": "string", "description": "a chart, to use the docs of its HULL version"}}},
         "function": tool_docs,
     },
