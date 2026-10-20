@@ -20,6 +20,15 @@ def every_hull_error_code_has_a_fix_hint_and_is_documented():
     assert hints, "Template hull.util.error.hints not found"
     hinted = set(re.findall(r'^([A-Z0-9-]+):', hints.group(1), re.M))
 
+    # the schema problems reported by hull_validate.py have their hints in the script
+    with open(os.path.join(HULL_PATH, 'files', 'scripts', 'hull_validate.py'), encoding='utf-8') as file:
+        validator = file.read()
+    schema_hints = re.search(r'^SCHEMA_HINTS = {\n(.*?)\n}', validator, re.S | re.M)
+    assert schema_hints, "SCHEMA_HINTS not found in hull_validate.py"
+    schema_codes = set(re.findall(r'^    "([A-Z0-9-]+)": ', schema_hints.group(1), re.M))
+    raised |= schema_codes
+    hinted |= schema_codes
+
     with open(os.path.join(HULL_PATH, 'files', 'doc', 'error_codes.md'), encoding='utf-8') as file:
         documented = set(re.findall(r'^### `([A-Z0-9-]+)`\s*$', file.read(), re.M))
 

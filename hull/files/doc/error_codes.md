@@ -30,7 +30,7 @@ Some things to know about how errors are reported:
 - If the same problem shows up more than once in an object, for example in the object's and the pod's metadata, it is reported once.
 - Some checks can be switched off or on with the `hull.config.general.errorChecks` settings, see [error checking](/hull/files/doc/error_checking.md). The table below lists which setting controls which code.
 
-> Errors that start with `values don't meet the specifications of the schema(s)` are not HULL errors. They come from Helm validating the values against HULL's [JSON schema](/hull/files/doc/json_schema_validation.md) before HULL runs. Most fields also accept a transformation string, so the schema reports a failure as a set of alternatives (`anyOf`). Look for the deepest path in the output and the reason given for it, such as a pattern that does not match or a wrong type.
+> Errors that start with `values don't meet the specifications of the schema(s)` are not HULL errors. They come from Helm validating the values against HULL's [JSON schema](/hull/files/doc/json_schema_validation.md) before HULL runs. Most fields also accept a transformation string, so the schema reports a failure as a set of alternatives (`anyOf`). Look for the deepest path in the output and the reason given for it, such as a pattern that does not match or a wrong type. Or run [`hull_validate.py`](#checking-a-chart-with-hull_validatepy), which reports each schema problem on one line in the format above, with the codes listed under [schema problems](#schema-problems).
 
 ## Overview
 
@@ -49,6 +49,23 @@ Some things to know about how errors are reported:
 | [`MISSING-SOURCE-TEMPLATE`](#missing-source-template) | A pod or container `sources` entry names an undefined template | always checked |
 | [`MISSING-SOURCE-OBJECT-TYPE`](#missing-source-object-type) | An object `sources` entry names an object type that does not exist | always checked |
 | [`MISSING-SOURCE-OBJECT-INSTANCE`](#missing-source-object-instance) | An object `sources` entry names an object instance that does not exist | always checked |
+
+## Checking a chart with hull_validate.py
+
+`hull/files/scripts/hull_validate.py` checks a chart in two steps and stops after the first one that finds problems. First it validates the values against the schema of the chart's HULL dependency, merged like Helm merges them, then it renders the chart with `helm template` and reports HULL's errors:
+
+```sh
+python3 hull/files/scripts/hull_validate.py ./mychart                 # values.yaml of the chart
+python3 hull/files/scripts/hull_validate.py ./mychart -f prod.yaml    # plus additional values files
+python3 hull/files/scripts/hull_validate.py --hull ./hull -f my.hull.yaml --no-render
+python3 hull/files/scripts/hull_validate.py ./mychart --json          # machine readable
+```
+
+It needs Python 3.8 or newer with PyYAML and jsonschema (`pip install pyyaml jsonschema`), and `helm` for the rendering step. The exit code is `0` without problems, `1` with problems and `2` if the chart could not be read. Each problem is printed in the same format as HULL's errors, so both are handled alike:
+
+```
+HULL failed with error [SCHEMA-UNKNOWN-PROPERTY] (@Values.hull.objects.service.web.ports.http) Property 'protocl' is not allowed here, did you mean 'protocol'? Allowed are appProtocol, enabled, name, nodePort, order, port, protocol, targetPort. Fix: Remove the property or move it to where it belongs. The allowed properties are listed in the message.
+```
 
 ## Codes
 
@@ -194,6 +211,48 @@ HULL failed with error [MISSING-SOURCE-OBJECT-INSTANCE] (@Values.hull.objects.de
 ```
 
 **Fix:** add the referenced instance, typically as a disabled template instance with `enabled: false`, or remove it from `sources`. An entry without `[<objecttype>]` refers to an instance of the same object type as the object it is used in.
+
+## Schema problems
+
+These codes are reported by `hull_validate.py` for values that do not match the JSON schema. Helm reports the same problems, in its own format, as `values don't meet the specifications of the schema(s)`.
+
+### `SCHEMA-UNKNOWN-PROPERTY`
+
+A property is not allowed where it is used. The message lists the allowed properties and suggests the closest one.
+
+```
+HULL failed with error [SCHEMA-UNKNOWN-PROPERTY] (@Values.hull.objects.deployment.frontend) Property 'spec' is not allowed here. Allowed are annotations, conditionals, enabled, labels, ..., replicas, revisionHistoryLimit, selector, sources, staticName, strategy, templateAnnotations, templateLabels.
+```
+
+**Fix:** remove the property or move it. Typical cases have their own hint: the fields of `spec` are written directly below the object instance key, a dictionary key already is the `name`, and the pod template is written as `pod`.
+
+### `SCHEMA-UNKNOWN-OBJECT-TYPE`
+
+A key below `hull.objects` is not a HULL object type.
+
+**Fix:** use one of the object types listed in the message, in lowercase. Kinds without an object type are created as `generic` objects.
+
+### `SCHEMA-WRONG-TYPE`
+
+A value has the wrong type, for example a string where an integer is expected, or a list where HULL expects a dictionary.
+
+```
+HULL failed with error [SCHEMA-WRONG-TYPE] (@Values.hull.objects.deployment.frontend.pod.containers) Expected a dictionary or a HULL transformation, got a list [{"name": "main", "image": "nginx"}].
+```
+
+**Fix:** give a value of the expected type. HULL writes named arrays like `containers`, `env`, `ports` or `volumes` as dictionaries keyed by name. Where the message says a HULL transformation is allowed, a string starting with `_HT` is accepted too.
+
+### `SCHEMA-INVALID-VALUE`
+
+A value has the right type but is not allowed, for example it does not match a pattern or is not one of the allowed values. The message shows the value and what is expected.
+
+**Fix:** give an allowed value.
+
+### `SCHEMA-MISSING-PROPERTY`
+
+A required property is missing.
+
+**Fix:** add the property named in the message.
 
 ---
 Back to [README.md](/README.md)
