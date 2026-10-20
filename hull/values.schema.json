@@ -51954,12 +51954,15 @@
   },
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "anyOf": [
-    {
-      "$ref": "#/definitions/hull"
-    },
-    {
-      "$ref": "#/definitions/root"
-    }
-  ]
+  "if": {
+    "required": [
+      "hull"
+    ]
+  },
+  "then": {
+    "$ref": "#/definitions/hull"
+  },
+  "else": {
+    "$ref": "#/definitions/root"
+  }
 }

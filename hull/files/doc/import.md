@@ -58,6 +58,7 @@ The exit code is `0` if the conversion succeeded and, with `--verify`, all objec
 - ConfigMap and Secret data become `data.<key>.inline` entries. Secret data is decoded to plain text where it is text; binary data stays base64 encoded with `preEncoded: true`. Content containing `{{` gets `noTemplating: true` so that HULL does not process it as a template.
 - Workload selectors are kept with the explicit `selector` property, so the selectors of an existing release do not change. Pod template labels and annotations become `pod.labels` and `pod.annotations`.
 - `null` fields and what the API server adds to live objects (`status`, `uid`, `resourceVersion`, `managedFields`, ...) are removed.
+- The values start with a `# yaml-language-server: $schema=...` comment, so that editors validate them against the schema of the HULL version while editing.
 
 Objects that HULL cannot render exactly as their native type become `generic` objects, which HULL renders exactly as given. The report says why for each of them. This happens for:
 

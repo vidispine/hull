@@ -188,7 +188,7 @@ class Converter:
             kind = obj.get("kind")
             hull_type, api_version, layout = NATIVE_TYPES.get(kind, ("generic", None, "generic"))
             if layout == "generic":
-                self.note("info", obj, f"HULL has no object type for a {kind}, imported as generic object")
+                self.note("info", obj, f"HULL has no object type for the kind {kind}, imported as generic object")
             elif obj.get("apiVersion") != api_version:
                 self.note("info", obj, f"apiVersion {obj.get('apiVersion')} differs from {api_version} "
                                        f"that HULL renders for a {kind}, imported as generic object")
@@ -614,7 +614,17 @@ def hull_chart_version(hull_path):
         return str(yaml.safe_load(file)["version"])
 
 
-def write_chart(directory, chart_name, values, hull_path):
+def schema_modeline(hull_path):
+    """First line for values files, editors with a YAML language server validate against the schema."""
+    with open(os.path.join(hull_path, "Chart.yaml"), encoding="utf-8") as file:
+        minor = str(yaml.safe_load(file).get("appVersion", ""))
+    if not re.match(r"^\d+\.\d+$", minor):
+        return ""
+    return ("# yaml-language-server: $schema=https://raw.githubusercontent.com/vidispine/hull/"
+            f"release-{minor}/hull/values.schema.json\n")
+
+
+def write_chart(directory, chart_name, values_text, hull_path):
     """Write a HULL based chart. The HULL library is copied to charts/hull for offline use."""
     os.makedirs(os.path.join(directory, "templates"), exist_ok=True)
     version = hull_chart_version(hull_path)
@@ -623,7 +633,7 @@ def write_chart(directory, chart_name, values, hull_path):
     with open(os.path.join(directory, "Chart.yaml"), "w", encoding="utf-8") as file:
         file.write(dump(chart))
     with open(os.path.join(directory, "values.yaml"), "w", encoding="utf-8") as file:
-        file.write(dump(values))
+        file.write(values_text)
     with open(os.path.join(directory, "templates", "hull.yaml"), "w", encoding="utf-8") as file:
         file.write('{{- include "hull.objects.prepare.all" (dict "HULL_ROOT_KEY" "hull" "ROOT_CONTEXT" $) }}\n')
     target = os.path.join(directory, "charts", "hull")
@@ -643,7 +653,7 @@ def render(helm, chart_dir, release, namespace, kube_version):
     command = [helm, "template", release, chart_dir, "--namespace", namespace]
     if kube_version:
         command += ["--kube-version", kube_version]
-    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    result = subprocess.run(command, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     if result.returncode != 0:
         raise RuntimeError(f"rendering the converted chart failed:\n{result.stderr or result.stdout}")
     return [obj for obj in yaml.safe_load_all(result.stdout) if obj]
@@ -847,11 +857,12 @@ def main(argv=None):
     converter = Converter(namespace=args.namespace)
     values = converter.convert(objects)
 
+    values_text = (schema_modeline(args.hull) if args.hull else "") + dump(values)
     if args.output:
         with open(args.output, "w", encoding="utf-8") as file:
-            file.write(dump(values))
+            file.write(values_text)
     elif not args.chart:
-        sys.stdout.write(dump(values))
+        sys.stdout.write(values_text)
 
     results = None
     if args.chart or args.verify:
@@ -861,7 +872,7 @@ def main(argv=None):
         chart_name = args.chart_name or os.path.basename(os.path.abspath(chart_dir)).lower()
         if not re.match(r"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$", chart_name):
             chart_name = "imported"
-        write_chart(chart_dir, chart_name, values, args.hull)
+        write_chart(chart_dir, chart_name, values_text, args.hull)
         try:
             if args.verify:
                 rendered = render(args.helm, chart_dir, args.release_name, args.namespace, args.kube_version)
