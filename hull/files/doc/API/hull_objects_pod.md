@@ -10,7 +10,11 @@ For pod-based objects there is no need to create a `spec` property. The `spec.se
 
 As an alternative the top-level `templateAnnotations` and `templateLabels` keys are available and remain fully supported. They have exactly the same effect, are merged with their `pod` level counterparts and lose against them where the same key is defined in both.
 
-⚠️The `selector` property of pod-based objects will be automatically populated to match the exact combination of the auto-generated `hull.config.general.metadata.labels.common` fields `app.kubernetes.io/name`, `app.kubernetes.io/instance` and `app.kubernetes.io/component`. An exception is made for the objects of type `job` where no `selector` field is set because Kubernetes jobs deal with the `selector` implicitly. If need be it is possible to set `selector` manually for the particular `job` however.⚠️
+On the pod template, labels and annotations given for the pod take precedence over the object's own `labels` and `annotations`, which are rendered on the pod template too, and over the labels HULL adds. If a pod label contradicts one of the generated selector labels, rendering fails with [`SELECTOR-NOT-MATCHING-POD-LABELS`](/hull/files/doc/error_codes.md#selector-not-matching-pod-labels).
+
+⚠️The `selector` property of pod-based objects will be automatically populated to match the exact combination of the auto-generated `hull.config.general.metadata.labels.common` fields `app.kubernetes.io/name`, `app.kubernetes.io/instance` and `app.kubernetes.io/component`, and these labels are added to the pod template. An exception is made for the objects of type `job` where no `selector` field is set because Kubernetes jobs deal with the `selector` implicitly.⚠️
+
+Where the generated selector does not fit, for example when taking over objects of an existing release whose selectors are immutable, set `selector` explicitly on a `deployment`, `statefulset`, `daemonset` or `job` (together with `manualSelector: true` for a job). HULL then renders this selector and does not add its generated selector labels to the pod template, so the labels that the selector matches need to be given in `pod.labels`, `templateLabels` or the object's `labels`. If a `selector.matchLabels` entry is not found in the pod template labels, rendering fails with [`SELECTOR-NOT-MATCHING-POD-LABELS`](/hull/files/doc/error_codes.md#selector-not-matching-pod-labels) because Kubernetes would reject the object. The same error is raised if object `labels` override one of the generated selector labels.
 
 So for all HULL based objects, the pod specific information is wrapped like this:
 
@@ -19,6 +23,7 @@ So for all HULL based objects, the pod specific information is wrapped like this
 | `pod` | Specification of the inner pod in the form of **`hull.Pod.v1`**. See below for reference. This is also where the pod template metadata belongs, via its `annotations` and `labels` keys. | | |
 | `templateAnnotations` | Alternative to the preferred `pod.annotations`. Dictionary with annotations to add to the Kubernetes objects `spec.template.metadata.annotations` section. <br><br>Both are merged and where the same key is defined in both the `pod.annotations` value wins. | `{}` | `appImportance:`&#160;`"low"` |
 | `templateLabels` | Alternative to the preferred `pod.labels`. Dictionary with labels to add to the Kubernetes objects `spec.template.metadata.labels` section. <br><br>Both are merged and where the same key is defined in both the `pod.labels` value wins. | `{}` | `appStatus:`&#160;`"bad"` |
+| `selector` | Optional label selector replacing the generated one. HULL then does not add its generated selector labels to the pod template and the pod labels must contain the selector's `matchLabels`. | | `matchLabels:`<br>&#160;&#160;`app:`&#160;`frontend` |
 
 ### The `hull.Pod.v1` properties
 

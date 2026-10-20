@@ -83,6 +83,7 @@ Maybe TODO: Check basic metadata functionality
 ## Fail
 * Fail to render the templates for values file "values.fail-conditionals-reference.hull.yaml" to test execution folder because error contains "Element broken in path hull.config.specific.kustomization.broken was not found"
 * Fail to render the templates for values file "values.fail-conditionals-reference.hull.yaml" to test execution folder because error contains "Element encryption_not_exists in path hull.config.specific.kustomization.encryption_not_exists was not found"
+* Fail to render the templates for values file "values.fail-conditionals-reference.hull.yaml" to test execution folder because error contains "HULL failed with error [HULL-GET-TRANSFORMATION-REFERENCE-INVALID] (@Values.hull.objects.customresource.conditionals-fail-reference.conditionals.broken.condition) Element broken in path hull.config.specific.kustomization.broken was not found. Fix: Correct the reference"
 
 
 ___

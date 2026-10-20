@@ -16,6 +16,8 @@ hull:
 
 You can disable the implemented error checks which are by default set to `true` individually if needed even though this is not recommended. Settings which default to `false` may be enabled to enforce stricter input checking. In some cases there exists a relation to the older `hull.config.general.debug` settings which will be highlighted.
 
+Every error is reported with a code, the path of the faulty value and a hint how to fix it. All codes are explained in [error codes](/hull/files/doc/error_codes.md).
+
 The following list is an overview of the currently implemented error checks:
 
 - `objectYamlValid`: Basic check whether an object YAML is valid, meaning its representation is not just a dictionary containing a single `Error` key. Should always be `true` to indicate any severe problem when rendering an object.

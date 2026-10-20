@@ -227,18 +227,43 @@ Test creation of objects and features.
 
 ## Error Checking
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
-* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.deployment.invalid-container-images.containers.no-image.image) Field image is missing"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error [MISSING-IMAGE-SPEC] (@Values.hull.objects.deployment.invalid-container-images.pod.containers.no-image.image) Field image is missing"
 
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
-* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.deployment.invalid-container-images.containers.no-repository.image.repository) Field repository is missing"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error [MISSING-IMAGE-REPOSITORY] (@Values.hull.objects.deployment.invalid-container-images.pod.containers.no-repository.image.repository) Field repository is missing"
 
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
-* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.deployment.invalid-container-images.containers.invalid-digest.image.digest) Field digest is not a valid image digest"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error [INVALID-IMAGE-DIGEST] (@Values.hull.objects.deployment.invalid-container-images.pod.containers.invalid-digest.image.digest) Field digest '1a2b3c4d5e6f' is not a valid image digest"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error [MISSING-IMAGE-REPOSITORY] (@Values.hull.objects.deployment.invalid-container-images.pod.containers.registry-and-tag-only.image.repository) Field repository is missing. Fix: Add a 'repository' to the container's 'image'"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error [INVALID-IMAGE-DIGEST] (@Values.hull.objects.deployment.invalid-container-images.pod.containers.short-hash-digest.image.digest) Field digest 'sha256:1a2b3c' is not a valid image digest. Fix: Use a complete digest"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "All HULL error codes and how to fix them are explained in https://github.com/vidispine/hull/blob/main/hull/files/doc/error_codes.md"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_broken_yaml.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_broken_yaml.hull.yaml" to test execution folder because error contains "HULL failed with error [BROKEN-OBJECT-YAML] (@Values.hull.objects.deployment.broken-yaml) The rendered object is not valid YAML, parsing it failed with '"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_missing_source_instance.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_missing_source_instance.hull.yaml" to test execution folder because error contains "HULL failed with error [MISSING-SOURCE-OBJECT-INSTANCE] (@Values.hull.objects.deployment.missing-source.sources) Source 'nonexisting' does not exist in 'hull.objects.deployment'. Fix: Add the referenced object instance"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_missing_source_type.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_missing_source_type.hull.yaml" to test execution folder because error contains "HULL failed with error [MISSING-SOURCE-OBJECT-TYPE] (@Values.hull.objects.deployment.missing-source.sources) Object type 'nosuchtype' of source 'base' does not exist in 'hull.objects'. Fix: Write the 'sources' entry"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_missing_source_template.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_missing_source_template.hull.yaml" to test execution folder because error contains "HULL failed with error [MISSING-SOURCE-TEMPLATE] (@Values.hull.objects.deployment.missing-source.pod.sources) Source 'nonexisting' is not defined in 'hull.config.templates.pod'. Fix: Define the template"
 
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid_disabled.hull.yaml"
 * Lint and Render values file "values_error_handling_image_invalid_disabled.hull.yaml"
 * Set test object to "release-name-hull-test-invalid-container-images"
 * Test Object has key "spec§template§spec§containers§0§image" with value "my/image/repo@1a2b3c4d5e6f"
+* Test Object has key "spec§template§spec§containers§3§name" with value "registry-and-tag-only"
+* Test Object has key "spec§template§spec§containers§3§image" with value "my.registry/:1.0"
+* Test Object has key "spec§template§spec§containers§4§name" with value "short-hash-digest"
+* Test Object has key "spec§template§spec§containers§4§image" with value "my/image/repo@sha256:1a2b3c"
 
 ## Post Render
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_postrender.hull.yaml"
@@ -298,6 +323,41 @@ Test creation of objects and features.
 * Test Object has key "spec§template§spec§containers§0§env§2§name" with value "OBJECT_INSTANCE_NAME"
 * Test Object has key "spec§template§spec§containers§0§env§2§value" with value "release-name-hull-test-overwrite-old-name"
 * Test Object has key "spec§template§spec§volumes§0§configMap§name" with value "release-name-hull-test-e"
+## Explicit selector
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_explicit_selector.hull.yaml"
+* Lint and Render values file "values_explicit_selector.hull.yaml"
+
+* Set test object to "release-name-hull-test-explicit-selector"
+* Test Object has key "spec§selector§matchLabels" with dictionary value that has "2" items
+* Test Object has key "spec§selector§matchLabels§app" with value "explicit"
+* Test Object has key "spec§selector§matchLabels§tier" with value "web"
+* Test Object has key "spec§template§metadata§labels§app" with value "explicit"
+* Test Object has key "spec§template§metadata§labels§tier" with value "web"
+* Test Object has key "spec§template§metadata§labels§team" with value "payments"
+* Test Object does not have key "spec§template§metadata§labels§app.kubernetes.io/component"
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "explicit-selector"
+
+## Pod metadata precedence
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_pod_metadata_precedence.hull.yaml"
+* Lint and Render values file "values_pod_metadata_precedence.hull.yaml"
+* Set test object to "release-name-hull-test-pod-metadata-precedence"
+* Test Object has key "spec§template§metadata§labels§shared" with value "pod"
+* Test Object has key "spec§template§metadata§labels§object-only" with value "object"
+* Test Object has key "spec§template§metadata§labels§app.kubernetes.io/version" with value "2.3.0"
+* Test Object has key "spec§template§metadata§annotations§shared" with value "pod"
+* Test Object has key "metadata§labels§shared" with value "object"
+* Test Object has key "metadata§annotations§shared" with value "object"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_pod_label_selector.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_pod_label_selector.hull.yaml" to test execution folder because error contains "HULL failed with error [SELECTOR-NOT-MATCHING-POD-LABELS] (@Values.hull.objects.deployment.pod-label-selector) The selector does not select the pods of the pod template, selector label 'app.kubernetes.io/component: pod-label-selector' is 'app.kubernetes.io/component: other' in the pod template."
+
+## Selector Error Checking
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_selector.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_selector.hull.yaml" to test execution folder because error contains "HULL failed with error [SELECTOR-NOT-MATCHING-POD-LABELS] (@Values.hull.objects.deployment.label-overrides-selector) The selector does not select the pods of the pod template, selector label 'app.kubernetes.io/component: label-overrides-selector' is 'app.kubernetes.io/component: other' in the pod template."
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_selector.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_selector.hull.yaml" to test execution folder because error contains "HULL failed with error [SELECTOR-NOT-MATCHING-POD-LABELS] (@Values.hull.objects.deployment.selector-without-pod-labels) The selector does not select the pods of the pod template, selector label 'app: explicit' is missing in the pod template."
+
 ___
 
 ## Multi Pass
