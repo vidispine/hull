@@ -22,7 +22,13 @@
 {{ if (gt (len (keys (index (index $parent.Values $hullRootKey).config.general.metadata.labels "custom"))) 0) }}
 {{ $labels = merge $labels (index $parent.Values $hullRootKey).config.general.metadata.labels.custom }}
 {{- end -}}
+{{- /*
+### A pod template of an object with an explicit selector carries only the labels given for it,
+### the generated selector labels would not be selected and could contradict the pod's own labels.
+*/ -}}
+{{ if not (and (default false (index . "MERGE_TEMPLATE_METADATA")) (hasKey $spec "selector")) }}
 {{ $labels = merge $labels ((include "hull.metadata.labels.selector" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "HULL_ROOT_KEY" $hullRootKey)) | fromYaml) }}
+{{ end }}
 {{ if default false (index . "MERGE_TEMPLATE_METADATA") }}
 {{ $podSpec := default dict (dig "pod" dict $spec) }}
 {{ if kindIs "map" $podSpec }}

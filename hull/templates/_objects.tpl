@@ -207,6 +207,17 @@ scopeKey: {{ $transformationScopeKey }}
 {{- $errorMessage = printf "%s%s" $errorMessage (include "hull.util.error.format" (dict "ERRORS" $brokenYaml)) -}}
 {{- end -}}
 {{- end -}}
+{{- $podLabels := default dict (dig "spec" "template" "metadata" "labels" dict $objectSpec) -}}
+{{- $mismatches := list -}}
+{{- range $selectorKey, $selectorValue := (dig "spec" "selector" "matchLabels" dict $objectSpec) -}}
+{{- if or (not (hasKey $podLabels $selectorKey)) (ne (toString (index $podLabels $selectorKey)) (toString $selectorValue)) -}}
+{{- $mismatches = append $mismatches (printf "'%s: %s' is %s" $selectorKey (toString $selectorValue) (ternary (printf "'%s: %s' in the pod template" $selectorKey (toString (index $podLabels $selectorKey))) "missing in the pod template" (hasKey $podLabels $selectorKey))) -}}
+{{- end -}}
+{{- end -}}
+{{- if (and (gt (len $mismatches) 0) (hasKey (dig "spec" dict $objectSpec) "template")) -}}
+{{- $selectorMismatch := include "hull.util.error.message" (dict "ERROR_TYPE" "SELECTOR-NOT-MATCHING-POD-LABELS" "ERROR_MESSAGE" (printf "(@Values.%s.objects.%s.%s) The selector does not select the pods of the pod template, selector label %s" $hullRootKey $lowerObjectType $objectKey (join ", selector label " $mismatches))) -}}
+{{- $errorMessage = printf "%s%s" $errorMessage (include "hull.util.error.format" (dict "ERRORS" $selectorMismatch)) -}}
+{{- end -}}
 {{- if (ne $errorMessage "") -}}
 {{ $errorMessages = printf "%s%s" $errorMessages $errorMessage }}
 

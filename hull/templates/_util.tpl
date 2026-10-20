@@ -266,7 +266,8 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
 {{ if hasKey $spec "selector" }}
-selector: {{ $spec.selector }}
+selector:
+{{ toYaml $spec.selector | indent 2 }}
 {{ else }}
 {{ if not (default false (index . "NO_SELECTOR")) }}
 selector:
@@ -521,6 +522,7 @@ VIRTUAL-FOLDER-DATA-PATH-NOT-EXISTING: "Point 'path' to a file inside the chart,
 HULL-GET-TRANSFORMATION-REFERENCE-INVALID: "Correct the reference or add the missing key. An _HT* reference is a dot separated path relative to .Values such as '_HT*hull.config.specific.my_value', write a dot inside a key as '§'."
 BROKEN-OBJECT-YAML: "Find the value that breaks the YAML of this object, for example an unquoted string starting with '@', '`', '%' or '*', or a transformation result with wrong indentation. 'helm template --debug' prints the broken object."
 DEFAULT-RBAC-OBJECT-NOT-RENDERED: "Set 'hull.config.general.createDefaultRbacTriplet' to true to render the default ServiceAccount, Role and RoleBinding, or set 'enabled' explicitly on this object to decide for it alone."
+SELECTOR-NOT-MATCHING-POD-LABELS: "Kubernetes rejects objects whose selector matchLabels are not all present with the same value in the pod template labels. Remove or correct the object 'labels' that override the generated selector labels, or set an explicit 'selector' that matches the pod labels given in 'labels', 'pod.labels' or 'templateLabels'."
 MISSING-SOURCE-TEMPLATE: "Define the template under 'hull.config.templates.<pod|container>.<name>' or remove the name from 'sources'."
 MISSING-SOURCE-OBJECT-TYPE: "Write the 'sources' entry as '<instance>' for an instance of the same object type or as '<instance>[<objecttype>]' with an existing object type such as 'base[deployment]'."
 MISSING-SOURCE-OBJECT-INSTANCE: "Add the referenced object instance or remove it from 'sources'. An entry without '[<objecttype>]' refers to an instance of the same object type."

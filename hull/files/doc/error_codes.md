@@ -44,6 +44,7 @@ Some things to know about how errors are reported:
 | [`VIRTUAL-FOLDER-DATA-PATH-NOT-EXISTING`](#virtual-folder-data-path-not-existing) | A ConfigMap or Secret `data` entry's `path` matches no file | `errorChecks.virtualFolderDataPathExists` |
 | [`HULL-GET-TRANSFORMATION-REFERENCE-INVALID`](#hull-get-transformation-reference-invalid) | An `_HT*` reference points to a key that does not exist | `errorChecks.hullGetTransformationReferenceValid` |
 | [`BROKEN-OBJECT-YAML`](#broken-object-yaml) | The YAML rendered for an object cannot be parsed | `errorChecks.objectYamlValid` |
+| [`SELECTOR-NOT-MATCHING-POD-LABELS`](#selector-not-matching-pod-labels) | A workload's `selector.matchLabels` are not all found in its pod template labels | always checked |
 | [`DEFAULT-RBAC-OBJECT-NOT-RENDERED`](#default-rbac-object-not-rendered) | The `default` ServiceAccount, Role or RoleBinding is customized but not rendered | always checked |
 | [`MISSING-SOURCE-TEMPLATE`](#missing-source-template) | A pod or container `sources` entry names an undefined template | always checked |
 | [`MISSING-SOURCE-OBJECT-TYPE`](#missing-source-object-type) | An object `sources` entry names an object type that does not exist | always checked |
@@ -138,6 +139,21 @@ HULL failed with error [BROKEN-OBJECT-YAML] (@Values.hull.objects.deployment.fro
 ```
 
 **Fix:** find the value that breaks the YAML. Typical causes are values that end up unquoted in the output and start with a YAML indicator character such as `@`, `` ` ``, `%` or `*`, for example an image without `repository` and only a `digest` while `containerImageValid` is off, and `_HT!` templates whose output has wrong indentation. `helm template --debug` prints the broken object.
+
+### `SELECTOR-NOT-MATCHING-POD-LABELS`
+
+The `selector.matchLabels` of a Deployment, StatefulSet, DaemonSet or Job are not all present with the same value in the labels of its pod template. Kubernetes rejects such an object, HULL reports it while rendering instead.
+
+```
+HULL failed with error [SELECTOR-NOT-MATCHING-POD-LABELS] (@Values.hull.objects.deployment.frontend) The selector does not select the pods of the pod template, selector label 'app.kubernetes.io/component: frontend' is 'app.kubernetes.io/component: web' in the pod template.
+```
+
+There are two typical causes:
+
+- The object's `labels` set one of the labels of the generated selector (`app.kubernetes.io/name`, `app.kubernetes.io/instance` or `app.kubernetes.io/component`) to a different value. Object `labels` are also rendered on the pod template and take precedence there.
+- An explicit `selector` was given, but the labels it selects are not set for the pods. With an explicit `selector`, HULL does not add its generated selector labels to the pod template.
+
+**Fix:** remove the conflicting label from the object's `labels`, or with an explicit `selector` add the selected labels to `pod.labels`. See [pod templates](/hull/files/doc/API/hull_objects_pod.md#the-hullpodtemplatev1-properties).
 
 ### `DEFAULT-RBAC-OBJECT-NOT-RENDERED`
 

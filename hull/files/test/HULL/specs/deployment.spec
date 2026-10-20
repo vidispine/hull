@@ -323,6 +323,27 @@ Test creation of objects and features.
 * Test Object has key "spec§template§spec§containers§0§env§2§name" with value "OBJECT_INSTANCE_NAME"
 * Test Object has key "spec§template§spec§containers§0§env§2§value" with value "release-name-hull-test-overwrite-old-name"
 * Test Object has key "spec§template§spec§volumes§0§configMap§name" with value "release-name-hull-test-e"
+## Explicit selector
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_explicit_selector.hull.yaml"
+* Lint and Render values file "values_explicit_selector.hull.yaml"
+
+* Set test object to "release-name-hull-test-explicit-selector"
+* Test Object has key "spec§selector§matchLabels" with dictionary value that has "2" items
+* Test Object has key "spec§selector§matchLabels§app" with value "explicit"
+* Test Object has key "spec§selector§matchLabels§tier" with value "web"
+* Test Object has key "spec§template§metadata§labels§app" with value "explicit"
+* Test Object has key "spec§template§metadata§labels§tier" with value "web"
+* Test Object has key "spec§template§metadata§labels§team" with value "payments"
+* Test Object does not have key "spec§template§metadata§labels§app.kubernetes.io/component"
+* Test Object has key "metadata§labels§app.kubernetes.io/component" with value "explicit-selector"
+
+## Selector Error Checking
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_selector.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_selector.hull.yaml" to test execution folder because error contains "HULL failed with error [SELECTOR-NOT-MATCHING-POD-LABELS] (@Values.hull.objects.deployment.label-overrides-selector) The selector does not select the pods of the pod template, selector label 'app.kubernetes.io/component: label-overrides-selector' is 'app.kubernetes.io/component: other' in the pod template."
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_selector.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_selector.hull.yaml" to test execution folder because error contains "HULL failed with error [SELECTOR-NOT-MATCHING-POD-LABELS] (@Values.hull.objects.deployment.selector-without-pod-labels) The selector does not select the pods of the pod template, selector label 'app: explicit' is missing in the pod template."
+
 ___
 
 ## Multi Pass

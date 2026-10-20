@@ -1,0 +1,20 @@
+hull:
+  objects:
+    deployment:
+      label-overrides-selector:
+        labels:
+          app.kubernetes.io/component: other
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
+      selector-without-pod-labels:
+        selector:
+          matchLabels:
+            app: explicit
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo
