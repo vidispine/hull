@@ -127,7 +127,7 @@ annotations: {}
 {{ end }}
 {{ range $type,$dict := dict "secret" $secrets "configmap" $configmaps }}
   {{ range $key, $spec := index (index $parent.Values $hullRootKey).objects $type }}
-    {{ $objectDefault := fromYaml (include "hull.objects.defaults" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $type) ) }}
+    {{ $objectDefault := fromYaml (include "hull.objects.defaults" (dict "PARENT_CONTEXT" $parent "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $type "OBJECT_INSTANCE_KEY" $key) ) }}
     {{ $enabledDefault := dig "enabled" true $objectDefault }}
     {{ $specDisabled := and (hasKey $spec "enabled") (not $spec.enabled) }}
     {{ if (and (not $specDisabled) (or (and (hasKey $spec "enabled") $spec.enabled) (and (not (hasKey $spec "enabled")) $enabledDefault))) }}

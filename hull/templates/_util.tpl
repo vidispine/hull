@@ -291,6 +291,11 @@ selector:
 {{- $component := default "" (index . "COMPONENT") -}}
 {{- $sourceType := (index . "SOURCE_TYPE") -}}
 {{- $specKey := default "" (index . "SPEC_KEY") -}}
+{{- $objectInstanceKey := default "<UNSPECIFIED>" (index . "OBJECT_INSTANCE_KEY") -}}
+{{- $sourcesPath := printf "%s.objects.%s.%s.%s" $hullRootKey $lowerObjectType $objectInstanceKey (include "hull.util.error.podpath" (dict "OBJECT_TYPE" $lowerObjectType)) -}}
+{{- if (eq $sourceType "container") -}}
+{{- $sourcesPath = printf "%s.%s.%s" $sourcesPath (default "containers" (index . "CONTAINER_TYPE")) $component -}}
+{{- end -}}
 {{- $spec := (index . "SPEC") -}}
 {{- $entry := $spec -}}
 {{- if (ne $specKey "") -}}
@@ -302,7 +307,7 @@ selector:
 {{- $defaultSpec = dict -}}
 {{- range $source := $entry.sources -}}
 {{- if not (hasKey (index (index $parent.Values $hullRootKey).config.templates $sourceType) $source) -}}
-{{- fail (printf "No source with key %s found in hull.config.templates.%s" $source $sourceType) }}
+{{- include "hull.util.error.fail" (dict "ERROR_TYPE" "MISSING-SOURCE-TEMPLATE" "ERROR_MESSAGE" (printf "(@Values.%s.sources) Source '%s' is not defined in '%s.config.templates.%s'" $sourcesPath $source $hullRootKey $sourceType)) -}}
 {{- end -}}
 {{- $_ := (mergeOverwrite $defaultSpec (omit (deepCopy (index (index (index $parent.Values $hullRootKey).config.templates $sourceType) $source)) "enabled")) -}}
 {{- end -}}
@@ -330,6 +335,7 @@ selector:
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $lowerObjectType := (index . "OBJECT_TYPE") | lower -}}
+{{- $sourcesPath := printf "%s.objects.%s.%s.sources" $hullRootKey $lowerObjectType (default "<UNSPECIFIED>" (index . "OBJECT_INSTANCE_KEY")) -}}
 {{- $component := default "" (index . "COMPONENT") -}}
 {{- $spec := (index . "SPEC") -}}
 {{- $defaultSpec := dict }}
@@ -344,10 +350,10 @@ selector:
 {{- $defaultTemplate = (regexSplit "\\[" $defaultTemplate -1) | first | lower -}}
 {{- end -}}
 {{- if not (hasKey (index $parent.Values $hullRootKey).objects $lowerObjectType) -}}
-{{- fail (printf "No object type %s in hull.objects" $lowerObjectType) }}
+{{- include "hull.util.error.fail" (dict "ERROR_TYPE" "MISSING-SOURCE-OBJECT-TYPE" "ERROR_MESSAGE" (printf "(@Values.%s) Object type '%s' of source '%s' does not exist in '%s.objects'" $sourcesPath $lowerObjectType $defaultTemplate $hullRootKey)) -}}
 {{- end -}}
 {{- if not (hasKey (index (index $parent.Values $hullRootKey).objects $lowerObjectType) $defaultTemplate) -}}
-{{- fail (printf "No object instance %s in hull.objects %s" $defaultTemplate $lowerObjectType) }}
+{{- include "hull.util.error.fail" (dict "ERROR_TYPE" "MISSING-SOURCE-OBJECT-INSTANCE" "ERROR_MESSAGE" (printf "(@Values.%s) Source '%s' does not exist in '%s.objects.%s'" $sourcesPath $defaultTemplate $hullRootKey $lowerObjectType)) -}}
 {{- end -}}
 {{- $_ := (mergeOverwrite $defaultSpec (omit (deepCopy (index (index (index $parent.Values $hullRootKey).objects $lowerObjectType) $defaultTemplate)) "enabled")) -}}
 {{- end -}}
@@ -402,15 +408,122 @@ selector:
 
 
 {{- /*
-| Purpose:  
-|   
-|   Create an error with message
+| Purpose:
+|
+|   The path of the pod specification below an object instance, used in error messages.
+|
+*/ -}}
+{{- define "hull.util.error.podpath" -}}
+{{- if eq (lower (toString (index . "OBJECT_TYPE"))) "cronjob" -}}job.pod{{- else -}}pod{{- end -}}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:
+|
+|   Create an error marker that is embedded in the rendered object and collected by
+|   "hull.util.error.check" later. The message is base64 encoded and the marker is
+|   terminated by '~' so that messages may contain any characters, including colons,
+|   without breaking the YAML the marker is embedded in or the parsing of the marker.
+|
+| Interface:
+|
+|   ERROR_TYPE: The error code, see hull/files/doc/error_codes.md
+|   ERROR_MESSAGE: The message, starting with the '(@Values.<path>)' of the faulty value
 |
 */ -}}
 {{- define "hull.util.error.message" -}}
 {{- $errorType := default "" (index . "ERROR_TYPE") -}}
 {{- $errorMessage := default "" (index . "ERROR_MESSAGE") -}}
-{{- printf "~%s:%s:%s" "_HULL_ERROR_" $errorType $errorMessage -}}
+{{- printf "~_HULL_ERROR_:%s:%s~" $errorType ($errorMessage | b64enc) -}}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:
+|
+|   Turn all error markers found in a string into one line per error of the form
+|   'HULL failed with error [<CODE>] (@Values.<path>) <message> Fix: <hint>'
+|   with the hint taken from "hull.util.error.hints".
+|
+| Interface:
+|
+|   ERRORS: A string containing one or more error markers
+|
+*/ -}}
+{{- define "hull.util.error.format" -}}
+{{- $errors := toString (default "" (index . "ERRORS")) -}}
+{{- $hints := include "hull.util.error.hints" . | fromYaml -}}
+{{- $result := "" -}}
+{{- range $marker := regexFindAll "~_HULL_ERROR_:[A-Z0-9-]*:[A-Za-z0-9+/=]*~" $errors -1 -}}
+{{- $parts := regexSplit ":" (trimSuffix "~" $marker) 3 -}}
+{{- $code := index $parts 1 -}}
+{{- $message := trim (b64dec (index $parts 2)) -}}
+{{- if not (regexMatch "[.!?]$" $message) -}}
+{{- $message = printf "%s." $message -}}
+{{- end -}}
+{{- $result = printf "%s\nHULL failed with error [%s] %s" $result $code $message -}}
+{{- $hint := get $hints $code -}}
+{{- if $hint -}}
+{{- $result = printf "%s Fix: %s" $result $hint -}}
+{{- end -}}
+{{- end -}}
+{{- $result -}}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:
+|
+|   The line appended once after all errors, pointing to the documentation of the codes.
+|
+*/ -}}
+{{- define "hull.util.error.footer" -}}
+{{- printf "\nAll HULL error codes and how to fix them are explained in https://github.com/vidispine/hull/blob/main/hull/files/doc/error_codes.md" -}}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:
+|
+|   Fail immediately with a single formatted error. For errors that prevent further rendering.
+|
+| Interface:
+|
+|   ERROR_TYPE: The error code, see hull/files/doc/error_codes.md
+|   ERROR_MESSAGE: The message, starting with the '(@Values.<path>)' of the faulty value
+|
+*/ -}}
+{{- define "hull.util.error.fail" -}}
+{{- fail (printf "%s%s" (include "hull.util.error.format" (dict "ERRORS" (include "hull.util.error.message" .))) (include "hull.util.error.footer" .)) -}}
+{{- end -}}
+
+
+
+{{- /*
+| Purpose:
+|
+|   How to fix each error code. Keep in sync with hull/files/doc/error_codes.md,
+|   the test suite checks that every code used in the templates is listed in both.
+|
+*/ -}}
+{{- define "hull.util.error.hints" -}}
+MISSING-IMAGE-SPEC: "Add an 'image' with at least a 'repository' to the container. To render containers without this check set 'hull.config.general.errorChecks.containerImageValid' to false."
+MISSING-IMAGE-REPOSITORY: "Add a 'repository' to the container's 'image', for example 'repository: nginx'. The 'registry', 'tag' and 'digest' are optional."
+INVALID-IMAGE-DIGEST: "Use a complete digest of the form '<algorithm>:<hex encoded hash>' with a lowercase hash of at least 32 characters, such as 'sha256:' followed by 64 hex characters, or remove 'digest' to pull by 'tag'. A short image ID is not a digest."
+MISSING-NAMESPACE-OVERRIDE: "Set 'namespaceOverride' to a namespace name or remove it to deploy the object to the release namespace."
+VIRTUAL-FOLDER-DATA-INLINE-INVALID: "Give 'inline' a value or remove the data entry. A null 'inline' usually comes from a value or transformation that resolved to nothing. To render empty content instead set 'hull.config.general.errorChecks.virtualFolderDataInlineValid' to false."
+VIRTUAL-FOLDER-DATA-PATH-NOT-EXISTING: "Point 'path' to a file inside the chart, relative to the chart root such as 'files/app.conf', or use 'inline' for literal content. Files matched by .helmignore are not available."
+HULL-GET-TRANSFORMATION-REFERENCE-INVALID: "Correct the reference or add the missing key. An _HT* reference is a dot separated path relative to .Values such as '_HT*hull.config.specific.my_value', write a dot inside a key as '§'."
+BROKEN-OBJECT-YAML: "Find the value that breaks the YAML of this object, for example an unquoted string starting with '@', '`', '%' or '*', or a transformation result with wrong indentation. 'helm template --debug' prints the broken object."
+DEFAULT-RBAC-OBJECT-NOT-RENDERED: "Set 'hull.config.general.createDefaultRbacTriplet' to true to render the default ServiceAccount, Role and RoleBinding, or set 'enabled' explicitly on this object to decide for it alone."
+MISSING-SOURCE-TEMPLATE: "Define the template under 'hull.config.templates.<pod|container>.<name>' or remove the name from 'sources'."
+MISSING-SOURCE-OBJECT-TYPE: "Write the 'sources' entry as '<instance>' for an instance of the same object type or as '<instance>[<objecttype>]' with an existing object type such as 'base[deployment]'."
+MISSING-SOURCE-OBJECT-INSTANCE: "Add the referenced object instance or remove it from 'sources'. An entry without '[<objecttype>]' refers to an instance of the same object type."
 {{- end -}}
 
 
@@ -436,12 +549,8 @@ selector:
       {{- if (and $value (eq $lowerObjectType "secret") (regexMatch "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$" $value)) -}}
         {{- $value = $value | b64dec -}}
       {{- end -}}
-      {{- if hasPrefix "~_HULL_ERROR_" $value -}}
-        {{- $errors := regexSplit "~_HULL_ERROR_" (trimPrefix "~_HULL_ERROR_" $value) -1 -}}
-        {{- range $error := $errors -}}
-          {{- $errorParts := regexSplit ":" (trimAll "~" $error) -1 -}}
-          {{- $errorMessage = printf "%s\n%s %s" $errorMessage "HULL failed with error" (index $errorParts 2) -}}
-        {{- end -}}
+      {{- if contains "~_HULL_ERROR_:" $value -}}
+        {{- $errorMessage = printf "%s%s" $errorMessage (include "hull.util.error.format" (dict "ERRORS" $value)) -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
@@ -452,12 +561,8 @@ selector:
   {{- end -}}
 {{- end -}}
 {{- if typeIs "string" $object -}}
-  {{- if hasPrefix "~_HULL_ERROR_" $object -}}
-    {{- $errors := regexSplit "~_HULL_ERROR_" (trimPrefix "~_HULL_ERROR_" $object) -1 -}}
-    {{- range $error := $errors -}}
-      {{- $errorParts := regexSplit ":" (trimAll "~" $error) -1 -}}
-      {{- $errorMessage = printf "%s\n%s %s" $errorMessage "HULL failed with error" (index $errorParts 2) -}}
-    {{- end -}}
+  {{- if contains "~_HULL_ERROR_:" $object -}}
+    {{- $errorMessage = printf "%s%s" $errorMessage (include "hull.util.error.format" (dict "ERRORS" $object)) -}}
   {{- end -}}
 {{- end -}}
 {{ $errorMessage }}
@@ -547,7 +652,8 @@ selector:
 {{- range $objectType := list "serviceaccount" "role" "rolebinding" -}}
 {{- if and (hasKey $customized $objectType) (dig $objectType "COUPLED" false $raw) -}}
 {{- $details := index $customized $objectType -}}
-{{- $errorMessage = printf "%s\nHULL failed with error (@Values.%s.objects.%s.default.%s) The 'default' %s %s but is not rendered because '%s.config.general.createDefaultRbacTriplet' is false. Set 'createDefaultRbacTriplet: true' to render the default ServiceAccount, Role and RoleBinding, or set 'enabled' explicitly on '%s.objects.%s.default' to decide for this object alone." $errorMessage $hullRootKey $objectType (index $details 0) (index $details 1) (index $details 2) $hullRootKey $hullRootKey $objectType -}}
+{{- $marker := include "hull.util.error.message" (dict "ERROR_TYPE" "DEFAULT-RBAC-OBJECT-NOT-RENDERED" "ERROR_MESSAGE" (printf "(@Values.%s.objects.%s.default.%s) The 'default' %s %s but is not rendered because '%s.config.general.createDefaultRbacTriplet' is false." $hullRootKey $objectType (index $details 0) (index $details 1) (index $details 2) $hullRootKey)) -}}
+{{- $errorMessage = printf "%s%s" $errorMessage (include "hull.util.error.format" (dict "ERRORS" $marker)) -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

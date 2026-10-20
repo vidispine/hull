@@ -227,18 +227,43 @@ Test creation of objects and features.
 
 ## Error Checking
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
-* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.deployment.invalid-container-images.containers.no-image.image) Field image is missing"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error [MISSING-IMAGE-SPEC] (@Values.hull.objects.deployment.invalid-container-images.pod.containers.no-image.image) Field image is missing"
 
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
-* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.deployment.invalid-container-images.containers.no-repository.image.repository) Field repository is missing"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error [MISSING-IMAGE-REPOSITORY] (@Values.hull.objects.deployment.invalid-container-images.pod.containers.no-repository.image.repository) Field repository is missing"
 
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
-* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.deployment.invalid-container-images.containers.invalid-digest.image.digest) Field digest is not a valid image digest"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error [INVALID-IMAGE-DIGEST] (@Values.hull.objects.deployment.invalid-container-images.pod.containers.invalid-digest.image.digest) Field digest '1a2b3c4d5e6f' is not a valid image digest"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error [MISSING-IMAGE-REPOSITORY] (@Values.hull.objects.deployment.invalid-container-images.pod.containers.registry-and-tag-only.image.repository) Field repository is missing. Fix: Add a 'repository' to the container's 'image'"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "HULL failed with error [INVALID-IMAGE-DIGEST] (@Values.hull.objects.deployment.invalid-container-images.pod.containers.short-hash-digest.image.digest) Field digest 'sha256:1a2b3c' is not a valid image digest. Fix: Use a complete digest"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_image_invalid.hull.yaml" to test execution folder because error contains "All HULL error codes and how to fix them are explained in https://github.com/vidispine/hull/blob/main/hull/files/doc/error_codes.md"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_broken_yaml.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_broken_yaml.hull.yaml" to test execution folder because error contains "HULL failed with error [BROKEN-OBJECT-YAML] (@Values.hull.objects.deployment.broken-yaml) The rendered object is not valid YAML, parsing it failed with '"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_missing_source_instance.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_missing_source_instance.hull.yaml" to test execution folder because error contains "HULL failed with error [MISSING-SOURCE-OBJECT-INSTANCE] (@Values.hull.objects.deployment.missing-source.sources) Source 'nonexisting' does not exist in 'hull.objects.deployment'. Fix: Add the referenced object instance"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_missing_source_type.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_missing_source_type.hull.yaml" to test execution folder because error contains "HULL failed with error [MISSING-SOURCE-OBJECT-TYPE] (@Values.hull.objects.deployment.missing-source.sources) Object type 'nosuchtype' of source 'base' does not exist in 'hull.objects'. Fix: Write the 'sources' entry"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_missing_source_template.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_missing_source_template.hull.yaml" to test execution folder because error contains "HULL failed with error [MISSING-SOURCE-TEMPLATE] (@Values.hull.objects.deployment.missing-source.pod.sources) Source 'nonexisting' is not defined in 'hull.config.templates.pod'. Fix: Define the template"
 
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_image_invalid_disabled.hull.yaml"
 * Lint and Render values file "values_error_handling_image_invalid_disabled.hull.yaml"
 * Set test object to "release-name-hull-test-invalid-container-images"
 * Test Object has key "spec§template§spec§containers§0§image" with value "my/image/repo@1a2b3c4d5e6f"
+* Test Object has key "spec§template§spec§containers§3§name" with value "registry-and-tag-only"
+* Test Object has key "spec§template§spec§containers§3§image" with value "my.registry/:1.0"
+* Test Object has key "spec§template§spec§containers§4§name" with value "short-hash-digest"
+* Test Object has key "spec§template§spec§containers§4§image" with value "my/image/repo@sha256:1a2b3c"
 
 ## Post Render
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_postrender.hull.yaml"
