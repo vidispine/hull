@@ -18,6 +18,7 @@ CHANGES:
 FIXES:
 
 - fixed the `repository` being dropped from the rendered container `image` when `hull.config.general.errorChecks.containerImageValid` is set to `false`, which resulted in invalid image references such as `:1.0`.
+- fixed a CronJob without `job` failing with an internal template error (`interface conversion: interface {} is nil`). It is now reported as `MISSING-CRONJOB-JOB` with the path of the CronJob.
 - fixed the JSON schema of `generic` objects, which rejected every property besides `apiVersion`, `kind` and the object base properties, contrary to the documentation. Any property is now accepted and rendered as given.
 - fixed errors in `conditionals` being raised in HULL's internal marker format instead of a readable message.
 - fixed the message of the error for an object whose rendered YAML cannot be parsed, its parts were in the wrong order.

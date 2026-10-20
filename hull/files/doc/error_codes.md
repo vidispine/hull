@@ -39,6 +39,7 @@ Some things to know about how errors are reported:
 | [`MISSING-IMAGE-SPEC`](#missing-image-spec) | A container has no `image` | `errorChecks.containerImageValid` |
 | [`MISSING-IMAGE-REPOSITORY`](#missing-image-repository) | A container's `image` has no `repository` | `errorChecks.containerImageValid` |
 | [`INVALID-IMAGE-DIGEST`](#invalid-image-digest) | A container's `image.digest` is not a valid digest | `errorChecks.containerImageValid` |
+| [`MISSING-CRONJOB-JOB`](#missing-cronjob-job) | A CronJob has no `job` | always checked |
 | [`MISSING-NAMESPACE-OVERRIDE`](#missing-namespace-override) | `namespaceOverride` is set to an empty string | always checked |
 | [`VIRTUAL-FOLDER-DATA-INLINE-INVALID`](#virtual-folder-data-inline-invalid) | A ConfigMap or Secret `data` entry has a null `inline` | `errorChecks.virtualFolderDataInlineValid` (off by default) |
 | [`VIRTUAL-FOLDER-DATA-PATH-NOT-EXISTING`](#virtual-folder-data-path-not-existing) | A ConfigMap or Secret `data` entry's `path` matches no file | `errorChecks.virtualFolderDataPathExists` |
@@ -106,6 +107,16 @@ HULL failed with error [INVALID-IMAGE-DIGEST] (@Values.hull.objects.deployment.f
 ```
 
 **Fix:** use the complete digest, for example as printed by `docker buildx imagetools inspect <image>` or `crane digest <image>`. The 12 character image ID shown by `docker images` is not a digest. To pull by tag instead, remove `digest` or set it to an empty string.
+
+### `MISSING-CRONJOB-JOB`
+
+A CronJob has no `job`, neither in its own values nor from `_HULL_OBJECT_TYPE_DEFAULT_` or `sources`, so there is no job template to render.
+
+```
+HULL failed with error [MISSING-CRONJOB-JOB] (@Values.hull.objects.cronjob.cleanup.job) Field job is missing.
+```
+
+**Fix:** add `job` with the fields of the job template's `spec` and the pod in `job.pod`, see the [scheduled job recipe](/hull/files/doc/cookbook.md#scheduled-job).
 
 ### `MISSING-NAMESPACE-OVERRIDE`
 

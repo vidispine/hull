@@ -516,6 +516,7 @@ selector:
 MISSING-IMAGE-SPEC: "Add an 'image' with at least a 'repository' to the container. To render containers without this check set 'hull.config.general.errorChecks.containerImageValid' to false."
 MISSING-IMAGE-REPOSITORY: "Add a 'repository' to the container's 'image', for example 'repository: nginx'. The 'registry', 'tag' and 'digest' are optional."
 INVALID-IMAGE-DIGEST: "Use a complete digest of the form '<algorithm>:<hex encoded hash>' with a lowercase hash of at least 32 characters, such as 'sha256:' followed by 64 hex characters, or remove 'digest' to pull by 'tag'. A short image ID is not a digest."
+MISSING-CRONJOB-JOB: "Add 'job' to the CronJob with the fields of its job template's spec and the pod in 'job.pod', or provide it with '_HULL_OBJECT_TYPE_DEFAULT_' or 'sources'."
 MISSING-NAMESPACE-OVERRIDE: "Set 'namespaceOverride' to a namespace name or remove it to deploy the object to the release namespace."
 VIRTUAL-FOLDER-DATA-INLINE-INVALID: "Give 'inline' a value or remove the data entry. A null 'inline' usually comes from a value or transformation that resolved to nothing. To render empty content instead set 'hull.config.general.errorChecks.virtualFolderDataInlineValid' to false."
 VIRTUAL-FOLDER-DATA-PATH-NOT-EXISTING: "Point 'path' to a file inside the chart, relative to the chart root such as 'files/app.conf', or use 'inline' for literal content. Files matched by .helmignore are not available."

@@ -178,6 +178,7 @@ Test creation of objects and features.
 * Test Object does not have key "metadata§labels§object_only_label"
 
 ## Error Checking
+* Fail to render the templates for additional values file "values_error_handling_missing_job.hull.yaml" to test execution folder because error contains "HULL failed with error [MISSING-CRONJOB-JOB] (@Values.hull.objects.cronjob.missing-job.job) Field job is missing. Fix: Add 'job' to the CronJob"
 * Fail to render the templates for additional values file "values_error_handling_missing_container_source.hull.yaml" to test execution folder because error contains "HULL failed with error [MISSING-SOURCE-TEMPLATE] (@Values.hull.objects.cronjob.missing-source.job.pod.containers.main.sources) Source 'nonexisting' is not defined in 'hull.config.templates.container'."
 
 ___
