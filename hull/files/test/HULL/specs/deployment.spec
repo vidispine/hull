@@ -337,6 +337,20 @@ Test creation of objects and features.
 * Test Object does not have key "spec§template§metadata§labels§app.kubernetes.io/component"
 * Test Object has key "metadata§labels§app.kubernetes.io/component" with value "explicit-selector"
 
+## Pod metadata precedence
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_pod_metadata_precedence.hull.yaml"
+* Lint and Render values file "values_pod_metadata_precedence.hull.yaml"
+* Set test object to "release-name-hull-test-pod-metadata-precedence"
+* Test Object has key "spec§template§metadata§labels§shared" with value "pod"
+* Test Object has key "spec§template§metadata§labels§object-only" with value "object"
+* Test Object has key "spec§template§metadata§labels§app.kubernetes.io/version" with value "2.3.0"
+* Test Object has key "spec§template§metadata§annotations§shared" with value "pod"
+* Test Object has key "metadata§labels§shared" with value "object"
+* Test Object has key "metadata§annotations§shared" with value "object"
+
+* Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_pod_label_selector.hull.yaml"
+* Fail to render the templates for values file "values_error_handling_pod_label_selector.hull.yaml" to test execution folder because error contains "HULL failed with error [SELECTOR-NOT-MATCHING-POD-LABELS] (@Values.hull.objects.deployment.pod-label-selector) The selector does not select the pods of the pod template, selector label 'app.kubernetes.io/component: pod-label-selector' is 'app.kubernetes.io/component: other' in the pod template."
+
 ## Selector Error Checking
 * Prepare test case "deployment" for kind "Deployment" with test chart "hull-test" and values file "values_error_handling_selector.hull.yaml"
 * Fail to render the templates for values file "values_error_handling_selector.hull.yaml" to test execution folder because error contains "HULL failed with error [SELECTOR-NOT-MATCHING-POD-LABELS] (@Values.hull.objects.deployment.label-overrides-selector) The selector does not select the pods of the pod template, selector label 'app.kubernetes.io/component: label-overrides-selector' is 'app.kubernetes.io/component: other' in the pod template."

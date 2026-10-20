@@ -12,19 +12,24 @@
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $apiVersion := (index . "API_VERSION") -}}
 {{- $apiKind := (index . "API_KIND") -}}
-{{- $spec := (index . "SPEC") -}}
+{{- $spec := default dict (index . "SPEC") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{ $annotations := dict }}
-{{ $annotations = merge $annotations (include "hull.metadata.annotations.custom" . | fromYaml) }}
-{{ if (gt (len (keys (index (index $parent.Values $hullRootKey).config.general.metadata.annotations "custom"))) 0) }}
-  {{ $annotations = merge $annotations (index $parent.Values $hullRootKey).config.general.metadata.annotations.custom }}
-{{ end }}
+{{- /*
+### On a pod template the annotations given for the pod take precedence over the object's annotations.
+*/ -}}
 {{ if default false (index . "MERGE_TEMPLATE_METADATA") }}
   {{ $podSpec := default dict (dig "pod" dict $spec) }}
   {{ if kindIs "map" $podSpec }}
   {{ $annotations = merge $annotations ((include "hull.metadata.annotations.custom" (dict "PARENT_CONTEXT" $parent "SPEC" $podSpec "ANNOTATIONS_METADATA" "annotations") | fromYaml)) }}
   {{ end }}
   {{ $annotations = merge $annotations ((include "hull.metadata.annotations.custom" (merge (dict "ANNOTATIONS_METADATA" "templateAnnotations") . ) | fromYaml)) }}
+{{ end }}
+{{ $annotations = merge $annotations (include "hull.metadata.annotations.custom" . | fromYaml) }}
+{{ if (gt (len (keys (index (index $parent.Values $hullRootKey).config.general.metadata.annotations "custom"))) 0) }}
+  {{ $annotations = merge $annotations (index $parent.Values $hullRootKey).config.general.metadata.annotations.custom }}
+{{ end }}
+{{ if default false (index . "MERGE_TEMPLATE_METADATA") }}
   {{ $annotations = merge $annotations (include "hull.metadata.annotations.hash" . | fromYaml) }}
 {{ end }}
 {{- $annotationsStringify := dict }}

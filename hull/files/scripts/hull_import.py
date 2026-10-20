@@ -294,26 +294,10 @@ class Converter:
         template_metadata = template.get("metadata") or {}
         pod = self.convert_pod_spec(obj, template.get("spec") or {})
         labels = template_metadata.get("labels") or {}
-        object_labels = dict(spec.get("labels") or {})
-        pod_labels, moved = {}, []
-        for key, value in labels.items():
-            if key in object_labels:
-                if object_labels[key] != value:
-                    self.note("warning", obj, f"label {key} has different values on the object and the pod "
-                                              f"template, HULL renders the object's value on both")
-                continue
-            if key in HULL_STANDARD_LABELS:
-                # On the pod template HULL's standard labels take precedence over pod.labels,
-                # only object labels take precedence over them
-                object_labels[key] = value
-                moved.append(key)
-                continue
-            pod_labels[key] = value
-        if moved:
-            spec["labels"] = object_labels
-            self.note("info", obj, f"pod template labels {', '.join(moved)} are set as object labels to take "
-                                   f"precedence over HULL's standard labels, they are rendered on the object too")
-        extra = [k for k in object_labels if k not in labels and k not in moved]
+        object_labels = spec.get("labels") or {}
+        # pod labels take precedence on the pod template, object labels are rendered there too
+        pod_labels = {key: value for key, value in labels.items() if object_labels.get(key) != value}
+        extra = [k for k in object_labels if k not in labels]
         if extra:
             self.note("info", obj, f"HULL also renders the object labels {', '.join(sorted(extra))} on the pod template")
         if template_metadata.get("annotations"):

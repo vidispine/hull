@@ -178,6 +178,7 @@ HULL failed with error [SELECTOR-NOT-MATCHING-POD-LABELS] (@Values.hull.objects.
 
 There are two typical causes:
 
+- `pod.labels` or `templateLabels` set one of the labels of the generated selector (`app.kubernetes.io/name`, `app.kubernetes.io/instance` or `app.kubernetes.io/component`) to a different value. Pod labels take precedence on the pod template.
 - The object's `labels` set one of the labels of the generated selector (`app.kubernetes.io/name`, `app.kubernetes.io/instance` or `app.kubernetes.io/component`) to a different value. Object `labels` are also rendered on the pod template and take precedence there.
 - An explicit `selector` was given, but the labels it selects are not set for the pods. With an explicit `selector`, HULL does not add its generated selector labels to the pod template.
 

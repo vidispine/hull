@@ -17,6 +17,18 @@
 {{- $spec := default dict (index . "SPEC") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{ $labels := dict }}
+{{- /*
+### On a pod template the labels given for the pod take precedence over the object's labels and
+### over HULL's labels. If they contradict a generated selector label, SELECTOR-NOT-MATCHING-POD-LABELS
+### is raised instead of the pod label being dropped silently.
+*/ -}}
+{{ if default false (index . "MERGE_TEMPLATE_METADATA") }}
+{{ $podSpec := default dict (dig "pod" dict $spec) }}
+{{ if kindIs "map" $podSpec }}
+{{ $labels = merge $labels ((include "hull.metadata.labels.custom" (dict "PARENT_CONTEXT" $parent "SPEC" $podSpec "LABELS_METADATA" "labels") | fromYaml)) }}
+{{ end }}
+{{ $labels = merge $labels ((include "hull.metadata.labels.custom" (merge (dict "LABELS_METADATA" "templateLabels") . ) | fromYaml)) }}
+{{- end -}}
 {{ $labels = merge $labels (include "hull.metadata.labels.custom" . | fromYaml) }}
 {{ $labels = merge $labels ((include "hull.metadata.general.labels.object" .) | fromYaml) }}
 {{ if (gt (len (keys (index (index $parent.Values $hullRootKey).config.general.metadata.labels "custom"))) 0) }}
@@ -29,13 +41,6 @@
 {{ if not (and (default false (index . "MERGE_TEMPLATE_METADATA")) (hasKey $spec "selector")) }}
 {{ $labels = merge $labels ((include "hull.metadata.labels.selector" (dict "PARENT_CONTEXT" $parent "COMPONENT" $component "HULL_ROOT_KEY" $hullRootKey)) | fromYaml) }}
 {{ end }}
-{{ if default false (index . "MERGE_TEMPLATE_METADATA") }}
-{{ $podSpec := default dict (dig "pod" dict $spec) }}
-{{ if kindIs "map" $podSpec }}
-{{ $labels = merge $labels ((include "hull.metadata.labels.custom" (dict "PARENT_CONTEXT" $parent "SPEC" $podSpec "LABELS_METADATA" "labels") | fromYaml)) }}
-{{ end }}
-{{ $labels = merge $labels ((include "hull.metadata.labels.custom" (merge (dict "LABELS_METADATA" "templateLabels") . ) | fromYaml)) }}
-{{- end -}}
 {{- $labelsStringify := dict }}
 {{- range $labelKey, $labelValue := $labels -}}
 {{- $_ := set $labelsStringify $labelKey ($labelValue | toString) -}}
