@@ -10,6 +10,9 @@ CHANGES:
 - added the `SELECTOR-NOT-MATCHING-POD-LABELS` check: rendering fails if the `selector.matchLabels` of an object are not all present in its pod template labels. Kubernetes rejects such objects, so far they were rendered anyway, for example when object `labels` override one of the generated selector labels.
 - added `hull/files/scripts/hull_import.py`, which converts Kubernetes manifests, for example the `helm template` output of an existing chart, into HULL values, optionally writes a complete HULL based chart and verifies that the chart renders the same objects. See [importing charts](/hull/files/doc/import.md).
 - added the [guide for AI agents](/hull/files/doc/agents.md), which states the rules of HULL, the workflow, the transformations and how Kubernetes kinds map to HULL object types on one page, and an `llms.txt` index of the documentation.
+- added `hull/files/scripts/hull_validate.py`, which checks a HULL based chart in two steps: it validates the values against the schema of the chart's HULL dependency and reports each problem on one line in the format of HULL's errors, with the allowed properties and a suggestion for misspelled names, then it renders the chart and reports HULL's errors. See [checking a chart](/hull/files/doc/error_codes.md#checking-a-chart-with-hull_validatepy).
+- added the MCP server `hull/files/scripts/hull_mcp.py` with tools to look up the schema and the documentation and to validate, render and import charts, and a Claude Code plugin with a skill for HULL and this server. The repository is a plugin marketplace, the plugin is installed with `/plugin install hull --marketplace vidispine/hull`. See [tools for AI agents](/hull/files/doc/agent_tools.md).
+- documented how values files point to the schema with a `# yaml-language-server: $schema=...` comment for validation in editors, see [JSON schema validation](/hull/files/doc/json_schema_validation.md). `hull_import.py` writes this comment into the values it creates.
 
 FIXES:
 
@@ -17,6 +20,8 @@ FIXES:
 - fixed the JSON schema of `generic` objects, which rejected every property besides `apiVersion`, `kind` and the object base properties, contrary to the documentation. Any property is now accepted and rendered as given.
 - fixed errors in `conditionals` being raised in HULL's internal marker format instead of a readable message.
 - fixed the message of the error for an object whose rendered YAML cannot be parsed, its parts were in the wrong order.
+- fixed the JSON schema accepting any values file with a top-level `hull` key without checking it, so editors associated with the schema reported no problems in a chart's `values.yaml`. Such files are now validated against the HULL schema below the `hull` key. Helm's own validation, which checks the content of the `hull` key, is unchanged.
+- fixed the release pipeline creating the GitHub releases of the charts, and with them the tags `hull-<version>`, on the default branch instead of on the released commit.
 
 ## [1.37.0]
 

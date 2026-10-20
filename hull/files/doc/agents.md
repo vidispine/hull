@@ -44,6 +44,8 @@ helm lint --strict ./mychart                        # schema validation and HULL
 helm template my-release ./mychart > rendered.yaml  # renders and runs all HULL error checks
 ```
 
+`hull/files/scripts/hull_validate.py ./mychart` runs the schema check and the rendering in one step and reports schema problems in the same one-line format as HULL's errors, see [tools for AI agents](/hull/files/doc/agent_tools.md). Add `# yaml-language-server: $schema=https://raw.githubusercontent.com/vidispine/hull/release-1.<minor>/hull/values.schema.json` as first line of a values file to have editors validate it while typing.
+
 For a refactoring that should not change the result, keep the rendering from before the change and compare it: `diff before.yaml rendered.yaml`.
 
 HULL errors have one line per problem and always the same form, with a code that is explained together with its fix in [error codes](/hull/files/doc/error_codes.md):
@@ -90,6 +92,10 @@ Things to know:
 - In an `_HT*` path, write a dot that belongs to a key as `§`: `_HT*hull.config.specific.example§com`. `§OBJECT_TYPE§` and `§OBJECT_INSTANCE_KEY§` are replaced by the current object's type and key.
 - A reference to a path that does not exist fails with `HULL-GET-TRANSFORMATION-REFERENCE-INVALID`.
 - Any string value that starts with one of the prefixes is treated as a transformation, also in imported content.
+
+## Tools for agents
+
+The Claude Code plugin of this repository (`/plugin install hull --marketplace vidispine/hull`) adds a skill with these rules and an MCP server with the tools `hull_docs`, `hull_schema`, `hull_validate`, `hull_render` and `hull_import`. The MCP server also works with other MCP clients. See [tools for AI agents](/hull/files/doc/agent_tools.md).
 
 ## Converting existing charts
 
