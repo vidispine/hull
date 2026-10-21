@@ -1,0 +1,15 @@
+{
+  "name": "vidispine-hull",
+  "owner": {
+    "name": "Vidispine",
+    "url": "https://github.com/vidispine/hull"
+  },
+  "description": "Claude Code support for HULL, the Helm Uniform Layer Library.",
+  "plugins": [
+    {
+      "name": "hull",
+      "source": "./hull/files/scripts",
+      "description": "Write, check and convert Helm charts built with the HULL library: a skill with the rules of HULL and an MCP server that validates, renders and imports charts and looks up the schema."
+    }
+  ]
+}

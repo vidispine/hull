@@ -40,7 +40,9 @@
 |   
 |   Create the image: of the container.
 |   Applies to containers: and initContainers: alike.
-|   Three components are: registry, repository and tag.
+|   Components are: registry, repository and either tag or digest.
+|   A non-empty digest takes precedence over the tag, the image is then
+|   referenced as <repository>@<digest> without the tag.
 |
 | Interface:
 |
@@ -50,20 +52,25 @@
 {{- define "hull.object.container.image" -}}
 {{- $parent := (index . "PARENT_CONTEXT") -}}
 {{- $spec := default nil (index . "SPEC") -}}
-{{- $component := default "" (index . "COMPONENT") -}}
+{{- $component := default "<UNSPECIFIED>" (index . "COMPONENT") -}}
+{{- $objectType := default "<UNSPECIFIED>" (index . "OBJECT_TYPE") -}}
+{{- $objectInstanceKey := default "<UNSPECIFIED>" (index . "OBJECT_INSTANCE_KEY") -}}
+{{- $containerType := default "<UNSPECIFIED>" (index . "CONTAINER_TYPE") -}}
 {{- $hullRootKey := default "hull" (index . "HULL_ROOT_KEY") -}}
 {{- $baseName := "" }}
 {{- if (index $parent.Values $hullRootKey).config.general.errorChecks.containerImageValid -}}
-{{- $details := printf "(@Values.hull.objects.%s.%s.%s.%s.image" (index . "OBJECT_TYPE" | lower) (index . "OBJECT_INSTANCE_KEY") (index . "CONTAINER_TYPE") (index . "COMPONENT") }}
+{{- $details := printf "(@Values.%s.objects.%s.%s.%s.%s.%s.image" $hullRootKey ($objectType | lower) $objectInstanceKey (include "hull.util.error.podpath" (dict "OBJECT_TYPE" $objectType)) $containerType $component }}
 {{- if not $spec -}}
-{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-IMAGE-SPEC" "ERROR_MESSAGE" (printf "%s) Field image is missing" $details) "PARENT_CONTEXT" $parent "OBJECT_TYPE" (index . "OBJECT_TYPE" | lower) "OBJECT_INSTANCE_KEY" (index . "OBJECT_INSTANCE_KEY") "HULL_ROOT_KEY" $hullRootKey) -}}
+{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-IMAGE-SPEC" "ERROR_MESSAGE" (printf "%s) Field image is missing" $details) "PARENT_CONTEXT" $parent "OBJECT_TYPE" ($objectType | lower) "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
 {{- else -}}
 {{- if (not (hasKey $spec "repository")) -}}
-{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-IMAGE-REPOSITORY" "ERROR_MESSAGE" (printf "%s%s) Field repository is missing" $details ".repository") "PARENT_CONTEXT" $parent "OBJECT_TYPE" (index . "OBJECT_TYPE" | lower) "OBJECT_INSTANCE_KEY" (index . "OBJECT_INSTANCE_KEY") "HULL_ROOT_KEY" $hullRootKey) -}}
+{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-IMAGE-REPOSITORY" "ERROR_MESSAGE" (printf "%s%s) Field repository is missing" $details ".repository") "PARENT_CONTEXT" $parent "OBJECT_TYPE" ($objectType | lower) "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
 {{- else -}}
 {{- $baseName = $spec.repository }}
 {{- end -}}
 {{- end -}}
+{{- else if (hasKey $spec "repository") -}}
+{{- $baseName = $spec.repository }}
 {{- end -}}
 {{ if (ne (default "" (index $parent.Values $hullRootKey).config.general.globalImageRegistryServer) "") }}
 {{- $baseName = printf "%s/%s" (index $parent.Values $hullRootKey).config.general.globalImageRegistryServer $baseName }}
@@ -83,7 +90,18 @@
 {{- $baseName = printf "%s/%s" $spec.registry $baseName }}{{- end }}
 {{- end }}
 {{- end }}
-{{ if (and (hasKey $spec "tag") (ne (printf "%s" $spec.tag) "")) }}
+{{- $digest := "" }}
+{{- if (and (hasKey $spec "digest") (not (kindIs "invalid" $spec.digest))) }}
+{{- $digest = $spec.digest | toString }}
+{{- end }}
+{{ if (ne $digest "") }}
+{{- if (and (index $parent.Values $hullRootKey).config.general.errorChecks.containerImageValid (not (regexMatch "^[a-z0-9]+([+._-][a-z0-9]+)*:[a-f0-9]{32,}$" $digest))) }}
+{{- $details := printf "(@Values.%s.objects.%s.%s.%s.%s.%s.image.digest" $hullRootKey ($objectType | lower) $objectInstanceKey (include "hull.util.error.podpath" (dict "OBJECT_TYPE" $objectType)) $containerType $component }}
+{{- $baseName = include "hull.util.error.message" (dict "ERROR_TYPE" "INVALID-IMAGE-DIGEST" "ERROR_MESSAGE" (printf "%s) Field digest '%s' is not a valid image digest" $details $digest) "PARENT_CONTEXT" $parent "OBJECT_TYPE" ($objectType | lower) "OBJECT_INSTANCE_KEY" $objectInstanceKey "HULL_ROOT_KEY" $hullRootKey) -}}
+{{- else }}
+{{- $baseName = printf "%s@%s" $baseName $digest }}
+{{- end }}
+{{- else if (and (hasKey $spec "tag") (ne (printf "%s" $spec.tag) "")) }}
 {{- $baseName = printf "%s:%s" $baseName ($spec.tag | toString) }}
 {{ end }}
 image: {{ $baseName }}

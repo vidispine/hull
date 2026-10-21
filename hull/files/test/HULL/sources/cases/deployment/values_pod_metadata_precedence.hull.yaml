@@ -1,0 +1,19 @@
+hull:
+  objects:
+    deployment:
+      pod-metadata-precedence:
+        labels:
+          shared: object
+          object-only: object
+        annotations:
+          shared: object
+        pod:
+          labels:
+            shared: pod
+            app.kubernetes.io/version: "2.3.0"
+          annotations:
+            shared: pod
+          containers:
+            main:
+              image:
+                repository: my/image/repo

@@ -209,6 +209,14 @@ objects:
       labels: {}
 ###################################################
 
+# GENERICS
+  generic:
+    _HULL_OBJECT_TYPE_DEFAULT_:
+      enabled: true
+      annotations: {}
+      labels: {}
+###################################################
+
 # PERSISTENTVOLUMECLAIMS 
   persistentvolumeclaim:
     _HULL_OBJECT_TYPE_DEFAULT_:

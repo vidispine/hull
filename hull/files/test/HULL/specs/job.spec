@@ -23,6 +23,8 @@ Test creation of objects and features.
 
 * Set test object to "release-name-hull-test-selector-provided"
 * Test Object has key "spec§selector§matchLabels§test_label" with value "test_value"
+* Test Object has key "spec§template§metadata§labels§test_label" with value "test_value"
+* Test Object does not have key "spec§template§metadata§labels§app.kubernetes.io/component"
 
 ## Mixed Transformation Problem
 * Lint and Render
