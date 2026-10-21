@@ -16,6 +16,7 @@ The purpose of Generic objects is to provide a way to specify custom objects tha
 | --------- | ----------- | ------- | ------- |
 | `apiVersion` | The API Version of the CR for which a matching CRD must exist in the system. | | `'master.mind.com/v1beta1'` |
 | `kind` | The API kind of the CR for which a matching CRD must exist in the system. | | `'Player'` |
+| any other property | Rendered as given at the top level of the object, for example `spec`, `data` or `rules`. | | `spec:`<br>&#160;&#160;`level:`&#160;`3` |
 
 ## Creating Custom Resources
 

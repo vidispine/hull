@@ -40,7 +40,13 @@ spec:
 */ -}}
 {{- define "hull.object.job.template" -}}
 {{- $spec := default nil (index . "SPEC") -}}
-{{ $t := set . "SPEC" $spec.job }}
+{{- $job := index (default dict $spec) "job" -}}
+{{- if kindIs "map" $job }}
+{{ $t := set . "SPEC" $job }}
 jobTemplate:
 {{ include "hull.object.base.pod" . | indent 2 }}
+{{- else }}
+{{- $details := printf "(@Values.%s.objects.cronjob.%s.job) Field job is missing" (default "hull" (index . "HULL_ROOT_KEY")) (index . "OBJECT_INSTANCE_KEY") }}
+jobTemplate: {{ include "hull.util.error.message" (dict "ERROR_TYPE" "MISSING-CRONJOB-JOB" "ERROR_MESSAGE" $details) }}
+{{- end }}
 {{ end }}
