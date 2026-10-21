@@ -145,7 +145,7 @@ def tool_docs(topic="guide", chart_dir=None):
     if re.match(r"^[A-Z0-9]+(-[A-Z0-9]+)+$", topic or ""):
         if not os.path.isfile(os.path.join(doc_dir, "error_codes.md")):
             raise ValueError(f"HULL {chart_version(hull_dir)} has no error code documentation, error codes were "
-                             f"added in 1.37.1")
+                             f"added in 1.35.5, 1.36.2 and 1.37.1")
         with open(os.path.join(doc_dir, "error_codes.md"), encoding="utf-8") as file:
             text = file.read()
         match = re.search(rf"^### `{re.escape(topic)}`\n(.*?)(?=^### |^## |\Z)", text, re.S | re.M)
@@ -200,7 +200,7 @@ def tool_import(manifests=None, manifests_path=None, chart_dir=None, chart_name=
     objects = (hull_import.parse_documents(manifests, "<manifests>") if manifests
                else hull_import.load_objects([manifests_path]))
     hull_dir = resolve_hull(hull=hull) if hull else resolve_hull()
-    converter = hull_import.Converter(namespace=namespace)
+    converter = hull_import.Converter(namespace=namespace, features=hull_import.hull_features(hull_dir))
     values = converter.convert(objects)
     values_text = hull_import.schema_modeline(hull_dir) + hull_import.dump(values)
     output = []
