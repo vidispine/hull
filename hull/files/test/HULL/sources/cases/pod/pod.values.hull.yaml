@@ -27,6 +27,7 @@ hull:
               apiInternal: solrendpointintern
     specific:
       pullPolicy: IfNotPresent
+      image_digest: sha256:45b23dee08af5e43a7fea6c4cf9c25ccf269ee113168c19722f87876677c5cb2
       env_string: "this is some string used in testing"
       env_bool: true
       env_bool_true: true
@@ -354,6 +355,26 @@ hull:
               image:
                 repository: my/image/repo
                 tag: 99
+            with-digest:
+              image:
+                repository: my/image/repo
+                digest: sha256:1ff6c18fbef2045af6b9c16bf034cc421a29027b800e4f9b68ae9b1cb3e9ae07
+            with-digest-and-tag:
+              image:
+                registry: local.registry
+                repository: my/image/repo
+                tag: "99.9"
+                digest: sha256:1ff6c18fbef2045af6b9c16bf034cc421a29027b800e4f9b68ae9b1cb3e9ae07
+            with-digest-empty:
+              image:
+                repository: my/image/repo
+                tag: "99.9"
+                digest: ""
+            with-digest-transformation:
+              image:
+                repository: my/image/repo
+                tag: 99
+                digest: _HT*hull.config.specific.image_digest
       
       image-pull-policy:
         pod:

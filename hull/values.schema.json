@@ -3451,12 +3451,17 @@
       "enum": [
         "minReadySeconds",
         "revisionHistoryLimit",
-        "updateStrategy"
+        "updateStrategy",
+        "selector"
       ]
     },
     "io.k8s.api.apps.v1.DaemonSetSpec": {
       "description": "DaemonSetSpec is the specification of a daemon set.",
       "properties": {
+        "selector": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector",
+          "description": "Label selector for the pods of this object. If not set, HULL generates a selector from the chart name, the release name and the object instance key and adds these labels to the pod template. If set, HULL renders this selector instead and does not add its generated selector labels to the pod template, so the pod's labels need to match the selector. Rendering fails if the selector's matchLabels are not found in the pod template labels. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors"
+        },
         "minReadySeconds": {
           "description": "The minimum number of seconds for which a newly created DaemonSet pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready).",
           "format": "int32",
@@ -3802,12 +3807,17 @@
         "progressDeadlineSeconds",
         "replicas",
         "revisionHistoryLimit",
-        "strategy"
+        "strategy",
+        "selector"
       ]
     },
     "io.k8s.api.apps.v1.DeploymentSpec": {
       "description": "DeploymentSpec is the specification of the desired behavior of the Deployment.",
       "properties": {
+        "selector": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector",
+          "description": "Label selector for the pods of this object. If not set, HULL generates a selector from the chart name, the release name and the object instance key and adds these labels to the pod template. If set, HULL renders this selector instead and does not add its generated selector labels to the pod template, so the pod's labels need to match the selector. Rendering fails if the selector's matchLabels are not found in the pod template labels. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors"
+        },
         "minReadySeconds": {
           "description": "Minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)",
           "format": "int32",
@@ -4581,12 +4591,17 @@
         "revisionHistoryLimit",
         "updateStrategy",
         "serviceName",
-        "volumeClaimTemplates"
+        "volumeClaimTemplates",
+        "selector"
       ]
     },
     "io.k8s.api.apps.v1.StatefulSetSpec": {
       "description": "A StatefulSetSpec is the specification of a StatefulSet.",
       "properties": {
+        "selector": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector",
+          "description": "Label selector for the pods of this object. If not set, HULL generates a selector from the chart name, the release name and the object instance key and adds these labels to the pod template. If set, HULL renders this selector instead and does not add its generated selector labels to the pod template, so the pod's labels need to match the selector. Rendering fails if the selector's matchLabels are not found in the pod template labels. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors"
+        },
         "minReadySeconds": {
           "description": "Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)",
           "format": "int32",
@@ -40257,7 +40272,7 @@
               "type": "string"
             },
             "tag": {
-              "description": "The tag of the image",
+              "description": "The tag of the image. Ignored if a non-empty digest is set.",
               "anyOf": [
                 {
                   "type": "string"
@@ -40267,6 +40282,18 @@
                 },
                 {
                   "type": "number"
+                }
+              ]
+            },
+            "digest": {
+              "description": "The digest of the image, an algorithm and a lowercase hex encoded hash joined by a colon, for example sha256:<64 hex characters>. If set and not empty, the image is referenced by digest as <repository>@<digest> and the tag is ignored. Only the digest is used for pulling the image.",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/hull.Transformation.Pattern"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^([a-z0-9]+([+._-][a-z0-9]+)*:[a-f0-9]{32,})?$"
                 }
               ]
             }
@@ -48680,18 +48707,6 @@
           },
           {
             "$ref": "#/definitions/hull.Generic.v1"
-          },
-          {
-            "propertyNames": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/hull.ObjectBase.v1.Names"
-                },
-                {
-                  "$ref": "#/definitions/hull.Generic.v1.Names"
-                }
-              ]
-            }
           }
         ]
       }
@@ -51275,7 +51290,7 @@
                     "containerImageValid": {
                       "$id": "#/definitions/root/config/general/debug/containerimagevalid",
                       "title": "containerImageValid",
-                      "description": "Checks if all containers have an image defined with at least an repository.",
+                      "description": "Checks if all containers have an image defined with at least a repository and, if a digest is set, that it is a well-formed image digest.",
                       "anyOf": [
                         {
                           "$ref": "#/definitions/hull.Transformation.Pattern"
@@ -51939,12 +51954,15 @@
   },
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "anyOf": [
-    {
-      "$ref": "#/definitions/hull"
-    },
-    {
-      "$ref": "#/definitions/root"
-    }
-  ]
+  "if": {
+    "required": [
+      "hull"
+    ]
+  },
+  "then": {
+    "$ref": "#/definitions/hull"
+  },
+  "else": {
+    "$ref": "#/definitions/root"
+  }
 }

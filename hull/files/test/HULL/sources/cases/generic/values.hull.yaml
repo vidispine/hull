@@ -109,4 +109,15 @@ hull:
         apiVersion: "v1"
         kind: "Token"
 
+      # Test: Generic object with fields besides metadata, rendered as given
+      with-fields:
+        apiVersion: "policy.example.com/v1"
+        kind: "Policy"
+        spec:
+          enforce: true
+          level: 3
+        rules:
+        - action: allow
+          resource: pods
+
 ###################################################

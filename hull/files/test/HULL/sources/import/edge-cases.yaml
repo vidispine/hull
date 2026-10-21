@@ -1,0 +1,251 @@
+# Manifests exercising the conversions of hull_import.py that need special care.
+# Each object is commented with the behavior it covers.
+---
+# Containers, env, ports and volumes whose order differs from the alphanumeric order,
+# unnamed ports clashing across containers, env without value, image reference variants
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    app: web
+    team: a
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+        tier: frontend
+      annotations:
+        checksum/config: abc123
+    spec:
+      initContainers:
+      - name: zz-migrate
+        image: registry.example.com:5000/tools/migrate:1.2@sha256:1ff6c18fbef2045af6b9c16bf034cc421a29027b800e4f9b68ae9b1cb3e9ae07
+      - name: aa-wait
+        image: busybox
+      containers:
+      - name: web
+        image: nginx:1.27
+        env:
+        - name: B_HOST
+          value: db
+        - name: A_URL
+          value: postgres://$(B_HOST):5432
+        - name: EMPTY
+        ports:
+        - containerPort: 8080
+        - containerPort: 9090
+          name: metrics
+        volumeMounts:
+        - name: config
+          mountPath: /etc/web/a.conf
+          subPath: a.conf
+        - name: config
+          mountPath: /etc/web/b.conf
+          subPath: b.conf
+      - name: sidecar
+        image: docker.io/library/busybox@sha256:45b23dee08af5e43a7fea6c4cf9c25ccf269ee113168c19722f87876677c5cb2
+        ports:
+        - containerPort: 8080
+          protocol: UDP
+        - containerPort: 8080
+      volumes:
+      - name: config
+        configMap:
+          name: web-config
+      - name: cache
+        emptyDir: {}
+---
+# Data with Go template braces must not be templated, binary data stays base64
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-config
+data:
+  a.conf: |
+    server {
+      listen 8080;
+    }
+  alert.tmpl: '{{ .Labels.alertname }} fired'
+  settings.json: '{"a": 1}'
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: web-secret
+type: Opaque
+data:
+  password: c2VjcmV0
+  keystore: AAECA//+
+stringData:
+  plain: text
+---
+# Without selector HULL would add one, so it becomes a generic object
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-db
+spec:
+  type: ExternalName
+  externalName: db.example.com
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  selector:
+    app: web
+  ports:
+  - port: 80
+    targetPort: 8080
+---
+# A rule without host and a TLS entry, order of paths kept
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts: [web.example.com]
+    secretName: web-tls
+  rules:
+  - http:
+      paths:
+      - path: /z
+        pathType: Prefix
+        backend:
+          service:
+            name: web
+            port:
+              number: 80
+      - path: /a
+        pathType: Prefix
+        backend:
+          service:
+            name: web
+            port:
+              number: 80
+---
+# A resource backend is not rendered by HULL's ingress, generic keeps it
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: static
+spec:
+  defaultBackend:
+    resource:
+      apiGroup: k8s.example.com
+      kind: StorageBucket
+      name: static-assets
+  rules:
+  - host: static.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          resource:
+            apiGroup: k8s.example.com
+            kind: StorageBucket
+            name: static-assets
+---
+# HULL predefines a 'default' ServiceAccount instance coupled to createDefaultRbacTriplet
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+  namespace: tools
+---
+# Same name as the Role, different HULL object types, and an object in another namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: web
+  namespace: tools
+rules:
+- apiGroups: [""]
+  resources: [configmaps]
+  verbs: [get]
+---
+# Two custom resources with the same name end up as generic objects with distinct keys
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: web
+spec:
+  secretName: web-tls
+  dnsNames: [web.example.com]
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: web
+spec:
+  selfSigned: {}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db
+spec:
+  serviceName: db
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:16
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ReadWriteOnce]
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup
+spec:
+  schedule: "0 3 * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: backup
+            image: postgres:16
+            args: [pg_dump, -h, db]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate
+  annotations:
+    helm.sh/hook: pre-install
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: migrate
+        image: tools/migrate:1.2

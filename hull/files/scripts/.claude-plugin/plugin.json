@@ -1,0 +1,10 @@
+{
+  "name": "hull",
+  "displayName": "HULL",
+  "version": "1.37.1",
+  "description": "Write, check and convert Helm charts built with the HULL library: a skill with the rules of HULL and an MCP server that validates, renders and imports charts and looks up the schema.",
+  "author": {
+    "name": "Vidispine",
+    "url": "https://github.com/vidispine/hull"
+  }
+}
