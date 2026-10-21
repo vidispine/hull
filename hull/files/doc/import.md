@@ -59,6 +59,7 @@ The exit code is `0` if the conversion succeeded and, with `--verify`, all objec
 - Workload selectors are kept with the explicit `selector` property, so the selectors of an existing release do not change. Pod template labels and annotations become `pod.labels` and `pod.annotations`.
 - `null` fields and what the API server adds to live objects (`status`, `uid`, `resourceVersion`, `managedFields`, ...) are removed.
 - The values start with a `# yaml-language-server: $schema=...` comment, so that editors validate them against the schema of the HULL version while editing.
+- The conversion follows the HULL version the chart is written for, given with `--hull` and by default the HULL chart containing the script: kinds without an object type in that version become `generic` objects. Up to HULL 1.36, which renders a `default` ServiceAccount, Role and RoleBinding for every release, these three are disabled with `enabled: false` unless the input contains objects with these names.
 
 Objects that HULL cannot render exactly as their native type become `generic` objects, which HULL renders exactly as given. The report says why for each of them. This happens for:
 
