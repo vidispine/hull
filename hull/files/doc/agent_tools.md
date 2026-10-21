@@ -43,7 +43,7 @@ claude mcp add --scope user hull -- python3 /path/to/hull/files/scripts/hull_mcp
 | `hull_render` | Renders a chart with `helm template` and returns the objects, selected by `kind` and `name` if given, or the errors. |
 | `hull_import` | Converts manifests given as text or as file into HULL values like `hull_import.py`, writes a chart if `chart_dir` is given and verifies the result. |
 
-Each tool works with the HULL version of the chart it is used on, taken from the chart's `charts` folder. Without a chart it uses the HULL chart the server belongs to, a HULL dependency found in the project, or the latest HULL release, which it pulls with `helm`. Pulled and unpacked charts are cached in the plugin's data folder, or in `~/.cache/hull-mcp`.
+Each tool works with the HULL version of the chart it is used on, taken from the chart's `charts` folder. Without a chart it uses the HULL chart the server belongs to, a HULL dependency found in the project, or the newest HULL release, which it looks up in the chart repository once per start and pulls with `helm`. Pulled and unpacked charts are cached by version in the plugin's data folder, or in `~/.cache/hull-mcp`. If the HULL version of a chart predates a documentation topic, `hull_docs` returns the documentation of the newest release and says so.
 
 ---
 Back to [README.md](/README.md)
