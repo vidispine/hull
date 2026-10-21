@@ -1,0 +1,11 @@
+hull:
+  objects:
+    deployment:
+      pod-label-selector:
+        pod:
+          labels:
+            app.kubernetes.io/component: other
+          containers:
+            main:
+              image:
+                repository: my/image/repo

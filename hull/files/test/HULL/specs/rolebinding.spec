@@ -48,7 +48,7 @@ Test creation of objects and features.
 
 ## Fail on customized default RoleBinding without createDefaultRbacTriplet
 * Prepare test case "rolebinding" for kind "RoleBinding" with test chart "hull-test" and values file "values_default_rbac_triplet_guard.hull.yaml"
-* Fail to render the templates for values file "values_default_rbac_triplet_guard.hull.yaml" to test execution folder because error contains "HULL failed with error (@Values.hull.objects.rolebinding.default.subjects) The 'default' RoleBinding has a customized roleRef or subjects but is not rendered because 'hull.config.general.createDefaultRbacTriplet' is false."
+* Fail to render the templates for values file "values_default_rbac_triplet_guard.hull.yaml" to test execution folder because error contains "HULL failed with error [DEFAULT-RBAC-OBJECT-NOT-RENDERED] (@Values.hull.objects.rolebinding.default.subjects) The 'default' RoleBinding has a customized roleRef or subjects but is not rendered because 'hull.config.general.createDefaultRbacTriplet' is false."
 ___
 
 * Clean the test execution folder

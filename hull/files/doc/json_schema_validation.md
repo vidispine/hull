@@ -14,25 +14,40 @@ Therefore, the HULL library utilizes JSON schema validation in two places:
 
 ## Input JSON schema validation
 
-When using Editors like VSCode which support live JSON-schema validation it furthermore is possible to add input validation directly on creating the configuration with HULL.
+Editors with a YAML language server, such as VS Code with the YAML extension or JetBrains IDEs, validate values against the schema while typing. This works for a chart's `values.yaml` directly: a file with a top-level `hull` key is validated against the HULL schema below that key, other top-level keys such as `global` or subchart values are left alone.
 
-## VSCode
+> Up to HULL 1.35.4, 1.36.1 and 1.37.0 the schema accepted any file with a top-level `hull` key without checking it, so editors reported no problems in such files. Helm itself was not affected because it validates the content of the `hull` key.
 
-A few steps are needed to enable this feature in VSCode:
+### Pointing a values file to the schema
 
-- Install the `YAML extension` in VS Code. You can install the extension directly in Visual Studio Code. Just navigate to Extensions, search for the `YAML extension` and install it.
-- After installing the `YAML extension` go to settings and then search for "schema" and click on "Edit in settings.json" to configure the extension:
-  - Associate the file endings you want to validate with the `values.schema.json` of HULL.
-  
-  You could for example use `*.hull.yaml` as an ending for specific HULL `values.yaml` files that are merged with `values.yaml`:
-  
-  ```yaml
+The simplest way is a comment in the first line of the values file, which the YAML language server reads:
+
+```yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/vidispine/hull/release-1.37/hull/values.schema.json
+hull:
+  objects:
+    deployment:
+      ...
+```
+
+Use the `release-1.<minor>` branch that matches the minor version of the HULL dependency in your `Chart.yaml`. The branch always holds the schema of the latest patch release of that minor version. The GitHub release tags `hull-<version>` identify the schema of an exact version, for example `https://raw.githubusercontent.com/vidispine/hull/hull-<version>/hull/values.schema.json`.
+
+To validate against exactly the schema of the chart's dependency, point to an unpacked copy of it with a path relative to the values file, for example `# yaml-language-server: $schema=charts/hull/values.schema.json`. `helm dependency update` stores dependencies as packages, `tar -xzf charts/hull-<version>.tgz -C charts` unpacks it.
+
+[`hull_import.py`](/hull/files/doc/import.md) writes this comment into the `values.yaml` of the charts it creates. [`hull_validate.py`](/hull/files/doc/error_codes.md#checking-a-chart-with-hull_validatepy) performs the same validation on the command line and reports each problem on one line.
+
+### VS Code
+
+Instead of the comment, files can be associated with the schema in the settings:
+
+- Install the `YAML` extension, then search the settings for "schema" and click on "Edit in settings.json".
+- Associate the files to validate with the schema, given as URL or as local path:
+
+  ```json
   "yaml.schemas": {
-     "D:\\GIT\\hull\\hull\\values.schema.json": [ "*.hull.yaml", "values.yaml" ]
+    "https://raw.githubusercontent.com/vidispine/hull/release-1.37/hull/values.schema.json": [ "values.yaml", "*.hull.yaml" ]
   }
   ```
-  
-  If you design charts with the HULL library you might want to associate `values.yaml` too so that your `values.yaml` files are validated in the IDE too.
 
 ---
 Back to [README.md](/README.md)
