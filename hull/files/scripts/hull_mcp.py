@@ -30,6 +30,7 @@ import sys
 import tarfile
 import tempfile
 import traceback
+import urllib.request
 
 import yaml
 
@@ -94,12 +95,42 @@ def project_hull():
     return max(found, key=version) if found else None
 
 
+def version_key(version):
+    return tuple(int(x) for x in version.split("."))
+
+
+_newest_release = []
+
+
+def newest_release():
+    """The newest HULL version in the chart repository, looked up once per server start; None if offline."""
+    if not _newest_release:
+        version = None
+        try:
+            with urllib.request.urlopen(f"{HULL_REPOSITORY}/index.yaml", timeout=30) as response:
+                entries = ((yaml.safe_load(response.read()) or {}).get("entries") or {}).get("hull") or []
+            versions = [str(e.get("version")) for e in entries if re.match(r"^\d+\.\d+\.\d+$", str(e.get("version")))]
+            version = max(versions, key=version_key) if versions else None
+        except (OSError, ValueError, yaml.YAMLError):
+            pass
+        _newest_release.append(version)
+    return _newest_release[0]
+
+
 def pulled_hull(version=None):
-    target = os.path.join(cache_dir(), f"pulled-{version or 'latest'}")
+    """A HULL release pulled with helm, cached by version. Without a version the newest release, or the
+    newest cached one if the chart repository cannot be reached."""
+    version = version or newest_release()
+    if not version:
+        cached = [d[len("pulled-"):] for d in os.listdir(cache_dir()) if re.match(r"^pulled-\d+\.\d+\.\d+$", d)
+                  and os.path.isfile(os.path.join(cache_dir(), d, "hull", "Chart.yaml"))]
+        if cached:
+            return os.path.join(cache_dir(), f"pulled-{max(cached, key=version_key)}", "hull")
+        raise RuntimeError(f"no HULL chart found locally and {HULL_REPOSITORY} cannot be reached")
+    target = os.path.join(cache_dir(), f"pulled-{version}")
     if not os.path.isfile(os.path.join(target, "hull", "Chart.yaml")):
-        command = ["helm", "pull", "hull", "--repo", HULL_REPOSITORY, "--untar", "--untardir", target]
-        if version:
-            command += ["--version", version]
+        shutil.rmtree(target, ignore_errors=True)
+        command = ["helm", "pull", "hull", "--repo", HULL_REPOSITORY, "--version", version, "--untar", "--untardir", target]
         result = subprocess.run(command, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                 text=True)
         if result.returncode != 0:
@@ -139,27 +170,45 @@ DOC_TOPICS = {
 }
 
 
+def doc_file(hull_dir, name):
+    """A documentation file of the HULL chart, or of the newest release if the chart predates the file.
+    Returns the path, the HULL version it belongs to and a note if that is not the chart's version."""
+    path = os.path.join(hull_dir, "files", "doc", name)
+    if os.path.isfile(path):
+        return path, chart_version(hull_dir), ""
+    try:
+        newest = pulled_hull()
+    except RuntimeError:
+        return None, None, ""
+    path = os.path.join(newest, "files", "doc", name)
+    if not os.path.isfile(path):
+        return None, None, ""
+    return path, chart_version(newest), (f"Note: HULL {chart_version(hull_dir)}, which is used here, has no {name}. "
+                                         f"This is the documentation of HULL {chart_version(newest)}, its HISTORY.md "
+                                         f"lists what was added since {chart_version(hull_dir)}.\n\n")
+
+
 def tool_docs(topic="guide", chart_dir=None):
     hull_dir = resolve_hull(chart_dir)
-    doc_dir = os.path.join(hull_dir, "files", "doc")
     if re.match(r"^[A-Z0-9]+(-[A-Z0-9]+)+$", topic or ""):
-        if not os.path.isfile(os.path.join(doc_dir, "error_codes.md")):
+        path, _, note = doc_file(hull_dir, "error_codes.md")
+        if not path:
             raise ValueError(f"HULL {chart_version(hull_dir)} has no error code documentation, error codes were "
                              f"added in 1.35.5, 1.36.2 and 1.37.1")
-        with open(os.path.join(doc_dir, "error_codes.md"), encoding="utf-8") as file:
+        with open(path, encoding="utf-8") as file:
             text = file.read()
         match = re.search(rf"^### `{re.escape(topic)}`\n(.*?)(?=^### |^## |\Z)", text, re.S | re.M)
         if not match:
             raise ValueError(f"unknown error code {topic}")
-        return f"### `{topic}`\n{match.group(1)}".strip()
+        return note + f"### `{topic}`\n{match.group(1)}".strip()
     if topic not in DOC_TOPICS:
         raise ValueError(f"unknown topic '{topic}', use one of {', '.join(DOC_TOPICS)} or an error code")
-    path = os.path.join(doc_dir, DOC_TOPICS[topic])
-    if not os.path.isfile(path):
+    path, version, note = doc_file(hull_dir, DOC_TOPICS[topic])
+    if not path:
         raise ValueError(f"HULL {chart_version(hull_dir)} has no '{topic}' documentation, it was added in a later "
                          f"version. See https://github.com/vidispine/hull/tree/main/hull/files/doc")
     with open(path, encoding="utf-8") as file:
-        return f"(HULL {chart_version(hull_dir)})\n\n" + file.read()
+        return note + f"(HULL {version})\n\n" + file.read()
 
 
 def tool_validate(chart_dir=None, values_files=(), render=True, release_name="release-name", namespace="default"):
