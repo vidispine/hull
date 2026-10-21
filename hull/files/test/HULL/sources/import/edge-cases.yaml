@@ -156,7 +156,7 @@ spec:
             kind: StorageBucket
             name: static-assets
 ---
-# HULL predefines a 'default' ServiceAccount instance coupled to createDefaultRbacTriplet
+# HULL predefines a 'default' ServiceAccount instance
 apiVersion: v1
 kind: ServiceAccount
 metadata:

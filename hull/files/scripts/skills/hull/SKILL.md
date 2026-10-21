@@ -7,6 +7,8 @@ description: Write, convert, check and fix Helm charts built with the HULL libra
 
 A HULL chart has a single template, `templates/hull.yaml`, and defines every Kubernetes object as data in `values.yaml` under `hull.objects.<type>.<key>`. The values are validated by the JSON schema of the chart's HULL dependency. Do not write Go templates for objects.
 
+The rules below describe HULL 1.35.5, 1.36.2, 1.37.1 and later. Older versions lack some features, for example image digests and explicit selectors; `hull_docs` with the chart's directory as `chart_dir` returns the documentation of the chart's own HULL version.
+
 ## Workflow
 
 Use the `hull` MCP tools when they are available:
@@ -29,7 +31,7 @@ Without the MCP tools, the same is available as scripts in the HULL chart, in `f
 - References to chart objects use the key and get the name prefix: configMap/secret/PVC volumes, env and envFrom refs, Ingress backends and TLS secrets, HPA targets. Add `staticName: true` next to a name that refers to an object outside the chart. `serviceAccountName`, `imagePullSecrets` and RoleBinding names are rendered as written; use `_HT^<key>` for the full name of a chart object.
 - ConfigMap and Secret data: `data.<key>.inline` or `data.<key>.path`. Secret values are plain text, HULL encodes them. Add `noTemplating: true` to content containing `{{`.
 - Defaults: `_HULL_OBJECT_TYPE_DEFAULT_` instances or elements, and named `sources`.
-- The `default` ServiceAccount, Role and RoleBinding only exist with `hull.config.general.createDefaultRbacTriplet: true`.
+- The `default` ServiceAccount, Role and RoleBinding: since HULL 1.37 they only exist with `hull.config.general.createDefaultRbacTriplet: true`. Up to 1.36 they are rendered for every release and pods without `serviceAccountName` get the `default` ServiceAccount; set `enabled: false` on them to leave them out.
 - Kinds without a HULL object type are `generic` objects with `apiVersion`, `kind` and their fields.
 
 ## Transformations

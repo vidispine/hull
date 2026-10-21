@@ -13,7 +13,10 @@ Arrays that HULL models as dictionaries (containers, env, ports, volumes, ...) a
 converted to dictionaries, using 'order' where the original order differs from the
 alphanumeric key order. Objects HULL cannot represent exactly as a native object type,
 for example custom resources or a Service without selector, become 'generic' objects
-that render exactly as given. Each such decision is reported.
+that render exactly as given. Each such decision is reported. The conversion follows
+the HULL version given with --hull: kinds without an object type in that version become
+'generic' objects, and up to HULL 1.36 the 'default' ServiceAccount, Role and RoleBinding
+that HULL renders for every release are disabled.
 
 Requirements: Python 3.8+ and PyYAML. --verify also requires helm.
 
@@ -170,8 +173,9 @@ def clean(obj):
 
 class Converter:
 
-    def __init__(self, namespace=None):
+    def __init__(self, namespace=None, features=None):
         self.namespace = namespace
+        self.features = features    # what the target HULL version offers, see hull_features()
         self.notes = []
         self.objects = {}           # HULL object type -> key -> spec
         self.origin = {}            # (HULL object type, key) -> original object
@@ -187,6 +191,8 @@ class Converter:
             obj = clean(obj)
             kind = obj.get("kind")
             hull_type, api_version, layout = NATIVE_TYPES.get(kind, ("generic", None, "generic"))
+            if self.features and hull_type not in self.features["object_types"]:
+                hull_type, api_version, layout = "generic", None, "generic"
             if layout == "generic":
                 self.note("info", obj, f"HULL has no object type for the kind {kind}, imported as generic object")
             elif obj.get("apiVersion") != api_version:
@@ -201,12 +207,20 @@ class Converter:
                 self.generated_port_names = ports
                 self.note("info", obj, f"{fallback}, imported as generic object")
                 hull_type, spec = "generic", self.convert_object(obj, "generic")
+            if hull_type == "generic" and self.features and "generic" not in self.features["object_types"]:
+                self.note("warning", obj, f"HULL {self.features['version']} has no generic object type, "
+                                          f"the object was left out")
+                continue
             self.add(hull_type, obj, spec)
         general = {"noObjectNamePrefixes": True}
         if "default" in self.objects.get("serviceaccount", {}):
             # an imported 'default' ServiceAccount enables HULL's 'default' instance, which would
             # otherwise be assigned to all pods without serviceAccountName
             general["assignDefaultServiceAccountToPods"] = False
+        if self.features and not self.features["default_rbac_opt_in"]:
+            # up to HULL 1.36 the 'default' ServiceAccount, Role and RoleBinding are rendered unless disabled
+            for hull_type in ("serviceaccount", "role", "rolebinding"):
+                self.objects.setdefault(hull_type, {}).setdefault("default", {"enabled": False})
         values = {"hull": {"config": {"general": general}, "objects": self.objects}}
         self.check_transformation_lookalikes(values)
         return values
@@ -220,7 +234,7 @@ class Converter:
                 key = unique_key(f"{name}-{obj['kind'].lower()}", instances)
                 spec = {"metadataNameOverride": name, **spec}
             if key == "default":
-                # HULL predefines a 'default' instance that is coupled to createDefaultRbacTriplet
+                # HULL predefines a 'default' instance, rendered by default up to 1.36 and on request since 1.37
                 spec = {"enabled": True, **spec}
         if name != name.lower():
             self.note("warning", obj, "HULL renders object names in lowercase, the name will change")
@@ -598,6 +612,18 @@ def hull_chart_version(hull_path):
         return str(yaml.safe_load(file)["version"])
 
 
+def hull_features(hull_path):
+    """What the HULL chart at hull_path offers: its version, its object types and whether its 'default'
+    ServiceAccount, Role and RoleBinding are only rendered on request (since 1.37)."""
+    if not hull_path:
+        return None
+    with open(os.path.join(hull_path, "values.yaml"), encoding="utf-8") as file:
+        values = yaml.safe_load(file) or {}
+    general = (values.get("config") or {}).get("general") or {}
+    return {"version": hull_chart_version(hull_path), "object_types": set(values.get("objects") or {}),
+            "default_rbac_opt_in": "createDefaultRbacTriplet" in general}
+
+
 def schema_modeline(hull_path):
     """First line for values files, editors with a YAML language server validate against the schema."""
     with open(os.path.join(hull_path, "Chart.yaml"), encoding="utf-8") as file:
@@ -838,7 +864,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
 
     objects = load_objects(args.inputs)
-    converter = Converter(namespace=args.namespace)
+    converter = Converter(namespace=args.namespace, features=hull_features(args.hull))
     values = converter.convert(objects)
 
     values_text = (schema_modeline(args.hull) if args.hull else "") + dump(values)

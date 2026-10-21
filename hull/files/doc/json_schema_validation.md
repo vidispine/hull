@@ -16,7 +16,7 @@ Therefore, the HULL library utilizes JSON schema validation in two places:
 
 Editors with a YAML language server, such as VS Code with the YAML extension or JetBrains IDEs, validate values against the schema while typing. This works for a chart's `values.yaml` directly: a file with a top-level `hull` key is validated against the HULL schema below that key, other top-level keys such as `global` or subchart values are left alone.
 
-> Up to HULL 1.37.0 the schema accepted any file with a top-level `hull` key without checking it, so editors reported no problems in such files. Helm itself was not affected because it validates the content of the `hull` key.
+> Up to HULL 1.35.4, 1.36.1 and 1.37.0 the schema accepted any file with a top-level `hull` key without checking it, so editors reported no problems in such files. Helm itself was not affected because it validates the content of the `hull` key.
 
 ### Pointing a values file to the schema
 
@@ -30,7 +30,7 @@ hull:
       ...
 ```
 
-Use the `release-1.<minor>` branch that matches the minor version of the HULL dependency in your `Chart.yaml`. The branch always holds the schema of the latest patch release of that minor version. The GitHub release tags `hull-<version>` identify the schema of an exact version for releases from 1.37.1 on; older tags do not point to the released content.
+Use the `release-1.<minor>` branch that matches the minor version of the HULL dependency in your `Chart.yaml`. The branch always holds the schema of the latest patch release of that minor version. The GitHub release tags `hull-<version>` identify the schema of an exact version, for example `https://raw.githubusercontent.com/vidispine/hull/hull-<version>/hull/values.schema.json`.
 
 To validate against exactly the schema of the chart's dependency, point to an unpacked copy of it with a path relative to the values file, for example `# yaml-language-server: $schema=charts/hull/values.schema.json`. `helm dependency update` stores dependencies as packages, `tar -xzf charts/hull-<version>.tgz -C charts` unpacks it.
 
