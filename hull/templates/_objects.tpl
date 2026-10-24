@@ -180,7 +180,7 @@ scopeKey: {{ $transformationScopeKey }}
 
 {{- if (or (ne $objectKey "_HULL_OBJECT_TYPE_DEFAULT_")) -}}
 {{- if (or (gt (len (keys (default dict $spec))) 0) (not (kindIs "invalid" $spec))) -}}
-{{- $defaultSpec := fromYaml (include "hull.objects.defaults" (dict "PARENT_CONTEXT" $rootContext "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType) ) -}}
+{{- $defaultSpec := fromYaml (include "hull.objects.defaults" (dict "PARENT_CONTEXT" $rootContext "SPEC" $spec "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectKey) ) -}}
 {{- $enabledDefault = dig "enabled" true $defaultSpec -}}
 {{- $specDisabled := and (hasKey $spec "enabled") (not $spec.enabled) }}
 
@@ -202,8 +202,20 @@ scopeKey: {{ $transformationScopeKey }}
 {{- $errorMessage := include "hull.util.error.check" (dict "OBJECT" $objectSpec "OBJECT_TYPE" $lowerObjectType) -}}
 {{- if (and (hasKey $objectSpec "Error") (eq (len (keys ($objectSpec))) 1)) -}}
 {{- if (index $rootContext.Values $hullRootKey).config.general.errorChecks.objectYamlValid -}}
-{{- $errorMessage = printf "%s\n(@Values.hull.objects.%s.%s) Rendering failed with YAML error '%s'" $errorMessage "HULL failed with error" "A broken object YAML was encountered" $lowerObjectType $objectKey (index $objectSpec "Error") -}}
+{{- $brokenYaml := include "hull.util.error.message" (dict "ERROR_TYPE" "BROKEN-OBJECT-YAML" "ERROR_MESSAGE" (printf "(@Values.%s.objects.%s.%s) The rendered object is not valid YAML, parsing it failed with '%s'" $hullRootKey $lowerObjectType $objectKey (index $objectSpec "Error"))) -}}
+{{- $errorMessage = printf "%s%s" $errorMessage (include "hull.util.error.format" (dict "ERRORS" $brokenYaml)) -}}
 {{- end -}}
+{{- end -}}
+{{- $podLabels := default dict (dig "spec" "template" "metadata" "labels" dict $objectSpec) -}}
+{{- $mismatches := list -}}
+{{- range $selectorKey, $selectorValue := (dig "spec" "selector" "matchLabels" dict $objectSpec) -}}
+{{- if or (not (hasKey $podLabels $selectorKey)) (ne (toString (index $podLabels $selectorKey)) (toString $selectorValue)) -}}
+{{- $mismatches = append $mismatches (printf "'%s: %s' is %s" $selectorKey (toString $selectorValue) (ternary (printf "'%s: %s' in the pod template" $selectorKey (toString (index $podLabels $selectorKey))) "missing in the pod template" (hasKey $podLabels $selectorKey))) -}}
+{{- end -}}
+{{- end -}}
+{{- if (and (gt (len $mismatches) 0) (hasKey (dig "spec" dict $objectSpec) "template")) -}}
+{{- $selectorMismatch := include "hull.util.error.message" (dict "ERROR_TYPE" "SELECTOR-NOT-MATCHING-POD-LABELS" "ERROR_MESSAGE" (printf "(@Values.%s.objects.%s.%s) The selector does not select the pods of the pod template, selector label %s" $hullRootKey $lowerObjectType $objectKey (join ", selector label " $mismatches))) -}}
+{{- $errorMessage = printf "%s%s" $errorMessage (include "hull.util.error.format" (dict "ERRORS" $selectorMismatch)) -}}
 {{- end -}}
 {{- if (ne $errorMessage "") -}}
 {{ $errorMessages = printf "%s%s" $errorMessages $errorMessage }}
@@ -258,13 +270,19 @@ scopeKey: {{ $transformationScopeKey }}
 {{- range $renderedObject := $renderedObjects -}}
 {{- range $error := (index $rootContext.Values $hullRootKey)._HULL_ERROR_ -}}
 {{- if (eq $renderedObject (printf "%s/%s" $error.OBJECT_TYPE $error.OBJECT_INSTANCE_KEY)) -}}
-{{- $errorMessages = printf "%s\n%s" $errorMessages $error.ERROR_MESSAGE -}}
+{{- $errorMessages = printf "%s%s" $errorMessages (include "hull.util.error.format" (dict "ERRORS" $error.ERROR_MESSAGE)) -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
-{{- if (ne $errorMessages "") -}}
-{{- fail $errorMessages -}}
+{{- if (ne (trim $errorMessages) "") -}}
+{{- $errorLines := list -}}
+{{- range $errorLine := splitList "\n" $errorMessages -}}
+{{- if and (ne (trim $errorLine) "") (not (has $errorLine $errorLines)) -}}
+{{- $errorLines = append $errorLines $errorLine -}}
+{{- end -}}
+{{- end -}}
+{{- fail (printf "\n%s%s" (join "\n" $errorLines) (include "hull.util.error.footer" .)) -}}
 {{- end -}}
 
 

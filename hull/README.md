@@ -253,7 +253,7 @@ Some important things to mention first before looking at the library in more det
 
 ⚠️ **At this time HULL releases are tested against all existing non-beta and non-alpha Helm 3 CLI versions. Note that Helm CLI versions `3.0.x` are not compatible with HULL, all other currently existing non-beta and non-alpha versions are compatible.** ⚠️
 
-⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases. At this time Kubernetes versions `1.34` and `1.36` and `1.36` have a matching and maintained HULL release.** ⚠️
+⚠️ **It is intended to support the latest 3 major Kubernetes releases with corresponding HULL releases. At this time Kubernetes versions `1.34` and `1.35` and `1.36` have a matching and maintained HULL release.** ⚠️
 
 ## NEW! The HULL Tutorials
 
@@ -262,6 +262,17 @@ If you like a hands on approach you are invited to take a look at the [new HULL 
 ## Creating and configuring a HULL based chart
 
 To get started on configuring your HULL based chart please refer to the [API documentation](/hull/files/doc/API).
+
+## Working with AI agents and migrating existing charts
+
+HULL charts are data validated against a JSON schema instead of template code, which makes writing them a good task for AI coding agents and their tools. These things support that:
+
+- The [guide for AI agents](/hull/files/doc/agents.md) states the rules of HULL on one page, with the workflow, the transformations and how Kubernetes kinds map to HULL object types. The [cookbook](/hull/files/doc/cookbook.md) has tested recipes for common tasks.
+- Every rendering error has a code, the path of the faulty value and a hint how to fix it. All codes are explained in [error codes](/hull/files/doc/error_codes.md).
+- [`hull_import.py`](/hull/files/doc/import.md) converts the output of an existing chart into HULL values and verifies that the converted chart renders the same objects.
+- `hull_validate.py` checks a chart and reports schema problems in the same format, and the [Claude Code plugin and MCP server](/hull/files/doc/agent_tools.md) make all of this available to agents: `/plugin install hull --marketplace vidispine/hull`.
+
+The [`llms.txt`](/llms.txt) at the root of the repository lists this documentation for tools that read it.
 
 ## Testing and installing a HULL based chart
 

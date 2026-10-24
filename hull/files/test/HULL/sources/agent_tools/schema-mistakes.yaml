@@ -1,0 +1,46 @@
+# Typical mistakes when writing HULL values, each reported on one line by hull_validate.py
+hull:
+  objects:
+    deploymnet:
+      x: {}
+    deployment:
+      named:
+        pod:
+          containers:
+            main:
+              name: main
+              image:
+                repository: nginx
+                digest: abc
+      replicas:
+        replicas: two
+        pod:
+          containers:
+            main:
+              image:
+                repository: nginx
+              ports:
+                http:
+                  containerPort: "80"
+      listed:
+        pod:
+          containers:
+          - name: main
+            image: nginx
+      with-spec:
+        spec:
+          replicas: 1
+      strategy:
+        strategy:
+          type: Rolling
+        pod:
+          containers:
+            main:
+              image:
+                repository: nginx
+    service:
+      svc:
+        ports:
+          http:
+            port: 80
+            protocl: TCP
