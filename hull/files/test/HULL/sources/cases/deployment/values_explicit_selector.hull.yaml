@@ -1,0 +1,18 @@
+hull:
+  objects:
+    deployment:
+      explicit-selector:
+        labels:
+          team: payments
+        selector:
+          matchLabels:
+            app: explicit
+            tier: web
+        pod:
+          labels:
+            app: explicit
+            tier: web
+          containers:
+            main:
+              image:
+                repository: my/image/repo

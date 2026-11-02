@@ -1,0 +1,3 @@
+# Python bytecode, written when the scripts in hull/files/scripts or the gauge test steps run
+__pycache__/
+*.py[cod]

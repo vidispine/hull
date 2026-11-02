@@ -117,6 +117,7 @@ The end to end process using HULL contains the following phases:
           - `customresource`
           - `priorityclass`
           - `endpoints`
+          - `generic`
         - objects with a simple structure depending on RBAC enablement:
           - `rolebinding`
           - `clusterrolebinding`

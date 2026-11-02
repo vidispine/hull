@@ -49,7 +49,7 @@ template:
 {{- if and (ne $containerKey "_HULL_OBJECT_TYPE_DEFAULT_") (kindIs "map" $container) (gt (len $container) 0) -}}
 {{- $merged := merge $container $defaultContainer -}}
 {{- if or (not (hasKey $merged "enabled")) $merged.enabled -}}
-{{- $_ := set $containers $containerKey (include "hull.config.sources" (dict "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "COMPONENT" $containerKey "SOURCE_TYPE" "container" "SPEC" $merged) | fromYaml) -}}
+{{- $_ := set $containers $containerKey (include "hull.config.sources" (dict "PARENT_CONTEXT" $parent "HULL_ROOT_KEY" $hullRootKey "OBJECT_TYPE" $objectType "OBJECT_INSTANCE_KEY" $objectInstanceKey "CONTAINER_TYPE" $containerType "COMPONENT" $containerKey "SOURCE_TYPE" "container" "SPEC" $merged) | fromYaml) -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

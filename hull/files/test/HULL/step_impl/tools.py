@@ -331,8 +331,8 @@ def test_object_has_key_with_dictionary_value_that_has_items(key, value):
         return
     assert data_store.scenario.test_object != None
     if isinstance(data_store.scenario.test_object[key], dict): 
-        for key in data_store.scenario.test_object[key].keys():            
-            print(f'Found key: {key}')
+        for found_key in data_store.scenario.test_object[key].keys():            
+            print(f'Found key: {found_key}')
             
         assert_values_equal(len(data_store.scenario.test_object[key].keys()), int(value), data_store.scenario.case.lower(),  key)
     else:

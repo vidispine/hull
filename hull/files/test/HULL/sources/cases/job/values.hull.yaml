@@ -318,10 +318,13 @@ hull:
 
       selector-provided:
         completions: 5
+        manualSelector: true
         selector:
           matchLabels:
             test_label: test_value
         pod:
+          labels:
+            test_label: test_value
           containers: 
             main:
               image:

@@ -16,6 +16,8 @@ hull:
 
 You can disable the implemented error checks which are by default set to `true` individually if needed even though this is not recommended. Settings which default to `false` may be enabled to enforce stricter input checking. In some cases there exists a relation to the older `hull.config.general.debug` settings which will be highlighted.
 
+Every error is reported with a code, the path of the faulty value and a hint how to fix it. All codes are explained in [error codes](/hull/files/doc/error_codes.md).
+
 The following list is an overview of the currently implemented error checks:
 
 - `objectYamlValid`: Basic check whether an object YAML is valid, meaning its representation is not just a dictionary containing a single `Error` key. Should always be `true` to indicate any severe problem when rendering an object.
@@ -24,7 +26,7 @@ The following list is an overview of the currently implemented error checks:
 
     Note: if `hull.config.debug.renderBrokenHullGetTransformationReferences` is set to `true`, the legacy behavior where the error message is written where the reference was used but the Helm command will still be sucessful. This is not recommended, instead you should fail the Helm command hard by letting `hull.config.debug.renderBrokenHullGetTransformationReferences: false`!
 
-- `containerImageValid`: Checks whether all containers elements (`initContainers` or `containers`) have an `image` element defined and the `image` element contains at least a `repository` sub element. A pod's container without an `image` is not valid normally so invalid `image` specs are raised as an error by default.
+- `containerImageValid`: Checks whether all containers elements (`initContainers` or `containers`) have an `image` element defined and the `image` element contains at least a `repository` sub element. If a non-empty `digest` is set, it is additionally checked to be a well-formed image digest, that is an algorithm and a lowercase hex encoded hash of at least 32 characters joined by a colon such as `sha256:1ff6c18fbef2045af6b9c16bf034cc421a29027b800e4f9b68ae9b1cb3e9ae07`. Literal `digest` values are already validated by the JSON schema, this check covers values that result from transformations. A pod's container without an `image` is not valid normally so invalid `image` specs are raised as an error by default.
 
 - `virtualFolderDataPathExists`: For `path` values in a ConfigMap or Secret it is validated that the file being referenced physically exists. Since this points to a fault in the chart design this is by default set to `true` and raised as an error.
 

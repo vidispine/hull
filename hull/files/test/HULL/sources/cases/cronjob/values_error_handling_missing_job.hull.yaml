@@ -1,0 +1,6 @@
+hull:
+  objects:
+    cronjob:
+      missing-job:
+        sources: []
+        schedule: "0 3 * * *"

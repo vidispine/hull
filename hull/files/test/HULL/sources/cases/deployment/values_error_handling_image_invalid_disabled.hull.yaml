@@ -3,13 +3,28 @@ hull:
     general:
       errorChecks:
         containerImageValid: false
+    specific:
+      short_image_id: "1a2b3c4d5e6f"
+      short_hash_digest: "sha256:1a2b3c"
   objects:
     deployment:
       invalid-container-images:
         pod:
           containers:
+            invalid-digest:
+              image:
+                repository: my/image/repo
+                digest: _HT*hull.config.specific.short_image_id
             no-image:
               env: {}
+            registry-and-tag-only:
+              image:
+                registry: my.registry
+                tag: "1.0"
+            short-hash-digest:
+              image:
+                repository: my/image/repo
+                digest: _HT*hull.config.specific.short_hash_digest
             no-repository:
               image:
                 tag: 1dwfe

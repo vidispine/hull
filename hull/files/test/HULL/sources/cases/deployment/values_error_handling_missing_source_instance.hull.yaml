@@ -1,0 +1,11 @@
+hull:
+  objects:
+    deployment:
+      missing-source:
+        sources:
+        - nonexisting
+        pod:
+          containers:
+            main:
+              image:
+                repository: my/image/repo

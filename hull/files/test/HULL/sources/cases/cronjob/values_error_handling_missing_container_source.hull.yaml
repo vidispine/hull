@@ -1,0 +1,13 @@
+hull:
+  objects:
+    cronjob:
+      missing-source:
+        schedule: "*/5 * * * *"
+        job:
+          pod:
+            containers:
+              main:
+                sources:
+                - nonexisting
+                image:
+                  repository: my/image/repo

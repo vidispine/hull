@@ -10,7 +10,11 @@ For pod-based objects there is no need to create a `spec` property. The `spec.se
 
 As an alternative the top-level `templateAnnotations` and `templateLabels` keys are available and remain fully supported. They have exactly the same effect, are merged with their `pod` level counterparts and lose against them where the same key is defined in both.
 
-⚠️The `selector` property of pod-based objects will be automatically populated to match the exact combination of the auto-generated `hull.config.general.metadata.labels.common` fields `app.kubernetes.io/name`, `app.kubernetes.io/instance` and `app.kubernetes.io/component`. An exception is made for the objects of type `job` where no `selector` field is set because Kubernetes jobs deal with the `selector` implicitly. If need be it is possible to set `selector` manually for the particular `job` however.⚠️
+On the pod template, labels and annotations given for the pod take precedence over the object's own `labels` and `annotations`, which are rendered on the pod template too, and over the labels HULL adds. If a pod label contradicts one of the generated selector labels, rendering fails with [`SELECTOR-NOT-MATCHING-POD-LABELS`](/hull/files/doc/error_codes.md#selector-not-matching-pod-labels).
+
+⚠️The `selector` property of pod-based objects will be automatically populated to match the exact combination of the auto-generated `hull.config.general.metadata.labels.common` fields `app.kubernetes.io/name`, `app.kubernetes.io/instance` and `app.kubernetes.io/component`, and these labels are added to the pod template. An exception is made for the objects of type `job` where no `selector` field is set because Kubernetes jobs deal with the `selector` implicitly.⚠️
+
+Where the generated selector does not fit, for example when taking over objects of an existing release whose selectors are immutable, set `selector` explicitly on a `deployment`, `statefulset`, `daemonset` or `job` (together with `manualSelector: true` for a job). HULL then renders this selector and does not add its generated selector labels to the pod template, so the labels that the selector matches need to be given in `pod.labels`, `templateLabels` or the object's `labels`. If a `selector.matchLabels` entry is not found in the pod template labels, rendering fails with [`SELECTOR-NOT-MATCHING-POD-LABELS`](/hull/files/doc/error_codes.md#selector-not-matching-pod-labels) because Kubernetes would reject the object. The same error is raised if object `labels` override one of the generated selector labels.
 
 So for all HULL based objects, the pod specific information is wrapped like this:
 
@@ -19,6 +23,7 @@ So for all HULL based objects, the pod specific information is wrapped like this
 | `pod` | Specification of the inner pod in the form of **`hull.Pod.v1`**. See below for reference. This is also where the pod template metadata belongs, via its `annotations` and `labels` keys. | | |
 | `templateAnnotations` | Alternative to the preferred `pod.annotations`. Dictionary with annotations to add to the Kubernetes objects `spec.template.metadata.annotations` section. <br><br>Both are merged and where the same key is defined in both the `pod.annotations` value wins. | `{}` | `appImportance:`&#160;`"low"` |
 | `templateLabels` | Alternative to the preferred `pod.labels`. Dictionary with labels to add to the Kubernetes objects `spec.template.metadata.labels` section. <br><br>Both are merged and where the same key is defined in both the `pod.labels` value wins. | `{}` | `appStatus:`&#160;`"bad"` |
+| `selector` | Optional label selector replacing the generated one. HULL then does not add its generated selector labels to the pod template and the pod labels must contain the selector's `matchLabels`. | | `matchLabels:`<br>&#160;&#160;`app:`&#160;`frontend` |
 
 ### The `hull.Pod.v1` properties
 
@@ -56,11 +61,14 @@ However the properties listed below are overwritten or added by HULL:
 
 Definition of container images is split into multiple parts to allow better support of switching the registry endpoints throughout the whole chart.
 
+The rendered `image` is composed as `<registry>/<repository>:<tag>`, or as `<registry>/<repository>@<digest>` when a non-empty `digest` is set. A `digest` takes precedence over the `tag`: the `tag` is then left out of the rendered `image` entirely. This matches the Kubernetes behavior for an image reference that contains both, where [only the digest is used for pulling](https://kubernetes.io/docs/concepts/containers/images/#image-names). Leaving out the `tag` additionally keeps the server-side default of `imagePullPolicy` at `IfNotPresent`, whereas Kubernetes defaults it to `Always` for an image reference with the tag `latest` even if a digest is present.
+
 | Parameter | Description | Default | Example |
 | --------- | ----------- | ------- | ------- |
 | `registry` | Optional endpoint of the repository. If set will produce a prefix and appended `/`. | ` ` | `myregistry.azure.cr` |
 | `repository` | Name/Repository of the container image | | `apps/videoeditor` |
-| `tag` | Tag of the container image. The value must be of string type on the Kubernetes side, but it is allowed to have integer or float type input on the HULL side. Any value will be automatically converted to string on rendering. | | `20.1.3-pre.321`<br>`"23.3"`<br>`23.3`<br>`"10"`<br>`10` |
+| `tag` | Tag of the container image. The value must be of string type on the Kubernetes side, but it is allowed to have integer or float type input on the HULL side. Any value will be automatically converted to string on rendering. <br><br>Ignored if a non-empty `digest` is set. | | `20.1.3-pre.321`<br>`"23.3"`<br>`23.3`<br>`"10"`<br>`10` |
+| `digest` | Digest of the container image, consisting of an algorithm and a lowercase hex encoded hash joined by a colon. If set and not empty, the image is referenced by digest as `<repository>@<digest>` and the `tag` is ignored. An empty string means no digest is set and the `tag` is used, so a chart can predefine `digest: ""` and have it overwritten for pinning. <br><br>The format is validated by the JSON schema and, for values resulting from a transformation, at render time when [`hull.config.general.errorChecks.containerImageValid`](/hull/files/doc/error_checking.md) is enabled. | `""` | `sha256:1ff6c18fbef2045af6b9c16bf034cc421a29027b800e4f9b68ae9b1cb3e9ae07` |
 
 ### The `hull.Env.v1` properties
 

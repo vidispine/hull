@@ -21,3 +21,6 @@
 *.tmproj
 files/test/
 files/mkdocs/
+# Python bytecode
+__pycache__/
+*.py[cod]
